@@ -1,6 +1,7 @@
 /* libwpd
  * Copyright (C) 2002 William Lachance (william.lachance@sympatico.ca)
  * Copyright (C) 2002 Marc Maurer (j.m.maurer@student.utwente.nl)
+ * Copyright (C) 2004 Fridrich Strba (fridrich.strba@bluewin.ch)
  *  
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -64,6 +65,12 @@ public:
 	virtual void parse(WP6HLListener *listener);	
 };
 
+class WP6SoftEOPFunction : public WP6SingleByteFunction
+{
+public:
+	virtual void parse(WP6HLListener *listener);	
+};
+
 class WP6SoftHyphenFunction : public WP6SingleByteFunction
 {
 public:
@@ -71,6 +78,24 @@ public:
 };
 
 class WP6HyphenFunction : public WP6SingleByteFunction
+{
+public:
+	virtual void parse(WP6HLListener *listener);	
+};
+
+class WP6TableOffFunction : public WP6SingleByteFunction
+{
+public:
+	virtual void parse(WP6HLListener *listener);	
+};
+
+class WP6TableCellFunction : public WP6SingleByteFunction
+{
+public:
+	virtual void parse(WP6HLListener *listener);	
+};
+
+class WP6TableRowFunction : public WP6SingleByteFunction
 {
 public:
 	virtual void parse(WP6HLListener *listener);	

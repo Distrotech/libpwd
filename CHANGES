@@ -1,6 +1,9 @@
 CHANGES:
 
 
+0.7.2 -> 0.7.3
+- Conversion of single-byte table-related functions (Fridrich Strba)
+
 0.7.1 -> 0.7.2
 - Added conversion of paragraph margins done by functions of the
   paragraph group
