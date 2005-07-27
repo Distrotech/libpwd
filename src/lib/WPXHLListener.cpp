@@ -40,7 +40,6 @@
 
 _WPXParsingState::_WPXParsingState(bool sectionAttributesChanged) :
 	m_textAttributeBits(0),
-	m_textAttributesChanged(false),
 	m_fontSize(12.0f/*WP6_DEFAULT_FONT_SIZE*/), // FIXME ME!!!!!!!!!!!!!!!!!!! HELP WP6_DEFAULT_FONT_SIZE
 	m_fontName(new WPXString(/*WP6_DEFAULT_FONT_NAME*/"Times New Roman")), // EN PAS DEFAULT FONT AAN VOOR WP5/6/etc
 	m_fontColor(new RGBSColor(0x00,0x00,0x00,0x64)), //Set default to black. Maybe once it will change, but for the while...
@@ -52,15 +51,14 @@ _WPXParsingState::_WPXParsingState(bool sectionAttributesChanged) :
 	m_paragraphJustification(WPX_PARAGRAPH_JUSTIFICATION_LEFT),
 	m_tempParagraphJustification(0),
 
+	m_isDocumentStarted(false),
+	m_isPageSpanOpened(false),
 	m_isSectionOpened(false),
 	m_isPageSpanBreakDeferred(false),
 
 	m_isParagraphOpened(false),
-	m_isParagraphClosed(false),
 	m_isListElementOpened(false),
-	m_isListElementClosed(false),
 	m_isSpanOpened(false),
-	m_numDeferredParagraphBreaks(0),
 
 	m_currentTableCol(0),
 	m_currentTableRow(0),
@@ -72,7 +70,6 @@ _WPXParsingState::_WPXParsingState(bool sectionAttributesChanged) :
 	m_cellAttributeBits(0),
 	m_paragraphJustificationBeforeTable(WPX_PARAGRAPH_JUSTIFICATION_LEFT),
 
-	m_isPageSpanOpened(false),
 	m_nextPageSpanIndice(0),
 	m_numPagesRemainingInSpan(0),
 
@@ -101,16 +98,17 @@ _WPXParsingState::_WPXParsingState(bool sectionAttributesChanged) :
 	m_paragraphTextIndent(0.0f),
 	m_textIndentByParagraphIndentChange(0.0f),
 	m_textIndentByTabs(0.0f),
-#if 0
 	m_currentListLevel(0),
+#if 0
 	m_putativeListElementHasParagraphNumber(false),
 	m_putativeListElementHasDisplayReferenceNumber(false),
 
 	m_noteTextPID(0),
-	m_inSubDocument(false)
 #endif
 	m_alignmentCharacter('.'),
-	m_isTabPositionRelative(false)
+	m_isTabPositionRelative(false),
+	m_inSubDocument(false),
+	m_isNote(false)
 {
 }
 
@@ -143,43 +141,53 @@ void WPXHLListener::startDocument()
 	m_listenerImpl->setDocumentMetaData(m_metaData);
 
 	m_listenerImpl->startDocument();
-	_openPageSpan();
+	
+	m_ps->m_isDocumentStarted = true;
 }
 
 void WPXHLListener::_openSection()
 {
-	_closeSection();
-
-	WPXPropertyList propList;
-
-	if (m_ps->m_numColumns > 1)
+	if (!m_ps->m_inSubDocument)
 	{
-		propList.insert("fo:margin-bottom", 1.0f);
-		propList.insert("text:dont-balance-text-columns", false);
-	}
-	else
-		propList.insert("fo:margin-bottom", 0.0f);
+		if (!m_ps->m_isPageSpanOpened)
+			_openPageSpan();
 
-	WPXPropertyListVector columns;
- 	typedef std::vector<WPXColumnDefinition>::const_iterator CDVIter;
- 	for (CDVIter iter = m_ps->m_textColumns.begin(); iter != m_ps->m_textColumns.end(); iter++)
-	{
-		WPXPropertyList column;
-		// The "style:rel-width" is expressed in twips (1440 twips per inch) and includes the left and right Gutter
-		column.insert("style:rel-width", (*iter).m_width * 1440.0f, TWIP);
-		column.insert("fo:margin-left", (*iter).m_leftGutter);
-		column.insert("fo:margin-right", (*iter).m_rightGutter);
-		columns.append(column);
-	}
-	m_listenerImpl->openSection(propList, columns);
+		WPXPropertyList propList;
 
-	m_ps->m_sectionAttributesChanged = false;
-	m_ps->m_isSectionOpened = true;
+		if (m_ps->m_numColumns > 1)
+		{
+			propList.insert("fo:margin-bottom", 1.0f);
+			propList.insert("text:dont-balance-text-columns", false);
+		}
+		else
+			propList.insert("fo:margin-bottom", 0.0f);
+
+		WPXPropertyListVector columns;
+ 		typedef std::vector<WPXColumnDefinition>::const_iterator CDVIter;
+	 	for (CDVIter iter = m_ps->m_textColumns.begin(); iter != m_ps->m_textColumns.end(); iter++)
+		{
+			WPXPropertyList column;
+			// The "style:rel-width" is expressed in twips (1440 twips per inch) and includes the left and right Gutter
+			column.insert("style:rel-width", (*iter).m_width * 1440.0f, TWIP);
+			column.insert("fo:margin-left", (*iter).m_leftGutter);
+			column.insert("fo:margin-right", (*iter).m_rightGutter);
+			columns.append(column);
+		}
+		if (!m_ps->m_isSectionOpened)
+			m_listenerImpl->openSection(propList, columns);
+
+		m_ps->m_sectionAttributesChanged = false;
+		m_ps->m_isSectionOpened = true;
+	}
 }
 
 void WPXHLListener::_closeSection()
 {
-	_closeParagraph();
+	if (m_ps->m_isParagraphOpened)
+		_closeParagraph();
+	if (m_ps->m_isListElementOpened)
+		_closeListElement();
+
 	if (m_ps->m_isSectionOpened)
 		m_listenerImpl->closeSection();
 
@@ -188,7 +196,8 @@ void WPXHLListener::_closeSection()
 
 void WPXHLListener::_openPageSpan()
 {
-	_closePageSpan();
+	if (!m_ps->m_isDocumentStarted)
+		startDocument();
 
 	// Hack to be sure that the paragraph margins are consistent even if the page margin changes
 	m_ps->m_leftMarginByPageMarginChange += m_ps->m_pageMarginLeft;
@@ -220,7 +229,10 @@ void WPXHLListener::_openPageSpan()
 	propList.insert("fo:margin-top", currentPage->getMarginTop());
 	propList.insert("fo:margin-bottom", currentPage->getMarginBottom());
 	
-	m_listenerImpl->openPageSpan(propList);
+	if (!m_ps->m_isPageSpanOpened)
+		m_listenerImpl->openPageSpan(propList);
+
+	m_ps->m_isPageSpanOpened = true;
 
 	m_ps->m_pageFormWidth = currentPage->getFormWidth();
 	m_ps->m_pageMarginLeft = currentPage->getMarginLeft();
@@ -286,43 +298,37 @@ void WPXHLListener::_openPageSpan()
 
 	m_ps->m_numPagesRemainingInSpan = (currentPage->getPageSpan() - 1);
 	m_ps->m_nextPageSpanIndice++;
-	m_ps->m_isPageSpanOpened = true;
-	_openSection();
 }
 
 void WPXHLListener::_closePageSpan()
 {
-	if (m_ps->m_isPageSpanOpened)
-	{
+	if (m_ps->m_isSectionOpened)
 		_closeSection();
+
+	if (m_ps->m_isPageSpanOpened)
 		m_listenerImpl->closePageSpan();
-		m_ps->m_isPageSpanOpened = false;
-	}
+	
+	m_ps->m_isPageSpanOpened = false;
 }
 
 void WPXHLListener::_openParagraph()
 {
-	if (m_ps->m_isListElementOpened)
-		_flushList(); // If we are in a list, we should discontinue it
-	else
-		_closeParagraph();
+	if (!m_ps->m_isParagraphOpened && !m_ps->m_isListElementOpened)
+	{
+		if (!m_ps->m_isTableOpened && !m_ps->m_isSectionOpened && !m_ps->m_inSubDocument)
+			_openSection();
 
-	WPXPropertyListVector tabStops;
-	_getTabStops(tabStops);
+		WPXPropertyListVector tabStops;
+		_getTabStops(tabStops);
 
-	WPXPropertyList propList;
-	_appendParagraphProperties(propList);
+		WPXPropertyList propList;
+		_appendParagraphProperties(propList);
 
-	m_listenerImpl->openParagraph(propList, tabStops);
+		if (!m_ps->m_isParagraphOpened)
+			m_listenerImpl->openParagraph(propList, tabStops);
 
-	// this is paragraph-specific (handle breaks differently for
-	// lists, which we otherwise treat the same)
-	if (m_ps->m_numDeferredParagraphBreaks > 0)
-		m_ps->m_numDeferredParagraphBreaks--;
-
-	_resetParagraphState();
-
-	_openSpan();
+		_resetParagraphState();
+	}
 }
 
 void WPXHLListener::_resetParagraphState(const bool isListElement)
@@ -449,7 +455,8 @@ void WPXHLListener::_getTabStops(WPXPropertyListVector &tabStops)
 
 void WPXHLListener::_closeParagraph()
 {
-	_closeSpan();
+	if (m_ps->m_isSpanOpened)
+		_closeSpan();
 	if (m_ps->m_isParagraphOpened)
 		m_listenerImpl->closeParagraph();
 
@@ -458,23 +465,27 @@ void WPXHLListener::_closeParagraph()
 
 void WPXHLListener::_openListElement()
 {
-	_closeParagraph();
-	_closeListElement();
-	WPXPropertyList propList;
-	_appendParagraphProperties(propList);
+	if (!m_ps->m_isParagraphOpened && !m_ps->m_isListElementOpened)
+	{
+		if (!m_ps->m_isTableOpened && !m_ps->m_isSectionOpened && !m_ps->m_inSubDocument)
+			_openSection();
 
-	WPXPropertyListVector tabStops;
-	_getTabStops(tabStops);
+		WPXPropertyList propList;
+		_appendParagraphProperties(propList);
 
-	m_listenerImpl->openListElement(propList, tabStops);
-	_resetParagraphState(true);
+		WPXPropertyListVector tabStops;
+		_getTabStops(tabStops);
 
-	_openSpan();
+		if (!m_ps->m_isListElementOpened)
+			m_listenerImpl->openListElement(propList, tabStops);
+		_resetParagraphState(true);
+	}
 }
 
 void WPXHLListener::_closeListElement()
 {
-	_closeSpan();
+	if (m_ps->m_isSpanOpened)
+		_closeSpan();
 	if (m_ps->m_isListElementOpened)
 		m_listenerImpl->closeListElement();
 
@@ -485,7 +496,12 @@ const float WPX_DEFAULT_SUPER_SUB_SCRIPT = 58.0f;
 
 void WPXHLListener::_openSpan()
 {
-	_closeSpan();
+	if (!m_ps->m_isParagraphOpened && !m_ps->m_isListElementOpened)
+		if (m_ps->m_currentListLevel == 0)
+			_openParagraph();
+		else
+			_openListElement();
+	
 	// The behaviour of WP6+ is following: if an attribute bit is set in the cell attributes, we cannot
 	// unset it; if it is set, we can set or unset it
 	uint32_t attributeBits = (m_ps->m_textAttributeBits | m_ps->m_cellAttributeBits);
@@ -562,13 +578,15 @@ void WPXHLListener::_openSpan()
 	if (m_ps->m_highlightColor)
 		propList.insert("style:text-background-color", _colorToString(m_ps->m_highlightColor));
 
-	m_listenerImpl->openSpan(propList);
+	if (!m_ps->m_isSpanOpened)
+		m_listenerImpl->openSpan(propList);
 
 	m_ps->m_isSpanOpened = true;
 }
 
 void WPXHLListener::_closeSpan()
 {
+	_flushText();
 	if (m_ps->m_isSpanOpened)
 		m_listenerImpl->closeSpan();
 
@@ -763,7 +781,7 @@ void WPXHLListener::_openTableCell(const uint8_t colSpan, const uint8_t rowSpan,
 void WPXHLListener::_closeTableCell()
 {
 	if (m_ps->m_isCellWithoutParagraph)
-		_openParagraph();
+		_openSpan();
 	_closeParagraph();
 	m_ps->m_cellAttributeBits = 0x00000000;
 	if (m_ps->m_isTableCellOpened)
@@ -787,6 +805,7 @@ void WPXHLListener::handleSubDocument(uint16_t textPID, const bool isHeaderFoote
 	m_ps->m_pageMarginRight = oldPS->m_pageMarginRight;
 	m_ps->m_subDocumentTextPIDs = oldPS->m_subDocumentTextPIDs;
 	// END: copy page properties into the new parsing state
+	m_ps->m_inSubDocument = true;
 	// Check whether the document is calling its own TextPID
 	if ((m_ps->m_subDocumentTextPIDs.find(textPID) == m_ps->m_subDocumentTextPIDs.end()) || (!textPID))
 	{
@@ -808,17 +827,22 @@ void WPXHLListener::insertBreak(const uint8_t breakType)
 		switch (breakType)
 		{
 		case WPX_COLUMN_BREAK:
-			if (m_ps->m_isTextColumnWithoutParagraph)
-			{
-				_openParagraph(); // handle a case where two column breaks are following each other
-				_flushText();
-			}
-			m_ps->m_numDeferredParagraphBreaks++;
+			if (!m_ps->m_isSpanOpened)
+				_openSpan();
+			if (m_ps->m_isParagraphOpened)
+				_closeParagraph();
+			if (m_ps->m_isListElementOpened)
+				_closeListElement();
 			m_ps->m_isParagraphColumnBreak = true;
 			m_ps->m_isTextColumnWithoutParagraph = true;
 			break;
 		case WPX_PAGE_BREAK:
-			m_ps->m_numDeferredParagraphBreaks++;
+			if (!m_ps->m_isSpanOpened)
+				_openSpan();
+			if (m_ps->m_isParagraphOpened)
+				_closeParagraph();
+			if (m_ps->m_isListElementOpened)
+				_closeListElement();
 			m_ps->m_isParagraphPageBreak = true;
 			break;
 			// TODO: (.. line break?)

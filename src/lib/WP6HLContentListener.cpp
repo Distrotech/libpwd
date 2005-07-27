@@ -225,7 +225,6 @@ _WP6ParsingState::_WP6ParsingState(WPXTableList tableList, int nextTableIndice) 
 	m_currentTable(NULL),
 	m_nextTableIndice(nextTableIndice),
 
-	m_currentListLevel(0),
 	m_putativeListElementHasParagraphNumber(false),
 	m_putativeListElementHasDisplayReferenceNumber(false),
 	
@@ -326,7 +325,11 @@ void WP6HLContentListener::insertCharacter(const uint16_t character)
 	{
 		if (m_parseState->m_styleStateSequence.getCurrentState() == STYLE_BODY ||
 		    m_parseState->m_styleStateSequence.getCurrentState() == NORMAL)
+		{
+			if (!m_ps->m_isSpanOpened)
+				_openSpan();
 			appendUCS4(m_parseState->m_bodyText, (uint32_t)character);
+		}
 		else if (m_parseState->m_styleStateSequence.getCurrentState() == BEGIN_BEFORE_NUMBERING)
 		{
 			appendUCS4(m_parseState->m_textBeforeNumber, (uint32_t)character);
@@ -374,19 +377,6 @@ void WP6HLContentListener::insertTab(const uint8_t tabType, const float tabPosit
 {
 	if (!isUndoOn())
 	{
-
-		_flushText();
-		// Fridrich Strba -- HACK: we force each tab to be in its own span in order
-		// to prevent previous span's properties to apply to the tab also if they changed.
-		m_ps->m_textAttributesChanged = true;
-
-		// open new section if section attributes changed
-		if (m_ps->m_sectionAttributesChanged && !m_ps->m_isTableOpened)
-		{
-			_openSection();
-			m_ps->m_sectionAttributesChanged = false;
-		}
-
 		if (m_parseState->m_styleStateSequence.getCurrentState() == STYLE_BODY ||
 		    m_parseState->m_styleStateSequence.getCurrentState() == NORMAL)
 		{
@@ -404,12 +394,16 @@ void WP6HLContentListener::insertTab(const uint8_t tabType, const float tabPosit
 			//case WP6_TAB_GROUP_FLUSH_RIGHT:
 			case WP6_TAB_GROUP_RIGHT_TAB:
 			case WP6_TAB_GROUP_DECIMAL_TAB:
+				_flushText();
 				if (!m_ps->m_isParagraphOpened && !m_ps->m_isListElementOpened)
-					if (m_parseState->m_currentListLevel == 0)
+					if (m_ps->m_currentListLevel == 0)
 						_openParagraph();
 					else
 						_openListElement();
+
+				if (!m_ps->m_isSpanOpened)
 					_openSpan();
+
 				break;
 			
 			default:
@@ -488,9 +482,11 @@ void WP6HLContentListener::insertTab(const uint8_t tabType, const float tabPosit
 			}
 			else
 			{
-				// Fridrich Strba -- HACK: we force each tab to be in its own span in order
-				// to prevent previous span's properties to apply to the tab also if they changed.
-				_flushText(true);
+				_flushText();
+				
+				if (!m_ps->m_isSpanOpened)
+					_openSpan();
+
 				switch ((tabType & 0xF8) >> 3)
 				{
 				case WP6_TAB_GROUP_TABLE_TAB:
@@ -513,8 +509,6 @@ void WP6HLContentListener::insertTab(const uint8_t tabType, const float tabPosit
 				default:
 					break;
 				}
-				_flushText(true);
-				m_ps->m_textAttributesChanged = true;
 			}
 		}
 	}
@@ -525,28 +519,18 @@ void WP6HLContentListener::handleLineBreak()
 	if(!isUndoOn())
 	{
 		_flushText();
-		// Fridrich Strba -- HACK: we force each tab to be in its own span in order
-		// to prevent previous span's properties to apply to the tab also if they changed.
-		m_ps->m_textAttributesChanged = true;
-
-		if (m_ps->m_sectionAttributesChanged && !m_ps->m_isTableOpened)
-		{
-			_openSection();
-			m_ps->m_sectionAttributesChanged = false;
-		}
 
 		if (m_parseState->m_styleStateSequence.getCurrentState() == STYLE_BODY ||
 		    m_parseState->m_styleStateSequence.getCurrentState() == NORMAL)
 		{
 			if (!m_ps->m_isParagraphOpened && !m_ps->m_isListElementOpened)
-				if (m_parseState->m_currentListLevel == 0)
+				if (m_ps->m_currentListLevel == 0)
 					_openParagraph();
 				else
 					_openListElement();
-			_flushText(true);
+			if (!m_ps->m_isSpanOpened)
+				_openSpan();
 			m_listenerImpl->insertLineBreak();
-			_flushText(true);
-			m_ps->m_textAttributesChanged = true;
 		}
 	}
 }
@@ -555,9 +539,14 @@ void WP6HLContentListener::insertEOL()
 {
 	if (!isUndoOn())
 	{
-		if (m_parseState->m_styleStateSequence.getCurrentState() == NORMAL)
+		if (!m_ps->m_isSpanOpened && !m_ps->m_isParagraphOpened && !m_ps->m_isListElementOpened)
+			_openSpan();
+		else
 			_flushText();
-		m_ps->m_numDeferredParagraphBreaks++;
+		if (m_ps->m_isParagraphOpened)
+			_closeParagraph();
+		if (m_ps->m_isListElementOpened)
+			_closeListElement();
 	}
 
 }
@@ -566,12 +555,10 @@ void WP6HLContentListener::characterColorChange(const uint8_t red, const uint8_t
 {
 	if (!isUndoOn())
 	{
-		// flush everything which came before this change
-		_flushText();
+		_closeSpan();
 		m_ps->m_fontColor->m_r = red;
 		m_ps->m_fontColor->m_g = green;
 		m_ps->m_fontColor->m_b = blue;
-		m_ps->m_textAttributesChanged = true;
  	}
 }
 
@@ -579,10 +566,8 @@ void WP6HLContentListener::characterShadingChange(const uint8_t shading)
 {
 	if (!isUndoOn())
 	{
-		// flush everything which came before this change
-		_flushText();
+		_closeSpan();
 		m_ps->m_fontColor->m_s = shading;
-		m_ps->m_textAttributesChanged = true;
 	}
 }
 
@@ -590,13 +575,11 @@ void WP6HLContentListener::highlightChange(const bool isOn, const RGBSColor colo
 {
 	if (!isUndoOn())
 	{
-		//flush everything which came before this change
-		_flushText();
+		_closeSpan();
 		if (isOn)
 			m_ps->m_highlightColor = new RGBSColor(color.m_r, color.m_g, color.m_b, color.m_s);
 		else
 			DELETEP(m_ps->m_highlightColor);
-		m_ps->m_textAttributesChanged = true;
 	}
 }
 
@@ -604,9 +587,7 @@ void WP6HLContentListener::fontChange(const uint16_t matchedFontPointSize, const
 {
 	if (!isUndoOn())
 	{
-		// flush everything which came before this change
-		_flushText();
-
+		_closeSpan();
 		if (matchedFontPointSize)
 		{
 			m_ps->m_fontSize = rint((double)((((float)matchedFontPointSize)/100.0f)*2.0f));
@@ -623,7 +604,6 @@ void WP6HLContentListener::fontChange(const uint16_t matchedFontPointSize, const
 				m_ps->m_fontName->sprintf("%s", fontDescriptorPacket->getFontName());
 			}
 		}
-		m_ps->m_textAttributesChanged = true;
 	}
 }
 
@@ -631,8 +611,7 @@ void WP6HLContentListener::attributeChange(const bool isOn, const uint8_t attrib
 {
 	if (!isUndoOn())
 	{
-		// flush everything which came before this change
-		_flushText();
+		_closeSpan();
 
 		uint32_t textAttributeBit = 0;
 
@@ -696,8 +675,6 @@ void WP6HLContentListener::attributeChange(const bool isOn, const uint8_t attrib
 			m_ps->m_textAttributeBits |= textAttributeBit;
 		else
 			m_ps->m_textAttributeBits ^= textAttributeBit;
-
-		m_ps->m_textAttributesChanged = true;
 	}
 }
 
@@ -896,8 +873,8 @@ void WP6HLContentListener::displayNumberReferenceGroupOn(const uint8_t subGroup,
 			if (m_parseState->m_styleStateSequence.getCurrentState() == BEGIN_BEFORE_NUMBERING)
 			{
 				WPD_DEBUG_MSG(("WordPerfect: Virtual paragraph numbering used since no paragraph number\n"));
-				(m_parseState->m_currentListLevel == 0) ? _paragraphNumberOn(0, 1) :
-					_paragraphNumberOn(0, m_parseState->m_currentListLevel);
+				(m_ps->m_currentListLevel == 0) ? _paragraphNumberOn(0, 1) :
+					_paragraphNumberOn(0, m_ps->m_currentListLevel);
 			}
 			m_parseState->m_styleStateSequence.setCurrentState(DISPLAY_REFERENCING);
 			// HACK: this is the >1st element in a sequence of display reference numbers (e.g.: we could have
@@ -962,12 +939,7 @@ void WP6HLContentListener::styleGroupOn(const uint8_t subGroup)
 			break;
 		case WP6_STYLE_GROUP_PARASTYLE_BEGIN_ON_PART2:
 			WPD_DEBUG_MSG(("WordPerfect: Handling a para style begin 2 (ON)\n"));
-			if (m_ps->m_numDeferredParagraphBreaks > 0) {
-				m_ps->m_numDeferredParagraphBreaks--; // very complicated: we are substituting other blocks for paragraph breaks, essentially
-				m_parseState->m_numRemovedParagraphBreaks = 1; // set it to 1, rather than incrementing, in case we have a leftover
-			}
 			_flushText();
-
 			break;
 		case WP6_STYLE_GROUP_PARASTYLE_END_ON:
 			WPD_DEBUG_MSG(("WordPerfect: Handling a para style end (ON)\n"));
@@ -995,6 +967,7 @@ void WP6HLContentListener::styleGroupOff(const uint8_t subGroup)
 			{
 				if (m_ps->m_sectionAttributesChanged && !m_ps->m_isTableOpened)
 				{
+					_closeSection();
 					_openSection();
 					m_ps->m_sectionAttributesChanged = false;
 				}
@@ -1002,11 +975,7 @@ void WP6HLContentListener::styleGroupOff(const uint8_t subGroup)
 				_handleListChange(m_parseState->m_currentOutlineHash);
 			}
 			else 
-			{
-				m_ps->m_numDeferredParagraphBreaks+=m_parseState->m_numRemovedParagraphBreaks;
-				m_parseState->m_numRemovedParagraphBreaks = 0;
 				_flushText();
-			}
 			break;
 		case WP6_STYLE_GROUP_PARASTYLE_END_OFF:
 			WPD_DEBUG_MSG(("WordPerfect: Handling a parastyle end (OFF)\n"));
@@ -1043,6 +1012,7 @@ void WP6HLContentListener::noteOn(const uint16_t textPID)
 		// save a reference to the text PID, we want to parse
 		// the packet after we're through with the footnote ref.
 		m_parseState->m_noteTextPID = textPID;
+		m_ps->m_isNote = true;
 	}
 }
 
@@ -1070,36 +1040,22 @@ void WP6HLContentListener::noteOff(const WPXNoteType noteType)
 			m_listenerImpl->closeFootnote();
 		else
 			m_listenerImpl->closeEndnote();
+		m_ps->m_isNote = false;
 	}
 }
 
 void WP6HLContentListener::endDocument()
 {
+	_flushText();
 	// corner case: document ends in a list element
 	if (m_parseState->m_styleStateSequence.getCurrentState() != NORMAL)
 	{
-		// maybe one could simply use the "_flushList()" ????
-		_flushText(); // flush the list text
 		m_parseState->m_styleStateSequence.setCurrentState(NORMAL);
-		_flushText(true); // flush the list exterior (forcing a line break, to make _flushText think we've exited a list)
-
+		_flushList(); // flush the list exterior
 	}
-	// corner case: document contains no end of lines
-	else if (!m_ps->m_isParagraphOpened && !m_ps->m_isParagraphClosed)
-	{
-		_flushText();
-	}
-	// NORMAL(ish) case document ends either inside a paragraph or outside of one,
-	// but not inside an object
-	else if (!m_ps->m_isParagraphClosed || !m_ps->m_isParagraphOpened)
-	{
-		_flushText();
-	}
-
-	// the only other possibility is a logical contradiction: a paragraph
-	// may not be opened and closed at the same time
 
 	// close the document nice and tight
+	_closeSection();
 	_closePageSpan();
 	m_listenerImpl->endDocument();
 }
@@ -1172,6 +1128,7 @@ void WP6HLContentListener::startTable()
 		// there are no nested tables in WP6+ file format, but with "more table-like structures"
 		// it is safer to introduce it though. Does not hurt.
 		{
+			_closeSection();
 			_openSection();
 			m_ps->m_sectionAttributesChanged = false;
 		}
@@ -1251,27 +1208,12 @@ void WP6HLContentListener::_handleSubDocument(uint16_t textPID, const bool isHea
 	m_parseState->m_noteTextPID = 0;
 }
 
-// _handleLineBreakElementBegin: flush everything which came before this change
-// eliminating one paragraph break which is now implicit in this change --
-// UNLESS the paragraph break represents something else than its name suggests,
-// such as a paragraph or column break OR the paragraph break exists by itself
-// NB: I know this method is ugly. Sorry kids, the translation between WordPerfect
-// and an XMLish format is rather ugly by definition.
-// void WP6HLContentListener::_handleLineBreakElementBegin()
-// {
-// 	if (!m_ps->m_sectionAttributesChanged &&
-// 	    m_ps->m_numDeferredParagraphBreaks > 0 &&
-// 	    !m_ps->m_isParagraphColumnBreak && !m_ps->m_isParagraphPageBreak)
-// 		m_ps->m_numDeferredParagraphBreaks--;
-// 	_flushText();
-// }
-
 void WP6HLContentListener::_paragraphNumberOn(const uint16_t outlineHash, const uint8_t level)
 {
 	m_parseState->m_styleStateSequence.setCurrentState(BEGIN_NUMBERING_BEFORE_DISPLAY_REFERENCING);
 	m_parseState->m_putativeListElementHasParagraphNumber = true;
 	m_parseState->m_currentOutlineHash = outlineHash;
-	m_parseState->m_currentListLevel = level;
+	m_ps->m_currentListLevel = level;
 }
 
 // _flushText: Flushes text and any section, paragraph, or span properties prior to the text
@@ -1285,13 +1227,12 @@ void WP6HLContentListener::_flushText(const bool fakeText)
 	// which assumes the same condition)
 	if (m_parseState->m_styleStateSequence.getCurrentState() == NORMAL)
 	{
-		if (m_parseState->m_currentListLevel > 0 && 
-		    (m_ps->m_numDeferredParagraphBreaks > 0 || m_parseState->m_bodyText.len() > 0 || fakeText) &&
+		if (m_ps->m_currentListLevel > 0 && 
+		    (m_parseState->m_bodyText.len() > 0 || fakeText) &&
 		    m_parseState->m_styleStateSequence.getCurrentState() == NORMAL)
 		{
-			m_parseState->m_currentListLevel = 0;
+			m_ps->m_currentListLevel = 0;
 			_handleListChange(m_parseState->m_currentOutlineHash);
-			m_ps->m_numDeferredParagraphBreaks--; // we have an implicit break here, when we close the list
 			m_ps->m_isParagraphOpened = false;
 			m_ps->m_isListElementOpened = false;
 		}
@@ -1299,32 +1240,13 @@ void WP6HLContentListener::_flushText(const bool fakeText)
 
 	// create a new section, and a new paragraph, if our section attributes have changed and we have inserted
 	// something into the document (or we have forced a break, which assumes the same condition)
-	if (m_ps->m_sectionAttributesChanged && (m_parseState->m_bodyText.len() > 0 || m_ps->m_numDeferredParagraphBreaks > 0 || fakeText))
+	if (m_ps->m_sectionAttributesChanged && (m_parseState->m_bodyText.len() > 0 ||  fakeText))
 	{
-		if (!m_ps->m_isTableOpened)
-			_openSection();
+		if (!m_ps->m_isTableOpened) {
+			_closeSection();
+			_openSection();}
 		if (fakeText)
 			_openParagraph();
-	}
-
-	if (m_ps->m_numDeferredParagraphBreaks > 0 && (m_parseState->m_styleStateSequence.getCurrentState() == NORMAL ||
-						 ((m_parseState->m_styleStateSequence.getCurrentState() == STYLE_BODY ||
-						   m_parseState->m_styleStateSequence.getCurrentState() == STYLE_END) &&
-						  !m_parseState->m_putativeListElementHasParagraphNumber)))
-	{
-		if (!m_ps->m_isParagraphOpened && !m_ps->m_isListElementOpened &&
-			!(m_ps->m_isTableOpened && !m_ps->m_isTableCellOpened) // don't allow paragraphs to be opened when we have already opened a table, but no cell yet. - MARCM (is it really correct, or should this be fixed elsewhere??)
-		)
-			m_ps->m_numDeferredParagraphBreaks++;
-
-		while (m_ps->m_numDeferredParagraphBreaks > 1)
-			_openParagraph();
-		_closeParagraph();
-		m_ps->m_numDeferredParagraphBreaks = 0; // compensate for this by requiring a paragraph to be opened
-	}
-	else if (m_ps->m_textAttributesChanged && (m_parseState->m_bodyText.len() > 0 || fakeText) && (m_ps->m_isParagraphOpened || m_ps->m_isListElementOpened))
-	{
-		_openSpan();
 	}
 
 	if (m_parseState->m_bodyText.len() || (m_parseState->m_textBeforeNumber.len() &&
@@ -1332,11 +1254,10 @@ void WP6HLContentListener::_flushText(const bool fakeText)
 	{
 		if (!m_ps->m_isParagraphOpened && !m_ps->m_isListElementOpened)
 		{
-			if (m_parseState->m_currentListLevel == 0)
+			if (m_ps->m_currentListLevel == 0)
 				_openParagraph();
 			else
 				_openListElement();
-			_openSpan();
 		}
 
 		if (m_parseState->m_textBeforeNumber.len() &&
@@ -1351,8 +1272,6 @@ void WP6HLContentListener::_flushText(const bool fakeText)
 			m_parseState->m_bodyText.clear();
 		}
 	}
-
-	m_ps->m_textAttributesChanged = false;
 }
 
 // FIXME: This code mostly works, but was created more or less by trial and error and does not derive from
@@ -1379,33 +1298,33 @@ void WP6HLContentListener::_handleListChange(const uint16_t outlineHash)
 	}
 
 
-	if (m_parseState->m_currentListLevel > oldListLevel)
+	if (m_ps->m_currentListLevel > oldListLevel)
 	{
 		WPXPropertyList propList;
 		propList.insert("libwpd:id", m_parseState->m_currentOutlineHash);
-		propList.insert("libwpd:level", m_parseState->m_currentListLevel);
+		propList.insert("libwpd:level", m_ps->m_currentListLevel);
 
 		if (m_parseState->m_putativeListElementHasDisplayReferenceNumber) 
 		{
 			WPXNumberingType listType = _extractWPXNumberingTypeFromBuf(m_parseState->m_numberText,
-										    outlineDefinition->getListType((m_parseState->m_currentListLevel-1)));			
+										    outlineDefinition->getListType((m_ps->m_currentListLevel-1)));			
 			int number = _extractDisplayReferenceNumberFromBuf(m_parseState->m_numberText, listType);
 
 			propList.insert("style:num-prefix", m_parseState->m_textBeforeDisplayReference);
 			propList.insert("style:num-format", _numberingTypeToString(listType));
 			propList.insert("style:num-suffix", m_parseState->m_textAfterDisplayReference);
 			propList.insert("text:start-value", number);
-			propList.insert("text:space-before", (m_parseState->m_currentListLevel * WPX_DEFAULT_LIST_INDENT));
+			propList.insert("text:space-before", (m_ps->m_currentListLevel * WPX_DEFAULT_LIST_INDENT));
 
 			m_listenerImpl->defineOrderedListLevel(propList);
 		}
 		else
 		{
 			propList.insert("text:bullet-char", m_parseState->m_textBeforeDisplayReference);
-			propList.insert("text:space-before", (m_parseState->m_currentListLevel * WPX_DEFAULT_LIST_INDENT));
+			propList.insert("text:space-before", (m_ps->m_currentListLevel * WPX_DEFAULT_LIST_INDENT));
 			m_listenerImpl->defineUnorderedListLevel(propList);
 		}
-		for (int i=(oldListLevel+1); i<=m_parseState->m_currentListLevel; i++) {
+		for (int i=(oldListLevel+1); i<=m_ps->m_currentListLevel; i++) {
   			// Fridrich: we should not define list sublevels _inside_ of list elements;
 			// so we just close the element to prevent call graph failure
  			_closeListElement();
@@ -1421,12 +1340,12 @@ void WP6HLContentListener::_handleListChange(const uint16_t outlineHash)
 				m_listenerImpl->openUnorderedListLevel(propList2);
 		}
 	}
-	else if (m_parseState->m_currentListLevel < oldListLevel)
+	else if (m_ps->m_currentListLevel < oldListLevel)
 	{
 		_closeListElement(); // close the current element, which must exist
 		// now keep on closing levels until we reach the current list level, or the list
 		// level stack is empty (signalling that we are out of a list)
-		while (!m_parseState->m_listLevelStack.empty() && m_parseState->m_listLevelStack.top() > m_parseState->m_currentListLevel)
+		while (!m_parseState->m_listLevelStack.empty() && m_parseState->m_listLevelStack.top() > m_ps->m_currentListLevel)
 		{
 			int tempListLevel = m_parseState->m_listLevelStack.top();
 			m_parseState->m_listLevelStack.pop();
@@ -1448,7 +1367,7 @@ void WP6HLContentListener::_handleListChange(const uint16_t outlineHash)
 				_closeListElement();
 		}
 	}
-	else if (m_parseState->m_currentListLevel == oldListLevel)
+	else if (m_ps->m_currentListLevel == oldListLevel)
 	{
 		// keep the last element on the stack, as it's replaced by this element
 		// (a NULL operation)
@@ -1462,7 +1381,7 @@ void WP6HLContentListener::_handleListChange(const uint16_t outlineHash)
 	m_parseState->m_textAfterNumber.clear();
 
 	// open a new list element, if we're still in the list
-	if (m_parseState->m_currentListLevel > 0)
+	if (m_ps->m_currentListLevel > 0)
 	{
 		_openListElement();
 	}
@@ -1471,6 +1390,6 @@ void WP6HLContentListener::_handleListChange(const uint16_t outlineHash)
 void WP6HLContentListener::_flushList()
 {
 	_closeListElement();
-	m_parseState->m_currentListLevel = 0;
+	m_ps->m_currentListLevel = 0;
 	_handleListChange(m_parseState->m_currentOutlineHash);
 }

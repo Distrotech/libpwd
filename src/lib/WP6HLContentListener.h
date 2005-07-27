@@ -1,6 +1,7 @@
 /* libwpd
  * Copyright (C) 2002 William Lachance (william.lachance@sympatico.ca)
  * Copyright (C) 2002 Marc Maurer (j.m.maurer@student.utwente.nl)
+ * Copyright (C) 2005 Fridrich Strba (fridrich.strba@bluewin.ch)
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -85,7 +86,6 @@ struct _WP6ParsingState
 	std::stack<int> m_listLevelStack;
 	uint16_t m_currentOutlineHash; // probably should replace Hash with Key in these sorts of cases
 	uint8_t m_oldListLevel;
-	uint8_t m_currentListLevel;
 	WP6StyleStateSequence m_styleStateSequence;
 	bool m_putativeListElementHasParagraphNumber;
 	bool m_putativeListElementHasDisplayReferenceNumber;
