@@ -381,6 +381,7 @@ void WP6HLContentListener::insertTab(const uint8_t tabType, const float tabPosit
 		    m_parseState->m_styleStateSequence.getCurrentState() == NORMAL)
 		{
 
+			_flushText();
 			// First of all, open paragraph for tabs that always are converted as tabs
 			switch ((tabType & 0xF8) >> 3)
 			{
@@ -394,16 +395,11 @@ void WP6HLContentListener::insertTab(const uint8_t tabType, const float tabPosit
 			//case WP6_TAB_GROUP_FLUSH_RIGHT:
 			case WP6_TAB_GROUP_RIGHT_TAB:
 			case WP6_TAB_GROUP_DECIMAL_TAB:
-				_flushText();
 				if (!m_ps->m_isParagraphOpened && !m_ps->m_isListElementOpened)
 					if (m_ps->m_currentListLevel == 0)
 						_openParagraph();
 					else
 						_openListElement();
-
-				if (!m_ps->m_isSpanOpened)
-					_openSpan();
-
 				break;
 			
 			default:
@@ -482,8 +478,6 @@ void WP6HLContentListener::insertTab(const uint8_t tabType, const float tabPosit
 			}
 			else
 			{
-				_flushText();
-				
 				if (!m_ps->m_isSpanOpened)
 					_openSpan();
 
@@ -770,11 +764,9 @@ void WP6HLContentListener::columnChange(const WPXTextColumnType columnType, cons
 	{
 		// In WP, the last column ends with a hard column break code.
 		// In this case, we do not really want to insert any column break
-		if (m_ps->m_isParagraphPageBreak)
-		{
-			m_ps->m_isParagraphPageBreak = false;
-			m_ps->m_isTextColumnWithoutParagraph = false;
-		}
+		m_ps->m_isParagraphPageBreak = false;
+		m_ps->m_isTextColumnWithoutParagraph = false;
+
 		_flushText();
 		float remainingSpace = m_ps->m_pageFormWidth - m_ps->m_pageMarginLeft - m_ps->m_pageMarginRight
 						- m_ps->m_leftMarginByPageMarginChange - m_ps->m_rightMarginByPageMarginChange;
@@ -1012,7 +1004,6 @@ void WP6HLContentListener::noteOn(const uint16_t textPID)
 		// save a reference to the text PID, we want to parse
 		// the packet after we're through with the footnote ref.
 		m_parseState->m_noteTextPID = textPID;
-		m_ps->m_isNote = true;
 	}
 }
 
@@ -1040,7 +1031,6 @@ void WP6HLContentListener::noteOff(const WPXNoteType noteType)
 			m_listenerImpl->closeFootnote();
 		else
 			m_listenerImpl->closeEndnote();
-		m_ps->m_isNote = false;
 	}
 }
 
@@ -1116,8 +1106,6 @@ void WP6HLContentListener::startTable()
 {
 	if (!isUndoOn())
 	{
-		//_handleLineBreakElementBegin();
-
 		// save the justification information. We will need it after the table ends.
 		m_ps->m_paragraphJustificationBeforeTable = m_ps->m_paragraphJustification;
 		// handle corner case where we have a new section, but immediately start with a table
@@ -1198,7 +1186,7 @@ void WP6HLContentListener::_handleSubDocument(uint16_t textPID, const bool isHea
 	if (textPID)
 		WP6LLListener::getPrefixDataPacket(textPID)->parse(this);
 	else
-		_openParagraph();
+		_openSpan();
 	_flushText();
 	_closeSection();
 
@@ -1227,9 +1215,8 @@ void WP6HLContentListener::_flushText(const bool fakeText)
 	// which assumes the same condition)
 	if (m_parseState->m_styleStateSequence.getCurrentState() == NORMAL)
 	{
-		if (m_ps->m_currentListLevel > 0 && 
-		    (m_parseState->m_bodyText.len() > 0 || fakeText) &&
-		    m_parseState->m_styleStateSequence.getCurrentState() == NORMAL)
+		if (m_ps->m_currentListLevel && m_parseState->m_bodyText.len() &&
+		    (m_parseState->m_styleStateSequence.getCurrentState() == NORMAL))
 		{
 			m_ps->m_currentListLevel = 0;
 			_handleListChange(m_parseState->m_currentOutlineHash);
@@ -1245,8 +1232,6 @@ void WP6HLContentListener::_flushText(const bool fakeText)
 		if (!m_ps->m_isTableOpened) {
 			_closeSection();
 			_openSection();}
-		if (fakeText)
-			_openParagraph();
 	}
 
 	if (m_parseState->m_bodyText.len() || (m_parseState->m_textBeforeNumber.len() &&
@@ -1263,11 +1248,15 @@ void WP6HLContentListener::_flushText(const bool fakeText)
 		if (m_parseState->m_textBeforeNumber.len() &&
 		    !m_parseState->m_putativeListElementHasParagraphNumber)
 		{
+			if (!m_ps->m_isSpanOpened)
+				_openSpan();
 			m_listenerImpl->insertText(m_parseState->m_textBeforeNumber);
 			m_parseState->m_textBeforeNumber.clear();
 		}
 		if (m_parseState->m_bodyText.len())
 		{
+			if (!m_ps->m_isSpanOpened)
+				_openSpan();
 			m_listenerImpl->insertText(m_parseState->m_bodyText);
 			m_parseState->m_bodyText.clear();
 		}
