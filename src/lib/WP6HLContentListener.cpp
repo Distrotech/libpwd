@@ -1205,10 +1205,9 @@ void WP6HLContentListener::_paragraphNumberOn(const uint16_t outlineHash, const 
 }
 
 // _flushText: Flushes text and any section, paragraph, or span properties prior to the text
-// paramaters: fakeText. Pretend there is text, even if there isn't any (useful for tabs)
 // FIXME: we need to declare a set of preconditions that must be met when this function is called
 //
-void WP6HLContentListener::_flushText(const bool fakeText)
+void WP6HLContentListener::_flushText()
 {
 
 	// take us out of the list, if we definitely have text out of the list (or we have forced a break,
@@ -1227,7 +1226,7 @@ void WP6HLContentListener::_flushText(const bool fakeText)
 
 	// create a new section, and a new paragraph, if our section attributes have changed and we have inserted
 	// something into the document (or we have forced a break, which assumes the same condition)
-	if (m_ps->m_sectionAttributesChanged && (m_parseState->m_bodyText.len() > 0 ||  fakeText))
+	if (m_ps->m_sectionAttributesChanged && m_parseState->m_bodyText.len())
 	{
 		if (!m_ps->m_isTableOpened) {
 			_closeSection();

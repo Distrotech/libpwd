@@ -174,7 +174,7 @@ public:
 
 protected:
 	virtual void _handleSubDocument(uint16_t textPID, const bool isHeaderFooter, WPXTableList tableList, int nextTableIndice) = 0;
-	virtual void _flushText(const bool fakeText=false) = 0;
+	virtual void _flushText() = 0;
 	virtual void _flushList() = 0;
 
 	void _openSection();

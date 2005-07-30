@@ -136,7 +136,7 @@ void WP42HLListener::attributeChange(const bool isOn, const uint8_t attribute)
  private functions
 *****************************************/
 
-void WP42HLListener::_flushText(const bool fakeText)
+void WP42HLListener::_flushText()
 {
 	if (m_textBuffer.len())
 	{

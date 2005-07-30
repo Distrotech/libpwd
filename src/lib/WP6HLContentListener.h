@@ -186,7 +186,7 @@ protected:
 
 	//void _handleLineBreakElementBegin();
 	void _paragraphNumberOn(const uint16_t outlineHash, const uint8_t level);
-	void _flushText(const bool fakeText=false);
+	void _flushText();
 	void _handleListChange(const uint16_t outlineHash);
 
 	void _flushList();

@@ -193,7 +193,7 @@ void WP5HLListener::marginChange(uint8_t side, uint16_t margin)
  private functions
 *****************************************/
 
-void WP5HLListener::_flushText(const bool fakeText)
+void WP5HLListener::_flushText()
 {
 	if (m_textBuffer.len())
 	{

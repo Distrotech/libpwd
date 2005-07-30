@@ -225,7 +225,7 @@ void WP3HLListener::indentFirstLineChange(int16_t offset)
  private functions
 *****************************************/
 
-void WP3HLListener::_flushText(const bool fakeText)
+void WP3HLListener::_flushText()
 {
 	if (m_textBuffer.len())
 	{
