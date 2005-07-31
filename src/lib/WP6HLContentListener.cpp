@@ -764,7 +764,7 @@ void WP6HLContentListener::columnChange(const WPXTextColumnType columnType, cons
 	{
 		// In WP, the last column ends with a hard column break code.
 		// In this case, we do not really want to insert any column break
-		m_ps->m_isParagraphPageBreak = false;
+		m_ps->m_isParagraphColumnBreak = false;
 		m_ps->m_isTextColumnWithoutParagraph = false;
 
 		_flushText();

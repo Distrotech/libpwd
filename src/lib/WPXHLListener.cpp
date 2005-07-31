@@ -624,6 +624,14 @@ void WPXHLListener::_openTable()
 		break;
 	}
 
+	// cater for the possibility to have the column/page break just before the table
+	if (m_ps->m_isParagraphPageBreak)
+		propList.insert("fo:break-before", "page");
+	else if (m_ps->m_isParagraphColumnBreak)
+		propList.insert("fo:break-before", "column");
+	m_ps->m_isParagraphColumnBreak = false;
+	m_ps->m_isParagraphPageBreak = false;
+
  	float tableWidth = 0.0f;
 	WPXPropertyListVector columns;
  	typedef std::vector<WPXColumnDefinition>::const_iterator CDVIter;
