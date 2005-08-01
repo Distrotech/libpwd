@@ -88,9 +88,9 @@ struct _WPXParsingState
 	bool m_isSectionOpened;
 	bool m_isPageSpanBreakDeferred;
 
+	bool m_isSpanOpened;
 	bool m_isParagraphOpened;
 	bool m_isListElementOpened;
-	bool m_isSpanOpened;
 
 	WPXTableDefinition m_tableDefinition;
 	int m_currentTableCol;
@@ -191,7 +191,7 @@ protected:
 	void _closeParagraph();
 
 	void _openListElement();
-	void _closeListElement();	
+	void _closeListElement();
 
 	void _openSpan();
 	void _closeSpan();

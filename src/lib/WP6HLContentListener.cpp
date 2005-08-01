@@ -1225,17 +1225,6 @@ void WP6HLContentListener::_flushText()
 		}
 	}
 
-	// create a new section, and a new paragraph, if our section attributes have changed and we have inserted
-	// something into the document (or we have forced a break, which assumes the same condition)
-#if 0
-	if (m_ps->m_sectionAttributesChanged && m_parseState->m_bodyText.len())
-	{
-		if (!m_ps->m_isTableOpened) {
-			_closeSection();
-			_openSection();}
-	}
-#endif
-
 	if (m_parseState->m_bodyText.len() || (m_parseState->m_textBeforeNumber.len() &&
 						  !m_parseState->m_putativeListElementHasParagraphNumber))
 	{
@@ -1283,11 +1272,8 @@ void WP6HLContentListener::_handleListChange(const uint16_t outlineHash)
 
 	int oldListLevel;
 	(m_parseState->m_listLevelStack.empty()) ? oldListLevel = 0 : oldListLevel = m_parseState->m_listLevelStack.top();
-	if (oldListLevel == 0)
-	{
-		_closeParagraph();
-	}
-
+	_closeParagraph(); // Fridrich: both listElement and paragraph should be already closed, but do this for security
+	_closeListElement();
 
 	if (m_ps->m_currentListLevel > oldListLevel)
 	{
@@ -1316,9 +1302,6 @@ void WP6HLContentListener::_handleListChange(const uint16_t outlineHash)
 			m_listenerImpl->defineUnorderedListLevel(propList);
 		}
 		for (int i=(oldListLevel+1); i<=m_ps->m_currentListLevel; i++) {
-  			// Fridrich: we should not define list sublevels _inside_ of list elements;
-			// so we just close the element to prevent call graph failure
- 			_closeListElement();
 			m_parseState->m_listLevelStack.push(i);
  			WPD_DEBUG_MSG(("Pushed level %i onto the list level stack\n", i));
 			
@@ -1333,9 +1316,6 @@ void WP6HLContentListener::_handleListChange(const uint16_t outlineHash)
 	}
 	else if (m_ps->m_currentListLevel < oldListLevel)
 	{
-		_closeListElement(); // close the current element, which must exist
-		// now keep on closing levels until we reach the current list level, or the list
-		// level stack is empty (signalling that we are out of a list)
 		while (!m_parseState->m_listLevelStack.empty() && m_parseState->m_listLevelStack.top() > m_ps->m_currentListLevel)
 		{
 			int tempListLevel = m_parseState->m_listLevelStack.top();
@@ -1351,18 +1331,7 @@ void WP6HLContentListener::_handleListChange(const uint16_t outlineHash)
 				m_listenerImpl->closeUnorderedListLevel();
 			else
 				m_listenerImpl->closeOrderedListLevel();
-
-			// if we are in a sub-level (beyond 1), and we still haven't reached the current list level, 
-			// then that implies that we opened an element that needs to be closed..
-			if (!m_parseState->m_listLevelStack.empty())
-				_closeListElement();
 		}
-	}
-	else if (m_ps->m_currentListLevel == oldListLevel)
-	{
-		// keep the last element on the stack, as it's replaced by this element
-		// (a NULL operation)
-		_closeListElement(); // but close it
 	}
 
 	m_parseState->m_textBeforeNumber.clear();
@@ -1370,13 +1339,6 @@ void WP6HLContentListener::_handleListChange(const uint16_t outlineHash)
 	m_parseState->m_numberText.clear();
 	m_parseState->m_textAfterDisplayReference.clear();
 	m_parseState->m_textAfterNumber.clear();
-#if 0
-	// open a new list element, if we're still in the list
-	if (m_ps->m_currentListLevel > 0)
-	{
-		_openListElement();
-	}
-#endif
 }
 
 void WP6HLContentListener::_flushList()

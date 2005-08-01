@@ -56,9 +56,9 @@ _WPXParsingState::_WPXParsingState(bool sectionAttributesChanged) :
 	m_isSectionOpened(false),
 	m_isPageSpanBreakDeferred(false),
 
+	m_isSpanOpened(false),
 	m_isParagraphOpened(false),
 	m_isListElementOpened(false),
-	m_isSpanOpened(false),
 
 	m_currentTableCol(0),
 	m_currentTableRow(0),
@@ -187,6 +187,7 @@ void WPXHLListener::_closeSection()
 		_closeParagraph();
 	if (m_ps->m_isListElementOpened)
 		_closeListElement();
+	_flushList();
 
 	if (m_ps->m_isSectionOpened)
 		m_listenerImpl->closeSection();
@@ -674,9 +675,13 @@ void WPXHLListener::_closeTable()
 	}
 	m_ps->m_isTableOpened = false;
 	m_ps->m_wasHeaderRow = false;
+	
+	_closeParagraph();
+	_closeListElement();
+	_flushList();
 
 	// handle case where page span is closed in the middle of a table
-	if (m_ps->m_isPageSpanBreakDeferred)
+	if (m_ps->m_isPageSpanBreakDeferred && !m_ps->m_inSubDocument)
 	{
 	    _closePageSpan();
 	    m_ps->m_isPageSpanBreakDeferred = false;
@@ -800,6 +805,8 @@ void WPXHLListener::_closeTableCell()
 	if (m_ps->m_isCellWithoutParagraph)
 		_openSpan();
 	_closeParagraph();
+	_closeListElement();
+	_flushList();
 	m_ps->m_cellAttributeBits = 0x00000000;
 	if (m_ps->m_isTableCellOpened)
 		m_listenerImpl->closeTableCell();
