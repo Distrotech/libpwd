@@ -315,8 +315,14 @@ void WPXHLListener::_openParagraph()
 {
 	if (!m_ps->m_isParagraphOpened && !m_ps->m_isListElementOpened)
 	{
-		if (!m_ps->m_isTableOpened && !m_ps->m_isSectionOpened && !m_ps->m_inSubDocument)
-			_openSection();
+		if (!m_ps->m_isTableOpened && !m_ps->m_inSubDocument)
+		{
+			if (m_ps->m_sectionAttributesChanged)
+				_closeSection();
+
+			if (!m_ps->m_isSectionOpened)
+				_openSection();
+		}
 
 		WPXPropertyListVector tabStops;
 		_getTabStops(tabStops);

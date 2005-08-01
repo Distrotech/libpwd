@@ -1227,12 +1227,14 @@ void WP6HLContentListener::_flushText()
 
 	// create a new section, and a new paragraph, if our section attributes have changed and we have inserted
 	// something into the document (or we have forced a break, which assumes the same condition)
+#if 0
 	if (m_ps->m_sectionAttributesChanged && m_parseState->m_bodyText.len())
 	{
 		if (!m_ps->m_isTableOpened) {
 			_closeSection();
 			_openSection();}
 	}
+#endif
 
 	if (m_parseState->m_bodyText.len() || (m_parseState->m_textBeforeNumber.len() &&
 						  !m_parseState->m_putativeListElementHasParagraphNumber))
