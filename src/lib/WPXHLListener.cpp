@@ -498,7 +498,10 @@ void WPXHLListener::_openSpan()
 {
 	if (!m_ps->m_isParagraphOpened && !m_ps->m_isListElementOpened)
 		if (m_ps->m_currentListLevel == 0)
+		{
+			_flushList();
 			_openParagraph();
+		}
 		else
 			_openListElement();
 	

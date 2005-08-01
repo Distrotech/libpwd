@@ -971,6 +971,7 @@ void WP6HLContentListener::styleGroupOff(const uint8_t subGroup)
 			break;
 		case WP6_STYLE_GROUP_PARASTYLE_END_OFF:
 			WPD_DEBUG_MSG(("WordPerfect: Handling a parastyle end (OFF)\n"));
+			m_ps->m_currentListLevel = 0;
 			m_parseState->m_styleStateSequence.setCurrentState(NORMAL);
 			break;
 		}
@@ -1367,12 +1368,13 @@ void WP6HLContentListener::_handleListChange(const uint16_t outlineHash)
 	m_parseState->m_numberText.clear();
 	m_parseState->m_textAfterDisplayReference.clear();
 	m_parseState->m_textAfterNumber.clear();
-
+#if 0
 	// open a new list element, if we're still in the list
 	if (m_ps->m_currentListLevel > 0)
 	{
 		_openListElement();
 	}
+#endif
 }
 
 void WP6HLContentListener::_flushList()
