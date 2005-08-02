@@ -102,7 +102,7 @@ protected:
 	virtual void _flushText() {}
 	virtual void _openParagraph() {}
 	virtual void _openPageSpan() { /* FIXME: REMOVE ME WHEN IMPLEMENTED IN WPXHLListener */ };
-	virtual void _flushList() {}
+	virtual void _flushList(const uint8_t listLevel) {}
 
 private:
 	WPXPageSpan *m_currentPage;

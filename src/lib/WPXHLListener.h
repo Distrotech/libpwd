@@ -60,7 +60,7 @@ struct _WPXTableDefinition
 typedef struct _WPXParsingState WPXParsingState;
 struct _WPXParsingState
 {
-	_WPXParsingState(bool sectionAttributesChanged=true);
+	_WPXParsingState();
 	~_WPXParsingState();
 
 #if 0
@@ -175,7 +175,7 @@ public:
 protected:
 	virtual void _handleSubDocument(uint16_t textPID, const bool isHeaderFooter, WPXTableList tableList, int nextTableIndice) = 0;
 	virtual void _flushText() = 0;
-	virtual void _flushList() = 0;
+	virtual void _flushList(const uint8_t listLevel) = 0;
 
 	void _openSection();
 	void _closeSection();

@@ -38,7 +38,7 @@
 #define LIBWPD_MAX std::max
 #endif
 
-_WPXParsingState::_WPXParsingState(bool sectionAttributesChanged) :
+_WPXParsingState::_WPXParsingState() :
 	m_textAttributeBits(0),
 	m_fontSize(12.0f/*WP6_DEFAULT_FONT_SIZE*/), // FIXME ME!!!!!!!!!!!!!!!!!!! HELP WP6_DEFAULT_FONT_SIZE
 	m_fontName(new WPXString(/*WP6_DEFAULT_FONT_NAME*/"Times New Roman")), // EN PAS DEFAULT FONT AAN VOOR WP5/6/etc
@@ -73,7 +73,7 @@ _WPXParsingState::_WPXParsingState(bool sectionAttributesChanged) :
 	m_nextPageSpanIndice(0),
 	m_numPagesRemainingInSpan(0),
 
-	m_sectionAttributesChanged(sectionAttributesChanged),
+	m_sectionAttributesChanged(false),
 	m_numColumns(1),
 	m_isTextColumnWithoutParagraph(false),
 
@@ -147,7 +147,7 @@ void WPXHLListener::startDocument()
 
 void WPXHLListener::_openSection()
 {
-	if (!m_ps->m_inSubDocument)
+	if (!m_ps->m_isSectionOpened)
 	{
 		if (!m_ps->m_isPageSpanOpened)
 			_openPageSpan();
@@ -187,11 +187,12 @@ void WPXHLListener::_closeSection()
 		_closeParagraph();
 	if (m_ps->m_isListElementOpened)
 		_closeListElement();
-	_flushList();
+	_flushList(0);
 
 	if (m_ps->m_isSectionOpened)
 		m_listenerImpl->closeSection();
 
+	m_ps->m_sectionAttributesChanged = false;
 	m_ps->m_isSectionOpened = false;
 }
 
@@ -468,6 +469,7 @@ void WPXHLListener::_closeParagraph()
 		m_listenerImpl->closeParagraph();
 
 	m_ps->m_isParagraphOpened = false;
+	m_ps->m_currentListLevel = 0;
 }
 
 void WPXHLListener::_openListElement()
@@ -497,6 +499,7 @@ void WPXHLListener::_closeListElement()
 		m_listenerImpl->closeListElement();
 
 	m_ps->m_isListElementOpened = false;
+	m_ps->m_currentListLevel = 0;
 }
 
 const float WPX_DEFAULT_SUPER_SUB_SCRIPT = 58.0f; 
@@ -504,11 +507,9 @@ const float WPX_DEFAULT_SUPER_SUB_SCRIPT = 58.0f;
 void WPXHLListener::_openSpan()
 {
 	if (!m_ps->m_isParagraphOpened && !m_ps->m_isListElementOpened)
+		_flushList(m_ps->m_currentListLevel);
 		if (m_ps->m_currentListLevel == 0)
-		{
-			_flushList();
 			_openParagraph();
-		}
 		else
 			_openListElement();
 	
@@ -678,7 +679,7 @@ void WPXHLListener::_closeTable()
 	
 	_closeParagraph();
 	_closeListElement();
-	_flushList();
+	_flushList(0);
 
 	// handle case where page span is closed in the middle of a table
 	if (m_ps->m_isPageSpanBreakDeferred && !m_ps->m_inSubDocument)
@@ -806,7 +807,7 @@ void WPXHLListener::_closeTableCell()
 		_openSpan();
 	_closeParagraph();
 	_closeListElement();
-	_flushList();
+	_flushList(0);
 	m_ps->m_cellAttributeBits = 0x00000000;
 	if (m_ps->m_isTableCellOpened)
 		m_listenerImpl->closeTableCell();
@@ -822,7 +823,7 @@ void WPXHLListener::handleSubDocument(uint16_t textPID, const bool isHeaderFoote
 {
 	// save our old parsing state on our "stack"
 	WPXParsingState *oldPS = m_ps;
-	m_ps = new WPXParsingState(false); // false: don't open a new section unless we must inside this type of sub-document
+	m_ps = new WPXParsingState();
 	// BEGIN: copy page properties into the new parsing state
 	m_ps->m_pageFormWidth = oldPS->m_pageFormWidth;
 	m_ps->m_pageMarginLeft = oldPS->m_pageMarginLeft;

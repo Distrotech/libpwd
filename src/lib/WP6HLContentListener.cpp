@@ -380,7 +380,6 @@ void WP6HLContentListener::insertTab(const uint8_t tabType, const float tabPosit
 		if (m_parseState->m_styleStateSequence.getCurrentState() == STYLE_BODY ||
 		    m_parseState->m_styleStateSequence.getCurrentState() == NORMAL)
 		{
-
 			_flushText();
 			// First of all, open paragraph for tabs that always are converted as tabs
 			switch ((tabType & 0xF8) >> 3)
@@ -809,7 +808,10 @@ void WP6HLContentListener::columnChange(const WPXTextColumnType columnType, cons
 			}
 		}
 
-		m_ps->m_sectionAttributesChanged = true;
+		if (!m_ps->m_inSubDocument && !m_ps->m_isTableOpened)
+			_closeSection();
+		else
+			m_ps->m_sectionAttributesChanged = true;
 		m_ps->m_numColumns = numColumns;
 		m_ps->m_textColumns = tmpColumnDefinition;
 		m_ps->m_isTextColumnWithoutParagraph = true;
@@ -922,8 +924,12 @@ void WP6HLContentListener::styleGroupOn(const uint8_t subGroup)
 		{
 		case WP6_STYLE_GROUP_PARASTYLE_BEGIN_ON_PART1:
 			WPD_DEBUG_MSG(("WordPerfect: Handling para style begin 1 (ON)\n"));
- 			//_flushText();
-			_closeListElement(); _closeParagraph();
+			if (m_ps->m_isParagraphOpened)
+				_closeParagraph();
+			if (m_ps->m_isListElementOpened)
+				_closeListElement();
+			if (m_ps->m_sectionAttributesChanged && !m_ps->m_inSubDocument && !m_ps->m_isTableOpened)
+				_closeSection();
 
 			m_parseState->m_styleStateSequence.setCurrentState(BEGIN_BEFORE_NUMBERING);
 			m_parseState->m_putativeListElementHasParagraphNumber = false;
@@ -931,7 +937,6 @@ void WP6HLContentListener::styleGroupOn(const uint8_t subGroup)
 			break;
 		case WP6_STYLE_GROUP_PARASTYLE_BEGIN_ON_PART2:
 			WPD_DEBUG_MSG(("WordPerfect: Handling a para style begin 2 (ON)\n"));
-			_flushText();
 			break;
 		case WP6_STYLE_GROUP_PARASTYLE_END_ON:
 			WPD_DEBUG_MSG(("WordPerfect: Handling a para style end (ON)\n"));
@@ -956,22 +961,12 @@ void WP6HLContentListener::styleGroupOff(const uint8_t subGroup)
 			WPD_DEBUG_MSG(("WordPerfect: Handling a para style begin 2 (OFF)\n"));
 			m_parseState->m_styleStateSequence.setCurrentState(STYLE_BODY);
 			if (m_parseState->m_putativeListElementHasParagraphNumber)
-			{
-				if (m_ps->m_sectionAttributesChanged && !m_ps->m_isTableOpened)
-				{
-					_closeSection();
-					_openSection();
-					m_ps->m_sectionAttributesChanged = false;
-				}
-
 				_handleListChange(m_parseState->m_currentOutlineHash);
-			}
 			else 
 				_flushText();
 			break;
 		case WP6_STYLE_GROUP_PARASTYLE_END_OFF:
 			WPD_DEBUG_MSG(("WordPerfect: Handling a parastyle end (OFF)\n"));
-			m_ps->m_currentListLevel = 0;
 			m_parseState->m_styleStateSequence.setCurrentState(NORMAL);
 			break;
 		}
@@ -1042,7 +1037,7 @@ void WP6HLContentListener::endDocument()
 	if (m_parseState->m_styleStateSequence.getCurrentState() != NORMAL)
 	{
 		m_parseState->m_styleStateSequence.setCurrentState(NORMAL);
-		_flushList(); // flush the list exterior
+		_flushList(0); // flush the list exterior
 	}
 
 	// close the document nice and tight
@@ -1210,21 +1205,6 @@ void WP6HLContentListener::_paragraphNumberOn(const uint16_t outlineHash, const 
 //
 void WP6HLContentListener::_flushText()
 {
-
-	// take us out of the list, if we definitely have text out of the list (or we have forced a break,
-	// which assumes the same condition)
-	if (m_parseState->m_styleStateSequence.getCurrentState() == NORMAL)
-	{
-		if (m_ps->m_currentListLevel && m_parseState->m_bodyText.len() &&
-		    (m_parseState->m_styleStateSequence.getCurrentState() == NORMAL))
-		{
-			m_ps->m_currentListLevel = 0;
-			_handleListChange(m_parseState->m_currentOutlineHash);
-			m_ps->m_isParagraphOpened = false;
-			m_ps->m_isListElementOpened = false;
-		}
-	}
-
 	if (m_parseState->m_bodyText.len() || (m_parseState->m_textBeforeNumber.len() &&
 						  !m_parseState->m_putativeListElementHasParagraphNumber))
 	{
@@ -1259,6 +1239,8 @@ void WP6HLContentListener::_flushText()
 // WordPerfect developers never had one) but we should at least try.
 void WP6HLContentListener::_handleListChange(const uint16_t outlineHash)
 {
+	if (!m_ps->m_isSectionOpened && !m_ps->m_inSubDocument && !m_ps->m_isTableOpened)
+		_openSection();	
 	WP6OutlineDefinition *outlineDefinition;
 	if (m_outlineDefineHash.find(outlineHash) == m_outlineDefineHash.end())
 	{
@@ -1272,8 +1254,6 @@ void WP6HLContentListener::_handleListChange(const uint16_t outlineHash)
 
 	int oldListLevel;
 	(m_parseState->m_listLevelStack.empty()) ? oldListLevel = 0 : oldListLevel = m_parseState->m_listLevelStack.top();
-	_closeParagraph(); // Fridrich: both listElement and paragraph should be already closed, but do this for security
-	_closeListElement();
 
 	if (m_ps->m_currentListLevel > oldListLevel)
 	{
@@ -1341,9 +1321,9 @@ void WP6HLContentListener::_handleListChange(const uint16_t outlineHash)
 	m_parseState->m_textAfterNumber.clear();
 }
 
-void WP6HLContentListener::_flushList()
+void WP6HLContentListener::_flushList(const uint8_t listLevel)
 {
 	_closeListElement();
-	m_ps->m_currentListLevel = 0;
+	m_ps->m_currentListLevel = listLevel;
 	_handleListChange(m_parseState->m_currentOutlineHash);
 }

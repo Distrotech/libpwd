@@ -189,7 +189,7 @@ protected:
 	void _flushText();
 	void _handleListChange(const uint16_t outlineHash);
 
-	void _flushList();
+	void _flushList(const uint8_t listLevel);
 
 private:
 	WP6ParsingState *m_parseState;
