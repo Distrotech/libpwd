@@ -68,9 +68,10 @@ void WP3HLListener::insertTab(const uint8_t tabType, const float tabPosition)
 {
         if (!isUndoOn())
 	{
-		_flushText();
 		if (!m_ps->m_isSpanOpened)
 			_openSpan();
+		else
+			_flushText();
 		m_listenerImpl->insertTab();
 	}
 }
@@ -79,10 +80,8 @@ void WP3HLListener::insertEOL()
 {
 	if (!isUndoOn())
 	{
-		if (!m_ps->m_isSpanOpened && !m_ps->m_isParagraphOpened && !m_ps->m_isListElementOpened)
+		if (!m_ps->m_isParagraphOpened && !m_ps->m_isListElementOpened)
 			_openSpan();
-		else
-			_flushText();
 		if (m_ps->m_isParagraphOpened)
 			_closeParagraph();
 		if (m_ps->m_isListElementOpened)
@@ -93,7 +92,8 @@ void WP3HLListener::insertEOL()
 
 void WP3HLListener::endDocument()
 {
-	_flushText();
+	_closeSpan();
+	_closeParagraph();
 	_closeSection();
 	_closePageSpan();
 	m_listenerImpl->endDocument();
@@ -228,10 +228,6 @@ void WP3HLListener::indentFirstLineChange(int16_t offset)
 void WP3HLListener::_flushText()
 {
 	if (m_textBuffer.len())
-	{
-		if (!m_ps->m_isSpanOpened)
-			_openSpan();
 		m_listenerImpl->insertText(m_textBuffer);
-		m_textBuffer.clear();
-	}
+	m_textBuffer.clear();
 }

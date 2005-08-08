@@ -50,9 +50,11 @@ void WP42HLListener::insertTab(const uint8_t tabType, const float tabPosition)
 {
 	if (!isUndoOn())
 	{
-		_flushText();
 		if (!m_ps->m_isSpanOpened)
 			_openSpan();
+		else
+			_flushText();
+
 		m_listenerImpl->insertTab();
 	}
 }
@@ -61,10 +63,8 @@ void WP42HLListener::insertEOL()
 {
 	if (!isUndoOn())
 	{
-		if (!m_ps->m_isSpanOpened && !m_ps->m_isParagraphOpened && !m_ps->m_isListElementOpened)
+		if (!m_ps->m_isParagraphOpened && !m_ps->m_isListElementOpened)
 			_openSpan();
-		else
-			_flushText();
 		if (m_ps->m_isParagraphOpened)
 			_closeParagraph();
 		if (m_ps->m_isListElementOpened)
@@ -74,7 +74,8 @@ void WP42HLListener::insertEOL()
 
 void WP42HLListener::endDocument()
 {
-	_flushText();
+	_closeSpan();
+	_closeParagraph();
 	_closeSection();
 	_closePageSpan();
 	m_listenerImpl->endDocument();
@@ -139,10 +140,6 @@ void WP42HLListener::attributeChange(const bool isOn, const uint8_t attribute)
 void WP42HLListener::_flushText()
 {
 	if (m_textBuffer.len())
-	{
-		if (!m_ps->m_isSpanOpened)
-			_openSpan();
 		m_listenerImpl->insertText(m_textBuffer);
-		m_textBuffer.clear();
-	}
+	m_textBuffer.clear();
 }

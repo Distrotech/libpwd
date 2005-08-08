@@ -76,6 +76,7 @@ _WPXParsingState::_WPXParsingState() :
 	m_sectionAttributesChanged(false),
 	m_numColumns(1),
 	m_isTextColumnWithoutParagraph(false),
+	m_isList(false),
 
 	m_pageFormLength(11.0f),
 	m_pageFormWidth(8.5f),
@@ -94,6 +95,9 @@ _WPXParsingState::_WPXParsingState() :
 	m_rightMarginByParagraphMarginChange(0.0f),
 	m_leftMarginByTabs(0.0f),
 	m_rightMarginByTabs(0.0f),
+	
+	m_listReferenceOffsetFromText(0.0f),
+	m_listReferenceLeftOffset(0.0f),
 
 	m_paragraphTextIndent(0.0f),
 	m_textIndentByParagraphIndentChange(0.0f),
@@ -135,12 +139,15 @@ WPXHLListener::~WPXHLListener()
 
 void WPXHLListener::startDocument()
 {
-	// FIXME: this is stupid, we should store a property list filled with the relevant metadata
-	// and then pass that directly..
+	if (!m_ps->m_isDocumentStarted)
+	{
+		// FIXME: this is stupid, we should store a property list filled with the relevant metadata
+		// and then pass that directly..
 
-	m_listenerImpl->setDocumentMetaData(m_metaData);
+		m_listenerImpl->setDocumentMetaData(m_metaData);
 
-	m_listenerImpl->startDocument();
+		m_listenerImpl->startDocument();
+	}
 	
 	m_ps->m_isDocumentStarted = true;
 }
@@ -183,17 +190,20 @@ void WPXHLListener::_openSection()
 
 void WPXHLListener::_closeSection()
 {
-	if (m_ps->m_isParagraphOpened)
-		_closeParagraph();
-	if (m_ps->m_isListElementOpened)
-		_closeListElement();
-	_flushList(0);
-
 	if (m_ps->m_isSectionOpened)
+	{
+		if (m_ps->m_isParagraphOpened)
+			_closeParagraph();
+		if (m_ps->m_isListElementOpened)
+			_closeListElement();
+		_flushList(0);
+
 		m_listenerImpl->closeSection();
 
-	m_ps->m_sectionAttributesChanged = false;
+		m_ps->m_sectionAttributesChanged = false;
+	}
 	m_ps->m_isSectionOpened = false;
+		
 }
 
 void WPXHLListener::_openPageSpan()
@@ -304,17 +314,23 @@ void WPXHLListener::_openPageSpan()
 
 void WPXHLListener::_closePageSpan()
 {
-	if (m_ps->m_isSectionOpened)
-		_closeSection();
-
 	if (m_ps->m_isPageSpanOpened)
+	{
+		if (m_ps->m_isSectionOpened)
+			_closeSection();
+
 		m_listenerImpl->closePageSpan();
+	}
 	
 	m_ps->m_isPageSpanOpened = false;
+	m_ps->m_isPageSpanBreakDeferred = false;
 }
 
 void WPXHLListener::_openParagraph()
 {
+	if (m_ps->m_isTableOpened && !m_ps->m_isTableCellOpened)
+		return;
+		 
 	if (!m_ps->m_isParagraphOpened && !m_ps->m_isListElementOpened)
 	{
 		if (!m_ps->m_isTableOpened && !m_ps->m_inSubDocument)
@@ -358,7 +374,8 @@ void WPXHLListener::_resetParagraphState(const bool isListElement)
 	m_ps->m_leftMarginByTabs = 0.0f;
 	m_ps->m_rightMarginByTabs = 0.0f;
 	m_ps->m_paragraphTextIndent = m_ps->m_textIndentByParagraphIndentChange;
-	m_ps->m_textIndentByTabs = 0.0f;	
+	m_ps->m_textIndentByTabs = 0.0f;
+	m_ps->m_listReferenceOffsetFromText = 0.0f;	
 	m_ps->m_isCellWithoutParagraph = false;
 	m_ps->m_isTextColumnWithoutParagraph = false;	
 	m_ps->m_tempParagraphJustification = 0;
@@ -388,7 +405,7 @@ void WPXHLListener::_appendJustification(WPXPropertyList &propList, int justific
 	}
 }
 
-void WPXHLListener::_appendParagraphProperties(WPXPropertyList &propList)
+void WPXHLListener::_appendParagraphProperties(WPXPropertyList &propList, const bool isListElement)
 {
 	int justification;
 	if (m_ps->m_tempParagraphJustification) 
@@ -397,13 +414,21 @@ void WPXHLListener::_appendParagraphProperties(WPXPropertyList &propList)
 		justification = m_ps->m_paragraphJustification;
 	_appendJustification(propList, justification);
 
-	if (m_ps->m_numColumns == 1 && !m_ps->m_isTableOpened)
+	if (m_ps->m_numColumns <= 1 && !m_ps->m_isTableOpened)
 	{
 		// these properties are not appropriate inside multiple columns or when
-		// a table is opened.. 
-		propList.insert("fo:margin-left", m_ps->m_paragraphMarginLeft);
+		// a table is opened..
+		if (isListElement)
+		{
+			propList.insert("fo:margin-left", (m_ps->m_listReferenceLeftOffset - m_ps->m_paragraphTextIndent));
+			propList.insert("fo:text-indent", m_ps->m_paragraphTextIndent);
+		}
+		else
+		{
+			propList.insert("fo:margin-left", m_ps->m_paragraphMarginLeft);
+			propList.insert("fo:text-indent", m_ps->m_paragraphTextIndent - m_ps->m_listReferenceOffsetFromText);
+		}
 		propList.insert("fo:margin-right", m_ps->m_paragraphMarginRight);
-		propList.insert("fo:text-indent", m_ps->m_paragraphTextIndent);
 	}
 	propList.insert("fo:margin-top", m_ps->m_paragraphMarginTop);
 	propList.insert("fo:margin-bottom", m_ps->m_paragraphMarginBottom);
@@ -463,10 +488,13 @@ void WPXHLListener::_getTabStops(WPXPropertyListVector &tabStops)
 
 void WPXHLListener::_closeParagraph()
 {
-	if (m_ps->m_isSpanOpened)
-		_closeSpan();
 	if (m_ps->m_isParagraphOpened)
+	{
+		if (m_ps->m_isSpanOpened)
+			_closeSpan();
+
 		m_listenerImpl->closeParagraph();
+	}
 
 	m_ps->m_isParagraphOpened = false;
 	m_ps->m_currentListLevel = 0;
@@ -480,7 +508,7 @@ void WPXHLListener::_openListElement()
 			_openSection();
 
 		WPXPropertyList propList;
-		_appendParagraphProperties(propList);
+		_appendParagraphProperties(propList, true);
 
 		WPXPropertyListVector tabStops;
 		_getTabStops(tabStops);
@@ -493,11 +521,14 @@ void WPXHLListener::_openListElement()
 
 void WPXHLListener::_closeListElement()
 {
-	if (m_ps->m_isSpanOpened)
-		_closeSpan();
 	if (m_ps->m_isListElementOpened)
-		m_listenerImpl->closeListElement();
+	{
+		if (m_ps->m_isSpanOpened)
+			_closeSpan();
 
+		m_listenerImpl->closeListElement();
+	}
+	
 	m_ps->m_isListElementOpened = false;
 	m_ps->m_currentListLevel = 0;
 }
@@ -506,6 +537,9 @@ const float WPX_DEFAULT_SUPER_SUB_SCRIPT = 58.0f;
 
 void WPXHLListener::_openSpan()
 {
+	if (m_ps->m_isTableOpened && !m_ps->m_isTableCellOpened)
+		return;
+
 	if (!m_ps->m_isParagraphOpened && !m_ps->m_isListElementOpened)
 		_flushList(m_ps->m_currentListLevel);
 		if (m_ps->m_currentListLevel == 0)
@@ -597,17 +631,20 @@ void WPXHLListener::_openSpan()
 
 void WPXHLListener::_closeSpan()
 {
-	_flushText();
 	if (m_ps->m_isSpanOpened)
-		m_listenerImpl->closeSpan();
+	{
+		_flushText();
 
+		m_listenerImpl->closeSpan();
+	}
+	
 	m_ps->m_isSpanOpened = false;
 }
 
 void WPXHLListener::_openTable()
 {
 	_closeTable();
-
+	
 	WPXPropertyList propList;
 	switch (m_ps->m_tableDefinition.m_positionBits)
 	{
@@ -666,14 +703,16 @@ void WPXHLListener::_openTable()
 
 void WPXHLListener::_closeTable()
 {
-	_closeTableRow();
-
 	if (m_ps->m_isTableOpened)
 	{
+		if (m_ps->m_isTableRowOpened)
+			_closeTableRow();
+
 		m_listenerImpl->closeTable();
-		m_ps->m_currentTableRow = (-1);
-		m_ps->m_currentTableCol = (-1);
 	}
+
+	m_ps->m_currentTableRow = (-1);
+	m_ps->m_currentTableCol = (-1);
 	m_ps->m_isTableOpened = false;
 	m_ps->m_wasHeaderRow = false;
 	
@@ -681,17 +720,19 @@ void WPXHLListener::_closeTable()
 	_closeListElement();
 	_flushList(0);
 
+	// handle case where a section attributes changed in the middle of the table
+	if (m_ps->m_sectionAttributesChanged && !m_ps->m_inSubDocument)
+		_closeSection();
+		
 	// handle case where page span is closed in the middle of a table
 	if (m_ps->m_isPageSpanBreakDeferred && !m_ps->m_inSubDocument)
-	{
-	    _closePageSpan();
-	    m_ps->m_isPageSpanBreakDeferred = false;
-	}
+		_closePageSpan();
 }
 
 void WPXHLListener::_openTableRow(const float height, const bool isMinimumHeight, const bool isHeaderRow)
 {
 	_closeTableRow();
+	
 	m_ps->m_currentTableCol = 0;
 
 	WPXPropertyList propList;
@@ -718,10 +759,12 @@ void WPXHLListener::_openTableRow(const float height, const bool isMinimumHeight
 
 void WPXHLListener::_closeTableRow()
 {
-	_closeTableCell();
-
 	if (m_ps->m_isTableRowOpened)
+	{
+		if (m_ps->m_isTableCellOpened)
+			_closeTableCell();
 		m_listenerImpl->closeTableRow();
+	}
 	m_ps->m_isTableRowOpened = false;
 }
 
@@ -803,15 +846,17 @@ void WPXHLListener::_openTableCell(const uint8_t colSpan, const uint8_t rowSpan,
 
 void WPXHLListener::_closeTableCell()
 {
-	if (m_ps->m_isCellWithoutParagraph)
-		_openSpan();
-	_closeParagraph();
-	_closeListElement();
-	_flushList(0);
-	m_ps->m_cellAttributeBits = 0x00000000;
 	if (m_ps->m_isTableCellOpened)
-		m_listenerImpl->closeTableCell();
+	{
+		if (m_ps->m_isCellWithoutParagraph)
+			_openSpan();
+		_closeParagraph();
+		_closeListElement();
+		_flushList(0);
+		m_ps->m_cellAttributeBits = 0x00000000;
 
+		m_listenerImpl->closeTableCell();
+	}
 	m_ps->m_isTableCellOpened = false;
 }
 
@@ -848,7 +893,6 @@ void WPXHLListener::insertBreak(const uint8_t breakType)
 {
 	if (!isUndoOn())
 	{
-		_flushText();
 		switch (breakType)
 		{
 		case WPX_COLUMN_BREAK:

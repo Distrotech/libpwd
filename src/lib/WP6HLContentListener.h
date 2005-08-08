@@ -46,6 +46,8 @@ enum WP6StyleState { NORMAL, DOCUMENT_NOTE, DOCUMENT_NOTE_GLOBAL,
 		     BEGIN_NUMBERING_AFTER_DISPLAY_REFERENCING,
 		     BEGIN_AFTER_NUMBERING, STYLE_BODY, STYLE_END };
 
+enum WP6ListType { ORDERED, UNORDERED };
+
 const int STATE_MEMORY = 3;
 class WP6StyleStateSequence
 {
@@ -78,12 +80,15 @@ struct _WP6ParsingState
 	float m_paragraphMarginBottomAbsolute;
 
 	int m_numRemovedParagraphBreaks;
+	
+	int m_numListExtraTabs;
 
 	WPXTableList m_tableList;
 	WPXTable *m_currentTable;
 	int m_nextTableIndice;
 
 	std::stack<int> m_listLevelStack;
+	std::stack<WP6ListType> m_listTypeStack;
 	uint16_t m_currentOutlineHash; // probably should replace Hash with Key in these sorts of cases
 	uint8_t m_oldListLevel;
 	WP6StyleStateSequence m_styleStateSequence;
@@ -194,7 +199,7 @@ protected:
 private:
 	WP6ParsingState *m_parseState;
 
-	std::map<int,WP6OutlineDefinition *> m_outlineDefineHash;
+	std::map<uint16_t,WP6OutlineDefinition *> m_outlineDefineHash;
 };
 
 #endif /* WP6HLCONTENTLISTENER_H */
