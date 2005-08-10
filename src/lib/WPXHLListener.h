@@ -101,7 +101,6 @@ struct _WPXParsingState
 	bool m_isTableCellOpened;
 	bool m_wasHeaderRow;
 	bool m_isCellWithoutParagraph;
-	bool m_isList;
 	uint32_t m_cellAttributeBits;
 	uint8_t m_paragraphJustificationBeforeTable;
 	
@@ -130,9 +129,7 @@ struct _WPXParsingState
 	float m_leftMarginByTabs;  // part of the margin due to the LEFT or LEFT/RIGHT Indent; the
 	float m_rightMarginByTabs; // only part of the margin that is reset at the end of a paragraph
 
-	float m_listReferenceOffsetFromText; // distance between the list number/bullet and the beginning of the text
-	                          // at first line
-	float m_listReferenceLeftOffset; // position from the page left margin of the list number/bullet
+	float m_listReferencePosition; // position from the page left margin of the list number/bullet
 
 	float m_paragraphTextIndent; // resulting first line indent that is one of the paragraph properties
 	float m_textIndentByParagraphIndentChange; // part of the indent due to the PARAGRAPH indent (WP6???)
@@ -180,7 +177,7 @@ public:
 protected:
 	virtual void _handleSubDocument(uint16_t textPID, const bool isHeaderFooter, WPXTableList tableList, int nextTableIndice) = 0;
 	virtual void _flushText() = 0;
-	virtual void _flushList(const uint8_t listLevel) = 0;
+	virtual void _changeList() = 0;
 
 	void _openSection();
 	void _closeSection();

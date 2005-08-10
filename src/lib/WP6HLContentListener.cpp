@@ -222,6 +222,7 @@ _WP6ParsingState::_WP6ParsingState(WPXTableList tableList, int nextTableIndice) 
 	m_numRemovedParagraphBreaks(0),
 	
 	m_numListExtraTabs(0),
+	m_isListReference(false),
 
 	m_tableList(tableList),
 	m_currentTable(NULL),
@@ -330,36 +331,36 @@ void WP6HLContentListener::insertCharacter(const uint16_t character)
 		{
 			if (!m_ps->m_isSpanOpened)
 				_openSpan();
-			m_ps->m_isList = false;
+			m_parseState->m_isListReference = false;
 			appendUCS4(m_parseState->m_bodyText, (uint32_t)character);
 		}
 		else if (m_parseState->m_styleStateSequence.getCurrentState() == BEGIN_BEFORE_NUMBERING)
 		{
-			m_ps->m_isList = true;
+			m_parseState->m_isListReference = true;
 			appendUCS4(m_parseState->m_textBeforeNumber, (uint32_t)character);
 		}
 		else if (m_parseState->m_styleStateSequence.getCurrentState() == BEGIN_NUMBERING_BEFORE_DISPLAY_REFERENCING)
 		{
 			// left delimeter (or the bullet if there is no display referencing)
 			appendUCS4(m_parseState->m_textBeforeDisplayReference, (uint32_t)character);
-			m_ps->m_isList = true;
+			m_parseState->m_isListReference = true;
 		}
 		else if (m_parseState->m_styleStateSequence.getCurrentState() == DISPLAY_REFERENCING)
 		{
 			// the actual paragraph number (in varying forms)
 			appendUCS4(m_parseState->m_numberText, (uint32_t)character);
-			m_ps->m_isList = true;
+			m_parseState->m_isListReference = true;
 		}
 		else if (m_parseState->m_styleStateSequence.getCurrentState() == BEGIN_NUMBERING_AFTER_DISPLAY_REFERENCING)
 		{
 			// right delimeter (if there was a display no. ref. group)
 			appendUCS4(m_parseState->m_textAfterDisplayReference, (uint32_t)character);
-			m_ps->m_isList = true;
+			m_parseState->m_isListReference = true;
 		}
 		else if (m_parseState->m_styleStateSequence.getCurrentState() == BEGIN_AFTER_NUMBERING)
 		{
 			appendUCS4(m_parseState->m_textAfterNumber, (uint32_t)character);
-			m_ps->m_isList = true;
+			m_parseState->m_isListReference = true;
 		}
 	}
 }
@@ -429,13 +430,18 @@ void WP6HLContentListener::insertTab(const uint8_t tabType, const float tabPosit
 			// End of code to be removed when the TabGroup is properly implemented
 
 			case WP6_TAB_GROUP_LEFT_TAB: // converted as first line indent
+#if 0
+			case WP6_TAB_GROUP_RIGHT_TAB:
+			case WP6_TAB_GROUP_CENTER_TAB:
+			case WP6_TAB_GROUP_DECIMAL_TAB:
+#endif
 				if (tabPosition >= (float)((double)0xFFFE/(double)WPX_NUM_WPUS_PER_INCH))
 					// fall-back solution if we are not able to read the tabPosition
 					m_ps->m_textIndentByTabs += 0.5f;
 				else
 					m_ps->m_textIndentByTabs = tabPosition - m_ps->m_paragraphMarginLeft
 						- m_ps->m_pageMarginLeft - m_ps->m_textIndentByParagraphIndentChange;
-				if (m_ps->m_isList)
+				if (m_parseState->m_isListReference)
 					m_parseState->m_numListExtraTabs++;
 				break;
 
@@ -446,8 +452,8 @@ void WP6HLContentListener::insertTab(const uint8_t tabType, const float tabPosit
 				else
 					m_ps->m_textIndentByTabs = tabPosition - m_ps->m_paragraphMarginLeft
 						- m_ps->m_pageMarginLeft - m_ps->m_textIndentByParagraphIndentChange;
-				if (m_ps->m_isList)
-					m_ps->m_listReferenceOffsetFromText -= m_ps->m_textIndentByTabs;
+				if (m_parseState->m_isListReference)
+					m_parseState->m_numListExtraTabs--;
 				break;
 
 			case WP6_TAB_GROUP_LEFT_INDENT:  // converted as left paragraph margin offset
@@ -457,7 +463,7 @@ void WP6HLContentListener::insertTab(const uint8_t tabType, const float tabPosit
 				else
 					m_ps->m_leftMarginByTabs = tabPosition - m_ps->m_pageMarginLeft
 						- m_ps->m_leftMarginByPageMarginChange - m_ps->m_leftMarginByParagraphMarginChange;
-				if (m_ps->m_isList)
+				if (m_parseState->m_isListReference)
 					m_parseState->m_numListExtraTabs++;
 				if (m_ps->m_paragraphTextIndent != 0.0f)
 					m_ps->m_textIndentByTabs += m_ps->m_paragraphTextIndent;
@@ -470,7 +476,7 @@ void WP6HLContentListener::insertTab(const uint8_t tabType, const float tabPosit
 				else
 					m_ps->m_leftMarginByTabs = tabPosition - m_ps->m_pageMarginLeft
 						- m_ps->m_leftMarginByPageMarginChange - m_ps->m_leftMarginByParagraphMarginChange;
-				if (m_ps->m_isList)
+				if (m_parseState->m_isListReference)
 					m_parseState->m_numListExtraTabs++;
 				// L/R Indent is symetrical from the effective paragraph margins and position indicates only
 				// the distance from the left edge
@@ -489,15 +495,14 @@ void WP6HLContentListener::insertTab(const uint8_t tabType, const float tabPosit
 			m_ps->m_paragraphMarginRight = m_ps->m_rightMarginByPageMarginChange
 				+ m_ps->m_rightMarginByParagraphMarginChange + m_ps->m_rightMarginByTabs;
 			
-			if (!m_ps->m_isList)
-				m_ps->m_listReferenceLeftOffset = m_ps->m_paragraphMarginLeft + m_ps->m_paragraphTextIndent;
-			m_ps->m_listReferenceOffsetFromText = m_ps->m_paragraphMarginLeft + m_ps->m_paragraphTextIndent - m_ps->m_listReferenceLeftOffset;
+			if (!m_parseState->m_isListReference)
+				m_ps->m_listReferencePosition = m_ps->m_paragraphMarginLeft + m_ps->m_paragraphTextIndent;
 
 		}
 		else if ((m_parseState->m_styleStateSequence.getCurrentState() == STYLE_BODY) ||
 			(m_parseState->m_styleStateSequence.getCurrentState() == NORMAL))
 		{
-			m_ps->m_isList = false;
+			m_parseState->m_isListReference = false;
 			
 			if (!m_ps->m_isSpanOpened)
 				_openSpan();
@@ -537,7 +542,7 @@ void WP6HLContentListener::handleLineBreak()
 		if (m_parseState->m_styleStateSequence.getCurrentState() == STYLE_BODY ||
 		    m_parseState->m_styleStateSequence.getCurrentState() == NORMAL)
 		{
-			m_ps->m_isList = false;
+			m_parseState->m_isListReference = false;
 			
 			if (!m_ps->m_isSpanOpened)
 				_openSpan();
@@ -729,9 +734,8 @@ void WP6HLContentListener::marginChange(uint8_t side, uint16_t margin)
 			break;
 		}
 
-		if (!m_ps->m_isList)
-			m_ps->m_listReferenceLeftOffset = m_ps->m_paragraphMarginLeft + m_ps->m_paragraphTextIndent;
-		m_ps->m_listReferenceOffsetFromText = m_ps->m_paragraphMarginLeft + m_ps->m_paragraphTextIndent - m_ps->m_listReferenceLeftOffset;
+		if (!m_parseState->m_isListReference)
+			m_ps->m_listReferencePosition = m_ps->m_paragraphMarginLeft + m_ps->m_paragraphTextIndent;
 	}
 }
 
@@ -762,9 +766,8 @@ void WP6HLContentListener::paragraphMarginChange(uint8_t side, int16_t margin)
 			break;
 		}
 
-		if (!m_ps->m_isList)
-			m_ps->m_listReferenceLeftOffset = m_ps->m_paragraphMarginLeft + m_ps->m_paragraphTextIndent;
-		m_ps->m_listReferenceOffsetFromText = m_ps->m_paragraphMarginLeft + m_ps->m_paragraphTextIndent - m_ps->m_listReferenceLeftOffset;
+		if (!m_parseState->m_isListReference)
+			m_ps->m_listReferencePosition = m_ps->m_paragraphMarginLeft + m_ps->m_paragraphTextIndent;
 	}
 }
 
@@ -779,6 +782,9 @@ void WP6HLContentListener::indentFirstLineChange(int16_t offset)
 		// only. Indent First Line applies untill an new Indent First Line code.
 		m_ps->m_paragraphTextIndent = m_ps->m_textIndentByParagraphIndentChange
 					+ m_ps->m_textIndentByTabs;
+
+		if (!m_parseState->m_isListReference)
+			m_ps->m_listReferencePosition = m_ps->m_paragraphMarginLeft + m_ps->m_paragraphTextIndent;
 	}
 }
 
@@ -1061,7 +1067,9 @@ void WP6HLContentListener::endDocument()
 		_closeParagraph();
 	if (m_ps->m_isListElementOpened)
 		_closeListElement();
-	_flushList(0); // flush the list exterior
+
+	m_ps->m_currentListLevel = 0;
+	_changeList(); // flush the list exterior
 
 	// close the document nice and tight
 	_closeSection();
@@ -1212,8 +1220,13 @@ void WP6HLContentListener::_handleSubDocument(uint16_t textPID, const bool isHea
 		_closeParagraph();
 	if (m_ps->m_isListElementOpened)
 		_closeListElement();
-	_flushList(0);
+
+	m_ps->m_currentListLevel = 0;
+	_changeList();
+
+#if 0
 	_closeSection();
+#endif
 
 	// restore our old parsing state
 	delete m_parseState;
@@ -1288,9 +1301,7 @@ void WP6HLContentListener::_flushText()
 	}
 	
 
-	m_ps->m_isList = false;
-	m_ps->m_listReferenceLeftOffset = m_ps->m_paragraphMarginLeft + m_ps->m_paragraphTextIndent;
-	m_ps->m_listReferenceOffsetFromText = 0;
+	m_parseState->m_isListReference = false;
 }
 
 // FIXME: This code mostly works, but was created more or less by trial and error and does not derive from
@@ -1333,14 +1344,16 @@ void WP6HLContentListener::_handleListChange(const uint16_t outlineHash)
 			propList.insert("style:num-format", _numberingTypeToString(listType));
 			propList.insert("style:num-suffix", m_parseState->m_textAfterDisplayReference);
 			propList.insert("text:start-value", number);
-			propList.insert("text:min-label-width", (m_ps->m_listReferenceOffsetFromText));
+			propList.insert("text:min-label-width", m_ps->m_paragraphMarginLeft + m_ps->m_paragraphTextIndent - m_ps->m_listReferencePosition);
+			propList.insert("text:space-before", 0.0f);
 			
 			m_listenerImpl->defineOrderedListLevel(propList);
 		}
 		else
 		{
 			propList.insert("text:bullet-char", m_parseState->m_textBeforeDisplayReference);
-			propList.insert("text:min-label-width", (m_ps->m_listReferenceOffsetFromText));
+			propList.insert("text:min-label-width", m_ps->m_paragraphMarginLeft + m_ps->m_paragraphTextIndent - m_ps->m_listReferencePosition);
+			propList.insert("text:space-before", 0.0f);
 			
 			m_listenerImpl->defineUnorderedListLevel(propList);
 		}
@@ -1399,12 +1412,11 @@ void WP6HLContentListener::_handleListChange(const uint16_t outlineHash)
 #endif
 }
 
-void WP6HLContentListener::_flushList(const uint8_t listLevel)
+void WP6HLContentListener::_changeList()
 {
 	if (m_ps->m_isParagraphOpened)
 		_closeParagraph();
 	if (m_ps->m_isListElementOpened)
 		_closeListElement();
-	m_ps->m_currentListLevel = listLevel;
 	_handleListChange(m_parseState->m_currentOutlineHash);
 }

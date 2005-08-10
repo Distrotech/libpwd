@@ -76,7 +76,6 @@ _WPXParsingState::_WPXParsingState() :
 	m_sectionAttributesChanged(false),
 	m_numColumns(1),
 	m_isTextColumnWithoutParagraph(false),
-	m_isList(false),
 
 	m_pageFormLength(11.0f),
 	m_pageFormWidth(8.5f),
@@ -96,8 +95,7 @@ _WPXParsingState::_WPXParsingState() :
 	m_leftMarginByTabs(0.0f),
 	m_rightMarginByTabs(0.0f),
 	
-	m_listReferenceOffsetFromText(0.0f),
-	m_listReferenceLeftOffset(0.0f),
+	m_listReferencePosition(0.0f),
 
 	m_paragraphTextIndent(0.0f),
 	m_textIndentByParagraphIndentChange(0.0f),
@@ -196,7 +194,7 @@ void WPXHLListener::_closeSection()
 			_closeParagraph();
 		if (m_ps->m_isListElementOpened)
 			_closeListElement();
-		_flushList(0);
+		_changeList();
 
 		m_listenerImpl->closeSection();
 
@@ -208,6 +206,9 @@ void WPXHLListener::_closeSection()
 
 void WPXHLListener::_openPageSpan()
 {
+	if (m_ps->m_isPageSpanOpened)
+		return;
+
 	if (!m_ps->m_isDocumentStarted)
 		startDocument();
 
@@ -308,6 +309,8 @@ void WPXHLListener::_openPageSpan()
 	m_ps->m_paragraphMarginRight = m_ps->m_rightMarginByPageMarginChange + m_ps->m_rightMarginByParagraphMarginChange
 			+ m_ps->m_rightMarginByTabs;
 
+	m_ps->m_paragraphTextIndent = m_ps->m_textIndentByParagraphIndentChange + m_ps->m_textIndentByTabs;
+
 	m_ps->m_numPagesRemainingInSpan = (currentPage->getPageSpan() - 1);
 	m_ps->m_nextPageSpanIndice++;
 }
@@ -375,10 +378,10 @@ void WPXHLListener::_resetParagraphState(const bool isListElement)
 	m_ps->m_rightMarginByTabs = 0.0f;
 	m_ps->m_paragraphTextIndent = m_ps->m_textIndentByParagraphIndentChange;
 	m_ps->m_textIndentByTabs = 0.0f;
-	m_ps->m_listReferenceOffsetFromText = 0.0f;	
 	m_ps->m_isCellWithoutParagraph = false;
 	m_ps->m_isTextColumnWithoutParagraph = false;	
 	m_ps->m_tempParagraphJustification = 0;
+	m_ps->m_listReferencePosition = m_ps->m_paragraphMarginLeft + m_ps->m_paragraphTextIndent;
 }
 
 void WPXHLListener::_appendJustification(WPXPropertyList &propList, int justification)
@@ -420,13 +423,13 @@ void WPXHLListener::_appendParagraphProperties(WPXPropertyList &propList, const 
 		// a table is opened..
 		if (isListElement)
 		{
-			propList.insert("fo:margin-left", (m_ps->m_listReferenceLeftOffset - m_ps->m_paragraphTextIndent));
+			propList.insert("fo:margin-left", (m_ps->m_listReferencePosition - m_ps->m_paragraphTextIndent));
 			propList.insert("fo:text-indent", m_ps->m_paragraphTextIndent);
 		}
 		else
 		{
 			propList.insert("fo:margin-left", m_ps->m_paragraphMarginLeft);
-			propList.insert("fo:text-indent", m_ps->m_paragraphTextIndent - m_ps->m_listReferenceOffsetFromText);
+			propList.insert("fo:text-indent", m_ps->m_listReferencePosition - m_ps->m_paragraphMarginLeft);
 		}
 		propList.insert("fo:margin-right", m_ps->m_paragraphMarginRight);
 	}
@@ -541,7 +544,7 @@ void WPXHLListener::_openSpan()
 		return;
 
 	if (!m_ps->m_isParagraphOpened && !m_ps->m_isListElementOpened)
-		_flushList(m_ps->m_currentListLevel);
+		_changeList();
 		if (m_ps->m_currentListLevel == 0)
 			_openParagraph();
 		else
@@ -718,7 +721,7 @@ void WPXHLListener::_closeTable()
 	
 	_closeParagraph();
 	_closeListElement();
-	_flushList(0);
+	_changeList();
 
 	// handle case where a section attributes changed in the middle of the table
 	if (m_ps->m_sectionAttributesChanged && !m_ps->m_inSubDocument)
@@ -852,7 +855,7 @@ void WPXHLListener::_closeTableCell()
 			_openSpan();
 		_closeParagraph();
 		_closeListElement();
-		_flushList(0);
+		_changeList();
 		m_ps->m_cellAttributeBits = 0x00000000;
 
 		m_listenerImpl->closeTableCell();

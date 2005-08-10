@@ -82,6 +82,7 @@ struct _WP6ParsingState
 	int m_numRemovedParagraphBreaks;
 	
 	int m_numListExtraTabs;
+	bool m_isListReference;
 
 	WPXTableList m_tableList;
 	WPXTable *m_currentTable;
@@ -194,7 +195,7 @@ protected:
 	void _flushText();
 	void _handleListChange(const uint16_t outlineHash);
 
-	void _flushList(const uint8_t listLevel);
+	void _changeList();
 
 private:
 	WP6ParsingState *m_parseState;

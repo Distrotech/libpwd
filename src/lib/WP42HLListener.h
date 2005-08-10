@@ -71,7 +71,7 @@ protected:
 
 private:
 	void _flushText();
-	void _flushList(const uint8_t listLevel) {};
+	void _changeList() {};
 
 	WPXString m_textBuffer;
 };
