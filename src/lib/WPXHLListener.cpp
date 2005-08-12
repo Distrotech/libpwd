@@ -215,6 +215,7 @@ void WPXHLListener::_openPageSpan()
 	// Hack to be sure that the paragraph margins are consistent even if the page margin changes
 	m_ps->m_leftMarginByPageMarginChange += m_ps->m_pageMarginLeft;
 	m_ps->m_rightMarginByPageMarginChange += m_ps->m_pageMarginRight;
+	m_ps->m_listReferencePosition += m_ps->m_pageMarginLeft;
 	
 	if ( !m_pageList ||
 	     (m_pageList && m_ps->m_nextPageSpanIndice > (int)m_pageList->size() - 1)
@@ -255,6 +256,7 @@ void WPXHLListener::_openPageSpan()
 	// Compute new values
 	m_ps->m_leftMarginByPageMarginChange -= m_ps->m_pageMarginLeft;
 	m_ps->m_rightMarginByPageMarginChange -= m_ps->m_pageMarginRight;
+	m_ps->m_listReferencePosition -= m_ps->m_pageMarginLeft;
 
 	m_ps->m_paragraphMarginLeft = m_ps->m_leftMarginByPageMarginChange + m_ps->m_leftMarginByParagraphMarginChange
 			+ m_ps->m_leftMarginByTabs;
