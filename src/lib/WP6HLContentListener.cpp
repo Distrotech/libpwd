@@ -466,7 +466,7 @@ void WP6HLContentListener::insertTab(const uint8_t tabType, const float tabPosit
 				if (m_parseState->m_isListReference)
 					m_parseState->m_numListExtraTabs++;
 				if (m_ps->m_paragraphTextIndent != 0.0f)
-					m_ps->m_textIndentByTabs += m_ps->m_paragraphTextIndent;
+					m_ps->m_textIndentByTabs -= m_ps->m_paragraphTextIndent;
 				break;
 
 			case WP6_TAB_GROUP_LEFT_RIGHT_INDENT: // converted as left and right paragraph margin offset
