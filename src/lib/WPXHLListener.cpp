@@ -96,6 +96,7 @@ _WPXParsingState::_WPXParsingState() :
 	m_rightMarginByTabs(0.0f),
 	
 	m_listReferencePosition(0.0f),
+	m_listBeginPosition(0.0f),
 
 	m_paragraphTextIndent(0.0f),
 	m_textIndentByParagraphIndentChange(0.0f),
@@ -216,6 +217,7 @@ void WPXHLListener::_openPageSpan()
 	m_ps->m_leftMarginByPageMarginChange += m_ps->m_pageMarginLeft;
 	m_ps->m_rightMarginByPageMarginChange += m_ps->m_pageMarginRight;
 	m_ps->m_listReferencePosition += m_ps->m_pageMarginLeft;
+	m_ps->m_listBeginPosition += m_ps->m_pageMarginLeft;
 	
 	if ( !m_pageList ||
 	     (m_pageList && m_ps->m_nextPageSpanIndice > (int)m_pageList->size() - 1)
@@ -257,6 +259,7 @@ void WPXHLListener::_openPageSpan()
 	m_ps->m_leftMarginByPageMarginChange -= m_ps->m_pageMarginLeft;
 	m_ps->m_rightMarginByPageMarginChange -= m_ps->m_pageMarginRight;
 	m_ps->m_listReferencePosition -= m_ps->m_pageMarginLeft;
+	m_ps->m_listBeginPosition -= m_ps->m_pageMarginLeft;
 
 	m_ps->m_paragraphMarginLeft = m_ps->m_leftMarginByPageMarginChange + m_ps->m_leftMarginByParagraphMarginChange
 			+ m_ps->m_leftMarginByTabs;
@@ -384,6 +387,7 @@ void WPXHLListener::_resetParagraphState(const bool isListElement)
 	m_ps->m_isTextColumnWithoutParagraph = false;	
 	m_ps->m_tempParagraphJustification = 0;
 	m_ps->m_listReferencePosition = m_ps->m_paragraphMarginLeft + m_ps->m_paragraphTextIndent;
+	m_ps->m_listBeginPosition = m_ps->m_paragraphMarginLeft + m_ps->m_paragraphTextIndent;
 }
 
 void WPXHLListener::_appendJustification(WPXPropertyList &propList, int justification)
@@ -425,7 +429,7 @@ void WPXHLListener::_appendParagraphProperties(WPXPropertyList &propList, const 
 		// a table is opened..
 		if (isListElement)
 		{
-			propList.insert("fo:margin-left", (m_ps->m_listReferencePosition - m_ps->m_paragraphTextIndent));
+			propList.insert("fo:margin-left", (m_ps->m_listBeginPosition - m_ps->m_paragraphTextIndent));
 			propList.insert("fo:text-indent", m_ps->m_paragraphTextIndent);
 		}
 		else

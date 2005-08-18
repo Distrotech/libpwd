@@ -226,8 +226,11 @@ _WP6ParsingState::_WP6ParsingState(WPXTableList tableList, int nextTableIndice) 
 
 	m_tableList(tableList),
 	m_currentTable(NULL),
+
 	m_nextTableIndice(nextTableIndice),
 
+	m_currentOutlineHash(0),
+	m_oldListLevel(0),
 	m_putativeListElementHasParagraphNumber(false),
 	m_putativeListElementHasDisplayReferenceNumber(false),
 	
@@ -960,6 +963,8 @@ void WP6HLContentListener::styleGroupOn(const uint8_t subGroup)
 		{
 		case WP6_STYLE_GROUP_PARASTYLE_BEGIN_ON_PART1:
 			WPD_DEBUG_MSG(("WordPerfect: Handling para style begin 1 (ON)\n"));
+// Maybe the following 3 ifs are not necessary since it should be everything done already, but it is not harming.
+// Nevertheless, on a later point of time they might disappear.
 			if (m_ps->m_isParagraphOpened)
 				_closeParagraph();
 			if (m_ps->m_isListElementOpened)
@@ -973,6 +978,7 @@ void WP6HLContentListener::styleGroupOn(const uint8_t subGroup)
 			break;
 		case WP6_STYLE_GROUP_PARASTYLE_BEGIN_ON_PART2:
 			WPD_DEBUG_MSG(("WordPerfect: Handling a para style begin 2 (ON)\n"));
+			m_ps->m_listBeginPosition = m_ps->m_paragraphMarginLeft + m_ps->m_paragraphTextIndent;
 			break;
 		case WP6_STYLE_GROUP_PARASTYLE_END_ON:
 			WPD_DEBUG_MSG(("WordPerfect: Handling a para style end (ON)\n"));
@@ -1312,6 +1318,7 @@ void WP6HLContentListener::_handleListChange(const uint16_t outlineHash)
 	if (!m_ps->m_isSectionOpened && !m_ps->m_inSubDocument && !m_ps->m_isTableOpened)
 		_openSection();
 	WP6OutlineDefinition *outlineDefinition;
+
 	if (m_outlineDefineHash.empty() || (m_outlineDefineHash.find(outlineHash) == m_outlineDefineHash.end()))
 	{
 		// handle odd case where an outline define hash is not defined prior to being referenced by
@@ -1345,7 +1352,7 @@ void WP6HLContentListener::_handleListChange(const uint16_t outlineHash)
 			propList.insert("style:num-suffix", m_parseState->m_textAfterDisplayReference);
 			propList.insert("text:start-value", number);
 			propList.insert("text:min-label-width", m_ps->m_paragraphMarginLeft + m_ps->m_paragraphTextIndent - m_ps->m_listReferencePosition);
-			propList.insert("text:space-before", 0.0f);
+			propList.insert("text:space-before", m_ps->m_listReferencePosition - m_ps->m_listBeginPosition);
 			
 			m_listenerImpl->defineOrderedListLevel(propList);
 		}
@@ -1353,7 +1360,7 @@ void WP6HLContentListener::_handleListChange(const uint16_t outlineHash)
 		{
 			propList.insert("text:bullet-char", m_parseState->m_textBeforeDisplayReference);
 			propList.insert("text:min-label-width", m_ps->m_paragraphMarginLeft + m_ps->m_paragraphTextIndent - m_ps->m_listReferencePosition);
-			propList.insert("text:space-before", 0.0f);
+			propList.insert("text:space-before", m_ps->m_listReferencePosition - m_ps->m_listBeginPosition);
 			
 			m_listenerImpl->defineUnorderedListLevel(propList);
 		}

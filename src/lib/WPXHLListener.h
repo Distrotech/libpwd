@@ -129,7 +129,8 @@ struct _WPXParsingState
 	float m_leftMarginByTabs;  // part of the margin due to the LEFT or LEFT/RIGHT Indent; the
 	float m_rightMarginByTabs; // only part of the margin that is reset at the end of a paragraph
 
-	float m_listReferencePosition; // position from the page left margin of the list number/bullet
+	float m_listReferencePosition; // position from the left page margin of the list number/bullet
+	float m_listBeginPosition; // position from the left page margin of the beginning of the list
 
 	float m_paragraphTextIndent; // resulting first line indent that is one of the paragraph properties
 	float m_textIndentByParagraphIndentChange; // part of the indent due to the PARAGRAPH indent (WP6???)
