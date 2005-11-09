@@ -25,7 +25,6 @@
  */
 
 #include "WP3UndoGroup.h"
-#include "WP3LLListener.h"
 #include "libwpd_internal.h"
 
 WP3UndoGroup::WP3UndoGroup(WPXInputStream *input, uint8_t groupID)

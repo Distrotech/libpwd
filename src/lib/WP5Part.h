@@ -30,8 +30,6 @@
 #include "WPXParser.h"
 #include "WP5HLListener.h"
 
-class WP5LLListener;
-
 class WP5Part
 {
  public:

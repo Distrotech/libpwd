@@ -38,7 +38,6 @@ _WP3ParsingState::~_WP3ParsingState()
 
 WP3HLListener::WP3HLListener(std::vector<WPXPageSpan *> *pageList, WPXHLListenerImpl *listenerImpl) :
 	WPXHLListener(pageList, listenerImpl),
-	WP3LLListener(),
 	m_parseState(new WP3ParsingState)
 {
 	m_textBuffer.clear();

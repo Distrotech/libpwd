@@ -26,7 +26,6 @@
 
 #include "WP5TableEOPGroup.h"
 #include "WP5FileStructure.h"
-#include "WP5LLListener.h"
 #include "libwpd_internal.h"
 
 WP5TableEOPGroup::WP5TableEOPGroup(WPXInputStream *input) :

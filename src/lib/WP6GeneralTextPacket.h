@@ -27,7 +27,6 @@
 #define WP6GENERALTEXTPACKET_H
 #include "WP6PrefixDataPacket.h"
 #include "WP6FileStructure.h"
-#include "WP6LLListener.h"
 #include "WPXMemoryStream.h"
 
 class WP6GeneralTextPacket : public WP6PrefixDataPacket

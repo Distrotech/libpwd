@@ -29,8 +29,6 @@
 #include "WPXParser.h"
 #include "WP3HLListener.h"
 
-class WP3LLListener;
-
 class WP3Part
 {
  public:

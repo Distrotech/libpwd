@@ -26,11 +26,10 @@
 #ifndef WP42HLLISTENER_H
 #define WP42HLLISTENER_H
 
-#include "WP42LLListener.h"
 #include "WPXHLListener.h"
 #include "WPXHLListenerImpl.h"
 
-class WP42HLListener : public WPXHLListener, public WP42LLListener
+class WP42HLListener : public WPXHLListener
 {
 public:
 	WP42HLListener(std::vector<WPXPageSpan *> *pageList, WPXHLListenerImpl *listenerImpl);

@@ -24,7 +24,6 @@
  */
 
 #include "WP6HeaderFooterGroup.h"
-#include "WP6LLListener.h"
 #include "libwpd_internal.h"
 
 WP6HeaderFooterGroup::WP6HeaderFooterGroup(WPXInputStream *input) :

@@ -123,7 +123,6 @@ _WPXParsingState::~_WPXParsingState()
 }
 
 WPXHLListener::WPXHLListener(std::vector<WPXPageSpan *> *pageList, WPXHLListenerImpl *listenerImpl) :
-	WPXLLListener(),
 	m_pageList(pageList),
 	m_listenerImpl(listenerImpl),
 	m_ps(new WPXParsingState),

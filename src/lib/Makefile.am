@@ -105,7 +105,6 @@ libwpd_0_8_la_SOURCES =				\
 	WP6HLContentListener.cpp		\
 	WP6HLListener.cpp			\
 	WP6HLStylesListener.cpp			\
-	WP6LLListener.cpp			\
 	WP6Parser.cpp				\
 	WP6OutlineStylePacket.cpp		\
 	WP6PageGroup.cpp			\
@@ -145,7 +144,6 @@ libwpd_0_8_la_SOURCES =				\
 	WP3Header.h				\
 	WP3HLListener.h				\
 	WP3HLStylesListener.h			\
-	WP3LLListener.h				\
 	WP3MiscellaneousGroup.h			\
 	WP3PageFormatGroup.h			\
 	WP3Parser.h				\
@@ -160,7 +158,6 @@ libwpd_0_8_la_SOURCES =				\
 	WP42Heuristics.h			\
 	WP42HLListener.h			\
 	WP42HLStylesListener.h			\
-	WP42LLListener.h			\
 	WP42Part.h				\
 	WP42Parser.h				\
 	WP42UnsupportedVariableLengthGroup.h	\
@@ -174,7 +171,6 @@ libwpd_0_8_la_SOURCES =				\
 	WP5Header.h				\
 	WP5HLListener.h				\
 	WP5HLStylesListener.h			\
-	WP5LLListener.h				\
 	WP5PageFormatGroup.h			\
 	WP5Part.h				\
 	WP5Parser.h				\
@@ -206,7 +202,6 @@ libwpd_0_8_la_SOURCES =				\
 	WP6HLContentListener.h			\
 	WP6HLListener.h				\
 	WP6HLStylesListener.h			\
-	WP6LLListener.h				\
 	WP6OutlineStylePacket.h			\
 	WP6PageGroup.h				\
 	WP6ParagraphGroup.h			\
@@ -226,7 +221,6 @@ libwpd_0_8_la_SOURCES =				\
 	WPXHeader.h				\
 	WPDocument.h				\
 	WPXFileStructure.h			\
-	WPXLLListener.h				\
 	WPXHLListener.h				\
 	WPXHLListenerImpl.h			\
 	WPXMemoryStream.h			\

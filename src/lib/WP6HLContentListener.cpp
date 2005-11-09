@@ -620,7 +620,7 @@ void WP6HLContentListener::fontChange(const uint16_t matchedFontPointSize, const
 		if (fontPID)
 		{
 			const WP6FontDescriptorPacket *fontDescriptorPacket = NULL;
-			if (fontDescriptorPacket = dynamic_cast<const WP6FontDescriptorPacket *>(WP6LLListener::getPrefixDataPacket(fontPID))) {
+			if (fontDescriptorPacket = dynamic_cast<const WP6FontDescriptorPacket *>(WP6HLListener::getPrefixDataPacket(fontPID))) {
 				m_ps->m_fontName->sprintf("%s", fontDescriptorPacket->getFontName());
 			}
 		}
@@ -1230,7 +1230,7 @@ void WP6HLContentListener::_handleSubDocument(uint16_t textPID, const bool isHea
 	}
 
 	if (textPID)
-		WP6LLListener::getPrefixDataPacket(textPID)->parse(this);
+		WP6HLListener::getPrefixDataPacket(textPID)->parse(this);
 	else
 		_openSpan();
 	

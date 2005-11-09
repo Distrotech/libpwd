@@ -23,7 +23,6 @@
  */
 
 #include "WP5DefinitionGroup.h"
-#include "WP5LLListener.h"
 #include "WPXHLListener.h"
 #include "libwpd_internal.h"
 

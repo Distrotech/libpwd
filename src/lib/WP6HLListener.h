@@ -26,19 +26,53 @@
 #ifndef WP6HLLISTENER_H
 #define WP6HLLISTENER_H
  
-#include "WP6LLListener.h"
 #include "WPXHLListener.h"
 #include "WP6FileStructure.h"
 
 #include <vector>
+#include "WP6PrefixDataPacket.h"
 
-class WP6HLListener : public WPXHLListener, public WP6LLListener
+class WPXString;
+class WP6DefaultInitialFontPacket;
+class WP6PrefixData;
+
+enum WP6OutlineLocation { paragraphGroup, indexHeader };
+
+class WP6HLListener : public WPXHLListener
 {
 public:
 	WP6HLListener(std::vector<WPXPageSpan *> *pageList, WPXHLListenerImpl *listenerImpl);
+	virtual void setDate(const uint16_t year, const uint8_t month, const uint8_t day,
+			     const uint8_t hour, const uint8_t minute, const uint8_t second,
+			     const uint8_t dayOfWeek, const uint8_t timeZone, const uint8_t unused) = 0;
+	virtual void setExtendedInformation(const uint16_t type, const WPXString &data) = 0;
+	virtual void characterColorChange(const uint8_t red, const uint8_t green, const uint8_t blue) = 0;
+	virtual void characterShadingChange(const uint8_t shading) = 0;
+	virtual void highlightChange(const bool isOn, const RGBSColor color) = 0;
+	virtual void fontChange(const uint16_t matchedFontPointSize, const uint16_t fontPID) = 0;
+	virtual void updateOutlineDefinition(const WP6OutlineLocation outlineLocation, const uint16_t outlineHash,
+					     const uint8_t *numberingMethods, const uint8_t tabBehaviourFlag) = 0;
+	virtual void paragraphNumberOn(const uint16_t outlineHash, const uint8_t level, const uint8_t flag) = 0;
+	virtual void paragraphNumberOff() = 0;
+	virtual void displayNumberReferenceGroupOn(const uint8_t subGroup, const uint8_t level) = 0;
+	virtual void displayNumberReferenceGroupOff(const uint8_t subGroup) = 0;
+	virtual void styleGroupOn(const uint8_t subGroup) = 0;
+	virtual void styleGroupOff(const uint8_t subGroup) = 0;
+	virtual void globalOn(const uint8_t systemStyle) = 0;
+	virtual void globalOff() = 0;
+	virtual void noteOn(const uint16_t textPID) = 0;
+	virtual void noteOff(const WPXNoteType noteType) = 0;
+	virtual void headerFooterGroup(const uint8_t headerFooterType, const uint8_t occurenceBits, const uint16_t textPID) = 0;
+	virtual void suppressPageCharacteristics(const uint8_t suppressCode) = 0;
+
+	void setPrefixData(WP6PrefixData *prefixData) { m_prefixData = prefixData; }
+	const WP6PrefixDataPacket * getPrefixDataPacket(const int prefixID) const;
 		
 	// for getting low-level messages from the parser
 	virtual void undoChange(const uint8_t undoType, const uint16_t undoLevel);
+
+private:
+	WP6PrefixData *m_prefixData;
 };
 
 #endif /* WP6HLLISTENER_H */

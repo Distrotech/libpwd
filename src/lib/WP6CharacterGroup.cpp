@@ -25,7 +25,6 @@
  */
 
 #include "WP6CharacterGroup.h"
-#include "WP6LLListener.h"
 #include "libwpd_internal.h"
 
 /*************************************************************************

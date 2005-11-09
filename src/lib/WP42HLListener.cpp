@@ -29,8 +29,7 @@
 #include "libwpd_internal.h"
 
 WP42HLListener::WP42HLListener(std::vector<WPXPageSpan *> *pageList, WPXHLListenerImpl *listenerImpl) :
-	WPXHLListener(pageList, listenerImpl),
-	WP42LLListener()
+	WPXHLListener(pageList, listenerImpl)
 {
 	m_textBuffer.clear();
 }

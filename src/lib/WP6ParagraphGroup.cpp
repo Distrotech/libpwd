@@ -25,7 +25,6 @@
  */
 
 #include "WP6ParagraphGroup.h"
-#include "WP6LLListener.h"
 #include "libwpd_internal.h"
 #include "WPXFileStructure.h"
 

@@ -24,7 +24,6 @@
  */
 
 #include "WP6StyleGroup.h"
-#include "WP6LLListener.h"
 #include "libwpd_internal.h"
 
 WP6StyleGroup_GlobalOnSubGroup::WP6StyleGroup_GlobalOnSubGroup(WPXInputStream *input)

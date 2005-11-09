@@ -23,7 +23,6 @@
  * Corel Corporation or Corel Corporation Limited."
  */
  
-#include "WP6LLListener.h"
 #include "WP6HLStylesListener.h"
 #include "WP6HLContentListener.h"
 #include "WP6Parser.h"

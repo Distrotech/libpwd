@@ -25,7 +25,6 @@
  */
 
 #include "WP6DisplayNumberReferenceGroup.h"
-#include "WP6LLListener.h"
 #include "libwpd_internal.h"
 
 WP6DisplayNumberReferenceGroup::WP6DisplayNumberReferenceGroup(WPXInputStream *input) :

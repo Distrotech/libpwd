@@ -81,7 +81,6 @@ SLOFILES= \
 	$(SLO)$/WP6HLContentListener.obj		\
 	$(SLO)$/WP6HLListener.obj			\
 	$(SLO)$/WP6HLStylesListener.obj			\
-	$(SLO)$/WP6LLListener.obj			\
 	$(SLO)$/WP6Parser.obj				\
 	$(SLO)$/WP6OutlineStylePacket.obj		\
 	$(SLO)$/WP6PageGroup.obj			\

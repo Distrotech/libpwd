@@ -23,7 +23,6 @@
  */
 
 #include "WP5FormatGroup.h"
-#include "WP5LLListener.h"
 #include "WPXHLListener.h"
 #include "libwpd_internal.h"
 

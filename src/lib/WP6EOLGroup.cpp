@@ -26,7 +26,6 @@
  */
 
 #include "WP6EOLGroup.h"
-#include "WP6LLListener.h"
 #include "WPXHLListener.h"
 #include "libwpd_internal.h"
 

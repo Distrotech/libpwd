@@ -27,7 +27,6 @@
 
 #include "WP3ExtendedCharacterGroup.h"
 #include "WP3FileStructure.h"
-#include "WP3LLListener.h"
 #include "libwpd_internal.h"
 
 WP3ExtendedCharacterGroup::WP3ExtendedCharacterGroup(WPXInputStream *input, uint8_t groupID) :

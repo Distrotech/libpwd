@@ -26,7 +26,6 @@
 
 #include "WP6ExtendedCharacterGroup.h"
 #include "WP6FileStructure.h"
-#include "WP6LLListener.h"
 #include "libwpd_internal.h"
 
 WP6ExtendedCharacterGroup::WP6ExtendedCharacterGroup(WPXInputStream *input, uint8_t groupID) :

@@ -243,14 +243,14 @@ void WP6HLStylesListener::_handleSubDocument(uint16_t textPID, const bool isHead
 				WPXTableList oldTableList = m_tableList;
 				m_tableList = tableList;
 
-				WP6LLListener::getPrefixDataPacket(textPID)->parse(this);
+				WP6HLListener::getPrefixDataPacket(textPID)->parse(this);
 
 				m_tableList = oldTableList;
 				m_currentTable = oldCurrentTable;
 			}
 			else
 			{
-				WP6LLListener::getPrefixDataPacket(textPID)->parse(this);
+				WP6HLListener::getPrefixDataPacket(textPID)->parse(this);
 			}
 			m_subDocumentTextPIDs = oldTextPIDs;
 

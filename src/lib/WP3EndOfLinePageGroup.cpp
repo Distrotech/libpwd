@@ -47,7 +47,6 @@
  */
 
 #include "WP3EndOfLinePageGroup.h"
-#include "WP3LLListener.h"
 #include "WPXHLListener.h"
 #include "libwpd_internal.h"
 

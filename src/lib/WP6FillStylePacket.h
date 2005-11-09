@@ -27,7 +27,7 @@
 #define WP6FILLSTYLEPACKET_H
 #include "WP6PrefixDataPacket.h"
 #include "WP6FileStructure.h"
-#include "WP6LLListener.h"
+#include "libwpd_internal.h"
 
 struct _RGBSColor;
 typedef struct _RGBSColor RGBSColor; 

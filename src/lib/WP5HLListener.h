@@ -26,7 +26,6 @@
 #ifndef WP5HLLISTENER_H
 #define WP5HLLISTENER_H
 
-#include "WP5LLListener.h"
 #include "WPXHLListener.h"
 #include "WPXHLListenerImpl.h"
 
@@ -38,7 +37,7 @@ struct _WP5ParsingState
 };
 
 
-class WP5HLListener : public WPXHLListener, public WP5LLListener
+class WP5HLListener : public WPXHLListener
 {
 public:
 	WP5HLListener(std::vector<WPXPageSpan *> *pageList, WPXHLListenerImpl *listenerImpl);

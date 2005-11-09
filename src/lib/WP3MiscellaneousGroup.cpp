@@ -27,7 +27,6 @@
 #include <math.h>
 #include "WP3MiscellaneousGroup.h"
 #include "WP3FileStructure.h"
-#include "WP3LLListener.h"
 #include "WPXFileStructure.h"
 #include "libwpd_internal.h"
 

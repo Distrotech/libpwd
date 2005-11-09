@@ -24,7 +24,6 @@
  */
 
 #include "WP6FootnoteEndnoteGroup.h"
-#include "WP6LLListener.h"
 #include "libwpd_internal.h"
 
 WP6FootnoteEndnoteGroup::WP6FootnoteEndnoteGroup(WPXInputStream *input) :

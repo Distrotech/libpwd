@@ -25,7 +25,6 @@
 #ifndef WP3HLLISTENER_H
 #define WP3HLLISTENER_H
 
-#include "WP3LLListener.h"
 #include "WPXHLListener.h"
 #include "WPXHLListenerImpl.h"
 
@@ -37,7 +36,7 @@ struct _WP3ParsingState
 };
 
 
-class WP3HLListener : public WPXHLListener, public WP3LLListener
+class WP3HLListener : public WPXHLListener
 {
 public:
 	WP3HLListener(std::vector<WPXPageSpan *> *pageList, WPXHLListenerImpl *listenerImpl);
