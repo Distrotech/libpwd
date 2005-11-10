@@ -26,15 +26,15 @@
 #ifndef WP42HLSTYLESLISTENER_H
 #define WP42HLSTYLESLISTENER_H
 
-#include "WP42HLListener.h"
+#include "WP42Listener.h"
 #include <vector>
 #include "WPXPageSpan.h"
 #include "WPXTable.h"
 
-class WP42HLStylesListener : public WP42HLListener
+class WP42StylesListener : public WP42Listener
 {
 public:
-	WP42HLStylesListener(std::vector<WPXPageSpan *> *pageList, WPXTableList tableList);
+	WP42StylesListener(std::vector<WPXPageSpan *> *pageList, WPXTableList tableList);
 
 	virtual void startDocument() {}
 	virtual void setAlignmentCharacter(const uint16_t character) {}
@@ -73,7 +73,7 @@ public:
 protected:
 	virtual void _handleSubDocument(uint16_t textPID, const bool isHeaderFooter, WPXTableList tableList, int nextTableIndice = 0) {}
 
-	virtual void _openPageSpan() { /* FIXME: REMOVE ME WHEN IMPLEMENTED IN WPXHLListener */ };
+	virtual void _openPageSpan() { /* FIXME: REMOVE ME WHEN IMPLEMENTED IN WPXListener */ };
 
 private:
 	WPXPageSpan *m_currentPage;

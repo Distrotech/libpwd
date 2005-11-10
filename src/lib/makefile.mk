@@ -25,8 +25,8 @@ SLOFILES= \
 	$(SLO)$/WP3FileStructure.obj			\
 	$(SLO)$/WP3FixedLengthGroup.obj			\
 	$(SLO)$/WP3Header.obj				\
-	$(SLO)$/WP3HLListener.obj			\
-	$(SLO)$/WP3HLStylesListener.obj			\
+	$(SLO)$/WP3Listener.obj			\
+	$(SLO)$/WP3StylesListener.obj			\
 	$(SLO)$/WP3MiscellaneousGroup.obj		\
 	$(SLO)$/WP3PageFormatGroup.obj			\
 	$(SLO)$/WP3Parser.obj				\
@@ -38,8 +38,8 @@ SLOFILES= \
 	$(SLO)$/WP3VariableLengthGroup.obj		\
 	$(SLO)$/WP42FileStructure.obj			\
 	$(SLO)$/WP42Heuristics.obj			\
-	$(SLO)$/WP42HLListener.obj			\
-	$(SLO)$/WP42HLStylesListener.obj		\
+	$(SLO)$/WP42Listener.obj			\
+	$(SLO)$/WP42StylesListener.obj		\
 	$(SLO)$/WP42Parser.obj				\
 	$(SLO)$/WP42Part.obj				\
 	$(SLO)$/WP42UnsupportedVariableLengthGroup.obj	\
@@ -50,8 +50,8 @@ SLOFILES= \
 	$(SLO)$/WP5FixedLengthGroup.obj			\
 	$(SLO)$/WP5FormatGroup.obj			\
 	$(SLO)$/WP5Header.obj				\
-	$(SLO)$/WP5HLListener.obj			\
-	$(SLO)$/WP5HLStylesListener.obj			\
+	$(SLO)$/WP5Listener.obj			\
+	$(SLO)$/WP5StylesListener.obj			\
 	$(SLO)$/WP5PageFormatGroup.obj			\
 	$(SLO)$/WP5Parser.obj				\
 	$(SLO)$/WP5Part.obj				\
@@ -78,9 +78,9 @@ SLOFILES= \
 	$(SLO)$/WP61Header.obj				\
 	$(SLO)$/WP6HeaderFooterGroup.obj 		\
 	$(SLO)$/WP6HighlightGroup.obj			\
-	$(SLO)$/WP6HLContentListener.obj		\
-	$(SLO)$/WP6HLListener.obj			\
-	$(SLO)$/WP6HLStylesListener.obj			\
+	$(SLO)$/WP6ContentListener.obj		\
+	$(SLO)$/WP6Listener.obj			\
+	$(SLO)$/WP6StylesListener.obj			\
 	$(SLO)$/WP6Parser.obj				\
 	$(SLO)$/WP6OutlineStylePacket.obj		\
 	$(SLO)$/WP6PageGroup.obj			\
@@ -98,7 +98,7 @@ SLOFILES= \
 	$(SLO)$/WP6VariableLengthGroup.obj 		\
 	$(SLO)$/WPXPageSpan.obj				\
 	$(SLO)$/WPXHeader.obj 				\
-	$(SLO)$/WPXHLListener.obj 			\
+	$(SLO)$/WPXListener.obj 			\
 	$(SLO)$/WPXMemoryStream.obj			\
 	$(SLO)$/WPXTable.obj				\
 	$(SLO)$/WPXParser.obj 				\

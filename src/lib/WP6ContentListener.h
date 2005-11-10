@@ -27,8 +27,8 @@
 #ifndef WP6HLCONTENTLISTENER_H
 #define WP6HLCONTENTLISTENER_H
 
-#include "WP6HLListener.h"
-#include "WPXHLListener.h"
+#include "WP6Listener.h"
+#include "WPXListener.h"
 #include "WP6FileStructure.h"
 
 #include <stack>
@@ -127,11 +127,11 @@ private:
 	WPXNumberingType m_listTypes[WP6_NUM_LIST_LEVELS];
 };
 
-class WP6HLContentListener : public WP6HLListener
+class WP6ContentListener : public WP6Listener
 {
 public:
-	WP6HLContentListener(std::vector<WPXPageSpan *> *pageList, WPXTableList tableList, WPXHLListenerImpl *listenerImpl);
-	virtual ~WP6HLContentListener();
+	WP6ContentListener(std::vector<WPXPageSpan *> *pageList, WPXTableList tableList, WPXHLListenerImpl *listenerImpl);
+	virtual ~WP6ContentListener();
 
 	// for getting low-level messages from the parser
 	virtual void setDate(const uint16_t year, const uint8_t month, const uint8_t day,

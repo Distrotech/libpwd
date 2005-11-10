@@ -48,7 +48,7 @@ void WP6ExtendedDocumentSummaryPacket::_readContents(WPXInputStream *input)
 	m_stream = new WPXMemoryInputStream(streamData, m_dataSize);
 }
 
-void WP6ExtendedDocumentSummaryPacket::parse(WP6HLListener *listener) const
+void WP6ExtendedDocumentSummaryPacket::parse(WP6Listener *listener) const
 {
 	int k=0;
 	uint16_t groupLength = 0;

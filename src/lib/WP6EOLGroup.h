@@ -34,7 +34,7 @@ public:
 	WP6EOLGroup(WPXInputStream *input);	
 	~WP6EOLGroup();
 	virtual void _readContents(WPXInputStream *input);
-	virtual void parse(WP6HLListener *listener);
+	virtual void parse(WP6Listener *listener);
 
  private:
  	bool m_useCellAttributes, m_useCellJustification;

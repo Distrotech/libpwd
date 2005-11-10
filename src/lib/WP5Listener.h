@@ -26,7 +26,7 @@
 #ifndef WP5HLLISTENER_H
 #define WP5HLLISTENER_H
 
-#include "WPXHLListener.h"
+#include "WPXListener.h"
 #include "WPXHLListenerImpl.h"
 
 typedef struct _WP5ParsingState WP5ParsingState;
@@ -37,11 +37,11 @@ struct _WP5ParsingState
 };
 
 
-class WP5HLListener : public WPXHLListener
+class WP5Listener : public WPXListener
 {
 public:
-	WP5HLListener(std::vector<WPXPageSpan *> *pageList, WPXHLListenerImpl *listenerImpl);
-	virtual ~WP5HLListener();
+	WP5Listener(std::vector<WPXPageSpan *> *pageList, WPXHLListenerImpl *listenerImpl);
+	virtual ~WP5Listener();
 
 	virtual void setAlignmentCharacter(const uint16_t character) {};
 	virtual void setLeaderCharacter(const uint16_t character, const uint8_t numberOfSpaces) {};

@@ -42,7 +42,7 @@ WP6AttributeOnGroup::WP6AttributeOnGroup(WPXInputStream *input, uint8_t groupID)
 {
 }
 
-void WP6AttributeOnGroup::parse(WP6HLListener *listener)
+void WP6AttributeOnGroup::parse(WP6Listener *listener)
 {
 	// FIXME: handle flags
 	listener->attributeChange(true, getAttribute());
@@ -53,7 +53,7 @@ WP6AttributeOffGroup::WP6AttributeOffGroup(WPXInputStream *input, uint8_t groupI
 {
 }
 
-void WP6AttributeOffGroup::parse(WP6HLListener *listener)
+void WP6AttributeOffGroup::parse(WP6Listener *listener)
 {
 	// FIXME: handle flags
 	listener->attributeChange(false, getAttribute());

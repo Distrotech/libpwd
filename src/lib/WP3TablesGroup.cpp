@@ -25,7 +25,7 @@
 #include <math.h>
 #include "WP3TablesGroup.h"
 #include "WP3FileStructure.h"
-#include "WP3HLListener.h"
+#include "WP3Listener.h"
 #include "WPXFileStructure.h"
 #include "libwpd_internal.h"
 #include "libwpd_math.h"
@@ -102,7 +102,7 @@ void WP3TablesGroup::_readContents(WPXInputStream *input)
 	}
 }
 
-void WP3TablesGroup::parse(WP3HLListener *listener)
+void WP3TablesGroup::parse(WP3Listener *listener)
 {
 	WPD_DEBUG_MSG(("WordPerfect: handling a Tables group\n"));
 

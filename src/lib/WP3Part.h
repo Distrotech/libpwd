@@ -27,7 +27,7 @@
 
 #include "WPXPart.h"
 #include "WPXParser.h"
-#include "WP3HLListener.h"
+#include "WP3Listener.h"
 
 class WP3Part
 {
@@ -35,7 +35,7 @@ class WP3Part
 	virtual ~WP3Part() {}
 	
 	static WP3Part * constructPart(WPXInputStream *input, uint8_t readVal);
-	virtual void parse(WP3HLListener *listener) = 0;
+	virtual void parse(WP3Listener *listener) = 0;
 };
 
 #endif /* WP5PART_H */

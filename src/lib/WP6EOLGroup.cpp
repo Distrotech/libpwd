@@ -26,7 +26,7 @@
  */
 
 #include "WP6EOLGroup.h"
-#include "WPXHLListener.h"
+#include "WPXListener.h"
 #include "libwpd_internal.h"
 
 #include "WP6Parser.h" // for TableException
@@ -243,7 +243,7 @@ void WP6EOLGroup::_readContents(WPXInputStream *input)
 	}
 }
 
-void WP6EOLGroup::parse(WP6HLListener *listener)
+void WP6EOLGroup::parse(WP6Listener *listener)
 {
 	WPD_DEBUG_MSG(("WordPerfect: handling an EOL group\n"));
 

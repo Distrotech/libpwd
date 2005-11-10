@@ -1,4 +1,5 @@
 /* libwpd
+ * Copyright (C) 2003 William Lachance (william.lachance@sympatico.ca)
  * Copyright (C) 2004 Marc Maurer (j.m.maurer@student.utwente.nl)
  *  
  * This library is free software; you can redistribute it and/or
@@ -22,14 +23,14 @@
  * Corel Corporation or Corel Corporation Limited."
  */
  
-#include "WP3HLStylesListener.h"
+#include "WP5StylesListener.h"
 #include "WPXTable.h"
-//#include "WP3FileStructure.h"
+#include "WP5FileStructure.h"
 #include "WPXFileStructure.h"
 #include "libwpd_internal.h"
 
-WP3HLStylesListener::WP3HLStylesListener(std::vector<WPXPageSpan *> *pageList, WPXTableList tableList) : 
-	WP3HLListener(pageList, NULL),
+WP5StylesListener::WP5StylesListener(std::vector<WPXPageSpan *> *pageList, WPXTableList tableList) : 
+	WP5Listener(pageList, NULL),
 	m_currentPage(new WPXPageSpan()),
 	m_tableList(tableList), 
 	m_currentPageHasContent(false),
@@ -38,21 +39,21 @@ WP3HLStylesListener::WP3HLStylesListener(std::vector<WPXPageSpan *> *pageList, W
 {
 }
 
-void WP3HLStylesListener::endDocument()
+void WP5StylesListener::endDocument()
 {	
-	insertBreak(WPX_PAGE_BREAK); // pretend we just had a soft page break (for the last page)
+	insertBreak(WPX_SOFT_PAGE_BREAK); // pretend we just had a soft page break (for the last page)
 	delete(m_currentPage); // and delete the non-existent page that was allocated as a result (scandalous waste!)
 }
 
-void WP3HLStylesListener::insertBreak(const uint8_t breakType)
+void WP5StylesListener::insertBreak(const uint8_t breakType)
 {
-	if (!isUndoOn())
-	{	
+	//if (!isUndoOn())
+	//{	
 		switch (breakType) 
 		{
 		case WPX_PAGE_BREAK:
 		case WPX_SOFT_PAGE_BREAK:
-			if (WPXHLListener::m_pageList->size() > 0 && (*m_currentPage)==(*(m_pageList->back())))
+			if (WPXListener::m_pageList->size() > 0 && (*m_currentPage)==(*(m_pageList->back())))
 			{
 				int oldPageSpan = m_pageList->back()->getPageSpan();
 				m_pageList->back()->setPageSpan(oldPageSpan + 1);
@@ -68,13 +69,13 @@ void WP3HLStylesListener::insertBreak(const uint8_t breakType)
 			m_currentPageHasContent = false;
 			break;
 		}
-	}
+	//}
 }
 
-void WP3HLStylesListener::pageMarginChange(const uint8_t side, const uint16_t margin)
+void WP5StylesListener::pageMarginChange(const uint8_t side, const uint16_t margin)
 {
-	if (!isUndoOn()) 
-	{
+	//if (!isUndoOn()) 
+	//{
 		float marginInch = (float)((double)margin / (double)WPX_NUM_WPUS_PER_INCH);
 		switch(side)
 		{
@@ -85,13 +86,29 @@ void WP3HLStylesListener::pageMarginChange(const uint8_t side, const uint16_t ma
 				m_currentPage->setMarginBottom(marginInch);
 				break;
 		}
-	}
+	//}
 }
 
-void WP3HLStylesListener::marginChange(const uint8_t side, const uint16_t margin)
+void WP5StylesListener::pageFormChange(const uint16_t length, const uint16_t width, const WPXFormOrientation orientation, const bool isPersistent)
 {
-	if (!isUndoOn()) 
-	{		
+	//if (!isUndoOn())
+	//{
+		float lengthInch = (float)((double)length / (double)WPX_NUM_WPUS_PER_INCH);
+		float widthInch = (float)((double)width / (double)WPX_NUM_WPUS_PER_INCH);
+		if (!m_currentPageHasContent)
+		{
+			m_currentPage->setFormLength(lengthInch);
+			m_currentPage->setFormWidth(widthInch);
+			m_currentPage->setFormOrientation(orientation);
+		}
+	//}
+}
+
+
+void WP5StylesListener::marginChange(const uint8_t side, const uint16_t margin)
+{
+	//if (!isUndoOn()) 
+	//{		
 		float marginInch = (float)((double)margin / (double)WPX_NUM_WPUS_PER_INCH);
 		switch(side)
 		{
@@ -107,28 +124,11 @@ void WP3HLStylesListener::marginChange(const uint8_t side, const uint16_t margin
 				break;
 		}
 		
-	}
+	//}
 
 }
-
-void WP3HLStylesListener::pageFormChange(const uint16_t length, const uint16_t width, const WPXFormOrientation orientation, const bool isPersistent)
-{
-	if (!isUndoOn())
-	{
-		// TODO: handle the isPersistent information
-		float lengthInch = (float)((double)length / (double)WPX_NUM_WPUS_PER_INCH);
-		float widthInch = (float)((double)width / (double)WPX_NUM_WPUS_PER_INCH);
-		if (!m_currentPageHasContent)
-		{
-			m_currentPage->setFormLength(lengthInch);
-			m_currentPage->setFormWidth(widthInch);
-			m_currentPage->setFormOrientation(orientation);
-		}
-	}
-}
-
 /*
-void WP3HLStylesListener::headerFooterGroup(const uint8_t headerFooterType, const uint8_t occurenceBits, const uint16_t textPID)
+void WP5StylesListener::headerFooterGroup(const uint8_t headerFooterType, const uint8_t occurenceBits, const uint16_t textPID)
 {
 	if (!isUndoOn()) 
 	{			
@@ -139,7 +139,7 @@ void WP3HLStylesListener::headerFooterGroup(const uint8_t headerFooterType, cons
 	}
 }
 
-void WP3HLStylesListener::suppressPageCharacteristics(const uint8_t suppressCode)
+void WP5StylesListener::suppressPageCharacteristics(const uint8_t suppressCode)
 {
 	if (!isUndoOn()) 
 	{			
@@ -155,31 +155,31 @@ void WP3HLStylesListener::suppressPageCharacteristics(const uint8_t suppressCode
 	}
 }
 */
-void WP3HLStylesListener::startTable()
+void WP5StylesListener::startTable()
 {
-	if (!isUndoOn()) 
-	{			
+	//if (!isUndoOn()) 
+	//{			
 		m_currentPageHasContent = true;
 		m_currentTable = new WPXTable();
 		m_tableList.add(m_currentTable);
-	}
+	//}
 }
 
-void WP3HLStylesListener::insertRow(const uint16_t rowHeight, const bool isMinimumHeight, const bool isHeaderRow)
+void WP5StylesListener::insertRow(const uint16_t rowHeight, const bool isMinimumHeight, const bool isHeaderRow)
 {
-	if (!isUndoOn() && m_currentTable != NULL) 
+	if (/*!isUndoOn() && */m_currentTable != NULL) 
 	{
 		m_currentPageHasContent = true;
 		m_currentTable->insertRow();
 	}
 }
 
-void WP3HLStylesListener::insertCell(const uint8_t colSpan, const uint8_t rowSpan, const bool boundFromLeft, const bool boundFromAbove, 
+void WP5StylesListener::insertCell(const uint8_t colSpan, const uint8_t rowSpan, const bool boundFromLeft, const bool boundFromAbove, 
 				  const uint8_t borderBits, const RGBSColor * cellFgColor, const RGBSColor * cellBgColor,
 				  const RGBSColor * cellBorderColor, const WPXVerticalAlignment cellVerticalAlignment, 
 				  const bool useCellAttributes, const uint32_t cellAttributes)
 {
-	if (!isUndoOn() && m_currentTable != NULL)
+	if (/*!isUndoOn() &&*/ m_currentTable != NULL)
 	{
 		m_currentPageHasContent = true;
 		m_currentTable->insertCell(colSpan, rowSpan, boundFromLeft, boundFromAbove, borderBits);

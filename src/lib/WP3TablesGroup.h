@@ -33,7 +33,7 @@ class WP3TablesGroup : public WP3VariableLengthGroup
 	WP3TablesGroup(WPXInputStream *input);	
 	virtual ~WP3TablesGroup();
 	virtual void _readContents(WPXInputStream *input);
-	virtual void parse(WP3HLListener *listener);
+	virtual void parse(WP3Listener *listener);
 
  private:
 	// variables needed for subgroup 1 (Table Function)

@@ -25,7 +25,7 @@
 
 #include <math.h>
 #include <ctype.h>
-#include "WP6HLListener.h"
+#include "WP6Listener.h"
 #include "WP6FileStructure.h"
 #include "WPXFileStructure.h"
 #include "libwpd_internal.h"
@@ -33,13 +33,13 @@
 #include "WP6FontDescriptorPacket.h"
 #include "WP6DefaultInitialFontPacket.h"
 
-WP6HLListener::WP6HLListener(std::vector<WPXPageSpan *> *pageList, WPXHLListenerImpl *listenerImpl) :
-	WPXHLListener(pageList, listenerImpl),
+WP6Listener::WP6Listener(std::vector<WPXPageSpan *> *pageList, WPXHLListenerImpl *listenerImpl) :
+	WPXListener(pageList, listenerImpl),
 	m_prefixData(NULL)
 {
 }
 
-void WP6HLListener::undoChange(const uint8_t undoType, const uint16_t undoLevel)
+void WP6Listener::undoChange(const uint8_t undoType, const uint16_t undoLevel)
 {
 	if (undoType == WP6_UNDO_GROUP_INVALID_TEXT_START)
 		m_isUndoOn = true;
@@ -47,7 +47,7 @@ void WP6HLListener::undoChange(const uint8_t undoType, const uint16_t undoLevel)
 		m_isUndoOn = false;		
 }
 
-const WP6PrefixDataPacket * WP6HLListener::getPrefixDataPacket(const int prefixID) const
+const WP6PrefixDataPacket * WP6Listener::getPrefixDataPacket(const int prefixID) const
 { 
 	return m_prefixData->getPrefixDataPacket(prefixID); 
 }

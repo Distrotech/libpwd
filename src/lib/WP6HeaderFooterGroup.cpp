@@ -37,7 +37,7 @@ void WP6HeaderFooterGroup::_readContents(WPXInputStream *input)
 	m_occurenceBits = readU8(input);
 }
 
-void WP6HeaderFooterGroup::parse(WP6HLListener *listener)
+void WP6HeaderFooterGroup::parse(WP6Listener *listener)
 {
 	WPD_DEBUG_MSG(("WordPerfect: handling a HeaderFooter group\n"));
 

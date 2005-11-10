@@ -36,7 +36,7 @@ void WP6FootnoteEndnoteGroup::_readContents(WPXInputStream *input)
 {
 }
 
-void WP6FootnoteEndnoteGroup::parse(WP6HLListener *listener)
+void WP6FootnoteEndnoteGroup::parse(WP6Listener *listener)
 {
 	WPD_DEBUG_MSG(("WordPerfect: handling a footnote/endnote group\n"));
 	

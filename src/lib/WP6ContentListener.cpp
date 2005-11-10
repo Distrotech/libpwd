@@ -26,7 +26,7 @@
 
 #include <ctype.h>
 #include "libwpd_math.h"
-#include "WP6HLContentListener.h"
+#include "WP6ContentListener.h"
 #include "WPXHLListenerImpl.h"
 #include "WP6FileStructure.h"
 #include "WPXFileStructure.h"
@@ -247,13 +247,13 @@ _WP6ParsingState::~_WP6ParsingState()
 	// FIXME: erase current fontname
 }
 
-WP6HLContentListener::WP6HLContentListener(std::vector<WPXPageSpan *> *pageList, WPXTableList tableList, WPXHLListenerImpl *listenerImpl) :
-	WP6HLListener(pageList, listenerImpl),
+WP6ContentListener::WP6ContentListener(std::vector<WPXPageSpan *> *pageList, WPXTableList tableList, WPXHLListenerImpl *listenerImpl) :
+	WP6Listener(pageList, listenerImpl),
 	m_parseState(new WP6ParsingState(tableList))
 {
 }
 
-WP6HLContentListener::~WP6HLContentListener()
+WP6ContentListener::~WP6ContentListener()
 {
 	typedef std::map<uint16_t, WP6OutlineDefinition *>::iterator Iter;
 	for (Iter outline = m_outlineDefineHash.begin(); outline != m_outlineDefineHash.end(); outline++)
@@ -263,7 +263,7 @@ WP6HLContentListener::~WP6HLContentListener()
 	delete m_parseState;
 }
 
-void WP6HLContentListener::setExtendedInformation(const uint16_t type, const WPXString &data)
+void WP6ContentListener::setExtendedInformation(const uint16_t type, const WPXString &data)
 {
 	switch (type)
 	{
@@ -297,7 +297,7 @@ void WP6HLContentListener::setExtendedInformation(const uint16_t type, const WPX
 	}
 }
 
-void WP6HLContentListener::setAlignmentCharacter(const uint16_t character)
+void WP6ContentListener::setAlignmentCharacter(const uint16_t character)
 {
 	if (!isUndoOn())
 	{
@@ -305,7 +305,7 @@ void WP6HLContentListener::setAlignmentCharacter(const uint16_t character)
 	}
 }
 
-void WP6HLContentListener::setLeaderCharacter(const uint16_t character, const uint8_t numSpaces)
+void WP6ContentListener::setLeaderCharacter(const uint16_t character, const uint8_t numSpaces)
 {
 	assert(m_ps->m_tabStops.size() == m_parseState->m_tempUsePreWP9LeaderMethod.size());
 
@@ -325,7 +325,7 @@ void WP6HLContentListener::setLeaderCharacter(const uint16_t character, const ui
 	}
 }
 
-void WP6HLContentListener::insertCharacter(const uint16_t character)
+void WP6ContentListener::insertCharacter(const uint16_t character)
 {
 	if (!isUndoOn())
 	{
@@ -368,7 +368,7 @@ void WP6HLContentListener::insertCharacter(const uint16_t character)
 	}
 }
 
-void WP6HLContentListener::defineTabStops(const bool isRelative, const std::vector<WPXTabStop> &tabStops, 
+void WP6ContentListener::defineTabStops(const bool isRelative, const std::vector<WPXTabStop> &tabStops, 
 					  const std::vector<bool> &usePreWP9LeaderMethods)
 {
 	if (!isUndoOn())
@@ -385,7 +385,7 @@ void WP6HLContentListener::defineTabStops(const bool isRelative, const std::vect
 }
 
 
-void WP6HLContentListener::insertTab(const uint8_t tabType, const float tabPosition)
+void WP6ContentListener::insertTab(const uint8_t tabType, const float tabPosition)
 {
 	if (!isUndoOn())
 	{
@@ -538,7 +538,7 @@ void WP6HLContentListener::insertTab(const uint8_t tabType, const float tabPosit
 	}
 }
 
-void WP6HLContentListener::handleLineBreak()
+void WP6ContentListener::handleLineBreak()
 {
 	if(!isUndoOn())
 	{
@@ -557,7 +557,7 @@ void WP6HLContentListener::handleLineBreak()
 	}
 }
 
-void WP6HLContentListener::insertEOL()
+void WP6ContentListener::insertEOL()
 {
 	if (!isUndoOn())
 	{
@@ -571,7 +571,7 @@ void WP6HLContentListener::insertEOL()
 
 }
 
-void WP6HLContentListener::characterColorChange(const uint8_t red, const uint8_t green, const uint8_t blue)
+void WP6ContentListener::characterColorChange(const uint8_t red, const uint8_t green, const uint8_t blue)
 {
 	if (!isUndoOn())
 	{
@@ -582,7 +582,7 @@ void WP6HLContentListener::characterColorChange(const uint8_t red, const uint8_t
  	}
 }
 
-void WP6HLContentListener::characterShadingChange(const uint8_t shading)
+void WP6ContentListener::characterShadingChange(const uint8_t shading)
 {
 	if (!isUndoOn())
 	{
@@ -591,7 +591,7 @@ void WP6HLContentListener::characterShadingChange(const uint8_t shading)
 	}
 }
 
-void WP6HLContentListener::highlightChange(const bool isOn, const RGBSColor color)
+void WP6ContentListener::highlightChange(const bool isOn, const RGBSColor color)
 {
 	if (!isUndoOn())
 	{
@@ -603,7 +603,7 @@ void WP6HLContentListener::highlightChange(const bool isOn, const RGBSColor colo
 	}
 }
 
-void WP6HLContentListener::fontChange(const uint16_t matchedFontPointSize, const uint16_t fontPID)
+void WP6ContentListener::fontChange(const uint16_t matchedFontPointSize, const uint16_t fontPID)
 {
 	if (!isUndoOn())
 	{
@@ -620,14 +620,14 @@ void WP6HLContentListener::fontChange(const uint16_t matchedFontPointSize, const
 		if (fontPID)
 		{
 			const WP6FontDescriptorPacket *fontDescriptorPacket = NULL;
-			if (fontDescriptorPacket = dynamic_cast<const WP6FontDescriptorPacket *>(WP6HLListener::getPrefixDataPacket(fontPID))) {
+			if (fontDescriptorPacket = dynamic_cast<const WP6FontDescriptorPacket *>(WP6Listener::getPrefixDataPacket(fontPID))) {
 				m_ps->m_fontName->sprintf("%s", fontDescriptorPacket->getFontName());
 			}
 		}
 	}
 }
 
-void WP6HLContentListener::attributeChange(const bool isOn, const uint8_t attribute)
+void WP6ContentListener::attributeChange(const bool isOn, const uint8_t attribute)
 {
 	if (!isUndoOn())
 	{
@@ -698,7 +698,7 @@ void WP6HLContentListener::attributeChange(const bool isOn, const uint8_t attrib
 	}
 }
 
-void WP6HLContentListener::spacingAfterParagraphChange(const float spacingRelative, const float spacingAbsolute)
+void WP6ContentListener::spacingAfterParagraphChange(const float spacingRelative, const float spacingAbsolute)
 {
 	if (!isUndoOn())
 	{
@@ -714,7 +714,7 @@ void WP6HLContentListener::spacingAfterParagraphChange(const float spacingRelati
 	}
 }
 
-void WP6HLContentListener::marginChange(uint8_t side, uint16_t margin)
+void WP6ContentListener::marginChange(uint8_t side, uint16_t margin)
 {
 	if (!isUndoOn())
 	{
@@ -742,7 +742,7 @@ void WP6HLContentListener::marginChange(uint8_t side, uint16_t margin)
 	}
 }
 
-void WP6HLContentListener::paragraphMarginChange(uint8_t side, int16_t margin)
+void WP6ContentListener::paragraphMarginChange(uint8_t side, int16_t margin)
 {
 	if (!isUndoOn())
 	{
@@ -774,7 +774,7 @@ void WP6HLContentListener::paragraphMarginChange(uint8_t side, int16_t margin)
 	}
 }
 
-void WP6HLContentListener::indentFirstLineChange(int16_t offset)
+void WP6ContentListener::indentFirstLineChange(int16_t offset)
 {
 	if (!isUndoOn())
 	{
@@ -791,7 +791,7 @@ void WP6HLContentListener::indentFirstLineChange(int16_t offset)
 	}
 }
 
-void WP6HLContentListener::columnChange(const WPXTextColumnType columnType, const uint8_t numColumns, const std::vector<float> &columnWidth,
+void WP6ContentListener::columnChange(const WPXTextColumnType columnType, const uint8_t numColumns, const std::vector<float> &columnWidth,
 		const std::vector<bool> &isFixedWidth)
 {
 	if (!isUndoOn())
@@ -852,7 +852,7 @@ void WP6HLContentListener::columnChange(const WPXTextColumnType columnType, cons
 	}
 }
 
-void WP6HLContentListener::updateOutlineDefinition(const WP6OutlineLocation outlineLocation, const uint16_t outlineHash,
+void WP6ContentListener::updateOutlineDefinition(const WP6OutlineLocation outlineLocation, const uint16_t outlineHash,
 					    const uint8_t *numberingMethods, const uint8_t tabBehaviourFlag)
 {
 	WP6OutlineDefinition *tempListDefinition = NULL;
@@ -871,7 +871,7 @@ void WP6HLContentListener::updateOutlineDefinition(const WP6OutlineLocation outl
 	}
 }
 
-void WP6HLContentListener::paragraphNumberOn(const uint16_t outlineHash, const uint8_t level, const uint8_t flag)
+void WP6ContentListener::paragraphNumberOn(const uint16_t outlineHash, const uint8_t level, const uint8_t flag)
 {
 	if (!isUndoOn())
 	{
@@ -879,7 +879,7 @@ void WP6HLContentListener::paragraphNumberOn(const uint16_t outlineHash, const u
 	}
 }
 
-void WP6HLContentListener::paragraphNumberOff()
+void WP6ContentListener::paragraphNumberOff()
 {
 	if (!isUndoOn())
 	{
@@ -893,7 +893,7 @@ void WP6HLContentListener::paragraphNumberOff()
 	}
 }
 
-void WP6HLContentListener::displayNumberReferenceGroupOn(const uint8_t subGroup, const uint8_t level)
+void WP6ContentListener::displayNumberReferenceGroupOn(const uint8_t subGroup, const uint8_t level)
 {
 	if (!isUndoOn())
 	{
@@ -926,7 +926,7 @@ void WP6HLContentListener::displayNumberReferenceGroupOn(const uint8_t subGroup,
 	}
 }
 
-void WP6HLContentListener::displayNumberReferenceGroupOff(const uint8_t subGroup)
+void WP6ContentListener::displayNumberReferenceGroupOff(const uint8_t subGroup)
 {
 	if (!isUndoOn())
 	{
@@ -955,7 +955,7 @@ void WP6HLContentListener::displayNumberReferenceGroupOff(const uint8_t subGroup
 	}
 }
 
-void WP6HLContentListener::styleGroupOn(const uint8_t subGroup)
+void WP6ContentListener::styleGroupOn(const uint8_t subGroup)
 {
 	if (!isUndoOn())
 	{
@@ -988,7 +988,7 @@ void WP6HLContentListener::styleGroupOn(const uint8_t subGroup)
 	}
 }
 
-void WP6HLContentListener::styleGroupOff(const uint8_t subGroup)
+void WP6ContentListener::styleGroupOff(const uint8_t subGroup)
 {
 	if (!isUndoOn())
 	{
@@ -1010,7 +1010,7 @@ void WP6HLContentListener::styleGroupOff(const uint8_t subGroup)
 	}
 }
 
-void WP6HLContentListener::globalOn(const uint8_t systemStyle)
+void WP6ContentListener::globalOn(const uint8_t systemStyle)
 {
 	if (!isUndoOn())
 	{
@@ -1019,7 +1019,7 @@ void WP6HLContentListener::globalOn(const uint8_t systemStyle)
 	}
 }
 
-void WP6HLContentListener::globalOff()
+void WP6ContentListener::globalOff()
 {
 	if (!isUndoOn())
 	{
@@ -1028,7 +1028,7 @@ void WP6HLContentListener::globalOff()
 	}
 }
 
-void WP6HLContentListener::noteOn(const uint16_t textPID)
+void WP6ContentListener::noteOn(const uint16_t textPID)
 {
 	if (!isUndoOn())
 	{
@@ -1041,7 +1041,7 @@ void WP6HLContentListener::noteOn(const uint16_t textPID)
 	}
 }
 
-void WP6HLContentListener::noteOff(const WPXNoteType noteType)
+void WP6ContentListener::noteOff(const WPXNoteType noteType)
 {
 	if (!isUndoOn())
 	{
@@ -1069,7 +1069,7 @@ void WP6HLContentListener::noteOff(const WPXNoteType noteType)
 	}
 }
 
-void WP6HLContentListener::endDocument()
+void WP6ContentListener::endDocument()
 {
 	if (m_ps->m_isParagraphOpened)
 		_closeParagraph();
@@ -1085,7 +1085,7 @@ void WP6HLContentListener::endDocument()
 	m_listenerImpl->endDocument();
 }
 
-void WP6HLContentListener::defineTable(uint8_t position, uint16_t leftOffset)
+void WP6ContentListener::defineTable(uint8_t position, uint16_t leftOffset)
 {
 	if (!isUndoOn())
 	{
@@ -1123,7 +1123,7 @@ void WP6HLContentListener::defineTable(uint8_t position, uint16_t leftOffset)
 	}
 }
 
-void WP6HLContentListener::addTableColumnDefinition(uint32_t width, uint32_t leftGutter, uint32_t rightGutter, uint32_t attributes, uint8_t alignment)
+void WP6ContentListener::addTableColumnDefinition(uint32_t width, uint32_t leftGutter, uint32_t rightGutter, uint32_t attributes, uint8_t alignment)
 {
 	if (!isUndoOn())
 	{
@@ -1144,7 +1144,7 @@ void WP6HLContentListener::addTableColumnDefinition(uint32_t width, uint32_t lef
 	}
 }
 
-void WP6HLContentListener::startTable()
+void WP6ContentListener::startTable()
 {
 	if (!isUndoOn())
 	{
@@ -1166,7 +1166,7 @@ void WP6HLContentListener::startTable()
 	}
 }
 
-void WP6HLContentListener::insertRow(const uint16_t rowHeight, const bool isMinimumHeight, const bool isHeaderRow)
+void WP6ContentListener::insertRow(const uint16_t rowHeight, const bool isMinimumHeight, const bool isHeaderRow)
 {
 	if (!isUndoOn())
 	{
@@ -1176,7 +1176,7 @@ void WP6HLContentListener::insertRow(const uint16_t rowHeight, const bool isMini
 	}
 }
 
-void WP6HLContentListener::insertCell(const uint8_t colSpan, const uint8_t rowSpan, const bool boundFromLeft, const bool boundFromAbove,
+void WP6ContentListener::insertCell(const uint8_t colSpan, const uint8_t rowSpan, const bool boundFromLeft, const bool boundFromAbove,
 					const uint8_t borderBits, const RGBSColor * cellFgColor, const RGBSColor * cellBgColor, 
 					const RGBSColor * cellBorderColor, const WPXVerticalAlignment cellVerticalAlignment, 
 					const bool useCellAttributes, const uint32_t cellAttributes)
@@ -1198,7 +1198,7 @@ void WP6HLContentListener::insertCell(const uint8_t colSpan, const uint8_t rowSp
 	}
 }
 
-void WP6HLContentListener::endTable()
+void WP6ContentListener::endTable()
 {
 	if (!isUndoOn())
 	{
@@ -1214,7 +1214,7 @@ void WP6HLContentListener::endTable()
 // sends its text to the hll implementation and naively inserts it into the document
 // if textPID=0: Simply creates a blank paragraph
 // once finished, restores document state to what it was before
-void WP6HLContentListener::_handleSubDocument(uint16_t textPID, const bool isHeaderFooter, WPXTableList tableList, int nextTableIndice)
+void WP6ContentListener::_handleSubDocument(uint16_t textPID, const bool isHeaderFooter, WPXTableList tableList, int nextTableIndice)
 {
 	// save our old parsing state on our "stack"
 	WP6ParsingState *oldParseState = m_parseState;
@@ -1230,7 +1230,7 @@ void WP6HLContentListener::_handleSubDocument(uint16_t textPID, const bool isHea
 	}
 
 	if (textPID)
-		WP6HLListener::getPrefixDataPacket(textPID)->parse(this);
+		WP6Listener::getPrefixDataPacket(textPID)->parse(this);
 	else
 		_openSpan();
 	
@@ -1253,7 +1253,7 @@ void WP6HLContentListener::_handleSubDocument(uint16_t textPID, const bool isHea
 	m_parseState->m_noteTextPID = 0;
 }
 
-void WP6HLContentListener::_paragraphNumberOn(const uint16_t outlineHash, const uint8_t level)
+void WP6ContentListener::_paragraphNumberOn(const uint16_t outlineHash, const uint8_t level)
 {
 	m_parseState->m_styleStateSequence.setCurrentState(BEGIN_NUMBERING_BEFORE_DISPLAY_REFERENCING);
 	m_parseState->m_putativeListElementHasParagraphNumber = true;
@@ -1264,7 +1264,7 @@ void WP6HLContentListener::_paragraphNumberOn(const uint16_t outlineHash, const 
 // _flushText: Flushes text and any section, paragraph, or span properties prior to the text
 // FIXME: we need to declare a set of preconditions that must be met when this function is called
 //
-void WP6HLContentListener::_flushText()
+void WP6ContentListener::_flushText()
 {
 	if (m_ps->m_isListElementOpened || m_ps->m_isNote)
 	{
@@ -1326,7 +1326,7 @@ void WP6HLContentListener::_flushText()
 // FIXME: This code mostly works, but was created more or less by trial and error and does not derive from
 // a good mental model of how lists actually work. Developing such a model is complicated (given that the
 // WordPerfect developers never had one) but we should at least try.
-void WP6HLContentListener::_handleListChange(const uint16_t outlineHash)
+void WP6ContentListener::_handleListChange(const uint16_t outlineHash)
 {
 	if (!m_ps->m_isSectionOpened && !m_ps->m_inSubDocument && !m_ps->m_isTableOpened)
 		_openSection();
@@ -1432,7 +1432,7 @@ void WP6HLContentListener::_handleListChange(const uint16_t outlineHash)
 #endif
 }
 
-void WP6HLContentListener::_changeList()
+void WP6ContentListener::_changeList()
 {
 	if (m_ps->m_isParagraphOpened)
 		_closeParagraph();

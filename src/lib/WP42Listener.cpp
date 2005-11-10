@@ -24,12 +24,12 @@
  * Corel Corporation or Corel Corporation Limited."
  */
 
-#include "WP42HLListener.h"
+#include "WP42Listener.h"
 #include "WP42FileStructure.h"
 #include "libwpd_internal.h"
 
-WP42HLListener::WP42HLListener(std::vector<WPXPageSpan *> *pageList, WPXHLListenerImpl *listenerImpl) :
-	WPXHLListener(pageList, listenerImpl)
+WP42Listener::WP42Listener(std::vector<WPXPageSpan *> *pageList, WPXHLListenerImpl *listenerImpl) :
+	WPXListener(pageList, listenerImpl)
 {
 	m_textBuffer.clear();
 }
@@ -38,14 +38,14 @@ WP42HLListener::WP42HLListener(std::vector<WPXPageSpan *> *pageList, WPXHLListen
  public 'HLListenerImpl' functions
 *****************************************/
 
-void WP42HLListener::insertCharacter(const uint16_t character)
+void WP42Listener::insertCharacter(const uint16_t character)
 {
 	if (m_ps->m_isSpanOpened)
 		_openSpan();
 	appendUCS4(m_textBuffer, (uint32_t)character);
 }
 
-void WP42HLListener::insertTab(const uint8_t tabType, const float tabPosition)
+void WP42Listener::insertTab(const uint8_t tabType, const float tabPosition)
 {
 	if (!isUndoOn())
 	{
@@ -58,7 +58,7 @@ void WP42HLListener::insertTab(const uint8_t tabType, const float tabPosition)
 	}
 }
 
-void WP42HLListener::insertEOL()
+void WP42Listener::insertEOL()
 {
 	if (!isUndoOn())
 	{
@@ -71,7 +71,7 @@ void WP42HLListener::insertEOL()
 	}
 }
 
-void WP42HLListener::endDocument()
+void WP42Listener::endDocument()
 {
 	_closeSpan();
 	_closeParagraph();
@@ -85,7 +85,7 @@ void WP42HLListener::endDocument()
  public 'parser' functions
 *****************************************/
 
-void WP42HLListener::attributeChange(const bool isOn, const uint8_t attribute)
+void WP42Listener::attributeChange(const bool isOn, const uint8_t attribute)
 {
 	_closeSpan();
 
@@ -136,7 +136,7 @@ void WP42HLListener::attributeChange(const bool isOn, const uint8_t attribute)
  private functions
 *****************************************/
 
-void WP42HLListener::_flushText()
+void WP42Listener::_flushText()
 {
 	if (m_textBuffer.len())
 		m_listenerImpl->insertText(m_textBuffer);

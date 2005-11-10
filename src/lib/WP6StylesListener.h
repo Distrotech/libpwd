@@ -23,22 +23,22 @@
  * Corel Corporation or Corel Corporation Limited."
  */
 
-// WP6HLStylesListener: creates an intermediate table representation, given a
+// WP6StylesListener: creates an intermediate table representation, given a
 // sequence of messages passed to it by the parser.
 
 #ifndef WP6HLSTYLESLISTENER_H
 #define WP6HLSTYLESLISTENER_H
 
-#include "WP6HLListener.h"
+#include "WP6Listener.h"
 #include <vector>
 #include <set>
 #include "WPXPageSpan.h"
 #include "WPXTable.h"
 
-class WP6HLStylesListener : public WP6HLListener
+class WP6StylesListener : public WP6Listener
 {
 public:
-	WP6HLStylesListener(std::vector<WPXPageSpan *> *pageList, WPXTableList tableList);
+	WP6StylesListener(std::vector<WPXPageSpan *> *pageList, WPXTableList tableList);
 
 	virtual void setDate(const uint16_t year, const uint8_t month, const uint8_t day,
 			     const uint8_t hour, const uint8_t minute, const uint8_t second,
@@ -101,7 +101,7 @@ protected:
 
 	virtual void _flushText() {}
 	virtual void _openParagraph() {}
-	virtual void _openPageSpan() { /* FIXME: REMOVE ME WHEN IMPLEMENTED IN WPXHLListener */ };
+	virtual void _openPageSpan() { /* FIXME: REMOVE ME WHEN IMPLEMENTED IN WPXListener */ };
 	virtual void _changeList() {}
 
 private:

@@ -26,7 +26,7 @@
 #ifndef WP6HLLISTENER_H
 #define WP6HLLISTENER_H
  
-#include "WPXHLListener.h"
+#include "WPXListener.h"
 #include "WP6FileStructure.h"
 
 #include <vector>
@@ -38,10 +38,10 @@ class WP6PrefixData;
 
 enum WP6OutlineLocation { paragraphGroup, indexHeader };
 
-class WP6HLListener : public WPXHLListener
+class WP6Listener : public WPXListener
 {
 public:
-	WP6HLListener(std::vector<WPXPageSpan *> *pageList, WPXHLListenerImpl *listenerImpl);
+	WP6Listener(std::vector<WPXPageSpan *> *pageList, WPXHLListenerImpl *listenerImpl);
 	virtual void setDate(const uint16_t year, const uint8_t month, const uint8_t day,
 			     const uint8_t hour, const uint8_t minute, const uint8_t second,
 			     const uint8_t dayOfWeek, const uint8_t timeZone, const uint8_t unused) = 0;

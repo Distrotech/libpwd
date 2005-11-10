@@ -1,5 +1,6 @@
 /* libwpd
- * Copyright (C) 2004 Marc Maurer (j.m.maurer@student.utwente.nl)
+ * Copyright (C) 2003 William Lachance (william.lachance@sympatico.ca)
+ * Copyright (C) 2003 Marc Maurer (j.m.maurer@student.utwente.nl)
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -22,25 +23,16 @@
  * Corel Corporation or Corel Corporation Limited."
  */
 
-#ifndef WP3HLLISTENER_H
-#define WP3HLLISTENER_H
+#ifndef WP42HLLISTENER_H
+#define WP42HLLISTENER_H
 
-#include "WPXHLListener.h"
+#include "WPXListener.h"
 #include "WPXHLListenerImpl.h"
 
-typedef struct _WP3ParsingState WP3ParsingState;
-struct _WP3ParsingState
-{
-	_WP3ParsingState();
-	~_WP3ParsingState();
-};
-
-
-class WP3HLListener : public WPXHLListener
+class WP42Listener : public WPXListener
 {
 public:
-	WP3HLListener(std::vector<WPXPageSpan *> *pageList, WPXHLListenerImpl *listenerImpl);
-	virtual ~WP3HLListener();
+	WP42Listener(std::vector<WPXPageSpan *> *pageList, WPXHLListenerImpl *listenerImpl);
 
 	virtual void setAlignmentCharacter(const uint16_t character) {};
 	virtual void setLeaderCharacter(const uint16_t character, const uint8_t numberOfSpaces) {};
@@ -51,13 +43,15 @@ public:
 	virtual void handleLineBreak() {};
 	virtual void insertEOL();
 	virtual void attributeChange(const bool isOn, const uint8_t attribute);
+	virtual void lineSpacingChange(const float lineSpacing) {};
 	virtual void spacingAfterParagraphChange(const float spacingRelative, const float spacingAbsolute) {};
+	virtual void justificationChange(const uint8_t justification) {};
 	virtual void pageMarginChange(const uint8_t side, const uint16_t margin) {};
 	virtual void pageFormChange(const uint16_t length, const uint16_t width, const WPXFormOrientation orientation, const bool isPersistent) {};
-	virtual void marginChange(const uint8_t side, const uint16_t margin);
+	virtual void marginChange(const uint8_t side, const uint16_t margin) {};
 	virtual void paragraphMarginChange(const uint8_t side, const int16_t margin) {};
-	virtual void indentFirstLineChange(const int16_t offset);
-	virtual void columnChange(const WPXTextColumnType columnType, const uint8_t numColumns, const std::vector<float> &columnWidth,
+	virtual void indentFirstLineChange(const int16_t offset) {};
+	virtual void columnChange(const WPXTextColumnType typeColumn, const uint8_t numColumns, const std::vector<float> &columnWidth,
 				  const std::vector<bool> &isFixedWidth) {};
 	virtual void endDocument();
 
@@ -66,11 +60,10 @@ public:
 	virtual void startTable() {};
  	virtual void insertRow(const uint16_t rowHeight, const bool isMinimumHeight, const bool isHeaderRow) {};
  	virtual void insertCell(const uint8_t colSpan, const uint8_t rowSpan, const bool boundFromLeft, const bool boundFromAbove,
-				const uint8_t borderBits, const RGBSColor * cellFgColor, const RGBSColor * cellBgColor,
+				const uint8_t borderBits, const RGBSColor * cellFgColor, const RGBSColor * cellBgColor, 
 				const RGBSColor * cellBorderColor, const WPXVerticalAlignment cellVerticalAlignment, 
 				const bool useCellAttributes, const uint32_t cellAttributes) {};
  	virtual void endTable() {};
-        virtual void undoChange(const uint8_t undoType, const uint16_t undoLevel);
 
 protected:
 	virtual void _handleSubDocument(uint16_t textPID, const bool isHeaderFooter, WPXTableList tableList, int nextTableIndice = 0) {}
@@ -80,8 +73,6 @@ private:
 	void _changeList() {};
 
 	WPXString m_textBuffer;
-
-	WP3ParsingState *m_parseState;
 };
 
-#endif /* WP3HLLISTENER_H */
+#endif /* WP42HLLISTENER_H */

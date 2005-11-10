@@ -39,7 +39,7 @@ void WP3UndoGroup::_readContents(WPXInputStream *input)
 	m_undoLevel = readU16(input, true);
 }
 
-void WP3UndoGroup::parse(WP3HLListener *listener)
+void WP3UndoGroup::parse(WP3Listener *listener)
 {
 	listener->undoChange(m_undoType, m_undoLevel);
 }

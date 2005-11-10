@@ -53,37 +53,37 @@ WP3SingleByteFunction * WP3SingleByteFunction::constructSingleByteFunction(WPXIn
 		}
 }
 
-/*void WP3SpaceFunction::parse(WP3HLListener *listener)
+/*void WP3SpaceFunction::parse(WP3Listener *listener)
 {
 	listener->insertCharacter((uint16_t) ' ');
 }*/
 
-void WP3HardSpaceFunction::parse(WP3HLListener *listener)
+void WP3HardSpaceFunction::parse(WP3Listener *listener)
 {
 	listener->insertCharacter((uint16_t) 0xa0);
 }
 
-void WP3HyphenFunction::parse(WP3HLListener *listener)
+void WP3HyphenFunction::parse(WP3Listener *listener)
 {
 	listener->insertCharacter((uint16_t) '-');
 }
 
-void WP3SoftHyphenFunction::parse(WP3HLListener *listener)
+void WP3SoftHyphenFunction::parse(WP3Listener *listener)
 {
 	listener->insertCharacter((uint16_t) 0xad);
 }
 
-void WP3EOLFunction::parse(WP3HLListener *listener)
+void WP3EOLFunction::parse(WP3Listener *listener)
 {
 	listener->insertEOL();
 }
 
-/* void WP3EOCFunction::parse(WP3HLListener *listener)
+/* void WP3EOCFunction::parse(WP3Listener *listener)
 {
 	listener->insertBreak(WPX_COLUMN_BREAK);
 }*/
 
-void WP3EOPFunction::parse(WP3HLListener *listener)
+void WP3EOPFunction::parse(WP3Listener *listener)
 {
 	listener->insertBreak(WPX_PAGE_BREAK);
 }

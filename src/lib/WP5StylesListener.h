@@ -1,4 +1,5 @@
 /* libwpd
+ * Copyright (C) 2003 William Lachance (william.lachance@sympatico.ca)
  * Copyright (C) 2004 Marc Maurer (j.m.maurer@student.utwente.nl)
  *
  * This library is free software; you can redistribute it and/or
@@ -22,27 +23,27 @@
  * Corel Corporation or Corel Corporation Limited."
  */
 
-#ifndef WP3HLSTYLESLISTENER_H
-#define WP3HLSTYLESLISTENER_H
+#ifndef WP5HLSTYLESLISTENER_H
+#define WP5HLSTYLESLISTENER_H
 
-#include "WP3HLListener.h"
+#include "WP5Listener.h"
 #include <vector>
 #include "WPXPageSpan.h"
 #include "WPXTable.h"
 
-class WP3HLStylesListener : public WP3HLListener
+class WP5StylesListener : public WP5Listener
 {
 public:
-	WP3HLStylesListener(std::vector<WPXPageSpan *> *pageList, WPXTableList tableList);
+	WP5StylesListener(std::vector<WPXPageSpan *> *pageList, WPXTableList tableList);
 
 	virtual void startDocument() {}
 	virtual void setAlignmentCharacter(const uint16_t character) {}
 	virtual void setLeaderCharacter(const uint16_t character, const uint8_t numberOfSpaces) {}
 	virtual void defineTabStops(const bool isRelative, const std::vector<WPXTabStop> &tabStops, 
 				    const std::vector<bool> &usePreWP9LeaderMethods) {}
-	virtual void insertCharacter(const uint16_t character) {}
-	virtual void insertTab(const uint8_t tabType, const uint16_t tabPosition) {}
-	virtual void insertEOL() {}
+	virtual void insertCharacter(const uint16_t character) { /*if (!isUndoOn())*/ m_currentPageHasContent = true; }
+	virtual void insertTab(const uint8_t tabType, const uint16_t tabPosition) { /*if (!isUndoOn())*/ m_currentPageHasContent = true; }
+	virtual void insertEOL() { /*if (!isUndoOn())*/ m_currentPageHasContent = true; }
  	virtual void insertBreak(const uint8_t breakType);
 	virtual void attributeChange(const bool isOn, const uint8_t attribute) {}
 	virtual void lineSpacingChange(const float lineSpacing) {}
@@ -69,7 +70,7 @@ public:
 
 
 protected:
-	virtual void _openPageSpan() { /* FIXME: REMOVE ME WHEN IMPLEMENTED IN WPXHLListener */ };
+	virtual void _openPageSpan() { /* FIXME: REMOVE ME WHEN IMPLEMENTED IN WPXListener */ };
 
 private:
 	WPXPageSpan *m_currentPage;
@@ -80,4 +81,4 @@ private:
 	bool m_currentPageHasContent;
 };
 
-#endif /* WP3HLSTYLESLISTENER_H */
+#endif /* WP5HLSTYLESLISTENER_H */

@@ -81,7 +81,7 @@ void WP6PageGroup::_readContents(WPXInputStream *input)
 	}
 }
 
-void WP6PageGroup::parse(WP6HLListener *listener)
+void WP6PageGroup::parse(WP6Listener *listener)
 {
 	WPD_DEBUG_MSG(("WordPerfect: handling a Page group\n"));
 

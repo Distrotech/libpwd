@@ -25,7 +25,7 @@
  * Corel Corporation or Corel Corporation Limited."
  */
 
-#include "WPXHLListener.h"
+#include "WPXListener.h"
 #include "WPXPageSpan.h"
 #include "libwpd_internal.h"
 #include "WPXProperty.h"
@@ -122,7 +122,7 @@ _WPXParsingState::~_WPXParsingState()
 	DELETEP(m_highlightColor);
 }
 
-WPXHLListener::WPXHLListener(std::vector<WPXPageSpan *> *pageList, WPXHLListenerImpl *listenerImpl) :
+WPXListener::WPXListener(std::vector<WPXPageSpan *> *pageList, WPXHLListenerImpl *listenerImpl) :
 	m_pageList(pageList),
 	m_listenerImpl(listenerImpl),
 	m_ps(new WPXParsingState),
@@ -130,12 +130,12 @@ WPXHLListener::WPXHLListener(std::vector<WPXPageSpan *> *pageList, WPXHLListener
 {
 }
 
-WPXHLListener::~WPXHLListener()
+WPXListener::~WPXListener()
 {
 	DELETEP(m_ps);
 }
 
-void WPXHLListener::startDocument()
+void WPXListener::startDocument()
 {
 	if (!m_ps->m_isDocumentStarted)
 	{
@@ -150,7 +150,7 @@ void WPXHLListener::startDocument()
 	m_ps->m_isDocumentStarted = true;
 }
 
-void WPXHLListener::_openSection()
+void WPXListener::_openSection()
 {
 	if (!m_ps->m_isSectionOpened)
 	{
@@ -186,7 +186,7 @@ void WPXHLListener::_openSection()
 	}
 }
 
-void WPXHLListener::_closeSection()
+void WPXListener::_closeSection()
 {
 	if (m_ps->m_isSectionOpened)
 	{
@@ -204,7 +204,7 @@ void WPXHLListener::_closeSection()
 		
 }
 
-void WPXHLListener::_openPageSpan()
+void WPXListener::_openPageSpan()
 {
 	if (m_ps->m_isPageSpanOpened)
 		return;
@@ -319,7 +319,7 @@ void WPXHLListener::_openPageSpan()
 	m_ps->m_nextPageSpanIndice++;
 }
 
-void WPXHLListener::_closePageSpan()
+void WPXListener::_closePageSpan()
 {
 	if (m_ps->m_isPageSpanOpened)
 	{
@@ -333,7 +333,7 @@ void WPXHLListener::_closePageSpan()
 	m_ps->m_isPageSpanBreakDeferred = false;
 }
 
-void WPXHLListener::_openParagraph()
+void WPXListener::_openParagraph()
 {
 	if (m_ps->m_isTableOpened && !m_ps->m_isTableCellOpened)
 		return;
@@ -362,7 +362,7 @@ void WPXHLListener::_openParagraph()
 	}
 }
 
-void WPXHLListener::_resetParagraphState(const bool isListElement)
+void WPXListener::_resetParagraphState(const bool isListElement)
 {
 	m_ps->m_isParagraphColumnBreak = false;
 	m_ps->m_isParagraphPageBreak = false;
@@ -389,7 +389,7 @@ void WPXHLListener::_resetParagraphState(const bool isListElement)
 	m_ps->m_listBeginPosition = m_ps->m_paragraphMarginLeft + m_ps->m_paragraphTextIndent;
 }
 
-void WPXHLListener::_appendJustification(WPXPropertyList &propList, int justification)
+void WPXListener::_appendJustification(WPXPropertyList &propList, int justification)
 {
 	switch (justification)
 	{
@@ -413,7 +413,7 @@ void WPXHLListener::_appendJustification(WPXPropertyList &propList, int justific
 	}
 }
 
-void WPXHLListener::_appendParagraphProperties(WPXPropertyList &propList, const bool isListElement)
+void WPXListener::_appendParagraphProperties(WPXPropertyList &propList, const bool isListElement)
 {
 	int justification;
 	if (m_ps->m_tempParagraphJustification) 
@@ -447,7 +447,7 @@ void WPXHLListener::_appendParagraphProperties(WPXPropertyList &propList, const 
 		propList.insert("fo:break-before", "page");
 }
 
-void WPXHLListener::_getTabStops(WPXPropertyListVector &tabStops)
+void WPXListener::_getTabStops(WPXPropertyListVector &tabStops)
 {
 	for (int i=0; i<m_ps->m_tabStops.size(); i++)
 	{
@@ -494,7 +494,7 @@ void WPXHLListener::_getTabStops(WPXPropertyListVector &tabStops)
 	}
 }
 
-void WPXHLListener::_closeParagraph()
+void WPXListener::_closeParagraph()
 {
 	if (m_ps->m_isParagraphOpened)
 	{
@@ -508,7 +508,7 @@ void WPXHLListener::_closeParagraph()
 	m_ps->m_currentListLevel = 0;
 }
 
-void WPXHLListener::_openListElement()
+void WPXListener::_openListElement()
 {
 	if (!m_ps->m_isParagraphOpened && !m_ps->m_isListElementOpened)
 	{
@@ -527,7 +527,7 @@ void WPXHLListener::_openListElement()
 	}
 }
 
-void WPXHLListener::_closeListElement()
+void WPXListener::_closeListElement()
 {
 	if (m_ps->m_isListElementOpened)
 	{
@@ -543,7 +543,7 @@ void WPXHLListener::_closeListElement()
 
 const float WPX_DEFAULT_SUPER_SUB_SCRIPT = 58.0f; 
 
-void WPXHLListener::_openSpan()
+void WPXListener::_openSpan()
 {
 	if (m_ps->m_isTableOpened && !m_ps->m_isTableCellOpened)
 		return;
@@ -637,7 +637,7 @@ void WPXHLListener::_openSpan()
 	m_ps->m_isSpanOpened = true;
 }
 
-void WPXHLListener::_closeSpan()
+void WPXListener::_closeSpan()
 {
 	if (m_ps->m_isSpanOpened)
 	{
@@ -649,7 +649,7 @@ void WPXHLListener::_closeSpan()
 	m_ps->m_isSpanOpened = false;
 }
 
-void WPXHLListener::_openTable()
+void WPXListener::_openTable()
 {
 	_closeTable();
 	
@@ -709,7 +709,7 @@ void WPXHLListener::_openTable()
 	m_ps->m_currentTableCol = (-1);
 }
 
-void WPXHLListener::_closeTable()
+void WPXListener::_closeTable()
 {
 	if (m_ps->m_isTableOpened)
 	{
@@ -737,7 +737,7 @@ void WPXHLListener::_closeTable()
 		_closePageSpan();
 }
 
-void WPXHLListener::_openTableRow(const float height, const bool isMinimumHeight, const bool isHeaderRow)
+void WPXListener::_openTableRow(const float height, const bool isMinimumHeight, const bool isHeaderRow)
 {
 	_closeTableRow();
 	
@@ -765,7 +765,7 @@ void WPXHLListener::_openTableRow(const float height, const bool isMinimumHeight
 	m_ps->m_currentTableRow++;
 }
 
-void WPXHLListener::_closeTableRow()
+void WPXListener::_closeTableRow()
 {
 	if (m_ps->m_isTableRowOpened)
 	{
@@ -806,7 +806,7 @@ static void addBorderProps(const char *border, bool borderOn, const WPXString &b
 	WPXString borderOff;
 }
 
-void WPXHLListener::_openTableCell(const uint8_t colSpan, const uint8_t rowSpan, const bool boundFromLeft, const bool boundFromAbove,
+void WPXListener::_openTableCell(const uint8_t colSpan, const uint8_t rowSpan, const bool boundFromLeft, const bool boundFromAbove,
 				   const uint8_t borderBits, const RGBSColor * cellFgColor, const RGBSColor * cellBgColor,
 				   const RGBSColor * cellBorderColor, const WPXVerticalAlignment cellVerticalAlignment)
 {
@@ -852,7 +852,7 @@ void WPXHLListener::_openTableCell(const uint8_t colSpan, const uint8_t rowSpan,
 	m_ps->m_currentTableCol++;
 }
 
-void WPXHLListener::_closeTableCell()
+void WPXListener::_closeTableCell()
 {
 	if (m_ps->m_isTableCellOpened)
 	{
@@ -872,7 +872,7 @@ void WPXHLListener::_closeTableCell()
 /**
 Creates an new document state. Saves the old state on a "stack".
 */
-void WPXHLListener::handleSubDocument(uint16_t textPID, const bool isHeaderFooter, WPXTableList tableList, int nextTableIndice)
+void WPXListener::handleSubDocument(uint16_t textPID, const bool isHeaderFooter, WPXTableList tableList, int nextTableIndice)
 {
 	// save our old parsing state on our "stack"
 	WPXParsingState *oldPS = m_ps;
@@ -898,7 +898,7 @@ void WPXHLListener::handleSubDocument(uint16_t textPID, const bool isHeaderFoote
 	m_ps = oldPS;
 }
 
-void WPXHLListener::insertBreak(const uint8_t breakType)
+void WPXListener::insertBreak(const uint8_t breakType)
 {
 	if (!isUndoOn())
 	{
@@ -940,7 +940,7 @@ void WPXHLListener::insertBreak(const uint8_t breakType)
 	}
 }
 
-void WPXHLListener::lineSpacingChange(const float lineSpacing)
+void WPXListener::lineSpacingChange(const float lineSpacing)
 {
 	if (!isUndoOn())
 	{
@@ -948,7 +948,7 @@ void WPXHLListener::lineSpacingChange(const float lineSpacing)
 	}
 }
 
-void WPXHLListener::justificationChange(const uint8_t justification)
+void WPXListener::justificationChange(const uint8_t justification)
 {
 	if (!isUndoOn())
 	{
@@ -978,7 +978,7 @@ void WPXHLListener::justificationChange(const uint8_t justification)
 	}
 }
 
-WPXString WPXHLListener::_colorToString(const RGBSColor * color)
+WPXString WPXListener::_colorToString(const RGBSColor * color)
 {
 	WPXString tmpString;
 
@@ -997,7 +997,7 @@ WPXString WPXHLListener::_colorToString(const RGBSColor * color)
 	return tmpString;
 }
 
-WPXString WPXHLListener::_mergeColorsToString(const RGBSColor *fgColor, const RGBSColor *bgColor)
+WPXString WPXListener::_mergeColorsToString(const RGBSColor *fgColor, const RGBSColor *bgColor)
 {
 	WPXString tmpColor;
 	RGBSColor tmpFgColor, tmpBgColor;

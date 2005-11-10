@@ -40,7 +40,7 @@ void WP6DisplayNumberReferenceGroup::_readContents(WPXInputStream *input)
 		m_levelNumberToDisplay = readU8(input);
 }
 
-void WP6DisplayNumberReferenceGroup::parse(WP6HLListener *listener)
+void WP6DisplayNumberReferenceGroup::parse(WP6Listener *listener)
 {
 	WPD_DEBUG_MSG(("WordPerfect: handling a DisplayNumberReference group\n"));
 	

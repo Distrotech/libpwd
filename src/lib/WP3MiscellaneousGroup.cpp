@@ -80,7 +80,7 @@ void WP3MiscellaneousGroup::_readContents(WPXInputStream *input)
 	}
 }
 
-void WP3MiscellaneousGroup::parse(WP3HLListener *listener)
+void WP3MiscellaneousGroup::parse(WP3Listener *listener)
 {
 	WPD_DEBUG_MSG(("WordPerfect: handling a Miscellaneous group\n"));
 

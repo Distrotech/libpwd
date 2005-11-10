@@ -40,7 +40,7 @@ void WP3AttributeGroup::_readContents(WPXInputStream *input)
 	m_state = readU8(input);
 }
 
-void WP3AttributeGroup::parse(WP3HLListener *listener)
+void WP3AttributeGroup::parse(WP3Listener *listener)
 {
 	// FIXME: handle flags
 	bool tmpState;

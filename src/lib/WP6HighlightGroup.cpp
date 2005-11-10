@@ -46,7 +46,7 @@ WP6HighlightOnGroup::WP6HighlightOnGroup(WPXInputStream *input, uint8_t groupID)
 {
 }
 
-void WP6HighlightOnGroup::parse(WP6HLListener *listener)
+void WP6HighlightOnGroup::parse(WP6Listener *listener)
 {
 	listener->highlightChange(true, getColor());
 }
@@ -56,7 +56,7 @@ WP6HighlightOffGroup::WP6HighlightOffGroup(WPXInputStream *input, uint8_t groupI
 {
 }
 
-void WP6HighlightOffGroup::parse(WP6HLListener *listener)
+void WP6HighlightOffGroup::parse(WP6Listener *listener)
 {
 	listener->highlightChange(false, getColor());
 }

@@ -78,7 +78,7 @@ void WP5TableEOLGroup::_readContents(WPXInputStream *input)
 	}
 }
 
-void WP5TableEOLGroup::parse(WP5HLListener *listener)
+void WP5TableEOLGroup::parse(WP5Listener *listener)
 {
 	WPD_DEBUG_MSG(("WordPerfect: handling a Table EOL group\n"));
 

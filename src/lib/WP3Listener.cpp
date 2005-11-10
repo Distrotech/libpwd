@@ -23,7 +23,7 @@
  * Corel Corporation or Corel Corporation Limited."
  */
 
-#include "WP3HLListener.h"
+#include "WP3Listener.h"
 #include "WP3FileStructure.h"
 #include "WPXFileStructure.h"
 #include "libwpd_internal.h"
@@ -36,14 +36,14 @@ _WP3ParsingState::~_WP3ParsingState()
 {
 }
 
-WP3HLListener::WP3HLListener(std::vector<WPXPageSpan *> *pageList, WPXHLListenerImpl *listenerImpl) :
-	WPXHLListener(pageList, listenerImpl),
+WP3Listener::WP3Listener(std::vector<WPXPageSpan *> *pageList, WPXHLListenerImpl *listenerImpl) :
+	WPXListener(pageList, listenerImpl),
 	m_parseState(new WP3ParsingState)
 {
 	m_textBuffer.clear();
 }
 
-WP3HLListener::~WP3HLListener() 
+WP3Listener::~WP3Listener() 
 {
 	delete m_parseState;
 }
@@ -53,7 +53,7 @@ WP3HLListener::~WP3HLListener()
  public 'HLListenerImpl' functions
 *****************************************/
 
-void WP3HLListener::insertCharacter(const uint16_t character)
+void WP3Listener::insertCharacter(const uint16_t character)
 {
         if (!isUndoOn())
 	{
@@ -63,7 +63,7 @@ void WP3HLListener::insertCharacter(const uint16_t character)
 	}
 }
 
-void WP3HLListener::insertTab(const uint8_t tabType, const float tabPosition)
+void WP3Listener::insertTab(const uint8_t tabType, const float tabPosition)
 {
         if (!isUndoOn())
 	{
@@ -75,7 +75,7 @@ void WP3HLListener::insertTab(const uint8_t tabType, const float tabPosition)
 	}
 }
 
-void WP3HLListener::insertEOL()
+void WP3Listener::insertEOL()
 {
 	if (!isUndoOn())
 	{
@@ -89,7 +89,7 @@ void WP3HLListener::insertEOL()
 
 }
 
-void WP3HLListener::endDocument()
+void WP3Listener::endDocument()
 {
 	_closeSpan();
 	_closeParagraph();
@@ -103,7 +103,7 @@ void WP3HLListener::endDocument()
  public 'parser' functions
 *****************************************/
 
-void WP3HLListener::attributeChange(const bool isOn, const uint8_t attribute)
+void WP3Listener::attributeChange(const bool isOn, const uint8_t attribute)
 {
         if (!isUndoOn())
 	{
@@ -171,7 +171,7 @@ void WP3HLListener::attributeChange(const bool isOn, const uint8_t attribute)
 	}
 }
 
-void WP3HLListener::undoChange(const uint8_t undoType, const uint16_t undoLevel)
+void WP3Listener::undoChange(const uint8_t undoType, const uint16_t undoLevel)
 {
         if (undoType == 0x00) // begin invalid text
                 m_isUndoOn = true;
@@ -179,7 +179,7 @@ void WP3HLListener::undoChange(const uint8_t undoType, const uint16_t undoLevel)
                 m_isUndoOn = false;
 }
 
-void WP3HLListener::marginChange(uint8_t side, uint16_t margin)
+void WP3Listener::marginChange(uint8_t side, uint16_t margin)
 {
 	if (!isUndoOn())
 	{
@@ -204,7 +204,7 @@ void WP3HLListener::marginChange(uint8_t side, uint16_t margin)
 	}
 }
 
-void WP3HLListener::indentFirstLineChange(int16_t offset)
+void WP3Listener::indentFirstLineChange(int16_t offset)
 {
 	if (!isUndoOn())
 	{
@@ -224,7 +224,7 @@ void WP3HLListener::indentFirstLineChange(int16_t offset)
  private functions
 *****************************************/
 
-void WP3HLListener::_flushText()
+void WP3Listener::_flushText()
 {
 	if (m_textBuffer.len())
 		m_listenerImpl->insertText(m_textBuffer);

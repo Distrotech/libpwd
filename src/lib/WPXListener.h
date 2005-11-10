@@ -160,11 +160,11 @@ struct _WPXParsingState
 	bool m_isNote;
 };
 
-class WPXHLListener
+class WPXListener
 {
 public:
-	WPXHLListener(std::vector<WPXPageSpan *> *pageList, WPXHLListenerImpl *listenerImpl);
-	~WPXHLListener();
+	WPXListener(std::vector<WPXPageSpan *> *pageList, WPXHLListenerImpl *listenerImpl);
+	~WPXListener();
 
 	virtual void startDocument();
 	void handleSubDocument(uint16_t textPID, const bool isHeaderFooter, WPXTableList tableList, int nextTableIndice);

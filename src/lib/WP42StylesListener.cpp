@@ -23,14 +23,14 @@
  * Corel Corporation or Corel Corporation Limited."
  */
  
-#include "WP42HLStylesListener.h"
+#include "WP42StylesListener.h"
 #include "WPXTable.h"
 #include "WP42FileStructure.h"
 #include "WPXFileStructure.h"
 #include "libwpd_internal.h"
 
-WP42HLStylesListener::WP42HLStylesListener(std::vector<WPXPageSpan *> *pageList, WPXTableList tableList) : 
-	WP42HLListener(pageList, NULL),
+WP42StylesListener::WP42StylesListener(std::vector<WPXPageSpan *> *pageList, WPXTableList tableList) : 
+	WP42Listener(pageList, NULL),
 	m_currentPage(new WPXPageSpan()),
 	m_tableList(tableList), 
 	m_currentPageHasContent(false),
@@ -39,13 +39,13 @@ WP42HLStylesListener::WP42HLStylesListener(std::vector<WPXPageSpan *> *pageList,
 {
 }
 
-void WP42HLStylesListener::endDocument()
+void WP42StylesListener::endDocument()
 {	
 	insertBreak(WPX_SOFT_PAGE_BREAK); // pretend we just had a soft page break (for the last page)
 	delete(m_currentPage); // and delete the non-existent page that was allocated as a result (scandalous waste!)
 }
 
-void WP42HLStylesListener::insertBreak(const uint8_t breakType)
+void WP42StylesListener::insertBreak(const uint8_t breakType)
 {
 	//if (!isUndoOn())
 	//{	
@@ -53,7 +53,7 @@ void WP42HLStylesListener::insertBreak(const uint8_t breakType)
 		{
 		case WPX_PAGE_BREAK:
 		case WPX_SOFT_PAGE_BREAK:
-			if (WPXHLListener::m_pageList->size() > 0 && (*m_currentPage)==(*(m_pageList->back())))
+			if (WPXListener::m_pageList->size() > 0 && (*m_currentPage)==(*(m_pageList->back())))
 			{
 				int oldPageSpan = m_pageList->back()->getPageSpan();
 				m_pageList->back()->setPageSpan(oldPageSpan + 1);
@@ -72,7 +72,7 @@ void WP42HLStylesListener::insertBreak(const uint8_t breakType)
 	//}
 }
 /*
-void WP42HLStylesListener::pageMarginChange(const uint8_t side, const uint16_t margin)
+void WP42StylesListener::pageMarginChange(const uint8_t side, const uint16_t margin)
 {
 	if (!isUndoOn()) 
 	{
@@ -89,7 +89,7 @@ void WP42HLStylesListener::pageMarginChange(const uint8_t side, const uint16_t m
 	}
 }
 
-void WP42HLStylesListener::marginChange(const uint8_t side, const uint16_t margin)
+void WP42StylesListener::marginChange(const uint8_t side, const uint16_t margin)
 {
 	if (!isUndoOn()) 
 	{		
@@ -112,7 +112,7 @@ void WP42HLStylesListener::marginChange(const uint8_t side, const uint16_t margi
 
 }
 
-void WP42HLStylesListener::headerFooterGroup(const uint8_t headerFooterType, const uint8_t occurenceBits, const uint16_t textPID)
+void WP42StylesListener::headerFooterGroup(const uint8_t headerFooterType, const uint8_t occurenceBits, const uint16_t textPID)
 {
 	if (!isUndoOn()) 
 	{			
@@ -123,7 +123,7 @@ void WP42HLStylesListener::headerFooterGroup(const uint8_t headerFooterType, con
 	}
 }
 
-void WP42HLStylesListener::suppressPageCharacteristics(const uint8_t suppressCode)
+void WP42StylesListener::suppressPageCharacteristics(const uint8_t suppressCode)
 {
 	if (!isUndoOn()) 
 	{			
@@ -139,7 +139,7 @@ void WP42HLStylesListener::suppressPageCharacteristics(const uint8_t suppressCod
 	}
 }
 */
-void WP42HLStylesListener::startTable()
+void WP42StylesListener::startTable()
 {
 	//if (!isUndoOn()) 
 	//{			
@@ -149,7 +149,7 @@ void WP42HLStylesListener::startTable()
 	//}
 }
 
-void WP42HLStylesListener::insertRow(const uint16_t rowHeight, const bool isMinimumHeight, const bool isHeaderRow)
+void WP42StylesListener::insertRow(const uint16_t rowHeight, const bool isMinimumHeight, const bool isHeaderRow)
 {
 	if (/*!isUndoOn() && */m_currentTable != NULL) 
 	{
@@ -158,7 +158,7 @@ void WP42HLStylesListener::insertRow(const uint16_t rowHeight, const bool isMini
 	}
 }
 
-void WP42HLStylesListener::insertCell(const uint8_t colSpan, const uint8_t rowSpan, const bool boundFromLeft, const bool boundFromAbove, 
+void WP42StylesListener::insertCell(const uint8_t colSpan, const uint8_t rowSpan, const bool boundFromLeft, const bool boundFromAbove, 
 				  const uint8_t borderBits, const RGBSColor * cellFgColor, const RGBSColor * cellBgColor,
 				  const RGBSColor * cellBorderColor, const WPXVerticalAlignment cellVerticalAlignment, 
 				  const bool useCellAttributes, const uint32_t cellAttributes)

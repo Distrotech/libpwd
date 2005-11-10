@@ -47,7 +47,7 @@
  */
 
 #include "WP3EndOfLinePageGroup.h"
-#include "WPXHLListener.h"
+#include "WPXListener.h"
 #include "libwpd_internal.h"
 
 WP3EndOfLinePageGroup::WP3EndOfLinePageGroup(WPXInputStream *input) :	
@@ -61,7 +61,7 @@ void WP3EndOfLinePageGroup::_readContents(WPXInputStream *input)
 	// nothing really to do here...
 }
 
-void WP3EndOfLinePageGroup::parse(WP3HLListener *listener)
+void WP3EndOfLinePageGroup::parse(WP3Listener *listener)
 {
 	WPD_DEBUG_MSG(("WordPerfect: handling an End of Line/Page group\n"));
 	

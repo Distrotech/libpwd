@@ -72,7 +72,7 @@ void WP6GeneralTextPacket::_readContents(WPXInputStream *input)
 	m_stream = new WPXMemoryInputStream(streamData, totalSize);
 }
 
-void WP6GeneralTextPacket::parse(WP6HLListener *listener) const
+void WP6GeneralTextPacket::parse(WP6Listener *listener) const
 {
 	m_stream->seek(0, WPX_SEEK_SET);
 	WP6Parser::parseDocument(m_stream, listener);

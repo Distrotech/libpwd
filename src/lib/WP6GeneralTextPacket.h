@@ -35,7 +35,7 @@ public:
 	WP6GeneralTextPacket(WPXInputStream *input, int id, uint32_t dataOffset, uint32_t dataSize);
 	virtual ~WP6GeneralTextPacket();
 	virtual void _readContents(WPXInputStream *input);
-	virtual void parse(WP6HLListener *listener) const;
+	virtual void parse(WP6Listener *listener) const;
 
 private:              
 	uint16_t m_numTextBlocks;

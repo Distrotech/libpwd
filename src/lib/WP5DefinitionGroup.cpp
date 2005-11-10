@@ -23,7 +23,7 @@
  */
 
 #include "WP5DefinitionGroup.h"
-#include "WPXHLListener.h"
+#include "WPXListener.h"
 #include "libwpd_internal.h"
 
 WP5DefinitionGroup_DefineTablesSubGroup::WP5DefinitionGroup_DefineTablesSubGroup(WPXInputStream *input) :
@@ -58,7 +58,7 @@ WP5DefinitionGroup_DefineTablesSubGroup::WP5DefinitionGroup_DefineTablesSubGroup
 		m_columnAlignment[i] = readU8(input);
 }
 
-void WP5DefinitionGroup_DefineTablesSubGroup::parse(WP5HLListener *listener)
+void WP5DefinitionGroup_DefineTablesSubGroup::parse(WP5Listener *listener)
 {
 	listener->defineTable(m_position, m_leftOffset);
 	for (int i=0; i < m_numColumns; i++)
@@ -93,7 +93,7 @@ void WP5DefinitionGroup::_readContents(WPXInputStream *input)
 	}	
 }
 
-void WP5DefinitionGroup::parse(WP5HLListener *listener)
+void WP5DefinitionGroup::parse(WP5Listener *listener)
 {
 	WPD_DEBUG_MSG(("WordPerfect: handling a Definition group\n"));
 
