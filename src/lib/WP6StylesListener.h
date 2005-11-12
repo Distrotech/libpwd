@@ -26,8 +26,8 @@
 // WP6StylesListener: creates an intermediate table representation, given a
 // sequence of messages passed to it by the parser.
 
-#ifndef WP6HLSTYLESLISTENER_H
-#define WP6HLSTYLESLISTENER_H
+#ifndef WP6STYLESLISTENER_H
+#define WP6STYLESLISTENER_H
 
 #include "WP6Listener.h"
 #include <vector>
@@ -115,4 +115,4 @@ private:
 	std::set <int> m_subDocumentTextPIDs;
 };
 
-#endif /* WP6HLSTYLESLISTENER_H */
+#endif /* WP6STYLESLISTENER_H */

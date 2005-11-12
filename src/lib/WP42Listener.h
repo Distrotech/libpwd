@@ -23,8 +23,8 @@
  * Corel Corporation or Corel Corporation Limited."
  */
 
-#ifndef WP42HLLISTENER_H
-#define WP42HLLISTENER_H
+#ifndef WP42LISTENER_H
+#define WP42LISTENER_H
 
 #include "WPXListener.h"
 #include "WPXHLListenerImpl.h"
@@ -75,4 +75,4 @@ private:
 	WPXString m_textBuffer;
 };
 
-#endif /* WP42HLLISTENER_H */
+#endif /* WP42LISTENER_H */

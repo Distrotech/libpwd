@@ -23,8 +23,8 @@
  * Corel Corporation or Corel Corporation Limited."
  */
  
-#ifndef WP6HLLISTENER_H
-#define WP6HLLISTENER_H
+#ifndef WP6LISTENER_H
+#define WP6LISTENER_H
  
 #include "WPXListener.h"
 #include "WP6FileStructure.h"
@@ -75,4 +75,4 @@ private:
 	WP6PrefixData *m_prefixData;
 };
 
-#endif /* WP6HLLISTENER_H */
+#endif /* WP6LISTENER_H */

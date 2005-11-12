@@ -22,8 +22,8 @@
  * Corel Corporation or Corel Corporation Limited."
  */
 
-#ifndef WP3HLLISTENER_H
-#define WP3HLLISTENER_H
+#ifndef WP3LISTENER_H
+#define WP3LISTENER_H
 
 #include "WPXListener.h"
 #include "WPXHLListenerImpl.h"
@@ -61,15 +61,15 @@ public:
 				  const std::vector<bool> &isFixedWidth) {};
 	virtual void endDocument();
 
-	virtual void defineTable(uint8_t position, uint16_t leftOffset) {};
-	virtual void addTableColumnDefinition(uint32_t width, uint32_t leftGutter, uint32_t rightGutter, uint32_t attributes, uint8_t alignment) {};
-	virtual void startTable() {};
- 	virtual void insertRow(const uint16_t rowHeight, const bool isMinimumHeight, const bool isHeaderRow) {};
+	virtual void defineTable(uint8_t position, uint16_t leftOffset);
+	virtual void addTableColumnDefinition(uint32_t width, uint32_t leftGutter, uint32_t rightGutter, uint32_t attributes, uint8_t alignment);
+	virtual void startTable();
+ 	virtual void insertRow(const uint16_t rowHeight, const bool isMinimumHeight, const bool isHeaderRow);
  	virtual void insertCell(const uint8_t colSpan, const uint8_t rowSpan, const bool boundFromLeft, const bool boundFromAbove,
 				const uint8_t borderBits, const RGBSColor * cellFgColor, const RGBSColor * cellBgColor,
 				const RGBSColor * cellBorderColor, const WPXVerticalAlignment cellVerticalAlignment, 
-				const bool useCellAttributes, const uint32_t cellAttributes) {};
- 	virtual void endTable() {};
+				const bool useCellAttributes, const uint32_t cellAttributes);
+ 	virtual void endTable();
         virtual void undoChange(const uint8_t undoType, const uint16_t undoLevel);
 
 protected:
@@ -84,4 +84,4 @@ private:
 	WP3ParsingState *m_parseState;
 };
 
-#endif /* WP3HLLISTENER_H */
+#endif /* WP3LISTENER_H */

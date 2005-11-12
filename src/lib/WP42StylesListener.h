@@ -23,8 +23,8 @@
  * Corel Corporation or Corel Corporation Limited."
  */
 
-#ifndef WP42HLSTYLESLISTENER_H
-#define WP42HLSTYLESLISTENER_H
+#ifndef WP42STYLESLISTENER_H
+#define WP42STYLESLISTENER_H
 
 #include "WP42Listener.h"
 #include <vector>
@@ -84,4 +84,4 @@ private:
 	bool m_currentPageHasContent;
 };
 
-#endif /* WP42HLSTYLESLISTENER_H */
+#endif /* WP42STYLESLISTENER_H */

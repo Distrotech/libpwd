@@ -24,8 +24,8 @@
  * Corel Corporation or Corel Corporation Limited."
  */
 
-#ifndef WP6HLCONTENTLISTENER_H
-#define WP6HLCONTENTLISTENER_H
+#ifndef WP6CONTENTLISTENER_H
+#define WP6CONTENTLISTENER_H
 
 #include "WP6Listener.h"
 #include "WPXListener.h"
@@ -203,4 +203,4 @@ private:
 	std::map<uint16_t,WP6OutlineDefinition *> m_outlineDefineHash;
 };
 
-#endif /* WP6HLCONTENTLISTENER_H */
+#endif /* WP6CONTENTLISTENER_H */

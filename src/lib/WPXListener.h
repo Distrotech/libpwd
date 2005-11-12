@@ -24,8 +24,8 @@
  * Corel Corporation or Corel Corporation Limited."
  */
 
-#ifndef WPXHLLISTENER_H
-#define WPXHLLISTENER_H
+#ifndef WPXLISTENER_H
+#define WPXLISTENER_H
 
 #include "WPXHLListenerImpl.h"
 #include "WPXTable.h"
@@ -248,4 +248,4 @@ private:
 	WPXString _mergeColorsToString(const RGBSColor *fgColor, const RGBSColor *bgColor);
 };
 
-#endif /* WPXHLLISTENER_H */
+#endif /* WPXLISTENER_H */

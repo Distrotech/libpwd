@@ -23,8 +23,8 @@
  * Corel Corporation or Corel Corporation Limited."
  */
 
-#ifndef WP5HLLISTENER_H
-#define WP5HLLISTENER_H
+#ifndef WP5LISTENER_H
+#define WP5LISTENER_H
 
 #include "WPXListener.h"
 #include "WPXHLListenerImpl.h"
@@ -84,4 +84,4 @@ private:
 	WP5ParsingState *m_parseState;
 };
 
-#endif /* WP5HLLISTENER_H */
+#endif /* WP5LISTENER_H */

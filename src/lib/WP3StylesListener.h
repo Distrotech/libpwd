@@ -22,8 +22,8 @@
  * Corel Corporation or Corel Corporation Limited."
  */
 
-#ifndef WP3HLSTYLESLISTENER_H
-#define WP3HLSTYLESLISTENER_H
+#ifndef WP3STYLESLISTENER_H
+#define WP3STYLESLISTENER_H
 
 #include "WP3Listener.h"
 #include <vector>
@@ -80,4 +80,4 @@ private:
 	bool m_currentPageHasContent;
 };
 
-#endif /* WP3HLSTYLESLISTENER_H */
+#endif /* WP3STYLESLISTENER_H */

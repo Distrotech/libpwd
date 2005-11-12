@@ -129,20 +129,46 @@ void WP3EndOfLinePageGroup::parse(WP3Listener *listener)
 		case 0x15: // Temporary Hard End of Column/Soft EOP
 			break;
 		case 0x16: // Hard End of Table Cell
+			{
+				RGBSColor tmpCellBorderColor(0x00, 0x00, 0x00, 0x64);
+				listener->insertCell(1, 1, false, false, 0x00, NULL, NULL, &tmpCellBorderColor, TOP, true, 0x00000000);
+			}
 			break;
 		case 0x17: // (reserved)
 			break;
 		case 0x18: // Hard End of Table Row/Cell
+			{
+				listener->insertRow(0x0000, true, false);
+				RGBSColor tmpCellBorderColor(0x00, 0x00, 0x00, 0x64);
+				listener->insertCell(1, 1, false, false, 0x00, NULL, NULL, &tmpCellBorderColor, TOP, true, 0x00000000);
+			}
 			break;
 		case 0x19: // Hard End of Table Row/Cell/Soft EOP
+			{
+				listener->insertRow(0x0000, true, false);
+				RGBSColor tmpCellBorderColor(0x00, 0x00, 0x00, 0x64);
+				listener->insertCell(1, 1, false, false, 0x00, NULL, NULL, &tmpCellBorderColor, TOP, true, 0x00000000);
+			}
 			break;
 		case 0x1A: // Hard End of Table Row/End of Table
+			listener->endTable();
 			break;
 		case 0x1B: // Hard End of Table Row/End of Table/Soft EOP
+			listener->endTable();
 			break;
 		case 0x1C: // Hard End of Table Row/Cell/End of Header
+			{
+				listener->insertRow(0x0000, true, false);
+				RGBSColor tmpCellBorderColor(0x00, 0x00, 0x00, 0x64);
+				listener->insertCell(1, 1, false, false, 0x00, NULL, NULL, &tmpCellBorderColor, TOP, true, 0x00000000);
+			}
 			break;
 		case 0x1D: // Hard End of Table Row/Cell/Soft EOP/Start of Header
+			{
+				listener->insertRow(0x0000, true, false);
+				RGBSColor tmpCellBorderColor(0x00, 0x00, 0x00, 0x64);
+				listener->insertCell(1, 1, false, false, 0x00, NULL, NULL, &tmpCellBorderColor, TOP, true, 0x00000000);
+			}
 			break;
 		case 0x1E: // (reserved)
 			break;

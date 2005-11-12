@@ -23,8 +23,8 @@
  * Corel Corporation or Corel Corporation Limited."
  */
 
-#ifndef WP5HLSTYLESLISTENER_H
-#define WP5HLSTYLESLISTENER_H
+#ifndef WP5STYLESLISTENER_H
+#define WP5STYLESLISTENER_H
 
 #include "WP5Listener.h"
 #include <vector>
@@ -81,4 +81,4 @@ private:
 	bool m_currentPageHasContent;
 };
 
-#endif /* WP5HLSTYLESLISTENER_H */
+#endif /* WP5STYLESLISTENER_H */

@@ -60,6 +60,7 @@ void WP3TablesGroup::_readContents(WPXInputStream *input)
 		m_leftGutterSpacing = readU32(input, true);
 		m_bottomGutterSpacing = readU32(input, true);
 		m_rightGutterSpacing = readU32(input, true);
+		input->seek(3, WPX_SEEK_CUR);
 		m_numColumns = readU8(input);
 		for (uint8_t i=0; i<m_numColumns; i++)
 		{
@@ -109,6 +110,16 @@ void WP3TablesGroup::parse(WP3Listener *listener)
 	switch (getSubGroup())
 	{
 	case WP3_TABLES_GROUP_TABLE_FUNCTION:
+		listener->defineTable(m_tableMode, fixedPointToWPUs(m_offsetFromLeftEdge));
+		for (uint8_t i=0; i<m_numColumns; i++)
+			listener->addTableColumnDefinition(fixedPointToWPUs(m_columnWidth[i]), fixedPointToWPUs(m_leftGutterSpacing),
+								fixedPointToWPUs(m_rightGutterSpacing), 0, LEFT);
+		listener->startTable();
+		listener->insertRow(0x0000, true, false);
+		{
+			RGBSColor tmpCellBorderColor(0x00, 0x00, 0x00, 0x64);
+			listener->insertCell(1, 1, false, false, 0x00, NULL, NULL, &tmpCellBorderColor, TOP, true, 0x00000000);
+		}
 		break;
 	case WP3_TABLES_GROUP_SET_TABLE_CELL_SPAN:
 		break;
