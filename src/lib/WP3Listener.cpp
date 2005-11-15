@@ -28,7 +28,10 @@
 #include "WPXFileStructure.h"
 #include "libwpd_internal.h"
 
-_WP3ParsingState::_WP3ParsingState()
+_WP3ParsingState::_WP3ParsingState():
+	m_colSpan(1),
+	m_rowSpan(1),
+	m_isTableCellToBeStarted(false)
 {
 }
 
@@ -186,17 +189,16 @@ void WP3Listener::insertCell(const uint8_t colSpan, const uint8_t rowSpan, const
 {
 	if (!isUndoOn())
 	{
-		if (m_ps->m_currentTableRow < 0) // cell without a row, invalid
-			throw ParseException();
-		_flushText();
-		_openTableCell(colSpan, rowSpan, boundFromLeft, boundFromAbove, borderBits,       
-			       cellFgColor, cellBgColor, cellBorderColor, cellVerticalAlignment);
-		m_ps->m_isCellWithoutParagraph = true;
-		if (useCellAttributes)
-			m_ps->m_cellAttributeBits = cellAttributes;
-		else
-			m_ps->m_cellAttributeBits = m_ps->m_tableDefinition.columnsProperties[m_ps->m_currentTableCol-1].m_attributes;
-//		justificationChange(m_ps->m_tableDefinition.columnsProperties[m_ps->m_currentTableCol-1].m_alignment);
+		m_parseState->m_isTableCellToBeStarted = true;
+	}
+}
+
+void WP3Listener::setTableCellSpan(const uint16_t colSpan, const uint16_t rowSpan)
+{
+	if (!isUndoOn())
+	{
+		m_parseState->m_colSpan=colSpan;
+		m_parseState->m_rowSpan=rowSpan;
 	}
 }
 
@@ -208,6 +210,7 @@ void WP3Listener::endTable()
 		_closeTable();
 		// restore the justification that was there before the table.
 		m_ps->m_paragraphJustification = m_ps->m_paragraphJustificationBeforeTable;
+		m_parseState->m_isTableCellToBeStarted = false;
 	}
 }
 
@@ -331,7 +334,26 @@ void WP3Listener::indentFirstLineChange(int16_t offset)
 	}
 }
 
-
+void WP3Listener::beginningOfParagraphOff()
+{
+	if (!isUndoOn())
+	{
+		if (m_parseState->m_isTableCellToBeStarted)
+		{
+			if (m_ps->m_currentTableRow < 0) // cell without a row, invalid
+				throw ParseException();
+			_flushText();
+			RGBSColor tmpCellBorderColor(0x00, 0x00, 0x00, 0x64);
+			_openTableCell((uint8_t)m_parseState->m_colSpan, (uint8_t)m_parseState->m_rowSpan, false, false, 0x00000000,       
+				       NULL, NULL, &tmpCellBorderColor, TOP);
+			m_parseState->m_colSpan=1;
+			m_parseState->m_rowSpan=1;
+			m_parseState->m_isTableCellToBeStarted = false;
+			m_ps->m_isCellWithoutParagraph = true;
+			m_ps->m_cellAttributeBits = 0x00000000;
+		}
+	}
+}
 
 /****************************************
  private functions

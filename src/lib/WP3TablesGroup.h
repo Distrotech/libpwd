@@ -50,8 +50,8 @@ class WP3TablesGroup : public WP3VariableLengthGroup
 	uint32_t m_rightOffsetForDecimalAlign[32];
 	
 	// variables needed for subgroup 2 (Set Table Cell Span)
-	uint8_t m_colSpan;
-	uint8_t m_rowSpan;
+	uint16_t m_colSpan;
+	uint16_t m_rowSpan;
 };
 
 #endif /* WP3TABLESGROUP_H */

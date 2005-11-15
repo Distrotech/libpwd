@@ -71,8 +71,9 @@ void WP3TablesGroup::_readContents(WPXInputStream *input)
 		}		
 		break;
 	case WP3_TABLES_GROUP_SET_TABLE_CELL_SPAN:
-		m_colSpan = readU8(input);
-		m_rowSpan = readU8(input);
+		m_colSpan = readU16(input, true);
+		m_rowSpan = readU16(input, true);
+		m_colSpan++; m_rowSpan++;
 		break;
 	case WP3_TABLES_GROUP_SET_TABLE_CELL_TOP_LINE:
 		break;
@@ -122,6 +123,7 @@ void WP3TablesGroup::parse(WP3Listener *listener)
 		}
 		break;
 	case WP3_TABLES_GROUP_SET_TABLE_CELL_SPAN:
+		listener->setTableCellSpan(m_colSpan, m_rowSpan);
 		break;
 	case WP3_TABLES_GROUP_SET_TABLE_CELL_TOP_LINE:
 		break;

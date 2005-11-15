@@ -33,6 +33,9 @@ struct _WP3ParsingState
 {
 	_WP3ParsingState();
 	~_WP3ParsingState();
+	uint16_t m_colSpan;
+	uint16_t m_rowSpan;
+	bool m_isTableCellToBeStarted;
 };
 
 
@@ -69,6 +72,9 @@ public:
 				const uint8_t borderBits, const RGBSColor * cellFgColor, const RGBSColor * cellBgColor,
 				const RGBSColor * cellBorderColor, const WPXVerticalAlignment cellVerticalAlignment, 
 				const bool useCellAttributes, const uint32_t cellAttributes);
+	virtual void setTableCellSpan(const uint16_t colSpan, const uint16_t rowSpan);
+	virtual void beginningOfParagraphOn() {};
+	virtual void beginningOfParagraphOff();
  	virtual void endTable();
         virtual void undoChange(const uint8_t undoType, const uint16_t undoLevel);
 

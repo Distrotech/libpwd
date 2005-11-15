@@ -35,12 +35,6 @@ class WP3SingleByteFunction : public WP3Part
 	static WP3SingleByteFunction * constructSingleByteFunction(WPXInputStream *input, uint8_t groupID);
 };
 
-/*class WP3SpaceFunction : public WP3SingleByteFunction
-{
-public:
-	virtual void parse(WP3Listener *listener);	
-};*/
-
 class WP3HardSpaceFunction : public WP3SingleByteFunction
 {
 public:
@@ -52,12 +46,6 @@ class WP3EOLFunction : public WP3SingleByteFunction
 public:
 	virtual void parse(WP3Listener *listener);	
 };
-
-/*class WP3EOCFunction : public WP3SingleByteFunction
-{
-public:
-	virtual void parse(WP3Listener *listener);	
-};*/
 
 class WP3EOPFunction : public WP3SingleByteFunction
 {
@@ -72,6 +60,12 @@ public:
 };
 
 class WP3SoftHyphenFunction : public WP3SingleByteFunction
+{
+public:
+	virtual void parse(WP3Listener *listener);	
+};
+
+class WP3BeginningOfParagraphOffFunction : public WP3SingleByteFunction
 {
 public:
 	virtual void parse(WP3Listener *listener);	
