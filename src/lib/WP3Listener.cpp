@@ -162,11 +162,10 @@ void WP3Listener::startTable()
 		// save the justification information. We will need it after the table ends.
 		m_ps->m_paragraphJustificationBeforeTable = m_ps->m_paragraphJustification;
 		if (m_ps->m_sectionAttributesChanged && !m_ps->m_isTableOpened)
-		{
 			_closeSection();
+		m_ps->m_sectionAttributesChanged = false;
+		if (!m_ps->m_isTableOpened && !m_ps->m_isSectionOpened)
 			_openSection();
-			m_ps->m_sectionAttributesChanged = false;
-		}
 		_openTable();
 	}
 }
