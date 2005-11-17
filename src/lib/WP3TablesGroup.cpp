@@ -116,11 +116,6 @@ void WP3TablesGroup::parse(WP3Listener *listener)
 			listener->addTableColumnDefinition(fixedPointToWPUs(m_columnWidth[i]), fixedPointToWPUs(m_leftGutterSpacing),
 								fixedPointToWPUs(m_rightGutterSpacing), 0, LEFT);
 		listener->startTable();
-		listener->insertRow(0x0000, true, false);
-		{
-			RGBSColor tmpCellBorderColor(0x00, 0x00, 0x00, 0x64);
-			listener->insertCell(1, 1, false, false, 0x00, NULL, NULL, &tmpCellBorderColor, TOP, true, 0x00000000);
-		}
 		break;
 	case WP3_TABLES_GROUP_SET_TABLE_CELL_SPAN:
 		listener->setTableCellSpan(m_colSpan, m_rowSpan);

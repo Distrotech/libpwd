@@ -47,9 +47,6 @@ WP3SingleByteFunction * WP3SingleByteFunction::constructSingleByteFunction(WPXIn
 	case 0xa0: // hard space
 		return new WP3HardSpaceFunction();
 		
-	case 0xab: // beginning of paragraph OFF
-		return new WP3BeginningOfParagraphOffFunction();
-		
 	default:
 		// should not happen
 		return NULL;
@@ -79,9 +76,4 @@ void WP3EOLFunction::parse(WP3Listener *listener)
 void WP3EOPFunction::parse(WP3Listener *listener)
 {
 	listener->insertBreak(WPX_PAGE_BREAK);
-}
-
-void WP3BeginningOfParagraphOffFunction::parse(WP3Listener *listener)
-{
-	listener->beginningOfParagraphOff();
 }

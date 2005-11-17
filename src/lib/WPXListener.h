@@ -217,11 +217,11 @@ protected:
 	void _openPageSpan();
 	void _closePageSpan();
 
-	void _appendParagraphProperties(WPXPropertyList &propList, const bool isListElement=false);
-	void _getTabStops(WPXPropertyListVector &tabStops);
-	void _appendJustification(WPXPropertyList &propList, int justification);
-	virtual void _openParagraph();
+	virtual void _appendParagraphProperties(WPXPropertyList &propList, const bool isListElement=false);
+	virtual void _getTabStops(WPXPropertyListVector &tabStops);
+	virtual void _appendJustification(WPXPropertyList &propList, int justification);
 	virtual void _resetParagraphState(const bool isListElement=false);
+	virtual void _openParagraph();
 	void _closeParagraph();
 
 	void _openListElement();

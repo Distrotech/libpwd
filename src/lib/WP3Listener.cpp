@@ -30,8 +30,7 @@
 
 _WP3ParsingState::_WP3ParsingState():
 	m_colSpan(1),
-	m_rowSpan(1),
-	m_isTableCellToBeStarted(false)
+	m_rowSpan(1)
 {
 }
 
@@ -135,7 +134,7 @@ void WP3Listener::defineTable(uint8_t position, uint16_t leftOffset)
 	}
 }
 
-void WP3Listener::addTableColumnDefinition(uint32_t width, uint32_t leftGutter, uint32_t rightGutter, uint32_t attributes, uint8_t alignment)
+void WP3Listener::addTableColumnDefinition(const uint32_t width, const uint32_t leftGutter, const uint32_t rightGutter, const uint32_t attributes, const uint8_t alignment)
 {
 	if (!isUndoOn())
 	{
@@ -176,7 +175,6 @@ void WP3Listener::insertRow(const uint16_t rowHeight, const bool isMinimumHeight
 {
 	if (!isUndoOn())
 	{
-		_flushText();
 		float rowHeightInch = (float)((double) rowHeight / (double)WPX_NUM_WPUS_PER_INCH);
 		_openTableRow(rowHeightInch, isMinimumHeight, isHeaderRow);
 	}
@@ -189,7 +187,44 @@ void WP3Listener::insertCell(const uint8_t colSpan, const uint8_t rowSpan, const
 {
 	if (!isUndoOn())
 	{
-		m_parseState->m_isTableCellToBeStarted = true;
+		if (m_ps->m_currentTableRow < 0) // cell without a row, invalid
+			throw ParseException();
+		_openTableCell(colSpan, rowSpan, boundFromLeft, boundFromAbove, borderBits,       
+			       cellFgColor, cellBgColor, cellBorderColor, cellVerticalAlignment);
+		m_ps->m_isCellWithoutParagraph = true;
+		if (useCellAttributes)
+			m_ps->m_cellAttributeBits = cellAttributes;
+		else
+			m_ps->m_cellAttributeBits = m_ps->m_tableDefinition.columnsProperties[m_ps->m_currentTableCol-1].m_attributes;
+	}
+}
+
+void WP3Listener::closeCell()
+{
+	if (!isUndoOn())
+	{
+		if (!m_ps->m_isTableRowOpened)
+			insertRow(0, true, false);
+					
+		if (!m_ps->m_isTableCellOpened)
+		{
+			RGBSColor tmpCellBorderColor(0x00, 0x00, 0x00, 0x64);
+			insertCell((uint8_t)m_parseState->m_colSpan, (uint8_t)m_parseState->m_rowSpan, false, false, 0x00000000,       
+				       NULL, NULL, &tmpCellBorderColor, TOP, true, 0x00000000);
+			m_parseState->m_colSpan=1;
+			m_parseState->m_rowSpan=1;
+		}
+			
+		_closeTableCell();
+	}
+}
+
+void WP3Listener::closeRow()
+{
+	if (!isUndoOn())
+	{
+		closeCell();
+		_closeTableRow();
 	}
 }
 
@@ -210,7 +245,6 @@ void WP3Listener::endTable()
 		_closeTable();
 		// restore the justification that was there before the table.
 		m_ps->m_paragraphJustification = m_ps->m_paragraphJustificationBeforeTable;
-		m_parseState->m_isTableCellToBeStarted = false;
 	}
 }
 
@@ -295,7 +329,7 @@ void WP3Listener::undoChange(const uint8_t undoType, const uint16_t undoLevel)
                 m_isUndoOn = false;
 }
 
-void WP3Listener::marginChange(uint8_t side, uint16_t margin)
+void WP3Listener::marginChange(const uint8_t side, const uint16_t margin)
 {
 	if (!isUndoOn())
 	{
@@ -320,7 +354,37 @@ void WP3Listener::marginChange(uint8_t side, uint16_t margin)
 	}
 }
 
-void WP3Listener::indentFirstLineChange(int16_t offset)
+void WP3Listener::justificationChange(const uint8_t justification)
+{
+	if (!isUndoOn())
+	{
+		// could be done simply by:
+		// m_ps->m_paragraphJustification = justification;
+		switch (justification)
+		{
+		case 0x00:
+			m_ps->m_paragraphJustification = WPX_PARAGRAPH_JUSTIFICATION_LEFT;
+			break;
+		case 0x01:
+			m_ps->m_paragraphJustification = WPX_PARAGRAPH_JUSTIFICATION_CENTER;
+			break;
+		case 0x02:
+			m_ps->m_paragraphJustification = WPX_PARAGRAPH_JUSTIFICATION_RIGHT;
+			break;
+		case 0x03:
+			m_ps->m_paragraphJustification = WPX_PARAGRAPH_JUSTIFICATION_FULL;
+			break;
+		case 0x04:
+			m_ps->m_paragraphJustification = WPX_PARAGRAPH_JUSTIFICATION_FULL_ALL_LINES;
+			break;
+		case 0x05:
+			m_ps->m_paragraphJustification = WPX_PARAGRAPH_JUSTIFICATION_DECIMAL_ALIGNED;
+			break;
+		}
+	}
+}
+
+void WP3Listener::indentFirstLineChange(const int16_t offset)
 {
 	if (!isUndoOn())
 	{
@@ -334,25 +398,45 @@ void WP3Listener::indentFirstLineChange(int16_t offset)
 	}
 }
 
-void WP3Listener::beginningOfParagraphOff()
+void WP3Listener::setTextFont(const char* fontName)
 {
 	if (!isUndoOn())
 	{
-		if (m_parseState->m_isTableCellToBeStarted)
+		_closeSpan();
+		
+		m_ps->m_fontName->sprintf("%s", fontName);
+	}
+}
+
+void WP3Listener::setFontSize(const uint16_t fontSize)
+{
+	if (!isUndoOn())
+	{
+		_closeSpan();
+		
+		m_ps->m_fontSize=float(fontSize);
+	}
+}
+
+void WP3Listener::_openParagraph()
+{
+
+	if (m_ps->m_isTableOpened)
+	{
+		if (!m_ps->m_isTableRowOpened)
+			insertRow(0, true, false);
+					
+		if (!m_ps->m_isTableCellOpened)
 		{
-			if (m_ps->m_currentTableRow < 0) // cell without a row, invalid
-				throw ParseException();
-			_flushText();
 			RGBSColor tmpCellBorderColor(0x00, 0x00, 0x00, 0x64);
-			_openTableCell((uint8_t)m_parseState->m_colSpan, (uint8_t)m_parseState->m_rowSpan, false, false, 0x00000000,       
-				       NULL, NULL, &tmpCellBorderColor, TOP);
+			insertCell((uint8_t)m_parseState->m_colSpan, (uint8_t)m_parseState->m_rowSpan, false, false, 0x00000000,       
+				       NULL, NULL, &tmpCellBorderColor, TOP, true, 0x00000000);
 			m_parseState->m_colSpan=1;
 			m_parseState->m_rowSpan=1;
-			m_parseState->m_isTableCellToBeStarted = false;
-			m_ps->m_isCellWithoutParagraph = true;
-			m_ps->m_cellAttributeBits = 0x00000000;
 		}
 	}
+
+	WPXListener::_openParagraph();
 }
 
 /****************************************

@@ -65,8 +65,12 @@ public:
 				const uint8_t borderBits, const RGBSColor * cellFgColor, const RGBSColor * cellBgColor, 
 				const RGBSColor * cellBorderColor, const WPXVerticalAlignment cellVerticalAlignment, 
 				const bool useCellAttributes, const uint32_t cellAttributes);
+ 	virtual void closeCell() {}
+	virtual void closeRow() {}
+	virtual void setTableCellSpan(const uint16_t colSpan, const uint16_t rowSpan) {}
  	virtual void endTable() {}
-
+	virtual void setTextFont(const char* fontName) {}
+	virtual void setFontSize(const uint16_t fontSize) {}
 
 protected:
 	virtual void _openPageSpan() { /* FIXME: REMOVE ME WHEN IMPLEMENTED IN WPXListener */ };

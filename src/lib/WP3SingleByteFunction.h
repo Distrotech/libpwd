@@ -65,10 +65,4 @@ public:
 	virtual void parse(WP3Listener *listener);	
 };
 
-class WP3BeginningOfParagraphOffFunction : public WP3SingleByteFunction
-{
-public:
-	virtual void parse(WP3Listener *listener);	
-};
-
 #endif /* WP3SINGLEBYTEFUNCTION_H */

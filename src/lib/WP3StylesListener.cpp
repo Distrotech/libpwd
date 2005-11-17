@@ -185,3 +185,4 @@ void WP3StylesListener::insertCell(const uint8_t colSpan, const uint8_t rowSpan,
 		m_currentTable->insertCell(colSpan, rowSpan, boundFromLeft, boundFromAbove, borderBits);
 	}
 }
+
