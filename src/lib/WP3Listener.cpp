@@ -81,6 +81,21 @@ void WP3Listener::insertEOL()
 {
 	if (!isUndoOn())
 	{
+		if (m_ps->m_isTableOpened)
+		{
+			if (!m_ps->m_isTableRowOpened)
+				insertRow(0, true, false);
+			
+			if (!m_ps->m_isTableCellOpened)
+			{
+				RGBSColor tmpCellBorderColor(0x00, 0x00, 0x00, 0x64);
+				insertCell((uint8_t)m_parseState->m_colSpan, (uint8_t)m_parseState->m_rowSpan, false, false, 0x00000000,       
+					       NULL, NULL, &tmpCellBorderColor, TOP, true, 0x00000000);
+				m_parseState->m_colSpan=1;
+				m_parseState->m_rowSpan=1;
+			}
+		}
+			
 		if (!m_ps->m_isParagraphOpened && !m_ps->m_isListElementOpened)
 			_openSpan();
 		if (m_ps->m_isParagraphOpened)
@@ -202,18 +217,7 @@ void WP3Listener::closeCell()
 {
 	if (!isUndoOn())
 	{
-		if (!m_ps->m_isTableRowOpened)
-			insertRow(0, true, false);
-					
-		if (!m_ps->m_isTableCellOpened)
-		{
-			RGBSColor tmpCellBorderColor(0x00, 0x00, 0x00, 0x64);
-			insertCell((uint8_t)m_parseState->m_colSpan, (uint8_t)m_parseState->m_rowSpan, false, false, 0x00000000,       
-				       NULL, NULL, &tmpCellBorderColor, TOP, true, 0x00000000);
-			m_parseState->m_colSpan=1;
-			m_parseState->m_rowSpan=1;
-		}
-			
+		insertEOL();
 		_closeTableCell();
 	}
 }
