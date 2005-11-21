@@ -201,7 +201,6 @@ void WPXListener::_closeSection()
 		m_ps->m_sectionAttributesChanged = false;
 	}
 	m_ps->m_isSectionOpened = false;
-		
 }
 
 void WPXListener::_openPageSpan()

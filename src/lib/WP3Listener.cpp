@@ -32,17 +32,18 @@ _WP3ParsingState::_WP3ParsingState():
 	m_colSpan(1),
 	m_rowSpan(1)
 {
+	m_textBuffer.clear();
 }
 
 _WP3ParsingState::~_WP3ParsingState()
 {
+	m_textBuffer.clear();
 }
 
 WP3Listener::WP3Listener(std::vector<WPXPageSpan *> *pageList, WPXHLListenerImpl *listenerImpl) :
 	WPXListener(pageList, listenerImpl),
 	m_parseState(new WP3ParsingState)
 {
-	m_textBuffer.clear();
 }
 
 WP3Listener::~WP3Listener() 
@@ -61,7 +62,7 @@ void WP3Listener::insertCharacter(const uint16_t character)
 	{
 		if (!m_ps->m_isSpanOpened)
 			_openSpan();
-		appendUCS4(m_textBuffer, (uint32_t)character);
+		appendUCS4(m_parseState->m_textBuffer, (uint32_t)character);
 	}
 }
 
@@ -84,15 +85,11 @@ void WP3Listener::insertEOL()
 		if (m_ps->m_isTableOpened)
 		{
 			if (!m_ps->m_isTableRowOpened)
-				insertRow(0, true, false);
+				insertRow();
 			
 			if (!m_ps->m_isTableCellOpened)
 			{
-				RGBSColor tmpCellBorderColor(0x00, 0x00, 0x00, 0x64);
-				insertCell((uint8_t)m_parseState->m_colSpan, (uint8_t)m_parseState->m_rowSpan, false, false, 0x00000000,       
-					       NULL, NULL, &tmpCellBorderColor, TOP, true, 0x00000000);
-				m_parseState->m_colSpan=1;
-				m_parseState->m_rowSpan=1;
+				insertCell();
 			}
 		}
 			
@@ -146,6 +143,7 @@ void WP3Listener::defineTable(uint8_t position, uint16_t leftOffset)
 		// remove all the old column information
 		m_ps->m_tableDefinition.columns.clear();
 		m_ps->m_tableDefinition.columnsProperties.clear();
+		m_parseState->m_numColumnsToSkip.clear();
 	}
 }
 
@@ -167,6 +165,9 @@ void WP3Listener::addTableColumnDefinition(const uint32_t width, const uint32_t 
 		colProp.m_alignment = alignment;
 		
 		m_ps->m_tableDefinition.columnsProperties.push_back(colProp);
+		
+		// initialize the variable that tells us how many columns to skip
+		m_parseState->m_numColumnsToSkip.push_back(0);
 	}
 }
 
@@ -185,31 +186,31 @@ void WP3Listener::startTable()
 	}
 }
 
-void WP3Listener::insertRow(const uint16_t rowHeight, const bool isMinimumHeight, const bool isHeaderRow)
+void WP3Listener::insertRow()
 {
 	if (!isUndoOn())
-	{
-		float rowHeightInch = (float)((double) rowHeight / (double)WPX_NUM_WPUS_PER_INCH);
-		_openTableRow(rowHeightInch, isMinimumHeight, isHeaderRow);
-	}
+		_openTableRow(0, true, false);
 }
 
-void WP3Listener::insertCell(const uint8_t colSpan, const uint8_t rowSpan, const bool boundFromLeft, const bool boundFromAbove,
-			const uint8_t borderBits, const RGBSColor * cellFgColor, const RGBSColor * cellBgColor, 
-			const RGBSColor * cellBorderColor, const WPXVerticalAlignment cellVerticalAlignment, 
-			const bool useCellAttributes, const uint32_t cellAttributes)
+void WP3Listener::insertCell()
 {
 	if (!isUndoOn())
 	{
 		if (m_ps->m_currentTableRow < 0) // cell without a row, invalid
 			throw ParseException();
-		_openTableCell(colSpan, rowSpan, boundFromLeft, boundFromAbove, borderBits,       
-			       cellFgColor, cellBgColor, cellBorderColor, cellVerticalAlignment);
+		
+		RGBSColor tmpCellBorderColor(0x00, 0x00, 0x00, 0x64);
+		while (m_ps->m_currentTableCol < m_parseState->m_numColumnsToSkip.size() && m_parseState->m_numColumnsToSkip[m_ps->m_currentTableCol])
+		{
+			m_parseState->m_numColumnsToSkip[m_ps->m_currentTableCol]--;
+			m_ps->m_currentTableCol++;
+		}
+		m_parseState->m_numColumnsToSkip[m_ps->m_currentTableCol] += (m_parseState->m_rowSpan - 1);		
+		_openTableCell((uint8_t)m_parseState->m_colSpan, (uint8_t)m_parseState->m_rowSpan, false, false, 0x00000000,       
+				       NULL, NULL, &tmpCellBorderColor, TOP);
+		m_parseState->m_colSpan--;
 		m_ps->m_isCellWithoutParagraph = true;
-		if (useCellAttributes)
-			m_ps->m_cellAttributeBits = cellAttributes;
-		else
-			m_ps->m_cellAttributeBits = m_ps->m_tableDefinition.columnsProperties[m_ps->m_currentTableCol-1].m_attributes;
+		m_ps->m_cellAttributeBits = 0x00000000;
 	}
 }
 
@@ -219,6 +220,18 @@ void WP3Listener::closeCell()
 	{
 		insertEOL();
 		_closeTableCell();
+		RGBSColor tmpCellBorderColor(0x00, 0x00, 0x00, 0x64);
+		while (m_ps->m_currentTableCol < m_parseState->m_numColumnsToSkip.size() && m_parseState->m_colSpan > 0)
+		{
+			if (m_parseState->m_numColumnsToSkip[m_ps->m_currentTableCol]) // This case should not happen, so if it does it means that we did something wrong
+				throw ParseException();
+			m_parseState->m_numColumnsToSkip[m_ps->m_currentTableCol] += (m_parseState->m_rowSpan - 1);
+			m_ps->m_currentTableCol++;
+			m_parseState->m_colSpan--;
+		}
+		m_parseState->m_rowSpan = 1;
+		m_parseState->m_colSpan = 1;
+			
 	}
 }
 
@@ -227,6 +240,16 @@ void WP3Listener::closeRow()
 	if (!isUndoOn())
 	{
 		closeCell();
+
+		RGBSColor tmpCellBorderColor(0x00, 0x00, 0x00, 0x64);
+		while (m_ps->m_currentTableCol < m_parseState->m_numColumnsToSkip.size())
+		{
+			if (!m_parseState->m_numColumnsToSkip[m_ps->m_currentTableCol]) // This case should not happen, so if it does it means that we did something wrong
+				throw ParseException();
+			m_parseState->m_numColumnsToSkip[m_ps->m_currentTableCol]--;
+			m_ps->m_currentTableCol++;
+		}
+			
 		_closeTableRow();
 	}
 }
@@ -401,6 +424,16 @@ void WP3Listener::indentFirstLineChange(const int16_t offset)
 	}
 }
 
+void WP3Listener::setTextColor(const RGBSColor *fontColor)
+{
+	if (!isUndoOn())
+	{
+		_closeSpan();
+		
+		*(m_ps->m_fontColor) = *fontColor;
+	}
+}
+
 void WP3Listener::setTextFont(const char* fontName)
 {
 	if (!isUndoOn())
@@ -427,15 +460,11 @@ void WP3Listener::_openParagraph()
 	if (m_ps->m_isTableOpened)
 	{
 		if (!m_ps->m_isTableRowOpened)
-			insertRow(0, true, false);
+			insertRow();
 					
 		if (!m_ps->m_isTableCellOpened)
 		{
-			RGBSColor tmpCellBorderColor(0x00, 0x00, 0x00, 0x64);
-			insertCell((uint8_t)m_parseState->m_colSpan, (uint8_t)m_parseState->m_rowSpan, false, false, 0x00000000,       
-				       NULL, NULL, &tmpCellBorderColor, TOP, true, 0x00000000);
-			m_parseState->m_colSpan=1;
-			m_parseState->m_rowSpan=1;
+			insertCell();
 		}
 	}
 
@@ -448,7 +477,7 @@ void WP3Listener::_openParagraph()
 
 void WP3Listener::_flushText()
 {
-	if (m_textBuffer.len())
-		m_listenerImpl->insertText(m_textBuffer);
-	m_textBuffer.clear();
+	if (m_parseState->m_textBuffer.len())
+		m_listenerImpl->insertText(m_parseState->m_textBuffer);
+	m_parseState->m_textBuffer.clear();
 }

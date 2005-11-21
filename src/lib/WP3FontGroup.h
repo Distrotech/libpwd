@@ -36,6 +36,8 @@ class WP3FontGroup : public WP3VariableLengthGroup
 	virtual void parse(WP3Listener *listener);
 
  private:
+ 	/* Set Text Color */
+	RGBSColor m_fontColor;
  	/* Set Text Font */
 	char* m_fontName;
 	/* Set Font Size */

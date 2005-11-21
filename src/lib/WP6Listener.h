@@ -64,6 +64,11 @@ public:
 	virtual void noteOff(const WPXNoteType noteType) = 0;
 	virtual void headerFooterGroup(const uint8_t headerFooterType, const uint8_t occurenceBits, const uint16_t textPID) = 0;
 	virtual void suppressPageCharacteristics(const uint8_t suppressCode) = 0;
+ 	virtual void insertRow(const uint16_t rowHeight, const bool isMinimumHeight, const bool isHeaderRow) = 0;
+ 	virtual void insertCell(const uint8_t colSpan, const uint8_t rowSpan, const bool boundFromLeft, const bool boundFromAbove,
+				const uint8_t borderBits, const RGBSColor * cellFgColor, const RGBSColor * cellBgColor,
+				const RGBSColor * cellBorderColor, const WPXVerticalAlignment cellVerticalAlignment, 
+				const bool useCellAttributes, const uint32_t cellAttributes) = 0;
 
 	void setPrefixData(WP6PrefixData *prefixData) { m_prefixData = prefixData; }
 	const WP6PrefixDataPacket * getPrefixDataPacket(const int prefixID) const;

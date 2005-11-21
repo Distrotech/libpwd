@@ -151,6 +151,8 @@ typedef struct _RGBSColor RGBSColor;
 struct _RGBSColor
 {
 	_RGBSColor(uint8_t r, uint8_t g, uint8_t b, uint8_t s);
+	_RGBSColor(uint16_t red, uint16_t green, uint16_t blue); // Construct
+	// RBBSColor from double precision RGB color used by WP3.x for Mac
 	_RGBSColor(); // initializes all values to 0
 	uint8_t m_r;
 	uint8_t m_g;

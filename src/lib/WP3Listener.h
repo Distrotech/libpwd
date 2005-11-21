@@ -35,6 +35,8 @@ struct _WP3ParsingState
 	~_WP3ParsingState();
 	uint16_t m_colSpan;
 	uint16_t m_rowSpan;
+	WPXString m_textBuffer;
+	std::vector<unsigned int> m_numColumnsToSkip;
 };
 
 
@@ -66,17 +68,15 @@ public:
 	virtual void defineTable(const uint8_t position, const uint16_t leftOffset);
 	virtual void addTableColumnDefinition(const uint32_t width, const uint32_t leftGutter, const uint32_t rightGutter, const uint32_t attributes, const uint8_t alignment);
 	virtual void startTable();
- 	virtual void insertRow(const uint16_t rowHeight, const bool isMinimumHeight, const bool isHeaderRow);
- 	virtual void insertCell(const uint8_t colSpan, const uint8_t rowSpan, const bool boundFromLeft, const bool boundFromAbove,
-				const uint8_t borderBits, const RGBSColor * cellFgColor, const RGBSColor * cellBgColor,
-				const RGBSColor * cellBorderColor, const WPXVerticalAlignment cellVerticalAlignment, 
-				const bool useCellAttributes, const uint32_t cellAttributes);
+ 	virtual void insertRow();
+ 	virtual void insertCell();
  	virtual void closeCell();
 	virtual void closeRow();
 	virtual void setTableCellSpan(const uint16_t colSpan, const uint16_t rowSpan);
  	virtual void endTable();
         virtual void undoChange(const uint8_t undoType, const uint16_t undoLevel);
 	virtual void justificationChange(const uint8_t justification);
+	virtual void setTextColor(const RGBSColor * fontColor);
 	virtual void setTextFont(const char* fontName);
 	virtual void setFontSize(const uint16_t fontSize);
 	
@@ -87,8 +87,6 @@ protected:
 private:
 	void _flushText();
 	void _changeList() {};
-
-	WPXString m_textBuffer;
 
 	WP3ParsingState *m_parseState;
 };

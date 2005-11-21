@@ -31,7 +31,8 @@
 WP3FontGroup::WP3FontGroup(WPXInputStream *input) :
 	WP3VariableLengthGroup(),
 	m_fontName(NULL),
-	m_fontSize(0)
+	m_fontSize(0),
+	m_fontColor()
 {
 	_read(input);
 }
@@ -48,6 +49,15 @@ void WP3FontGroup::_readContents(WPXInputStream *input)
 	uint8_t tmpFontNameLength;
 	switch (getSubGroup())
 	{
+	case WP3_FONT_GROUP_SET_TEXT_COLOR:
+		input->seek(6, WPX_SEEK_CUR);
+		{
+			uint16_t tmpRed = readU16(input, true);
+			uint16_t tmpGreen = readU16(input, true);
+			uint16_t tmpBlue = readU16(input, true);
+			m_fontColor = RGBSColor(tmpRed, tmpGreen, tmpBlue);
+		}
+		break;		
 	case WP3_FONT_GROUP_SET_TEXT_FONT:
 		input->seek(12, WPX_SEEK_CUR);
 		tmpFontNameLength = readU8(input);
@@ -71,6 +81,9 @@ void WP3FontGroup::parse(WP3Listener *listener)
 
 	switch (getSubGroup())
 	{
+	case WP3_FONT_GROUP_SET_TEXT_COLOR:
+		listener->setTextColor(&m_fontColor);
+		break;		
 	case WP3_FONT_GROUP_SET_TEXT_FONT:
 		listener->setTextFont(m_fontName);
 		delete [] m_fontName;
