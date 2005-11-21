@@ -199,13 +199,13 @@ void WP3Listener::insertCell()
 		if (m_ps->m_currentTableRow < 0) // cell without a row, invalid
 			throw ParseException();
 		
-		RGBSColor tmpCellBorderColor(0x00, 0x00, 0x00, 0x64);
 		while (m_ps->m_currentTableCol < m_parseState->m_numColumnsToSkip.size() && m_parseState->m_numColumnsToSkip[m_ps->m_currentTableCol])
 		{
 			m_parseState->m_numColumnsToSkip[m_ps->m_currentTableCol]--;
 			m_ps->m_currentTableCol++;
 		}
-		m_parseState->m_numColumnsToSkip[m_ps->m_currentTableCol] += (m_parseState->m_rowSpan - 1);		
+		m_parseState->m_numColumnsToSkip[m_ps->m_currentTableCol] += (m_parseState->m_rowSpan - 1);
+		RGBSColor tmpCellBorderColor(0x00, 0x00, 0x00, 0x64);		
 		_openTableCell((uint8_t)m_parseState->m_colSpan, (uint8_t)m_parseState->m_rowSpan, false, false, 0x00000000,       
 				       NULL, NULL, &tmpCellBorderColor, TOP);
 		m_parseState->m_colSpan--;
@@ -220,7 +220,6 @@ void WP3Listener::closeCell()
 	{
 		insertEOL();
 		_closeTableCell();
-		RGBSColor tmpCellBorderColor(0x00, 0x00, 0x00, 0x64);
 		while (m_ps->m_currentTableCol < m_parseState->m_numColumnsToSkip.size() && m_parseState->m_colSpan > 0)
 		{
 			if (m_parseState->m_numColumnsToSkip[m_ps->m_currentTableCol]) // This case should not happen, so if it does it means that we did something wrong
@@ -241,7 +240,6 @@ void WP3Listener::closeRow()
 	{
 		closeCell();
 
-		RGBSColor tmpCellBorderColor(0x00, 0x00, 0x00, 0x64);
 		while (m_ps->m_currentTableCol < m_parseState->m_numColumnsToSkip.size())
 		{
 			if (!m_parseState->m_numColumnsToSkip[m_ps->m_currentTableCol]) // This case should not happen, so if it does it means that we did something wrong
@@ -249,7 +247,6 @@ void WP3Listener::closeRow()
 			m_parseState->m_numColumnsToSkip[m_ps->m_currentTableCol]--;
 			m_ps->m_currentTableCol++;
 		}
-			
 		_closeTableRow();
 	}
 }
