@@ -1120,6 +1120,7 @@ void WP6ContentListener::defineTable(uint8_t position, uint16_t leftOffset)
 		// pull a table definition off of our stack
 		m_parseState->m_currentTable = m_parseState->m_tableList[m_parseState->m_nextTableIndice++];
 		m_parseState->m_currentTable->makeBordersConsistent();
+		m_ps->m_numRowsToSkip.clear();
 	}
 }
 
@@ -1141,6 +1142,9 @@ void WP6ContentListener::addTableColumnDefinition(uint32_t width, uint32_t leftG
 		m_ps->m_tableDefinition.columns.push_back(colDef);
 		
 		m_ps->m_tableDefinition.columnsProperties.push_back(colProp);
+
+		// initialize the variable that tells us how many columns to skip
+		m_ps->m_numRowsToSkip.push_back(0);
 	}
 }
 
@@ -1176,8 +1180,8 @@ void WP6ContentListener::insertRow(const uint16_t rowHeight, const bool isMinimu
 	}
 }
 
-void WP6ContentListener::insertCell(const uint8_t colSpan, const uint8_t rowSpan, const bool boundFromLeft, const bool boundFromAbove,
-					const uint8_t borderBits, const RGBSColor * cellFgColor, const RGBSColor * cellBgColor, 
+void WP6ContentListener::insertCell(const uint8_t colSpan, const uint8_t rowSpan, const uint8_t borderBits, 
+					const RGBSColor * cellFgColor, const RGBSColor * cellBgColor, 
 					const RGBSColor * cellBorderColor, const WPXVerticalAlignment cellVerticalAlignment, 
 					const bool useCellAttributes, const uint32_t cellAttributes)
 {
@@ -1186,9 +1190,16 @@ void WP6ContentListener::insertCell(const uint8_t colSpan, const uint8_t rowSpan
 		if (m_ps->m_currentTableRow < 0) // cell without a row, invalid
 			throw ParseException();
 		_flushText();
-		_openTableCell(colSpan, rowSpan, boundFromLeft, boundFromAbove,
-			       m_parseState->m_currentTable->getCell(m_ps->m_currentTableRow, m_ps->m_currentTableCol)->m_borderBits,       
-			       cellFgColor, cellBgColor, cellBorderColor, cellVerticalAlignment);
+		WPD_DEBUG_MSG(("Balise 1\n"));
+		_openTableCell(colSpan, rowSpan, m_parseState->m_currentTable->getCell(m_ps->m_currentTableRow,  
+			       	m_ps->m_currentTableCellNumberInRow)->m_borderBits, cellFgColor, cellBgColor,      
+			       cellBorderColor, cellVerticalAlignment);
+#if 0
+		_openTableCell(colSpan, rowSpan, borderBits, cellFgColor, cellBgColor,      
+			       cellBorderColor, cellVerticalAlignment);
+#endif
+
+		WPD_DEBUG_MSG(("Balise 2\n"));
 		m_ps->m_isCellWithoutParagraph = true;
 		if (useCellAttributes)
 			m_ps->m_cellAttributeBits = cellAttributes;
@@ -1204,6 +1215,7 @@ void WP6ContentListener::endTable()
 	{
 		_flushText();
 		_closeTable();
+		m_ps->m_numRowsToSkip.clear();
 		// restore the justification that was there before the table.
 		m_ps->m_paragraphJustification = m_ps->m_paragraphJustificationBeforeTable;
 	}

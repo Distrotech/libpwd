@@ -62,6 +62,7 @@ _WPXParsingState::_WPXParsingState() :
 
 	m_currentTableCol(0),
 	m_currentTableRow(0),
+	m_currentTableCellNumberInRow(0),
 	m_isTableOpened(false),
 	m_isTableRowOpened(false),
 	m_isTableCellOpened(false),
@@ -706,6 +707,7 @@ void WPXListener::_openTable()
 
 	m_ps->m_currentTableRow = (-1);
 	m_ps->m_currentTableCol = (-1);
+	m_ps->m_currentTableCellNumberInRow = (-1);
 }
 
 void WPXListener::_closeTable()
@@ -720,6 +722,7 @@ void WPXListener::_closeTable()
 
 	m_ps->m_currentTableRow = (-1);
 	m_ps->m_currentTableCol = (-1);
+	m_ps->m_currentTableCellNumberInRow = (-1);
 	m_ps->m_isTableOpened = false;
 	m_ps->m_wasHeaderRow = false;
 	
@@ -741,6 +744,8 @@ void WPXListener::_openTableRow(const float height, const bool isMinimumHeight, 
 	_closeTableRow();
 	
 	m_ps->m_currentTableCol = 0;
+	m_ps->m_currentTableCellNumberInRow = 0;
+
 
 	WPXPropertyList propList;
 	if (isMinimumHeight && height != 0.0f) // minimum height kind of stupid if it's not set, right?
@@ -768,6 +773,16 @@ void WPXListener::_closeTableRow()
 {
 	if (m_ps->m_isTableRowOpened)
 	{
+		while (m_ps->m_currentTableCol < m_ps->m_numRowsToSkip.size())
+		{
+			if (!m_ps->m_numRowsToSkip[m_ps->m_currentTableCol]) // This case should not happen, so if it does it means that we did something wrong
+			{
+				throw ParseException();
+			}
+			m_ps->m_numRowsToSkip[m_ps->m_currentTableCol]--;
+			m_ps->m_currentTableCol++;
+		}
+
 		if (m_ps->m_isTableCellOpened)
 			_closeTableCell();
 		m_listenerImpl->closeTableRow();
@@ -805,50 +820,63 @@ static void addBorderProps(const char *border, bool borderOn, const WPXString &b
 	WPXString borderOff;
 }
 
-void WPXListener::_openTableCell(const uint8_t colSpan, const uint8_t rowSpan, const bool boundFromLeft, const bool boundFromAbove,
-				   const uint8_t borderBits, const RGBSColor * cellFgColor, const RGBSColor * cellBgColor,
+void WPXListener::_openTableCell(const uint8_t colSpan, const uint8_t rowSpan, const uint8_t borderBits,  
+				   const RGBSColor * cellFgColor, const RGBSColor * cellBgColor,
 				   const RGBSColor * cellBorderColor, const WPXVerticalAlignment cellVerticalAlignment)
 {
+	uint8_t tmpColSpan = colSpan;
 	_closeTableCell();
+
+	while (m_ps->m_currentTableCol < m_ps->m_numRowsToSkip.size() && m_ps->m_numRowsToSkip[m_ps->m_currentTableCol])
+	{
+		m_ps->m_numRowsToSkip[m_ps->m_currentTableCol]--;
+		m_ps->m_currentTableCol++;
+	}
 
 	WPXPropertyList propList;
 	propList.insert("libwpd:column", m_ps->m_currentTableCol);		
 	propList.insert("libwpd:row", m_ps->m_currentTableRow);		
 
-	if (!boundFromLeft && !boundFromAbove)
+	propList.insert("table:number-columns-spanned", colSpan);
+	propList.insert("table:number-rows-spanned", rowSpan);
+
+	WPXString borderColor = _colorToString(cellBorderColor);
+	addBorderProps("left", !(borderBits & WPX_TABLE_CELL_LEFT_BORDER_OFF), borderColor, propList);
+	addBorderProps("right", !(borderBits & WPX_TABLE_CELL_RIGHT_BORDER_OFF), borderColor, propList);
+	addBorderProps("top", !(borderBits & WPX_TABLE_CELL_TOP_BORDER_OFF), borderColor, propList);
+	addBorderProps("bottom", !(borderBits & WPX_TABLE_CELL_BOTTOM_BORDER_OFF), borderColor, propList);
+
+	switch (cellVerticalAlignment)
 	{
-		propList.insert("table:number-columns-spanned", colSpan);
-		propList.insert("table:number-rows-spanned", rowSpan);
-
-		WPXString borderColor = _colorToString(cellBorderColor);
-		addBorderProps("left", !(borderBits & WPX_TABLE_CELL_LEFT_BORDER_OFF), borderColor, propList);
-		addBorderProps("right", !(borderBits & WPX_TABLE_CELL_RIGHT_BORDER_OFF), borderColor, propList);
-		addBorderProps("top", !(borderBits & WPX_TABLE_CELL_TOP_BORDER_OFF), borderColor, propList);
-		addBorderProps("bottom", !(borderBits & WPX_TABLE_CELL_BOTTOM_BORDER_OFF), borderColor, propList);
-
-		switch (cellVerticalAlignment)
-		{
-		case TOP:
-			propList.insert("fo:vertical-align", "top");
-			break;
-		case MIDDLE:
-			propList.insert("fo:vertical-align", "middle");
-			break;
-		case BOTTOM:
-			propList.insert("fo:vertical-align", "bottom");
-			break;
-		case FULL: // full not in XSL-fo?
-		default:
-			break;
-		}
-		propList.insert("fo:background-color", _mergeColorsToString(cellFgColor, cellBgColor));
-		m_listenerImpl->openTableCell(propList);
-		m_ps->m_isTableCellOpened = true;
+	case TOP:
+		propList.insert("fo:vertical-align", "top");
+		break;
+	case MIDDLE:
+		propList.insert("fo:vertical-align", "middle");
+		break;
+	case BOTTOM:
+		propList.insert("fo:vertical-align", "bottom");
+		break;
+	case FULL: // full not in XSL-fo?
+	default:
+		break;
 	}
-	else
-		m_listenerImpl->insertCoveredTableCell(propList);
+	propList.insert("fo:background-color", _mergeColorsToString(cellFgColor, cellBgColor));
+	m_listenerImpl->openTableCell(propList);
+	m_ps->m_currentTableCellNumberInRow++;
+	m_ps->m_isTableCellOpened = true;
 
-	m_ps->m_currentTableCol++;
+	while ((m_ps->m_currentTableCol < m_ps->m_numRowsToSkip.size()) && (tmpColSpan > 0))
+	{
+		if (m_ps->m_numRowsToSkip[m_ps->m_currentTableCol]) // This case should not happen, so if it does it means that we did something wrong
+		{
+			m_ps->m_numRowsToSkip[m_ps->m_currentTableCol]=0;
+			//throw ParseException();
+		}
+		m_ps->m_numRowsToSkip[m_ps->m_currentTableCol] += (rowSpan - 1);
+		m_ps->m_currentTableCol++;
+		tmpColSpan--;
+	}
 }
 
 void WPXListener::_closeTableCell()

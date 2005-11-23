@@ -158,14 +158,14 @@ void WP42StylesListener::insertRow(const uint16_t rowHeight, const bool isMinimu
 	}
 }
 
-void WP42StylesListener::insertCell(const uint8_t colSpan, const uint8_t rowSpan, const bool boundFromLeft, const bool boundFromAbove, 
-				  const uint8_t borderBits, const RGBSColor * cellFgColor, const RGBSColor * cellBgColor,
+void WP42StylesListener::insertCell(const uint8_t colSpan, const uint8_t rowSpan, const uint8_t borderBits, 
+				  const RGBSColor * cellFgColor, const RGBSColor * cellBgColor,
 				  const RGBSColor * cellBorderColor, const WPXVerticalAlignment cellVerticalAlignment, 
 				  const bool useCellAttributes, const uint32_t cellAttributes)
 {
 	if (/*!isUndoOn() &&*/ m_currentTable != NULL)
 	{
 		m_currentPageHasContent = true;
-		m_currentTable->insertCell(colSpan, rowSpan, boundFromLeft, boundFromAbove, borderBits);
+		m_currentTable->insertCell(colSpan, rowSpan, borderBits);
 	}
 }

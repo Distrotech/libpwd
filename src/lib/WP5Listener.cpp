@@ -125,6 +125,7 @@ void WP5Listener::defineTable(uint8_t position, uint16_t leftOffset)
 		// remove all the old column information
 		m_ps->m_tableDefinition.columns.clear();
 		m_ps->m_tableDefinition.columnsProperties.clear();
+		m_ps->m_numRowsToSkip.clear();
 	}
 }
 
@@ -146,6 +147,9 @@ void WP5Listener::addTableColumnDefinition(uint32_t width, uint32_t leftGutter, 
 		colProp.m_alignment = alignment;
 		
 		m_ps->m_tableDefinition.columnsProperties.push_back(colProp);
+
+		// initialize the variable that tells us how many columns to skip
+		m_ps->m_numRowsToSkip.push_back(0);
 	}
 }
 
@@ -175,8 +179,8 @@ void WP5Listener::insertRow(const uint16_t rowHeight, const bool isMinimumHeight
 	}
 }
 
-void WP5Listener::insertCell(const uint8_t colSpan, const uint8_t rowSpan, const bool boundFromLeft, const bool boundFromAbove,
-			const uint8_t borderBits, const RGBSColor * cellFgColor, const RGBSColor * cellBgColor, 
+void WP5Listener::insertCell(const uint8_t colSpan, const uint8_t rowSpan, const uint8_t borderBits,
+			const RGBSColor * cellFgColor, const RGBSColor * cellBgColor, 
 			const RGBSColor * cellBorderColor, const WPXVerticalAlignment cellVerticalAlignment, 
 			const bool useCellAttributes, const uint32_t cellAttributes)
 {
@@ -185,8 +189,8 @@ void WP5Listener::insertCell(const uint8_t colSpan, const uint8_t rowSpan, const
 		if (m_ps->m_currentTableRow < 0) // cell without a row, invalid
 			throw ParseException();
 		_flushText();
-		_openTableCell(colSpan, rowSpan, boundFromLeft, boundFromAbove, borderBits,       
-			       cellFgColor, cellBgColor, cellBorderColor, cellVerticalAlignment);
+		_openTableCell(colSpan, rowSpan, borderBits, cellFgColor, cellBgColor,
+					cellBorderColor, cellVerticalAlignment);
 		m_ps->m_isCellWithoutParagraph = true;
 		if (useCellAttributes)
 			m_ps->m_cellAttributeBits = cellAttributes;

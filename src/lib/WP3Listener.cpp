@@ -143,7 +143,7 @@ void WP3Listener::defineTable(uint8_t position, uint16_t leftOffset)
 		// remove all the old column information
 		m_ps->m_tableDefinition.columns.clear();
 		m_ps->m_tableDefinition.columnsProperties.clear();
-		m_parseState->m_numColumnsToSkip.clear();
+		m_ps->m_numRowsToSkip.clear();
 	}
 }
 
@@ -167,7 +167,7 @@ void WP3Listener::addTableColumnDefinition(const uint32_t width, const uint32_t 
 		m_ps->m_tableDefinition.columnsProperties.push_back(colProp);
 		
 		// initialize the variable that tells us how many columns to skip
-		m_parseState->m_numColumnsToSkip.push_back(0);
+		m_ps->m_numRowsToSkip.push_back(0);
 	}
 }
 
@@ -199,14 +199,8 @@ void WP3Listener::insertCell()
 		if (m_ps->m_currentTableRow < 0) // cell without a row, invalid
 			throw ParseException();
 		
-		while (m_ps->m_currentTableCol < m_parseState->m_numColumnsToSkip.size() && m_parseState->m_numColumnsToSkip[m_ps->m_currentTableCol])
-		{
-			m_parseState->m_numColumnsToSkip[m_ps->m_currentTableCol]--;
-			m_ps->m_currentTableCol++;
-		}
-		m_parseState->m_numColumnsToSkip[m_ps->m_currentTableCol] += (m_parseState->m_rowSpan - 1);
 		RGBSColor tmpCellBorderColor(0x00, 0x00, 0x00, 0x64);		
-		_openTableCell((uint8_t)m_parseState->m_colSpan, (uint8_t)m_parseState->m_rowSpan, false, false, 0x00000000,       
+		_openTableCell((uint8_t)m_parseState->m_colSpan, (uint8_t)m_parseState->m_rowSpan, 0x00000000,       
 				       NULL, NULL, &tmpCellBorderColor, TOP);
 		m_parseState->m_colSpan--;
 		m_ps->m_isCellWithoutParagraph = true;
@@ -220,17 +214,8 @@ void WP3Listener::closeCell()
 	{
 		insertEOL();
 		_closeTableCell();
-		while (m_ps->m_currentTableCol < m_parseState->m_numColumnsToSkip.size() && m_parseState->m_colSpan > 0)
-		{
-			if (m_parseState->m_numColumnsToSkip[m_ps->m_currentTableCol]) // This case should not happen, so if it does it means that we did something wrong
-				throw ParseException();
-			m_parseState->m_numColumnsToSkip[m_ps->m_currentTableCol] += (m_parseState->m_rowSpan - 1);
-			m_ps->m_currentTableCol++;
-			m_parseState->m_colSpan--;
-		}
 		m_parseState->m_rowSpan = 1;
 		m_parseState->m_colSpan = 1;
-			
 	}
 }
 
@@ -240,13 +225,6 @@ void WP3Listener::closeRow()
 	{
 		closeCell();
 
-		while (m_ps->m_currentTableCol < m_parseState->m_numColumnsToSkip.size())
-		{
-			if (!m_parseState->m_numColumnsToSkip[m_ps->m_currentTableCol]) // This case should not happen, so if it does it means that we did something wrong
-				throw ParseException();
-			m_parseState->m_numColumnsToSkip[m_ps->m_currentTableCol]--;
-			m_ps->m_currentTableCol++;
-		}
 		_closeTableRow();
 	}
 }

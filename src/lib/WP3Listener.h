@@ -36,7 +36,6 @@ struct _WP3ParsingState
 	uint16_t m_colSpan;
 	uint16_t m_rowSpan;
 	WPXString m_textBuffer;
-	std::vector<unsigned int> m_numColumnsToSkip;
 };
 
 

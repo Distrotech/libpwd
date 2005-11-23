@@ -94,9 +94,11 @@ struct _WPXParsingState
 	bool m_isParagraphOpened;
 	bool m_isListElementOpened;
 
+	std::vector<unsigned int> m_numRowsToSkip;
 	WPXTableDefinition m_tableDefinition;
 	int m_currentTableCol;
 	int m_currentTableRow;
+	int m_currentTableCellNumberInRow;
 	bool m_isTableOpened;
 	bool m_isTableRowOpened;
 	bool m_isTableColumnOpened;
@@ -229,8 +231,8 @@ protected:
 	void _closeTable();
 	void _openTableRow(const float height, const bool isMinimumHeight, const bool isHeaderRow);
 	void _closeTableRow();
-	void _openTableCell(const uint8_t colSpan, const uint8_t rowSpan, const bool boundFromLeft, const bool boundFromAbove,
-				const uint8_t borderBits, const RGBSColor * cellFgColor, const RGBSColor * cellBgColor,
+	void _openTableCell(const uint8_t colSpan, const uint8_t rowSpan, const uint8_t borderBits, 
+				const RGBSColor * cellFgColor, const RGBSColor * cellBgColor,
 				const RGBSColor * cellBorderColor,
 				const WPXVerticalAlignment cellVerticalAlignment);
 	void _closeTableCell();
