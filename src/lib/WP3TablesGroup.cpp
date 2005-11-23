@@ -92,6 +92,12 @@ void WP3TablesGroup::_readContents(WPXInputStream *input)
 	case WP3_TABLES_GROUP_SET_TABLE_CELL_RIGHT_LINE_COLOR:
 		break;
 	case WP3_TABLES_GROUP_SET_TABLE_CELL_FILL_COLOR_PATTERN:
+		{
+			uint16_t tmpRed = readU16(input, true);
+			uint16_t tmpGreen = readU16(input, true);
+			uint16_t tmpBlue = readU16(input, true);
+			m_cellFillColor = RGBSColor(tmpRed, tmpGreen, tmpBlue);
+		}
 		break;
 	case WP3_TABLES_GROUP_SET_TABLE_CELL_VERTICAL_ALIGNMENT:
 		break;
@@ -137,6 +143,7 @@ void WP3TablesGroup::parse(WP3Listener *listener)
 	case WP3_TABLES_GROUP_SET_TABLE_CELL_RIGHT_LINE_COLOR:
 		break;
 	case WP3_TABLES_GROUP_SET_TABLE_CELL_FILL_COLOR_PATTERN:
+		listener->setTableCellFillColor(&m_cellFillColor);
 		break;
 	case WP3_TABLES_GROUP_SET_TABLE_CELL_VERTICAL_ALIGNMENT:
 		break;

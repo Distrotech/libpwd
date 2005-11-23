@@ -950,7 +950,7 @@ _RGBSColor::_RGBSColor(uint16_t red, uint16_t green, uint16_t blue)
 	if (minRGB > blue)
 		minRGB = blue;
 		
-	if (minRGB >= 255)
+	if (minRGB >= 65535)
 	{
 		m_r = 255;
 		m_g = 255;

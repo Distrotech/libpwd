@@ -303,6 +303,7 @@ void WP5Listener::marginChange(uint8_t side, uint16_t margin)
 						+ m_ps->m_rightMarginByTabs;
 			break;
 		}
+		m_ps->m_listReferencePosition = m_ps->m_paragraphMarginLeft + m_ps->m_paragraphTextIndent;
 	//}
 }
 

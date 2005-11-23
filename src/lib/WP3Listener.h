@@ -27,6 +27,7 @@
 
 #include "WPXListener.h"
 #include "WPXHLListenerImpl.h"
+#include "libwpd_internal.h"
 
 typedef struct _WP3ParsingState WP3ParsingState;
 struct _WP3ParsingState
@@ -36,6 +37,7 @@ struct _WP3ParsingState
 	uint16_t m_colSpan;
 	uint16_t m_rowSpan;
 	WPXString m_textBuffer;
+	RGBSColor * m_cellFillColor;
 };
 
 
@@ -72,6 +74,7 @@ public:
  	virtual void closeCell();
 	virtual void closeRow();
 	virtual void setTableCellSpan(const uint16_t colSpan, const uint16_t rowSpan);
+	virtual void setTableCellFillColor(const RGBSColor * cellFillColor);
  	virtual void endTable();
         virtual void undoChange(const uint8_t undoType, const uint16_t undoLevel);
 	virtual void justificationChange(const uint8_t justification);

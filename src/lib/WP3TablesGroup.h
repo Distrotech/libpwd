@@ -26,6 +26,7 @@
 #define WP3TABLESGROUP_H
 
 #include "WP3VariableLengthGroup.h"
+#include "libwpd_internal.h"
 
 class WP3TablesGroup : public WP3VariableLengthGroup
 {
@@ -52,6 +53,9 @@ class WP3TablesGroup : public WP3VariableLengthGroup
 	// variables needed for subgroup 2 (Set Table Cell Span)
 	uint16_t m_colSpan;
 	uint16_t m_rowSpan;
+	
+	// variables needed for subgroup 0x0B (Set Table Cell Fill Color/Patern)
+	RGBSColor m_cellFillColor;
 };
 
 #endif /* WP3TABLESGROUP_H */

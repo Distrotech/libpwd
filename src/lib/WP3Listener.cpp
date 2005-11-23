@@ -30,7 +30,8 @@
 
 _WP3ParsingState::_WP3ParsingState():
 	m_colSpan(1),
-	m_rowSpan(1)
+	m_rowSpan(1),
+	m_cellFillColor(NULL)
 {
 	m_textBuffer.clear();
 }
@@ -38,6 +39,7 @@ _WP3ParsingState::_WP3ParsingState():
 _WP3ParsingState::~_WP3ParsingState()
 {
 	m_textBuffer.clear();
+	DELETEP(m_cellFillColor);
 }
 
 WP3Listener::WP3Listener(std::vector<WPXPageSpan *> *pageList, WPXHLListenerImpl *listenerImpl) :
@@ -199,10 +201,11 @@ void WP3Listener::insertCell()
 		if (m_ps->m_currentTableRow < 0) // cell without a row, invalid
 			throw ParseException();
 		
-		RGBSColor tmpCellBorderColor(0x00, 0x00, 0x00, 0x64);		
+		RGBSColor tmpCellBorderColor(0x00, 0x00, 0x00, 0x64);
 		_openTableCell((uint8_t)m_parseState->m_colSpan, (uint8_t)m_parseState->m_rowSpan, 0x00000000,       
-				       NULL, NULL, &tmpCellBorderColor, TOP);
-		m_parseState->m_colSpan--;
+				 m_parseState->m_cellFillColor, NULL, &tmpCellBorderColor, TOP);
+		DELETEP(m_parseState->m_cellFillColor);
+
 		m_ps->m_isCellWithoutParagraph = true;
 		m_ps->m_cellAttributeBits = 0x00000000;
 	}
@@ -235,6 +238,16 @@ void WP3Listener::setTableCellSpan(const uint16_t colSpan, const uint16_t rowSpa
 	{
 		m_parseState->m_colSpan=colSpan;
 		m_parseState->m_rowSpan=rowSpan;
+	}
+}
+
+void WP3Listener::setTableCellFillColor(const RGBSColor * cellFillColor)
+{
+	if (!isUndoOn())
+	{
+		if (m_parseState->m_cellFillColor)
+			DELETEP(m_parseState->m_cellFillColor);
+		m_parseState->m_cellFillColor = new RGBSColor(*cellFillColor);
 	}
 }
 
@@ -352,6 +365,7 @@ void WP3Listener::marginChange(const uint8_t side, const uint16_t margin)
 						+ m_ps->m_rightMarginByTabs;
 			break;
 		}
+		m_ps->m_listReferencePosition = m_ps->m_paragraphMarginLeft + m_ps->m_paragraphTextIndent;
 	}
 }
 
@@ -396,6 +410,7 @@ void WP3Listener::indentFirstLineChange(const int16_t offset)
 		// only. Indent First Line applies untill an new Indent First Line code.
 		m_ps->m_paragraphTextIndent = m_ps->m_textIndentByParagraphIndentChange
 					+ m_ps->m_textIndentByTabs;
+		m_ps->m_listReferencePosition = m_ps->m_paragraphMarginLeft + m_ps->m_paragraphTextIndent;
 	}
 }
 
