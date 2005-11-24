@@ -95,8 +95,10 @@ void WP3EndOfLinePageGroup::parse(WP3Listener *listener)
 		case 0x07: // Hard End of Page
 			break;
 		case 0x08: // Hard End of Column
+			listener->insertBreak(WPX_COLUMN_BREAK);
 			break;
 		case 0x09: // Hard End of Column/Soft End of Page
+			listener->insertBreak(WPX_COLUMN_BREAK);
 			break;
 		case 0x0A: // Hard End of Line (Hard EOC not in columns)
 			listener->insertEOL();
@@ -125,8 +127,10 @@ void WP3EndOfLinePageGroup::parse(WP3Listener *listener)
 		case 0x13: // Hard Beginning of File
 			break;
 		case 0x14: // Temporary Hard End of Column
+			listener->insertBreak(WPX_COLUMN_BREAK);
 			break;
 		case 0x15: // Temporary Hard End of Column/Soft EOP
+			listener->insertBreak(WPX_COLUMN_BREAK);
 			break;
 		case 0x16: // Hard End of Table Cell
 			listener->closeCell();

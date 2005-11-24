@@ -30,6 +30,7 @@
 #include "WP3MiscellaneousGroup.h"
 #include "WP3PageFormatGroup.h"
 #include "WP3FontGroup.h"
+#include "WP3DefinitionGroup.h"
 #include "WP3TablesGroup.h"
 #include "libwpd_internal.h"
 
@@ -51,6 +52,8 @@ WP3VariableLengthGroup * WP3VariableLengthGroup::constructVariableLengthGroup(WP
 			return new WP3TablesGroup(input);
 		case WP3_FONT_GROUP:
 			return new WP3FontGroup(input);
+		case WP3_DEFINITION_GROUP:
+			return new WP3DefinitionGroup(input);
 		default:
 			// this is an unhandled group, just skip it
 			return new WP3UnsupportedVariableLengthGroup(input);

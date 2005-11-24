@@ -63,7 +63,7 @@ public:
 	virtual void paragraphMarginChange(const uint8_t side, const int16_t margin) {};
 	virtual void indentFirstLineChange(const int16_t offset);
 	virtual void columnChange(const WPXTextColumnType columnType, const uint8_t numColumns, const std::vector<float> &columnWidth,
-				  const std::vector<bool> &isFixedWidth) {};
+				  const std::vector<bool> &isFixedWidth);
 	virtual void endDocument();
 
 	virtual void defineTable(const uint8_t position, const uint16_t leftOffset);

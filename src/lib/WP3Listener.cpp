@@ -414,6 +414,68 @@ void WP3Listener::indentFirstLineChange(const int16_t offset)
 	}
 }
 
+void WP3Listener::columnChange(const WPXTextColumnType columnType, const uint8_t numColumns, const std::vector<float> &columnWidth,
+		const std::vector<bool> &isFixedWidth)
+{
+	if (!isUndoOn())
+	{
+		// In WP, the last column ends with a hard column break code.
+		// In this case, we do not really want to insert any column break
+		m_ps->m_isParagraphColumnBreak = false;
+		m_ps->m_isTextColumnWithoutParagraph = false;
+
+		float remainingSpace = m_ps->m_pageFormWidth - m_ps->m_pageMarginLeft - m_ps->m_pageMarginRight
+						- m_ps->m_leftMarginByPageMarginChange - m_ps->m_rightMarginByPageMarginChange;
+		// determine the space that is to be divided between columns whose width is expressed in percentage of remaining space
+		std::vector<WPXColumnDefinition> tmpColumnDefinition;
+		tmpColumnDefinition.clear();
+		if (numColumns > 1)
+		{
+			int i;
+			for (i=0; i<columnWidth.size(); i++)
+			{
+				if (isFixedWidth[i])
+					remainingSpace -= columnWidth[i];
+			}
+			WPXColumnDefinition tmpColumn;
+			for (i=0; i<numColumns; i++)
+			{
+				if (i == 0)
+					tmpColumn.m_leftGutter = 0.0f;
+				else if (isFixedWidth[2*i-1])
+					tmpColumn.m_leftGutter = 0.5f * columnWidth[2*i-1];
+				else
+					tmpColumn.m_leftGutter = 0.5f * remainingSpace * columnWidth[2*i-1];
+				
+				if (i >= (numColumns - 1))
+					tmpColumn.m_rightGutter = 0.0f;
+				else if (isFixedWidth[2*i+1])
+					tmpColumn.m_rightGutter = 0.5f * columnWidth[2*i+1];
+				else
+					tmpColumn.m_rightGutter = 0.5f * remainingSpace * columnWidth[2*i+1];
+
+				if (isFixedWidth[2*i])
+					tmpColumn.m_width = columnWidth[2*i];
+				else
+					tmpColumn.m_width = remainingSpace * columnWidth[2*i];
+				
+				tmpColumn.m_width += tmpColumn.m_leftGutter + tmpColumn.m_rightGutter;
+				
+				tmpColumnDefinition.push_back(tmpColumn);
+			}
+		}
+
+		if (!m_ps->m_inSubDocument && !m_ps->m_isTableOpened)
+			_closeSection();
+		else
+			m_ps->m_sectionAttributesChanged = true;
+		m_ps->m_numColumns = numColumns;
+		m_ps->m_textColumns = tmpColumnDefinition;
+		m_ps->m_isTextColumnWithoutParagraph = true;
+	}
+}
+
+
 void WP3Listener::setTextColor(const RGBSColor *fontColor)
 {
 	if (!isUndoOn())
