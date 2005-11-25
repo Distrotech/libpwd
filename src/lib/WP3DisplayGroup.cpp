@@ -29,29 +29,27 @@
 #include "libwpd_math.h"
 
 WP3DisplayGroup::WP3DisplayGroup(WPXInputStream *input) :
-	WP3VariableLengthGroup()
+	WP3VariableLengthGroup(),
+	m_noteReference(NULL)
+	
 {
 	_read(input);
 }
 
 WP3DisplayGroup::~WP3DisplayGroup()
 {
-	// fixme delete the font name
+	if (m_noteReference)
+		delete [] m_noteReference;
 }
 
 void WP3DisplayGroup::_readContents(WPXInputStream *input)
 {
-	// this group can contain different kinds of data, thus we need to read
-	// the contents accordingly
-	switch (getSubGroup())
-	{
-	case WP3_DISPLAY_GROUP_INSERT_FOOTNOTE_NUMBER:
-		break;
-	case WP3_DISPLAY_GROUP_INSERT_ENDNOTE_NUMBER:
-		break;
-	default: /* something else we don't support, since it isn't in the docs */
-		break;
-	}
+	input->seek(4, WPX_SEEK_CUR);
+	uint8_t tmpNoteReferenceLength = readU8(input);
+	m_noteReference = new char[tmpNoteReferenceLength+1];
+	for (uint8_t i=0; i < tmpNoteReferenceLength; i++)
+		m_noteReference[i]=readU8(input);
+	m_noteReference[tmpNoteReferenceLength]='\0';
 }
 
 void WP3DisplayGroup::parse(WP3Listener *listener)
@@ -61,10 +59,15 @@ void WP3DisplayGroup::parse(WP3Listener *listener)
 	switch (getSubGroup())
 	{
 	case WP3_DISPLAY_GROUP_INSERT_FOOTNOTE_NUMBER:
+		listener->insertNoteReference(FOOTNOTE, m_noteReference);
 		break;
 	case WP3_DISPLAY_GROUP_INSERT_ENDNOTE_NUMBER:
+		listener->insertNoteReference(ENDNOTE, m_noteReference);
 		break;
 	default: // something else we don't support, since it isn't in the docs
 		break;
 	}
+	
+//	if (m_noteReference)
+//		delete [] m_noteReference;
 }

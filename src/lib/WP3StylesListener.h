@@ -71,6 +71,8 @@ public:
  	virtual void endTable() {}
 	virtual void setTextFont(const char* fontName) {}
 	virtual void setFontSize(const uint16_t fontSize) {}
+	virtual void insertNoteReference(const WPXNoteType noteType, const char* noteReference) {};
+	virtual void insertNote(const WPXNoteType noteType, const WP3SubDocument *subDocument) {};
 
 protected:
 	virtual void _openPageSpan() { /* FIXME: REMOVE ME WHEN IMPLEMENTED IN WPXListener */ };

@@ -1,8 +1,9 @@
 /* libwpd
- * Copyright (C) 2005 Fridrich Strba (fridrich.strba@bluewin.ch)
+ * Copyright (C) 2002 William Lachance (william.lachance@sympatico.ca)
+ * Copyright (C) 2002 Marc Maurer (j.m.maurer@student.utwente.nl)
  *  
  * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
+ * modify it under the terms of the GNU Library General Public
  * License as published by the Free Software Foundation; either
  * version 2 of the License, or (at your option) any later version.
  *
@@ -22,23 +23,21 @@
  * Corel Corporation or Corel Corporation Limited."
  */
 
-#ifndef WP3FOOTNOTEENDNOTEGROUP_H
-#define WP3FOOTNOTEENDNOTEGROUP_H
+#ifndef WP3SUBDOCUMENT_H
+#define WP3SUBDOCUMENT_H
 
-#include "WP3VariableLengthGroup.h"
 #include "WPXMemoryStream.h"
-#include "WP3SubDocument.h"
+#include "WP3Listener.h"
 
-class WP3FootnoteEndnoteGroup : public WP3VariableLengthGroup
+class WP3SubDocument
 {
- public:
-	WP3FootnoteEndnoteGroup(WPXInputStream *input);	
-	virtual ~WP3FootnoteEndnoteGroup();
-	virtual void _readContents(WPXInputStream *input);
-	virtual void parse(WP3Listener *listener);
+public:
+	WP3SubDocument(WPXInputStream *input, int dataSize);
+	virtual ~WP3SubDocument();
+	virtual void parse(WP3Listener *listener) const;
 
- private:
-	WP3SubDocument *m_subDocument;
+private:              
+	WPXMemoryInputStream *m_stream;
+	
 };
-
-#endif /* WP3FOOTNOTEENDNOTEGROUP_H */
+#endif /* WP3SUBDOCUMENT_H */

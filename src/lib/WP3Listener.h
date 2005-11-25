@@ -1,5 +1,6 @@
 /* libwpd
  * Copyright (C) 2004 Marc Maurer (j.m.maurer@student.utwente.nl)
+ * Copyright (C) 2005 Fridrich Strba (fridrich.strba@bluewin.ch)
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -38,8 +39,11 @@ struct _WP3ParsingState
 	uint16_t m_rowSpan;
 	WPXString m_textBuffer;
 	RGBSColor * m_cellFillColor;
+	WPXString m_footNoteReference;
+	WPXString m_endNoteReference;
 };
 
+class WP3SubDocument;
 
 class WP3Listener : public WPXListener
 {
@@ -81,6 +85,8 @@ public:
 	virtual void setTextColor(const RGBSColor * fontColor);
 	virtual void setTextFont(const char* fontName);
 	virtual void setFontSize(const uint16_t fontSize);
+	virtual void insertNoteReference(const WPXNoteType noteType, const char* noteReference);
+	virtual void insertNote(const WPXNoteType noteType, const WP3SubDocument *subDocument);
 	
 protected:
 	virtual void _handleSubDocument(uint16_t textPID, const bool isHeaderFooter, WPXTableList tableList, int nextTableIndice = 0) {}

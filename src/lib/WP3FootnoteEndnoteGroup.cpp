@@ -29,19 +29,19 @@
 
 WP3FootnoteEndnoteGroup::WP3FootnoteEndnoteGroup(WPXInputStream *input) :
 	WP3VariableLengthGroup(),
-	m_stream(NULL)
+	m_subDocument(NULL)
 {
 	_read(input);
 }
 
 WP3FootnoteEndnoteGroup::~WP3FootnoteEndnoteGroup()
 {
-	delete m_stream;
+	delete m_subDocument;
 }
 
 void WP3FootnoteEndnoteGroup::_readContents(WPXInputStream *input)
 {
-	int tmpSizeOfNote = getSize() - 6;
+	int tmpSizeOfNote = getSize() - 8;
 	input->seek(25, WPX_SEEK_CUR);
 	tmpSizeOfNote -= 25;
 	int tmpNumOfPages = readU16(input, true);
@@ -63,23 +63,19 @@ void WP3FootnoteEndnoteGroup::_readContents(WPXInputStream *input)
 	// actual subdocument. tmpSizeOfNote should give the size in bytes of the
 	// subdocument
 
-	uint8_t *streamData = new uint8_t[tmpSizeOfNote];
-	for (i=0; i<tmpSizeOfNote; i++)
-	{
-		streamData[i] = readU8(input);
-	}
-	m_stream = new WPXMemoryInputStream(streamData, tmpSizeOfNote);
-	}
+	m_subDocument = new WP3SubDocument(input, tmpSizeOfNote);
+}
 
 void WP3FootnoteEndnoteGroup::parse(WP3Listener *listener)
 {
 	WPD_DEBUG_MSG(("WordPerfect: handling a Footnote/Endnote group\n"));
-	m_stream->seek(0, WPX_SEEK_SET);
 	switch (getSubGroup())
 	{
 	case WP3_FOOTNOTE_ENDNOTE_GROUP_FOOTNOTE_FUNCTION:
+		listener->insertNote(FOOTNOTE, m_subDocument);
 		break;
 	case WP3_FOOTNOTE_ENDNOTE_GROUP_ENDNOTE_FUNCTION:
+		listener->insertNote(ENDNOTE, m_subDocument);
 		break;
 	default: // something else we don't support, since it isn't in the docs
 		break;

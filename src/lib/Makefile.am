@@ -56,6 +56,7 @@ libwpd_0_8_la_SOURCES =				\
 	WP3Part.cpp				\
 	WP3SingleByteFunction.cpp		\
 	WP3StylesListener.cpp			\
+	WP3SubDocument.cpp			\
 	WP3TablesGroup.cpp			\
 	WP3UndoGroup.cpp			\
 	WP3UnsupportedFixedLengthGroup.cpp 	\
@@ -157,6 +158,7 @@ libwpd_0_8_la_SOURCES =				\
 	WP3Part.h				\
 	WP3SingleByteFunction.h			\
 	WP3StylesListener.h			\
+	WP3SubDocument.h			\
 	WP3TablesGroup.h			\
 	WP3UndoGroup.h				\
 	WP3UnsupportedFixedLengthGroup.h 	\

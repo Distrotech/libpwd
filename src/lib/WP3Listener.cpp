@@ -27,6 +27,7 @@
 #include "WP3FileStructure.h"
 #include "WPXFileStructure.h"
 #include "libwpd_internal.h"
+#include "WP3SubDocument.h"
 
 _WP3ParsingState::_WP3ParsingState():
 	m_colSpan(1),
@@ -34,11 +35,15 @@ _WP3ParsingState::_WP3ParsingState():
 	m_cellFillColor(NULL)
 {
 	m_textBuffer.clear();
+	m_footNoteReference.clear();
+	m_endNoteReference.clear();
 }
 
 _WP3ParsingState::~_WP3ParsingState()
 {
 	m_textBuffer.clear();
+	m_footNoteReference.clear();
+	m_endNoteReference.clear();
 	DELETEP(m_cellFillColor);
 }
 
@@ -506,6 +511,94 @@ void WP3Listener::setFontSize(const uint16_t fontSize)
 	}
 }
 
+void WP3Listener::insertNoteReference(const WPXNoteType noteType, const char* noteReference)
+{
+	if (!isUndoOn() && (m_ps->m_inSubDocument))
+	{
+		if (noteType == FOOTNOTE)
+			m_parseState->m_footNoteReference.sprintf("%s", noteReference);
+		else
+			m_parseState->m_footNoteReference.sprintf("%s", noteReference);
+	}
+}
+
+void WP3Listener::insertNote(const WPXNoteType noteType, const WP3SubDocument *subDocument)
+{
+	if (!isUndoOn())
+	{
+		m_ps->m_isNote = true;
+		int number;
+		if (noteType == FOOTNOTE)
+		{
+			WPXNumberingType numberingType = _extractWPXNumberingTypeFromBuf(m_parseState->m_footNoteReference, ARABIC);
+			number = _extractDisplayReferenceNumberFromBuf(m_parseState->m_footNoteReference, numberingType);
+			m_parseState->m_footNoteReference.clear();
+		}
+		else
+		{
+			WPXNumberingType numberingType = _extractWPXNumberingTypeFromBuf(m_parseState->m_endNoteReference, ARABIC);
+			number = _extractDisplayReferenceNumberFromBuf(m_parseState->m_endNoteReference, numberingType);
+			m_parseState->m_endNoteReference.clear();
+		}
+		
+		WPXPropertyList propList;
+		propList.insert("libwpd:number", number);
+
+		if (noteType == FOOTNOTE)
+			m_listenerImpl->openFootnote(propList);
+		else
+			m_listenerImpl->openEndnote(propList);
+
+		// save our old parsing state on our "stack"
+		WPXParsingState *oldPS = m_ps;
+		m_ps = new WPXParsingState();
+		// BEGIN: copy page properties into the new parsing state
+		m_ps->m_pageFormWidth = oldPS->m_pageFormWidth;
+		m_ps->m_pageMarginLeft = oldPS->m_pageMarginLeft;
+		m_ps->m_pageMarginRight = oldPS->m_pageMarginRight;
+		m_ps->m_subDocumentTextPIDs = oldPS->m_subDocumentTextPIDs;
+		m_ps->m_isNote = oldPS->m_isNote;
+		// END: copy page properties into the new parsing state
+		m_ps->m_inSubDocument = true;
+
+		// save our old parsing state on our "stack"
+		WP3ParsingState *oldParseState = m_parseState;
+	
+		m_parseState = new WP3ParsingState();
+
+		if (subDocument)
+			subDocument->parse(this);
+		else
+			_openSpan();
+		
+		// Close the sub-document properly
+		if (m_ps->m_isParagraphOpened)
+			_closeParagraph();
+		if (m_ps->m_isListElementOpened)
+			_closeListElement();
+
+		m_ps->m_currentListLevel = 0;
+		_changeList();
+
+#if 0
+		_closeSection();
+#endif
+
+		// restore our old parsing state
+		delete m_parseState;
+		m_parseState = oldParseState;
+
+		delete m_ps;
+		m_ps = oldPS;
+
+		if (noteType == FOOTNOTE)
+			m_listenerImpl->closeFootnote();
+		else
+			m_listenerImpl->closeEndnote();
+		m_ps->m_isNote = false;
+	}
+}
+	
 void WP3Listener::_openParagraph()
 {
 

@@ -24,6 +24,7 @@
  */
 #include "libwpd_internal.h"
 #include "WPXStream.h"
+#include <ctype.h>
 
 uint8_t readU8(WPXInputStream *input)
 {
@@ -994,3 +995,119 @@ _WPXColumnProperties::_WPXColumnProperties()
 		m_alignment(0x00)
 {
 }
+
+// HACK: this function is really cheesey
+int _extractNumericValueFromRoman(const char romanChar)
+{
+	switch (romanChar)
+	{
+	case 'I':
+	case 'i':
+		return 1;
+	case 'V':
+	case 'v':
+		return 5;
+	case 'X':
+	case 'x':
+		return 10;
+	default:
+		throw ParseException();
+	}
+	return 1;
+}
+
+// _extractDisplayReferenceNumberFromBuf: given a nuWP6_DEFAULT_FONT_SIZEmber string in UCS2 represented
+// as letters, numbers, or roman numerals.. return an integer value representing its number
+// HACK: this function is really cheesey
+// NOTE: if the input is not valid, the output is unspecified
+int _extractDisplayReferenceNumberFromBuf(const WPXString &buf, const WPXNumberingType listType)
+{
+	if (listType == LOWERCASE_ROMAN || listType == UPPERCASE_ROMAN)
+	{
+		int currentSum = 0;
+		int lastMark = 0;
+		int currentMark = 0;
+		WPXString::Iter i(buf);
+		for (i.rewind(); i.next();)
+		{
+			int currentMark = _extractNumericValueFromRoman(*(i()));
+			if (lastMark < currentMark) {
+				currentSum = currentMark - lastMark;
+			}
+			else
+				currentSum+=currentMark;
+			lastMark = currentMark;
+		}
+		return currentSum;
+	}
+	else if (listType == LOWERCASE || listType == UPPERCASE)
+	{
+		// FIXME: what happens to a lettered list that goes past z? ah
+		// the sweet mysteries of life
+		if (buf.len()==0)
+			throw ParseException();
+		char c = buf.cstr()[0];
+		if (listType==LOWERCASE)
+			c = toupper(c);
+		return (c - 64);
+	}
+	else if (listType == ARABIC)
+	{
+		int currentSum = 0;
+		WPXString::Iter i(buf);
+		for (i.rewind(); i.next();)
+		{
+			currentSum *= 10;
+			currentSum+=(*(i())-48);
+		}
+		return currentSum;
+	}
+
+	return 1;
+}
+
+WPXNumberingType _extractWPXNumberingTypeFromBuf(const WPXString &buf, const WPXNumberingType putativeWPXNumberingType)
+{
+	WPXString::Iter i(buf);
+	for (i.rewind(); i.next();)
+	{
+		if ((*(i()) == 'I' || *(i()) == 'V' || *(i()) == 'X') &&
+		    (putativeWPXNumberingType == LOWERCASE_ROMAN || putativeWPXNumberingType == UPPERCASE_ROMAN))
+			return UPPERCASE_ROMAN;
+		else if ((*(i()) == 'i' || *(i()) == 'v' || *(i()) == 'x') &&
+		    (putativeWPXNumberingType == LOWERCASE_ROMAN || putativeWPXNumberingType == UPPERCASE_ROMAN))
+			return LOWERCASE_ROMAN;
+		else if (*(i()) >= 'A' && *(i()) <= 'Z')
+			return UPPERCASE;
+		else if (*(i()) >= 'a' && *(i()) <= 'z')
+			return LOWERCASE;
+	}
+
+	return ARABIC;
+}
+
+WPXString _numberingTypeToString(WPXNumberingType t)
+{
+	WPXString sListTypeSymbol("1");
+	switch (t)
+	{
+	case ARABIC:
+		sListTypeSymbol.sprintf("1");
+		break;	
+	case LOWERCASE:
+		sListTypeSymbol.sprintf("a");
+		break;	
+	case UPPERCASE:
+		sListTypeSymbol.sprintf("A");
+		break;	
+ 	case LOWERCASE_ROMAN:
+		sListTypeSymbol.sprintf("i");
+		break;	
+ 	case UPPERCASE_ROMAN:
+		sListTypeSymbol.sprintf("I");
+		break;
+	}
+
+	return sListTypeSymbol;
+}
+

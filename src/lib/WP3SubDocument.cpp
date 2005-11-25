@@ -1,8 +1,9 @@
 /* libwpd
- * Copyright (C) 2005 Fridrich Strba (fridrich.strba@bluewin.ch)
+ * Copyright (C) 2002 William Lachance (william.lachance@sympatico.ca)
+ * Copyright (C) 2002 Marc Maurer (j.m.maurer@student.utwente.nl)
  *  
  * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
+ * modify it under the terms of the GNU Library General Public
  * License as published by the Free Software Foundation; either
  * version 2 of the License, or (at your option) any later version.
  *
@@ -22,23 +23,28 @@
  * Corel Corporation or Corel Corporation Limited."
  */
 
-#ifndef WP3FOOTNOTEENDNOTEGROUP_H
-#define WP3FOOTNOTEENDNOTEGROUP_H
-
-#include "WP3VariableLengthGroup.h"
-#include "WPXMemoryStream.h"
 #include "WP3SubDocument.h"
+#include "WP3Parser.h"
+#include "libwpd_internal.h"
 
-class WP3FootnoteEndnoteGroup : public WP3VariableLengthGroup
+WP3SubDocument::WP3SubDocument(WPXInputStream *input, int dataSize) :
+	m_stream(NULL)
 {
- public:
-	WP3FootnoteEndnoteGroup(WPXInputStream *input);	
-	virtual ~WP3FootnoteEndnoteGroup();
-	virtual void _readContents(WPXInputStream *input);
-	virtual void parse(WP3Listener *listener);
+	uint8_t *streamData = new uint8_t[dataSize];
+	for (int i=0; i<dataSize; i++)
+	{
+		streamData[i] = readU8(input);
+	}
+	m_stream = new WPXMemoryInputStream(streamData, dataSize);
+}
 
- private:
-	WP3SubDocument *m_subDocument;
-};
+WP3SubDocument::~WP3SubDocument()
+{
+	delete m_stream;
+}
 
-#endif /* WP3FOOTNOTEENDNOTEGROUP_H */
+void WP3SubDocument::parse(WP3Listener *listener) const
+{
+	m_stream->seek(0, WPX_SEEK_SET);
+	WP3Parser::parseDocument(m_stream, listener);
+}

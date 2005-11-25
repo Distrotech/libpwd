@@ -215,4 +215,12 @@ class UnsupportedEncryptionException
 	// needless to say, we could flesh this class out a bit
 };
 
+// Various usefull, but cheesey functions
+
+int _extractNumericValueFromRoman(const char romanChar);
+int _extractDisplayReferenceNumberFromBuf(const WPXString &buf, const WPXNumberingType listType);
+WPXNumberingType _extractWPXNumberingTypeFromBuf(const WPXString &buf, const WPXNumberingType putativeWPXNumberingType);
+WPXString _numberingTypeToString(WPXNumberingType t);
+
+
 #endif /* LIBWPD_INTERNAL_H */
