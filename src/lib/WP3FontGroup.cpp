@@ -77,7 +77,7 @@ void WP3FontGroup::_readContents(WPXInputStream *input)
 
 void WP3FontGroup::parse(WP3Listener *listener)
 {
-	WPD_DEBUG_MSG(("WordPerfect: handling a Page group\n"));
+	WPD_DEBUG_MSG(("WordPerfect: handling a Font group\n"));
 
 	switch (getSubGroup())
 	{

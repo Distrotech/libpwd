@@ -26,7 +26,7 @@
 #ifndef WP3FILESTRUCTURE_H
 #define WP3FILESTRUCTURE_H
 
-// size of the fixed length functiongroups 0xC0 to 0xCF
+// size of the fixed length function groups 0xC0 to 0xCF
 extern int WP3_FIXED_LENGTH_FUNCTION_GROUP_SIZE[16]; 
 
 /* Main function group list  */
@@ -42,6 +42,9 @@ extern int WP3_FIXED_LENGTH_FUNCTION_GROUP_SIZE[16];
 #define WP3_FONT_GROUP 0xD1
 #define WP3_DEFINITION_GROUP 0xD2
 
+#define WP3_FOOTNOTE_ENDNOTE_GROUP 0xD6
+
+#define WP3_DISPLAY_GROUP 0xD8
 #define WP3_MISCELLANEOUS_GROUP 0xD9
 #define WP3_WINDOW_GROUP 0xDA
 #define WP3_STYLE_GROUP 0xDB
@@ -82,6 +85,14 @@ extern int WP3_FIXED_LENGTH_FUNCTION_GROUP_SIZE[16];
 
 /* Definition Group */
 #define WP3_DEFINITION_GROUP_SET_COLUMNS 0x01
+
+/* Footnote/Endnote Group */
+#define WP3_FOOTNOTE_ENDNOTE_GROUP_FOOTNOTE_FUNCTION 0x00
+#define WP3_FOOTNOTE_ENDNOTE_GROUP_ENDNOTE_FUNCTION 0x01
+
+/* Display Group */
+#define WP3_DISPLAY_GROUP_INSERT_FOOTNOTE_NUMBER 0x07
+#define WP3_DISPLAY_GROUP_INSERT_ENDNOTE_NUMBER 0x08
 
 /* Miscellaneous Group */
 

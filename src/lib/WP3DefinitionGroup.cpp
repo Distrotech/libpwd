@@ -95,7 +95,7 @@ void WP3DefinitionGroup::_readContents(WPXInputStream *input)
 
 void WP3DefinitionGroup::parse(WP3Listener *listener)
 {
-	WPD_DEBUG_MSG(("WordPerfect: handling a Page group\n"));
+	WPD_DEBUG_MSG(("WordPerfect: handling a Definition group\n"));
 
 	switch (getSubGroup())
 	{

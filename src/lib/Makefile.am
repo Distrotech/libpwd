@@ -41,11 +41,13 @@ libwpd_0_8_la_SOURCES =				\
 	libwpd_math.cpp				\
 	WP3AttributeGroup.cpp			\
 	WP3DefinitionGroup.cpp			\
+	WP3DisplayGroup.cpp			\
 	WP3EndOfLinePageGroup.cpp		\
 	WP3ExtendedCharacterGroup.cpp		\
 	WP3FileStructure.cpp			\
 	WP3FixedLengthGroup.cpp			\
 	WP3FontGroup.cpp			\
+	WP3FootnoteEndnoteGroup.cpp		\
 	WP3Header.cpp				\
 	WP3Listener.cpp				\
 	WP3MiscellaneousGroup.cpp		\
@@ -140,11 +142,13 @@ libwpd_0_8_la_SOURCES =				\
 	libwpd_types.h				\
 	WP3AttributeGroup.h			\
 	WP3DefinitionGroup.h			\
+	WP3DisplayGroup.h			\
 	WP3EndOfLinePageGroup.h			\
 	WP3ExtendedCharacterGroup.h		\
 	WP3FileStructure.h			\
 	WP3FixedLengthGroup.h			\
 	WP3FontGroup.h				\
+	WP3FootnoteEndnoteGroup.h		\
 	WP3Header.h				\
 	WP3Listener.h				\
 	WP3MiscellaneousGroup.h			\

@@ -101,7 +101,7 @@ void WP3PageFormatGroup::_readContents(WPXInputStream *input)
 
 void WP3PageFormatGroup::parse(WP3Listener *listener)
 {
-	WPD_DEBUG_MSG(("WordPerfect: handling a Page group\n"));
+	WPD_DEBUG_MSG(("WordPerfect: handling a Page Format group\n"));
 
 	switch (getSubGroup())
 	{

@@ -1,5 +1,4 @@
 /* libwpd
- * Copyright (C) 2004 Marc Maurer (j.m.maurer@student.utwente.nl)
  * Copyright (C) 2005 Fridrich Strba (fridrich.strba@bluewin.ch)
  *  
  * This library is free software; you can redistribute it and/or
@@ -23,29 +22,22 @@
  * Corel Corporation or Corel Corporation Limited."
  */
 
-#ifndef WP3VARIABLELENGTHGROUP_H
-#define WP3VARIABLELENGTHGROUP_H
+#ifndef WP3FOOTNOTEENDNOTEGROUP_H
+#define WP3FOOTNOTEENDNOTEGROUP_H
 
-#include "WP3Part.h"
+#include "WP3VariableLengthGroup.h"
+#include "WPXMemoryStream.h"
 
-class WP3VariableLengthGroup : public WP3Part
+class WP3FootnoteEndnoteGroup : public WP3VariableLengthGroup
 {
  public:
-	WP3VariableLengthGroup(); // WP3VariableLengthGroup should _never_ be constructed, only its inherited classes
-	virtual ~WP3VariableLengthGroup() {}
-	
-	static WP3VariableLengthGroup * constructVariableLengthGroup(WPXInputStream *input, uint8_t group);
-
- protected:
-	void _read(WPXInputStream *input);
- 	virtual void _readContents(WPXInputStream *input) {} // we don't always need more information than that provided generically
-
-	const uint8_t getSubGroup() const { return m_subGroup; }
-	const uint16_t getSize() const { return m_size;}
+	WP3FootnoteEndnoteGroup(WPXInputStream *input);	
+	virtual ~WP3FootnoteEndnoteGroup();
+	virtual void _readContents(WPXInputStream *input);
+	virtual void parse(WP3Listener *listener);
 
  private:
-	uint8_t m_subGroup;
-	uint16_t m_size; 
+	WPXMemoryInputStream *m_stream;
 };
 
-#endif /* WP3VARIABLELENGTHGROUP_H */
+#endif /* WP3FOOTNOTEENDNOTEGROUP_H */

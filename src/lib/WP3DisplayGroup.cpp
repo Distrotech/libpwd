@@ -1,7 +1,5 @@
 /* libwpd
- * Copyright (C) 2002 William Lachance (william.lachance@sympatico.ca)
- * Copyright (C) 2002 Marc Maurer (j.m.maurer@student.utwente.nl)
- * Copyright (C) 2004 Fridrich Strba (fridrich.strba@bluewin.ch)
+ * Copyright (C) 2005 Fridrich Strba (fridrich.strba@bluewin.ch)
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,49 +22,47 @@
  * Corel Corporation or Corel Corporation Limited."
  */
 
-#include "WP5TableEOPGroup.h"
-#include "WP5FileStructure.h"
+#include <math.h>
+#include "WP3DisplayGroup.h"
+#include "WP3FileStructure.h"
 #include "libwpd_internal.h"
+#include "libwpd_math.h"
 
-WP5TableEOPGroup::WP5TableEOPGroup(WPXInputStream *input) :
-	WP5VariableLengthGroup()
+WP3DisplayGroup::WP3DisplayGroup(WPXInputStream *input) :
+	WP3VariableLengthGroup()
 {
 	_read(input);
 }
 
-WP5TableEOPGroup::~WP5TableEOPGroup()
+WP3DisplayGroup::~WP3DisplayGroup()
 {
+	// fixme delete the font name
 }
 
-void WP5TableEOPGroup::_readContents(WPXInputStream *input)
+void WP3DisplayGroup::_readContents(WPXInputStream *input)
 {
+	// this group can contain different kinds of data, thus we need to read
+	// the contents accordingly
 	switch (getSubGroup())
 	{
-	case WP5_TABLE_EOP_GROUP_BEGINNING_OF_ROW_AT_EOP:
+	case WP3_DISPLAY_GROUP_INSERT_FOOTNOTE_NUMBER:
 		break;
-	case WP5_TABLE_EOP_GROUP_TABLE_OFF_AT_EOP:
-		break;
-	case WP5_TABLE_EOP_GROUP_BEGINNING_OF_ROW_AT_HARD_EOP:
+	case WP3_DISPLAY_GROUP_INSERT_ENDNOTE_NUMBER:
 		break;
 	default: /* something else we don't support, since it isn't in the docs */
 		break;
 	}
 }
 
-void WP5TableEOPGroup::parse(WP5Listener *listener)
+void WP3DisplayGroup::parse(WP3Listener *listener)
 {
-	WPD_DEBUG_MSG(("WordPerfect: handling a Table EOP group\n"));
+	WPD_DEBUG_MSG(("WordPerfect: handling a Display group\n"));
 
 	switch (getSubGroup())
 	{
-	case WP5_TABLE_EOP_GROUP_BEGINNING_OF_ROW_AT_EOP:
-		listener->insertRow(0, true, false);
+	case WP3_DISPLAY_GROUP_INSERT_FOOTNOTE_NUMBER:
 		break;
-	case WP5_TABLE_EOP_GROUP_TABLE_OFF_AT_EOP:
-		listener->endTable();
-		break;
-	case WP5_TABLE_EOP_GROUP_BEGINNING_OF_ROW_AT_HARD_EOP:
-		listener->insertRow(0, true, false);
+	case WP3_DISPLAY_GROUP_INSERT_ENDNOTE_NUMBER:
 		break;
 	default: // something else we don't support, since it isn't in the docs
 		break;
