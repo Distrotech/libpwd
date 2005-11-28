@@ -30,6 +30,7 @@
 
 class WP6Listener;
 class WP6PrefixIndice;
+class WP6SubDocument;
 
 class WP6PrefixDataPacket
 {
@@ -37,6 +38,7 @@ public:
 	WP6PrefixDataPacket(WPXInputStream * input);	
 	virtual ~WP6PrefixDataPacket() {}
 	virtual void parse(WP6Listener *listener) const {}
+	virtual WP6SubDocument * getSubDocument() const {}
 
 	static WP6PrefixDataPacket * constructPrefixDataPacket(WPXInputStream * input, WP6PrefixIndice *prefixIndice);
 

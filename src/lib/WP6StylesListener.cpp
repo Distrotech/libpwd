@@ -28,6 +28,7 @@
 #include "WP6FileStructure.h"
 #include "WPXFileStructure.h"
 #include "libwpd_internal.h"
+#include "WP6SubDocument.h"
 
 // WP6StylesListener: creates intermediate table and page span representations, given a
 // sequence of messages passed to it by the parser.
@@ -141,8 +142,9 @@ void WP6StylesListener::headerFooterGroup(const uint8_t headerFooterType, const 
 		if (headerFooterType <= WP6_HEADER_FOOTER_GROUP_FOOTER_B) // ignore watermarks for now
 		{
 			WPXTableList tableList; 
-			m_currentPage->setHeaderFooter(headerFooterType, occurenceBits, textPID, tableList);
-			_handleSubDocument(textPID, true, tableList);
+			m_currentPage->setHeaderFooter(headerFooterType, occurenceBits,
+						static_cast<WPXSubDocument *>(textPID ? WP6Listener::getPrefixDataPacket(textPID)->getSubDocument() : NULL), tableList);
+			_handleSubDocument(static_cast<WPXSubDocument *>(textPID ? WP6Listener::getPrefixDataPacket(textPID)->getSubDocument() : NULL), true, tableList);
 		}
 		m_currentPageHasContent = tempCurrentPageHasContent;
 	}
@@ -221,38 +223,38 @@ void WP6StylesListener::noteOn(const uint16_t textPID)
 	if (!isUndoOn()) 
 	{
 		m_currentPageHasContent = true; 		
-		_handleSubDocument(textPID, false, m_tableList);
+		_handleSubDocument(static_cast<WPXSubDocument *>(textPID ? WP6Listener::getPrefixDataPacket(textPID)->getSubDocument() : NULL), false, m_tableList);
 	}
 }
 
-void WP6StylesListener::_handleSubDocument(uint16_t textPID, const bool isHeaderFooter, WPXTableList tableList, int nextTableIndice)
+void WP6StylesListener::_handleSubDocument(const WPXSubDocument *subDocument, const bool isHeaderFooter, WPXTableList tableList, int nextTableIndice)
 {
 	// We don't want to actual insert anything in the case of a sub-document, but we
 	// do want to capture whatever table-related information is within it..
 	if (!isUndoOn()) 
 	{
-		std::set <int> oldTextPIDs;
-		oldTextPIDs = m_subDocumentTextPIDs;
+		std::set <const WPXSubDocument *> oldSubDocuments;
+		oldSubDocuments = m_subDocuments;
 		// prevent entering in an endless loop		
-		if ((textPID) && (oldTextPIDs.find(textPID) == oldTextPIDs.end()))
+		if ((subDocument) && (oldSubDocuments.find(subDocument) == oldSubDocuments.end()))
 		{
-			m_subDocumentTextPIDs.insert(textPID);
+			m_subDocuments.insert(subDocument);
 			if (isHeaderFooter) 
 			{
 				WPXTable * oldCurrentTable = m_currentTable;
 				WPXTableList oldTableList = m_tableList;
 				m_tableList = tableList;
 
-				WP6Listener::getPrefixDataPacket(textPID)->parse(this);
+				subDocument->parse(this);
 
 				m_tableList = oldTableList;
 				m_currentTable = oldCurrentTable;
 			}
 			else
 			{
-				WP6Listener::getPrefixDataPacket(textPID)->parse(this);
+				subDocument->parse(this);
 			}
-			m_subDocumentTextPIDs = oldTextPIDs;
+			m_subDocuments = oldSubDocuments;
 
 		}
 	}

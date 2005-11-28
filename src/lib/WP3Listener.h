@@ -89,7 +89,7 @@ public:
 	virtual void insertNote(const WPXNoteType noteType, const WP3SubDocument *subDocument);
 	
 protected:
-	virtual void _handleSubDocument(uint16_t textPID, const bool isHeaderFooter, WPXTableList tableList, int nextTableIndice = 0) {}
+	virtual void _handleSubDocument(const WPXSubDocument *subDocument, const bool isHeaderFooter, WPXTableList tableList, int nextTableIndice = 0) {}
 	virtual void _openParagraph();
 
 private:

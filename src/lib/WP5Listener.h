@@ -73,7 +73,7 @@ public:
  	virtual void endTable();
 
 protected:
-	virtual void _handleSubDocument(uint16_t textPID, const bool isHeaderFooter, WPXTableList tableList, int nextTableIndice = 0) {}
+	virtual void _handleSubDocument(const WPXSubDocument *subDocument, const bool isHeaderFooter, WPXTableList tableList, int nextTableIndice = 0) {}
 
 private:
 	void _flushText();

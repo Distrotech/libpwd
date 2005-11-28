@@ -35,6 +35,8 @@
 #include "WPXPageSpan.h"
 #include "WPXTable.h"
 
+class WPXSubDocument;
+
 class WP6StylesListener : public WP6Listener
 {
 public:
@@ -97,7 +99,7 @@ public:
  	virtual void endTable();
 
 protected:
-	virtual void _handleSubDocument(uint16_t textPID, const bool isHeaderFooter, WPXTableList tableList, int nextTableIndice = 0);
+	virtual void _handleSubDocument(const WPXSubDocument *subDocument, const bool isHeaderFooter, WPXTableList tableList, int nextTableIndice = 0);
 
 	virtual void _flushText() {}
 	virtual void _openParagraph() {}
@@ -112,7 +114,7 @@ private:
 	float m_tempMarginLeft, m_tempMarginRight;
 	bool m_currentPageHasContent;
 	bool m_isTableDefined;
-	std::set <int> m_subDocumentTextPIDs;
+	std::set <const WPXSubDocument *> m_subDocuments;
 };
 
 #endif /* WP6STYLESLISTENER_H */

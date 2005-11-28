@@ -289,14 +289,14 @@ void WPXListener::_openPageSpan()
 			else
 				m_listenerImpl->openFooter(propList); 
 
-			handleSubDocument((*iter).getTextPID(), true, (*iter).getTableList(), 0);
+			handleSubDocument((*iter).getSubDocument(), true, (*iter).getTableList(), 0);
 			if ((*iter).getType() == HEADER)
 				m_listenerImpl->closeHeader();
 			else
 				m_listenerImpl->closeFooter(); 
 
-			WPD_DEBUG_MSG(("Header Footer Element: type: %i occurence: %i pid: %i\n",
-				       (*iter).getType(), (*iter).getOccurence(), (*iter).getTextPID()));
+			WPD_DEBUG_MSG(("Header Footer Element: type: %i occurence: %i\n",
+				       (*iter).getType(), (*iter).getOccurence()));
 		}
 	}
 
@@ -899,7 +899,7 @@ void WPXListener::_closeTableCell()
 /**
 Creates an new document state. Saves the old state on a "stack".
 */
-void WPXListener::handleSubDocument(uint16_t textPID, const bool isHeaderFooter, WPXTableList tableList, int nextTableIndice)
+void WPXListener::handleSubDocument(const WPXSubDocument *subDocument, const bool isHeaderFooter, WPXTableList tableList, int nextTableIndice)
 {
 	// save our old parsing state on our "stack"
 	WPXParsingState *oldPS = m_ps;
@@ -908,15 +908,15 @@ void WPXListener::handleSubDocument(uint16_t textPID, const bool isHeaderFooter,
 	m_ps->m_pageFormWidth = oldPS->m_pageFormWidth;
 	m_ps->m_pageMarginLeft = oldPS->m_pageMarginLeft;
 	m_ps->m_pageMarginRight = oldPS->m_pageMarginRight;
-	m_ps->m_subDocumentTextPIDs = oldPS->m_subDocumentTextPIDs;
+	m_ps->m_subDocuments = oldPS->m_subDocuments;
 	m_ps->m_isNote = oldPS->m_isNote;
 	// END: copy page properties into the new parsing state
 	m_ps->m_inSubDocument = true;
-	// Check whether the document is calling its own TextPID
-	if ((m_ps->m_subDocumentTextPIDs.find(textPID) == m_ps->m_subDocumentTextPIDs.end()) || (!textPID))
+	// Check whether the document is calling itself
+	if ((m_ps->m_subDocuments.find(subDocument) == m_ps->m_subDocuments.end()) || (!subDocument))
 	{
-		m_ps->m_subDocumentTextPIDs.insert(textPID);
-		_handleSubDocument(textPID, isHeaderFooter, tableList, nextTableIndice);
+		m_ps->m_subDocuments.insert(subDocument);
+		_handleSubDocument(subDocument, isHeaderFooter, tableList, nextTableIndice);
 	}
 
 	// restore our old parsing state

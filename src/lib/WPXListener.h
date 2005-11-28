@@ -31,6 +31,7 @@
 #include "WPXTable.h"
 #include "WPXPropertyListVector.h"
 #include "libwpd_internal.h"
+#include "WPXSubDocument.h"
 #include <vector>
 #include <set>
 
@@ -156,7 +157,7 @@ struct _WPXParsingState
 	std::vector<WPXTabStop> m_tabStops;
 	bool m_isTabPositionRelative;
 
-	std::set <int> m_subDocumentTextPIDs;
+	std::set <const WPXSubDocument *> m_subDocuments;
 
 	bool m_inSubDocument;
 	bool m_isNote;
@@ -169,7 +170,7 @@ public:
 	~WPXListener();
 
 	virtual void startDocument();
-	void handleSubDocument(uint16_t textPID, const bool isHeaderFooter, WPXTableList tableList, int nextTableIndice);
+	void handleSubDocument(const WPXSubDocument *subDocument, const bool isHeaderFooter, WPXTableList tableList, int nextTableIndice);
 	virtual void insertBreak(const uint8_t breakType);
 	virtual void lineSpacingChange(const float lineSpacing);
 	virtual void justificationChange(const uint8_t justification);
@@ -204,7 +205,7 @@ public:
 	std::vector <WPXPageSpan *> *m_pageList;
 
 protected:
-	virtual void _handleSubDocument(uint16_t textPID, const bool isHeaderFooter, WPXTableList tableList, int nextTableIndice) = 0;
+	virtual void _handleSubDocument(const WPXSubDocument *subDocument, const bool isHeaderFooter, WPXTableList tableList, int nextTableIndice) = 0;
 	virtual void _flushText() = 0;
 	virtual void _changeList() = 0;
 

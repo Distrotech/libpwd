@@ -120,6 +120,7 @@ libwpd_0_8_la_SOURCES =				\
 	WP6SingleByteFunction.cpp		\
 	WP6StyleGroup.cpp			\
 	WP6StylesListener.cpp			\
+	WP6SubDocument.cpp			\
 	WP6TabGroup.cpp 			\
 	WP6UndoGroup.cpp			\
 	WP6UnsupportedFixedLengthGroup.cpp 	\
@@ -135,6 +136,7 @@ libwpd_0_8_la_SOURCES =				\
 	WPXProperty.cpp				\
 	WPXPropertyList.cpp			\
 	WPXString.cpp				\
+	WPXSubDocument.cpp			\
 	WPXPropertyListVector.cpp		\
 	WPDocument.cpp				\
 	libwpd.h	        		\
@@ -222,6 +224,7 @@ libwpd_0_8_la_SOURCES =				\
 	WP6SingleByteFunction.h			\
 	WP6StyleGroup.h				\
 	WP6StylesListener.h			\
+	WP6SubDocument.h			\
 	WP6TabGroup.h	 			\
 	WP6TibetanMap.h				\
 	WP6UndoGroup.h				\
@@ -240,6 +243,7 @@ libwpd_0_8_la_SOURCES =				\
 	WPXProperty.h				\
 	WPXPropertyList.h			\
 	WPXString.h				\
+	WPXSubDocument.h			\
 	WPXTable.h				\
 	WPXPropertyListVector.h
 

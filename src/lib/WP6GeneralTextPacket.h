@@ -28,6 +28,8 @@
 #include "WP6PrefixDataPacket.h"
 #include "WP6FileStructure.h"
 #include "WPXMemoryStream.h"
+#include "WP6SubDocument.h"
+#include "WP6Listener.h"
 
 class WP6GeneralTextPacket : public WP6PrefixDataPacket
 {
@@ -36,13 +38,14 @@ public:
 	virtual ~WP6GeneralTextPacket();
 	virtual void _readContents(WPXInputStream *input);
 	virtual void parse(WP6Listener *listener) const;
+	virtual WP6SubDocument * getSubDocument() const { return m_subDocument;}
 
 private:              
 	uint16_t m_numTextBlocks;
 	uint32_t m_firstTextBlockOffset;
 	uint32_t *m_blockSizes;
 
-	WPXMemoryInputStream *m_stream;
+	WP6SubDocument * m_subDocument;
 	
 };
 #endif /* WP6GENERALTEXTPACKET_H */

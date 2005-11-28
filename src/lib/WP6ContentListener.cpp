@@ -33,7 +33,7 @@
 #include "WP6FontDescriptorPacket.h"
 #include "WP6DefaultInitialFontPacket.h"
 #include "libwpd_internal.h"
-
+#include "WP6SubDocument.h"
 #include "WP6PrefixData.h"
 #include "WPXTable.h"
 
@@ -942,7 +942,8 @@ void WP6ContentListener::noteOff(const WPXNoteType noteType)
 			m_listenerImpl->openEndnote(propList);
 
 		uint16_t textPID = m_parseState->m_noteTextPID;
-		handleSubDocument(textPID, false, m_parseState->m_tableList, m_parseState->m_nextTableIndice);
+		handleSubDocument(static_cast<WPXSubDocument *>(textPID ? WP6Listener::getPrefixDataPacket(textPID)->getSubDocument() : NULL), 
+				false, m_parseState->m_tableList, m_parseState->m_nextTableIndice);
 
 		if (noteType == FOOTNOTE)
 			m_listenerImpl->closeFootnote();
@@ -1109,7 +1110,7 @@ void WP6ContentListener::endTable()
 // sends its text to the hll implementation and naively inserts it into the document
 // if textPID=0: Simply creates a blank paragraph
 // once finished, restores document state to what it was before
-void WP6ContentListener::_handleSubDocument(uint16_t textPID, const bool isHeaderFooter, WPXTableList tableList, int nextTableIndice)
+void WP6ContentListener::_handleSubDocument(const WPXSubDocument *subDocument, const bool isHeaderFooter, WPXTableList tableList, int nextTableIndice)
 {
 	// save our old parsing state on our "stack"
 	WP6ParsingState *oldParseState = m_parseState;
@@ -1124,8 +1125,8 @@ void WP6ContentListener::_handleSubDocument(uint16_t textPID, const bool isHeade
 		marginChange(WP6_COLUMN_GROUP_RIGHT_MARGIN_SET, WPX_NUM_WPUS_PER_INCH);
 	}
 
-	if (textPID)
-		WP6Listener::getPrefixDataPacket(textPID)->parse(this);
+	if (subDocument)
+		subDocument->parse(this);
 	else
 		_openSpan();
 	

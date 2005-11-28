@@ -22,18 +22,22 @@
  * Corel Corporation or Corel Corporation Limited."
  */
 
-#ifndef WP3SUBDOCUMENT_H
-#define WP3SUBDOCUMENT_H
+#ifndef WPXSUBDOCUMENT_H
+#define WPXSUBDOCUMENT_H
 
 #include "WPXMemoryStream.h"
-#include "WPXSubDocument.h"
-#include "WP3Listener.h"
 
-class WP3SubDocument : public WPXSubDocument
+class WPXListener;
+
+class WPXSubDocument
 {
 public:
-	WP3SubDocument(WPXInputStream *input, int dataSize);
-	virtual void parse(WPXListener *listener) const;
+	WPXSubDocument();
+	virtual ~WPXSubDocument();
+	virtual void parse(WPXListener *listener) const = 0;
 
+protected:              
+	WPXMemoryInputStream *m_stream;
+	
 };
 #endif /* WP3SUBDOCUMENT_H */

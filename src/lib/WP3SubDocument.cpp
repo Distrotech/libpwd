@@ -1,6 +1,5 @@
 /* libwpd
- * Copyright (C) 2002 William Lachance (william.lachance@sympatico.ca)
- * Copyright (C) 2002 Marc Maurer (j.m.maurer@student.utwente.nl)
+ * Copyright (C) 2005 Fridrich Strba (fridrich.strba@bluewin.ch)
  *  
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -28,7 +27,7 @@
 #include "libwpd_internal.h"
 
 WP3SubDocument::WP3SubDocument(WPXInputStream *input, int dataSize) :
-	m_stream(NULL)
+	WPXSubDocument()
 {
 	uint8_t *streamData = new uint8_t[dataSize];
 	for (int i=0; i<dataSize; i++)
@@ -38,13 +37,8 @@ WP3SubDocument::WP3SubDocument(WPXInputStream *input, int dataSize) :
 	m_stream = new WPXMemoryInputStream(streamData, dataSize);
 }
 
-WP3SubDocument::~WP3SubDocument()
-{
-	delete m_stream;
-}
-
-void WP3SubDocument::parse(WP3Listener *listener) const
+void WP3SubDocument::parse(WPXListener *listener) const
 {
 	m_stream->seek(0, WPX_SEEK_SET);
-	WP3Parser::parseDocument(m_stream, listener);
+	WP3Parser::parseDocument(m_stream, static_cast<WP3Listener *>(listener));
 }

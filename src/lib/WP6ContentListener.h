@@ -188,7 +188,7 @@ public:
 
 
 protected:
-	virtual void _handleSubDocument(uint16_t textPID, const bool isHeaderFooter, WPXTableList tableList, int nextTableIndice = 0);
+	virtual void _handleSubDocument(const WPXSubDocument *subDocument, const bool isHeaderFooter, WPXTableList tableList, int nextTableIndice = 0);
 
 	//void _handleLineBreakElementBegin();
 	void _paragraphNumberOn(const uint16_t outlineHash, const uint8_t level);

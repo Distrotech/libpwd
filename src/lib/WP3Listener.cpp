@@ -556,7 +556,7 @@ void WP3Listener::insertNote(const WPXNoteType noteType, const WP3SubDocument *s
 		m_ps->m_pageFormWidth = oldPS->m_pageFormWidth;
 		m_ps->m_pageMarginLeft = oldPS->m_pageMarginLeft;
 		m_ps->m_pageMarginRight = oldPS->m_pageMarginRight;
-		m_ps->m_subDocumentTextPIDs = oldPS->m_subDocumentTextPIDs;
+		m_ps->m_subDocuments = oldPS->m_subDocuments;
 		m_ps->m_isNote = oldPS->m_isNote;
 		// END: copy page properties into the new parsing state
 		m_ps->m_inSubDocument = true;
