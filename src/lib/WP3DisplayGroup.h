@@ -36,7 +36,7 @@ class WP3DisplayGroup : public WP3VariableLengthGroup
 	virtual void parse(WP3Listener *listener);
 
  private:
- 	char * m_noteReference;
+ 	std::string m_noteReference;
 };
 
 #endif /* WP3DISPLAYGROUP_H */

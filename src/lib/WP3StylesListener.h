@@ -57,8 +57,9 @@ public:
 				  const std::vector<bool> &isFixedWidth) {}
 	virtual void endDocument();
 
-	virtual void defineTable(uint8_t position, uint16_t leftOffset){}
-	virtual void addTableColumnDefinition(uint32_t width, uint32_t leftGutter, uint32_t rightGutter, uint32_t attributes, uint8_t alignment){}
+	virtual void defineTable(const uint8_t position, const uint16_t leftOffset){}
+	virtual void addTableColumnDefinition(const uint32_t width, const uint32_t leftGutter, const uint32_t rightGutter, const uint32_t attributes,
+				const uint8_t alignment){}
 	virtual void startTable();
  	virtual void insertRow(const uint16_t rowHeight, const bool isMinimumHeight, const bool isHeaderRow);
  	virtual void insertCell(const uint8_t colSpan, const uint8_t rowSpan, const uint8_t borderBits, 
@@ -69,9 +70,9 @@ public:
 	virtual void closeRow() {}
 	virtual void setTableCellSpan(const uint16_t colSpan, const uint16_t rowSpan) {}
  	virtual void endTable() {}
-	virtual void setTextFont(const char* fontName) {}
+	virtual void setTextFont(const std::string fontName) {}
 	virtual void setFontSize(const uint16_t fontSize) {}
-	virtual void insertNoteReference(const WPXNoteType noteType, const char* noteReference) {};
+	virtual void insertNoteReference(const WPXNoteType noteType, const std::string noteReference) {};
 	virtual void insertNote(const WPXNoteType noteType, const WP3SubDocument *subDocument) {};
 
 protected:

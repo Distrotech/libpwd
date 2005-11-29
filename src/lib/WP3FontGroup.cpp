@@ -30,7 +30,6 @@
 
 WP3FontGroup::WP3FontGroup(WPXInputStream *input) :
 	WP3VariableLengthGroup(),
-	m_fontName(NULL),
 	m_fontSize(0),
 	m_fontColor()
 {
@@ -39,7 +38,6 @@ WP3FontGroup::WP3FontGroup(WPXInputStream *input) :
 
 WP3FontGroup::~WP3FontGroup()
 {
-	// fixme delete the font name
 }
 
 void WP3FontGroup::_readContents(WPXInputStream *input)
@@ -47,6 +45,7 @@ void WP3FontGroup::_readContents(WPXInputStream *input)
 	// this group can contain different kinds of data, thus we need to read
 	// the contents accordingly
 	uint8_t tmpFontNameLength;
+	uint8_t i;
 	switch (getSubGroup())
 	{
 	case WP3_FONT_GROUP_SET_TEXT_COLOR:
@@ -60,11 +59,7 @@ void WP3FontGroup::_readContents(WPXInputStream *input)
 		break;		
 	case WP3_FONT_GROUP_SET_TEXT_FONT:
 		input->seek(12, WPX_SEEK_CUR);
-		tmpFontNameLength = readU8(input);
-		m_fontName = new char[tmpFontNameLength+1];
-		for (uint8_t i=0; i<tmpFontNameLength; i++)
-			m_fontName[i]=readU8(input);
-		m_fontName[tmpFontNameLength]='\0';
+		m_fontName = readPascalString(input);
 		break;
 	case WP3_FONT_GROUP_SET_FONT_SIZE:
 		input->seek(2, WPX_SEEK_CUR);
@@ -86,7 +81,6 @@ void WP3FontGroup::parse(WP3Listener *listener)
 		break;		
 	case WP3_FONT_GROUP_SET_TEXT_FONT:
 		listener->setTextFont(m_fontName);
-		delete [] m_fontName;
 		break;
 	case WP3_FONT_GROUP_SET_FONT_SIZE:
 		listener->setFontSize(m_fontSize);

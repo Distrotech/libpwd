@@ -119,7 +119,7 @@ void WP3Listener::endDocument()
 	m_listenerImpl->endDocument();
 }
 
-void WP3Listener::defineTable(uint8_t position, uint16_t leftOffset)
+void WP3Listener::defineTable(const uint8_t position, const uint16_t leftOffset)
 {
 	if (!isUndoOn())
 	{
@@ -491,13 +491,13 @@ void WP3Listener::setTextColor(const RGBSColor *fontColor)
 	}
 }
 
-void WP3Listener::setTextFont(const char* fontName)
+void WP3Listener::setTextFont(const std::string fontName)
 {
 	if (!isUndoOn())
 	{
 		_closeSpan();
 		
-		m_ps->m_fontName->sprintf("%s", fontName);
+		m_ps->m_fontName->sprintf("%s", fontName.c_str());
 	}
 }
 
@@ -511,14 +511,14 @@ void WP3Listener::setFontSize(const uint16_t fontSize)
 	}
 }
 
-void WP3Listener::insertNoteReference(const WPXNoteType noteType, const char* noteReference)
+void WP3Listener::insertNoteReference(const WPXNoteType noteType, const std::string noteReference)
 {
 	if (!isUndoOn() && (m_ps->m_inSubDocument))
 	{
 		if (noteType == FOOTNOTE)
-			m_parseState->m_footNoteReference.sprintf("%s", noteReference);
+			m_parseState->m_footNoteReference.sprintf("%s", noteReference.c_str());
 		else
-			m_parseState->m_footNoteReference.sprintf("%s", noteReference);
+			m_parseState->m_footNoteReference.sprintf("%s", noteReference.c_str());
 	}
 }
 
@@ -549,18 +549,18 @@ void WP3Listener::insertNote(const WPXNoteType noteType, const WP3SubDocument *s
 		else
 			m_listenerImpl->openEndnote(propList);
 
-		// save our old parsing state on our "stack"
-		WPXParsingState *oldPS = m_ps;
-		m_ps = new WPXParsingState();
-		// BEGIN: copy page properties into the new parsing state
-		m_ps->m_pageFormWidth = oldPS->m_pageFormWidth;
-		m_ps->m_pageMarginLeft = oldPS->m_pageMarginLeft;
-		m_ps->m_pageMarginRight = oldPS->m_pageMarginRight;
-		m_ps->m_subDocuments = oldPS->m_subDocuments;
-		m_ps->m_isNote = oldPS->m_isNote;
-		// END: copy page properties into the new parsing state
-		m_ps->m_inSubDocument = true;
+		handleSubDocument(subDocument, false, m_parseState->m_tableList, 0);
 
+		if (noteType == FOOTNOTE)
+			m_listenerImpl->closeFootnote();
+		else
+			m_listenerImpl->closeEndnote();
+		m_ps->m_isNote = false;
+	}
+}
+
+void WP3Listener::_handleSubDocument(const WPXSubDocument *subDocument, const bool isHeaderFooter, WPXTableList tableList, int nextTableIndice)
+{
 		// save our old parsing state on our "stack"
 		WP3ParsingState *oldParseState = m_parseState;
 	
@@ -587,16 +587,6 @@ void WP3Listener::insertNote(const WPXNoteType noteType, const WP3SubDocument *s
 		// restore our old parsing state
 		delete m_parseState;
 		m_parseState = oldParseState;
-
-		delete m_ps;
-		m_ps = oldPS;
-
-		if (noteType == FOOTNOTE)
-			m_listenerImpl->closeFootnote();
-		else
-			m_listenerImpl->closeEndnote();
-		m_ps->m_isNote = false;
-	}
 }
 	
 void WP3Listener::_openParagraph()

@@ -39,7 +39,7 @@ class WP3FontGroup : public WP3VariableLengthGroup
  	/* Set Text Color */
 	RGBSColor m_fontColor;
  	/* Set Text Font */
-	char* m_fontName;
+	std::string m_fontName;
 	/* Set Font Size */
 	uint16_t m_fontSize;
 

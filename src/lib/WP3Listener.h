@@ -41,6 +41,8 @@ struct _WP3ParsingState
 	RGBSColor * m_cellFillColor;
 	WPXString m_footNoteReference;
 	WPXString m_endNoteReference;
+
+	WPXTableList m_tableList;
 };
 
 class WP3SubDocument;
@@ -67,11 +69,12 @@ public:
 	virtual void paragraphMarginChange(const uint8_t side, const int16_t margin) {};
 	virtual void indentFirstLineChange(const int16_t offset);
 	virtual void columnChange(const WPXTextColumnType columnType, const uint8_t numColumns, const std::vector<float> &columnWidth,
-				  const std::vector<bool> &isFixedWidth);
+					const std::vector<bool> &isFixedWidth);
 	virtual void endDocument();
 
 	virtual void defineTable(const uint8_t position, const uint16_t leftOffset);
-	virtual void addTableColumnDefinition(const uint32_t width, const uint32_t leftGutter, const uint32_t rightGutter, const uint32_t attributes, const uint8_t alignment);
+	virtual void addTableColumnDefinition(const uint32_t width, const uint32_t leftGutter, const uint32_t rightGutter,
+					const uint32_t attributes, const uint8_t alignment);
 	virtual void startTable();
  	virtual void insertRow();
  	virtual void insertCell();
@@ -80,16 +83,16 @@ public:
 	virtual void setTableCellSpan(const uint16_t colSpan, const uint16_t rowSpan);
 	virtual void setTableCellFillColor(const RGBSColor * cellFillColor);
  	virtual void endTable();
-        virtual void undoChange(const uint8_t undoType, const uint16_t undoLevel);
+	virtual void undoChange(const uint8_t undoType, const uint16_t undoLevel);
 	virtual void justificationChange(const uint8_t justification);
 	virtual void setTextColor(const RGBSColor * fontColor);
-	virtual void setTextFont(const char* fontName);
+	virtual void setTextFont(const std::string fontName);
 	virtual void setFontSize(const uint16_t fontSize);
-	virtual void insertNoteReference(const WPXNoteType noteType, const char* noteReference);
+	virtual void insertNoteReference(const WPXNoteType noteType, const std::string noteReference);
 	virtual void insertNote(const WPXNoteType noteType, const WP3SubDocument *subDocument);
 	
 protected:
-	virtual void _handleSubDocument(const WPXSubDocument *subDocument, const bool isHeaderFooter, WPXTableList tableList, int nextTableIndice = 0) {}
+	virtual void _handleSubDocument(const WPXSubDocument *subDocument, const bool isHeaderFooter, WPXTableList tableList, int nextTableIndice = 0);
 	virtual void _openParagraph();
 
 private:

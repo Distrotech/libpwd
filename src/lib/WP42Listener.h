@@ -55,8 +55,9 @@ public:
 				  const std::vector<bool> &isFixedWidth) {};
 	virtual void endDocument();
 
-	virtual void defineTable(uint8_t position, uint16_t leftOffset) {};
-	virtual void addTableColumnDefinition(uint32_t width, uint32_t leftGutter, uint32_t rightGutter, uint32_t attributes, uint8_t alignment) {};
+	virtual void defineTable(const uint8_t position, const uint16_t leftOffset) {};
+	virtual void addTableColumnDefinition(const uint32_t width, const uint32_t leftGutter, const uint32_t rightGutter,
+				const uint32_t attributes, const uint8_t alignment) {};
 	virtual void startTable() {};
  	virtual void insertRow(const uint16_t rowHeight, const bool isMinimumHeight, const bool isHeaderRow) {};
  	virtual void insertCell(const uint8_t colSpan, const uint8_t rowSpan, const bool boundFromLeft, const bool boundFromAbove,

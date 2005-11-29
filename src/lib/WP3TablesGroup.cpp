@@ -50,6 +50,7 @@ void WP3TablesGroup::_readContents(WPXInputStream *input)
 {
 	// this group can contain different kinds of data, thus we need to read
 	// the contents accordingly
+	uint8_t i;
 	switch (getSubGroup())
 	{
 	case WP3_TABLES_GROUP_TABLE_FUNCTION:
@@ -62,7 +63,7 @@ void WP3TablesGroup::_readContents(WPXInputStream *input)
 		m_rightGutterSpacing = readU32(input, true);
 		input->seek(3, WPX_SEEK_CUR);
 		m_numColumns = readU8(input);
-		for (uint8_t i=0; i<m_numColumns; i++)
+		for (i=0; i<m_numColumns; i++)
 		{
 			m_columnMode[i] = readU8(input);
 			m_numberFormat[i] = readU8(input);
@@ -114,11 +115,12 @@ void WP3TablesGroup::parse(WP3Listener *listener)
 {
 	WPD_DEBUG_MSG(("WordPerfect: handling a Tables group\n"));
 
+	uint8_t i;
 	switch (getSubGroup())
 	{
 	case WP3_TABLES_GROUP_TABLE_FUNCTION:
 		listener->defineTable(m_tableMode, fixedPointToWPUs(m_offsetFromLeftEdge));
-		for (uint8_t i=0; i<m_numColumns; i++)
+		for (i=0; i<m_numColumns; i++)
 			listener->addTableColumnDefinition(fixedPointToWPUs(m_columnWidth[i]), fixedPointToWPUs(m_leftGutterSpacing),
 								fixedPointToWPUs(m_rightGutterSpacing), 0, LEFT);
 		listener->startTable();

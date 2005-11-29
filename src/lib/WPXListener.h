@@ -191,11 +191,12 @@ public:
 	virtual void paragraphMarginChange(const uint8_t side, const int16_t margin) = 0;
 	virtual void indentFirstLineChange(const int16_t offset) = 0;
 	virtual void columnChange(const WPXTextColumnType columnType, const uint8_t numColumns, const std::vector<float> &columnWidth,
-				  const std::vector<bool> &isFixedWidth) = 0;
+					const std::vector<bool> &isFixedWidth) = 0;
 	virtual void endDocument() = 0;
 
-	virtual void defineTable(uint8_t position, uint16_t leftOffset) = 0;
-	virtual void addTableColumnDefinition(uint32_t width, uint32_t leftGutter, uint32_t rightGutter, uint32_t attributes, uint8_t alignment) = 0;
+	virtual void defineTable(const uint8_t position, const uint16_t leftOffset) = 0;
+	virtual void addTableColumnDefinition(const uint32_t width, const uint32_t leftGutter, const uint32_t rightGutter,
+					const uint32_t attributes, const uint8_t alignment) = 0;
 	virtual void startTable() = 0;
  	virtual void endTable() = 0;
 

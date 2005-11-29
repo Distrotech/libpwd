@@ -166,7 +166,7 @@ void WP6StylesListener::suppressPageCharacteristics(const uint8_t suppressCode)
 	}
 }
 
-void WP6StylesListener::defineTable(uint8_t position, uint16_t leftOffset)
+void WP6StylesListener::defineTable(const uint8_t position, const uint16_t leftOffset)
 {
 	if (!isUndoOn()) 
 	{			

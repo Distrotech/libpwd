@@ -29,27 +29,19 @@
 #include "libwpd_math.h"
 
 WP3DisplayGroup::WP3DisplayGroup(WPXInputStream *input) :
-	WP3VariableLengthGroup(),
-	m_noteReference(NULL)
-	
+	WP3VariableLengthGroup()	
 {
 	_read(input);
 }
 
 WP3DisplayGroup::~WP3DisplayGroup()
 {
-	if (m_noteReference)
-		delete [] m_noteReference;
 }
 
 void WP3DisplayGroup::_readContents(WPXInputStream *input)
 {
 	input->seek(4, WPX_SEEK_CUR);
-	uint8_t tmpNoteReferenceLength = readU8(input);
-	m_noteReference = new char[tmpNoteReferenceLength+1];
-	for (uint8_t i=0; i < tmpNoteReferenceLength; i++)
-		m_noteReference[i]=readU8(input);
-	m_noteReference[tmpNoteReferenceLength]='\0';
+	m_noteReference = readPascalString(input);
 }
 
 void WP3DisplayGroup::parse(WP3Listener *listener)

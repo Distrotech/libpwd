@@ -74,6 +74,15 @@ uint32_t readU32(WPXInputStream *input, bool bigendian)
 	return WPD_LE_GET_GUINT32(val);
 }
 
+std::string readPascalString(WPXInputStream *input)
+{
+	int pascalStringLength = readU8(input);
+	std::string tmpString;
+	for (int i=0; i<pascalStringLength; i++)
+		tmpString.push_back((char)readU8(input));
+	return tmpString;
+}
+
 // the ascii map appears stupid, but we need the const 16-bit data for now
 static const uint16_t asciiMap[] =
 {
