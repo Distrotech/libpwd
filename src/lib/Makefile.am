@@ -1,7 +1,11 @@
 if PLATFORM_WIN32
 no_undefined = -no-undefined
 else
+if PLATFORM_DARWIN
+no_undefined = -no-undefined
+else
 no_undefined =
+endif
 endif
 
 if OS_WIN32
@@ -30,6 +34,7 @@ libwpd_0_8_includedir = $(includedir)/libwpd-0.8/libwpd
 libwpd_0_8_include_HEADERS = libwpd.h libwpd_types.h WPXStream.h WPXProperty.h WPXPropertyList.h \
 WPXString.h WPXPropertyListVector.h WPDocument.h WPXHLListenerImpl.h
 
+INCLUDES = -I$(srcdir)
 
 AM_CXXFLAGS = $(LIBWPD_CXXFLAGS) $(DEBUG_CXXFLAGS)
 
