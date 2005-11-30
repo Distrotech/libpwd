@@ -44,7 +44,6 @@ void WP3DefinitionGroup::_readContents(WPXInputStream *input)
 {
 	// this group can contain different kinds of data, thus we need to read
 	// the contents accordingly
-	uint8_t tmpFontNameLength;
 	switch (getSubGroup())
 	{
 	case WP3_DEFINITION_GROUP_SET_COLUMNS:

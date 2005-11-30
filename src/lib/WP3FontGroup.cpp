@@ -44,8 +44,6 @@ void WP3FontGroup::_readContents(WPXInputStream *input)
 {
 	// this group can contain different kinds of data, thus we need to read
 	// the contents accordingly
-	uint8_t tmpFontNameLength;
-	uint8_t i;
 	switch (getSubGroup())
 	{
 	case WP3_FONT_GROUP_SET_TEXT_COLOR:

@@ -51,10 +51,8 @@ void WP3DisplayGroup::parse(WP3Listener *listener)
 	switch (getSubGroup())
 	{
 	case WP3_DISPLAY_GROUP_INSERT_FOOTNOTE_NUMBER:
-		listener->insertNoteReference(FOOTNOTE, m_noteReference);
-		break;
 	case WP3_DISPLAY_GROUP_INSERT_ENDNOTE_NUMBER:
-		listener->insertNoteReference(ENDNOTE, m_noteReference);
+		listener->insertNoteReference(m_noteReference);
 		break;
 	default: // something else we don't support, since it isn't in the docs
 		break;

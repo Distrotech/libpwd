@@ -39,8 +39,7 @@ struct _WP3ParsingState
 	uint16_t m_rowSpan;
 	WPXString m_textBuffer;
 	RGBSColor * m_cellFillColor;
-	WPXString m_footNoteReference;
-	WPXString m_endNoteReference;
+	WPXString m_noteReference;
 
 	WPXTableList m_tableList;
 };
@@ -88,7 +87,7 @@ public:
 	virtual void setTextColor(const RGBSColor * fontColor);
 	virtual void setTextFont(const std::string fontName);
 	virtual void setFontSize(const uint16_t fontSize);
-	virtual void insertNoteReference(const WPXNoteType noteType, const std::string noteReference);
+	virtual void insertNoteReference(const std::string noteReference);
 	virtual void insertNote(const WPXNoteType noteType, const WP3SubDocument *subDocument);
 	
 protected:

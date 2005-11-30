@@ -35,15 +35,13 @@ _WP3ParsingState::_WP3ParsingState():
 	m_cellFillColor(NULL)
 {
 	m_textBuffer.clear();
-	m_footNoteReference.clear();
-	m_endNoteReference.clear();
+	m_noteReference.clear();
 }
 
 _WP3ParsingState::~_WP3ParsingState()
 {
 	m_textBuffer.clear();
-	m_footNoteReference.clear();
-	m_endNoteReference.clear();
+	m_noteReference.clear();
 	DELETEP(m_cellFillColor);
 }
 
@@ -511,14 +509,11 @@ void WP3Listener::setFontSize(const uint16_t fontSize)
 	}
 }
 
-void WP3Listener::insertNoteReference(const WPXNoteType noteType, const std::string noteReference)
+void WP3Listener::insertNoteReference(const std::string noteReference)
 {
-	if (!isUndoOn() && (m_ps->m_inSubDocument))
+	if (!isUndoOn())
 	{
-		if (noteType == FOOTNOTE)
-			m_parseState->m_footNoteReference.sprintf("%s", noteReference.c_str());
-		else
-			m_parseState->m_footNoteReference.sprintf("%s", noteReference.c_str());
+		m_parseState->m_noteReference.sprintf("%s", noteReference.c_str());
 	}
 }
 
@@ -527,19 +522,9 @@ void WP3Listener::insertNote(const WPXNoteType noteType, const WP3SubDocument *s
 	if (!isUndoOn())
 	{
 		m_ps->m_isNote = true;
-		int number;
-		if (noteType == FOOTNOTE)
-		{
-			WPXNumberingType numberingType = _extractWPXNumberingTypeFromBuf(m_parseState->m_footNoteReference, ARABIC);
-			number = _extractDisplayReferenceNumberFromBuf(m_parseState->m_footNoteReference, numberingType);
-			m_parseState->m_footNoteReference.clear();
-		}
-		else
-		{
-			WPXNumberingType numberingType = _extractWPXNumberingTypeFromBuf(m_parseState->m_endNoteReference, ARABIC);
-			number = _extractDisplayReferenceNumberFromBuf(m_parseState->m_endNoteReference, numberingType);
-			m_parseState->m_endNoteReference.clear();
-		}
+		WPXNumberingType numberingType = _extractWPXNumberingTypeFromBuf(m_parseState->m_noteReference, ARABIC);
+		int number = _extractDisplayReferenceNumberFromBuf(m_parseState->m_noteReference, numberingType);
+		m_parseState->m_noteReference.clear();
 		
 		WPXPropertyList propList;
 		propList.insert("libwpd:number", number);

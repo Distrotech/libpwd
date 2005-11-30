@@ -34,6 +34,7 @@ struct _WP5ParsingState
 {
 	_WP5ParsingState();
 	~_WP5ParsingState();
+	WPXString m_textBuffer;
 };
 
 
@@ -79,8 +80,6 @@ protected:
 private:
 	void _flushText();
 	void _changeList() {};
-
-	WPXString m_textBuffer;
 
 	WP5ParsingState *m_parseState;
 };

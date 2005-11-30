@@ -79,7 +79,7 @@ std::string readPascalString(WPXInputStream *input)
 	int pascalStringLength = readU8(input);
 	std::string tmpString;
 	for (int i=0; i<pascalStringLength; i++)
-		tmpString.push_back((char)readU8(input));
+		tmpString+=(char)readU8(input);
 	return tmpString;
 }
 

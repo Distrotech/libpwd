@@ -942,7 +942,7 @@ void WP6ContentListener::noteOff(const WPXNoteType noteType)
 			m_listenerImpl->openEndnote(propList);
 
 		uint16_t textPID = m_parseState->m_noteTextPID;
-		handleSubDocument(static_cast<WPXSubDocument *>(textPID ? WP6Listener::getPrefixDataPacket(textPID)->getSubDocument() : NULL), 
+		handleSubDocument((textPID ? WP6Listener::getPrefixDataPacket(textPID)->getSubDocument() : NULL), 
 				false, m_parseState->m_tableList, m_parseState->m_nextTableIndice);
 
 		if (noteType == FOOTNOTE)

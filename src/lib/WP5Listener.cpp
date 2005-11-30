@@ -31,17 +31,18 @@
 
 _WP5ParsingState::_WP5ParsingState()
 {
+	m_textBuffer.clear();
 }
 
 _WP5ParsingState::~_WP5ParsingState()
 {
+	m_textBuffer.clear();
 }
 
 WP5Listener::WP5Listener(std::vector<WPXPageSpan *> *pageList, WPXHLListenerImpl *listenerImpl) :
 	WPXListener(pageList, listenerImpl),
 	m_parseState(new WP5ParsingState)
 {
-	m_textBuffer.clear();
 }
 
 WP5Listener::~WP5Listener() 
@@ -58,7 +59,7 @@ void WP5Listener::insertCharacter(const uint16_t character)
 {
 	if (!m_ps->m_isSpanOpened)
 		_openSpan();
-	appendUCS4(m_textBuffer, (uint32_t)character);
+	appendUCS4(m_parseState->m_textBuffer, (uint32_t)character);
 }
 
 void WP5Listener::insertTab(const uint8_t tabType, const float tabPosition)
@@ -315,8 +316,8 @@ void WP5Listener::marginChange(uint8_t side, uint16_t margin)
 
 void WP5Listener::_flushText()
 {
-	if (m_textBuffer.len())
-		m_listenerImpl->insertText(m_textBuffer);
-	m_textBuffer.clear();
+	if (m_parseState->m_textBuffer.len())
+		m_listenerImpl->insertText(m_parseState->m_textBuffer);
+	m_parseState->m_textBuffer.clear();
 }
 
