@@ -207,7 +207,7 @@ WPXString::Iter::Iter(const WPXString &str) :
 	m_pos(0),
 	m_curChar(NULL)
 {
-	m_buf = static_cast<void *>(new std::string(*static_cast<std::string*>(str.m_buf)));
+	m_buf = static_cast<void *>(new std::string(str.cstr()));
 
 }
 

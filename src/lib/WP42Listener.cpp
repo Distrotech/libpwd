@@ -28,11 +28,28 @@
 #include "WP42FileStructure.h"
 #include "libwpd_internal.h"
 
-WP42Listener::WP42Listener(std::vector<WPXPageSpan *> *pageList, WPXHLListenerImpl *listenerImpl) :
-	WPXListener(pageList, listenerImpl)
+_WP42ParsingState::_WP42ParsingState()
 {
 	m_textBuffer.clear();
 }
+
+_WP42ParsingState::~_WP42ParsingState()
+{
+	m_textBuffer.clear();
+}
+
+
+WP42Listener::WP42Listener(std::vector<WPXPageSpan *> *pageList, WPXHLListenerImpl *listenerImpl) :
+	WPXListener(pageList, listenerImpl),
+	m_parseState(new WP42ParsingState)
+{
+}
+
+WP42Listener::~WP42Listener() 
+{
+	delete m_parseState;
+}
+
 
 /****************************************
  public 'HLListenerImpl' functions
@@ -42,7 +59,7 @@ void WP42Listener::insertCharacter(const uint16_t character)
 {
 	if (m_ps->m_isSpanOpened)
 		_openSpan();
-	appendUCS4(m_textBuffer, (uint32_t)character);
+	appendUCS4(m_parseState->m_textBuffer, (uint32_t)character);
 }
 
 void WP42Listener::insertTab(const uint8_t tabType, const float tabPosition)
@@ -138,7 +155,7 @@ void WP42Listener::attributeChange(const bool isOn, const uint8_t attribute)
 
 void WP42Listener::_flushText()
 {
-	if (m_textBuffer.len())
-		m_listenerImpl->insertText(m_textBuffer);
-	m_textBuffer.clear();
+	if (m_parseState->m_textBuffer.len())
+		m_listenerImpl->insertText(m_parseState->m_textBuffer);
+	m_parseState->m_textBuffer.clear();
 }

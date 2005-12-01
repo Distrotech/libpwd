@@ -29,10 +29,19 @@
 #include "WPXListener.h"
 #include "WPXHLListenerImpl.h"
 
+typedef struct _WP42ParsingState WP42ParsingState;
+struct _WP42ParsingState
+{
+	_WP42ParsingState();
+	~_WP42ParsingState();
+	WPXString m_textBuffer;
+};
+
 class WP42Listener : public WPXListener
 {
 public:
 	WP42Listener(std::vector<WPXPageSpan *> *pageList, WPXHLListenerImpl *listenerImpl);
+    virtual ~WP42Listener();
 
 	virtual void setAlignmentCharacter(const uint16_t character) {};
 	virtual void setLeaderCharacter(const uint16_t character, const uint8_t numberOfSpaces) {};
@@ -73,7 +82,7 @@ private:
 	void _flushText();
 	void _changeList() {};
 
-	WPXString m_textBuffer;
+    WP42ParsingState *m_parseState;
 };
 
 #endif /* WP42LISTENER_H */
