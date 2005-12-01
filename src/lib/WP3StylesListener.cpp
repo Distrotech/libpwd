@@ -32,9 +32,9 @@ WP3StylesListener::WP3StylesListener(std::vector<WPXPageSpan *> *pageList, WPXTa
 	WP3Listener(pageList, NULL),
 	m_currentPage(new WPXPageSpan()),
 	m_tableList(tableList), 
-	m_currentPageHasContent(false),
 	m_tempMarginLeft(1.0f),
-	m_tempMarginRight(1.0f)
+	m_tempMarginRight(1.0f),
+	m_currentPageHasContent(false)
 {
 }
 

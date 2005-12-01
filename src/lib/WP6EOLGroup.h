@@ -37,15 +37,15 @@ public:
 	virtual void parse(WP6Listener *listener);
 
  private:
- 	bool m_useCellAttributes, m_useCellJustification;
-	bool m_ignoreInCalculations, m_cellIsLocked;
-	uint8_t m_cellJustification;
-	WPXVerticalAlignment m_cellVerticalAlign;
-	uint32_t m_cellAttributes;
- 
 	uint8_t m_colSpan, m_rowSpan;
 	bool m_boundFromLeft, m_boundFromAbove;
 
+ 	bool m_useCellAttributes, m_useCellJustification;
+	bool m_ignoreInCalculations, m_cellIsLocked;
+	uint32_t m_cellAttributes;
+	uint8_t m_cellJustification;
+	WPXVerticalAlignment m_cellVerticalAlign;
+ 
 	// cell forground and background color
  	RGBSColor * m_cellFgColor;
  	RGBSColor * m_cellBgColor;

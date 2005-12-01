@@ -351,7 +351,6 @@ void WP3Listener::marginChange(const uint8_t side, const uint16_t margin)
 	if (!isUndoOn())
 	{
 		float marginInch = (float)((double)margin/ (double)WPX_NUM_WPUS_PER_INCH);
-		bool marginChanged = false;
 
 		switch(side)
 		{

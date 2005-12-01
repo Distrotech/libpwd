@@ -66,14 +66,6 @@ struct _WPXParsingState
 	_WPXParsingState();
 	~_WPXParsingState();
 
-#if 0
-	WPXString m_bodyText;
-	WPXString m_textBeforeNumber;
-	WPXString m_textBeforeDisplayReference;
-	WPXString m_numberText;
-	WPXString m_textAfterDisplayReference;
-	WPXString m_textAfterNumber;
-#endif
 	uint32_t m_textAttributeBits;
 	float m_fontSize;
 	WPXString *m_fontName;
@@ -143,16 +135,6 @@ struct _WPXParsingState
 
 	uint8_t m_currentListLevel;
 	
-#if 0
-	stack<int> m_listLevelStack;
-	uint16_t m_currentOutlineHash; // probably should replace Hash with Key in these sorts of cases
-	uint8_t m_oldListLevel;
-	WP6StyleStateSequence m_styleStateSequence;
-	bool m_putativeListElementHasParagraphNumber;
-	bool m_putativeListElementHasDisplayReferenceNumber;
-
-	int m_noteTextPID;
-#endif
 	uint16_t m_alignmentCharacter;
 	std::vector<WPXTabStop> m_tabStops;
 	bool m_isTabPositionRelative;
@@ -167,7 +149,7 @@ class WPXListener
 {
 public:
 	WPXListener(std::vector<WPXPageSpan *> *pageList, WPXHLListenerImpl *listenerImpl);
-	~WPXListener();
+	virtual ~WPXListener();
 
 	virtual void startDocument();
 	void handleSubDocument(const WPXSubDocument *subDocument, const bool isHeaderFooter, WPXTableList tableList, int nextTableIndice);

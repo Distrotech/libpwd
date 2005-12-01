@@ -47,9 +47,9 @@ _WPXParsingState::_WPXParsingState() :
 
 	m_isParagraphColumnBreak(false),
 	m_isParagraphPageBreak(false),
-	m_paragraphLineSpacing(1.0f),
 	m_paragraphJustification(WPX_PARAGRAPH_JUSTIFICATION_LEFT),
 	m_tempParagraphJustification(0),
+	m_paragraphLineSpacing(1.0f),
 
 	m_isDocumentStarted(false),
 	m_isPageSpanOpened(false),
@@ -103,12 +103,7 @@ _WPXParsingState::_WPXParsingState() :
 	m_textIndentByParagraphIndentChange(0.0f),
 	m_textIndentByTabs(0.0f),
 	m_currentListLevel(0),
-#if 0
-	m_putativeListElementHasParagraphNumber(false),
-	m_putativeListElementHasDisplayReferenceNumber(false),
 
-	m_noteTextPID(0),
-#endif
 	m_alignmentCharacter('.'),
 	m_isTabPositionRelative(false),
 	m_inSubDocument(false),
@@ -124,9 +119,9 @@ _WPXParsingState::~_WPXParsingState()
 }
 
 WPXListener::WPXListener(std::vector<WPXPageSpan *> *pageList, WPXHLListenerImpl *listenerImpl) :
-	m_pageList(pageList),
-	m_listenerImpl(listenerImpl),
 	m_ps(new WPXParsingState),
+	m_listenerImpl(listenerImpl),
+	m_pageList(pageList),
 	m_isUndoOn(false)
 {
 }
@@ -189,7 +184,7 @@ void WPXListener::_openSection()
 
 void WPXListener::_closeSection()
 {
-	if (m_ps->m_isSectionOpened)
+	if (m_ps->m_isSectionOpened && !m_ps->m_isTableOpened)
 	{
 		if (m_ps->m_isParagraphOpened)
 			_closeParagraph();
@@ -200,8 +195,8 @@ void WPXListener::_closeSection()
 		m_listenerImpl->closeSection();
 
 		m_ps->m_sectionAttributesChanged = false;
+		m_ps->m_isSectionOpened = false;
 	}
-	m_ps->m_isSectionOpened = false;
 }
 
 void WPXListener::_openPageSpan()

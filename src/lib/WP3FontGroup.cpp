@@ -30,8 +30,8 @@
 
 WP3FontGroup::WP3FontGroup(WPXInputStream *input) :
 	WP3VariableLengthGroup(),
-	m_fontSize(0),
-	m_fontColor()
+	m_fontColor(),
+	m_fontSize(0)
 {
 	_read(input);
 }

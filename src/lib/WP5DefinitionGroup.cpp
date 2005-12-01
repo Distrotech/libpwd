@@ -30,9 +30,9 @@ WP5DefinitionGroup_DefineTablesSubGroup::WP5DefinitionGroup_DefineTablesSubGroup
 	WP5VariableLengthGroup_SubGroup(),
 	m_position(0),
 	m_numColumns(0),
+	m_leftOffset(0),
 	m_leftGutter(0),
-	m_rightGutter(0),
-	m_leftOffset(0)
+	m_rightGutter(0)
 {
 	// Skip useless old values to read the old column number
 	input->seek(2, WPX_SEEK_CUR);

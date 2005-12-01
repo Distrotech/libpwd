@@ -75,7 +75,7 @@ void WP6EOLGroup::_readContents(WPXInputStream *input)
 	uint16_t sizeDeletableSubFunctionData;
 	unsigned int startPosition = input->tell();
 	sizeDeletableSubFunctionData = readU16(input);		
-	WPD_DEBUG_MSG(("WordPerfect: EOL Group: Size of Deletable Sub-Function Data: %ld,  Size of Deletable and Non-deletable sub-function data: %ld\n", (long) sizeDeletableSubFunctionData, getSizeNonDeletable()));
+	WPD_DEBUG_MSG(("WordPerfect: EOL Group: Size of Deletable Sub-Function Data: %ld,  Size of Deletable and Non-deletable sub-function data: %ld\n", (long) sizeDeletableSubFunctionData, (long) getSizeNonDeletable()));
 	input->seek(sizeDeletableSubFunctionData, WPX_SEEK_CUR);
 	while (input->tell() < (startPosition + getSizeNonDeletable()))
 	{
@@ -166,7 +166,7 @@ void WP6EOLGroup::_readContents(WPXInputStream *input)
 				numCellsSpannedHorizontally = readU8(input);
 				numCellsSpannedVertically = readU8(input);
 				WPD_DEBUG_MSG(("WordPerfect: num cells spanned (h:%ld, v:%ld)\n", 
-						   numCellsSpannedHorizontally, numCellsSpannedVertically));
+						   (long) numCellsSpannedHorizontally, (long) numCellsSpannedVertically));
 				if (numCellsSpannedHorizontally >= 128)
 					m_boundFromLeft = true;
 				else

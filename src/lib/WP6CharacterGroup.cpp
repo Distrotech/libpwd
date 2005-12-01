@@ -32,8 +32,8 @@
  *************************************************************************/
 
 WP6CharacterGroup_SetAlignmentCharacterSubGroup::WP6CharacterGroup_SetAlignmentCharacterSubGroup(WPXInputStream *input) :
-	m_characterSet(0),
-	m_character(0)
+	m_character(0),
+	m_characterSet(0)
 {
 	uint16_t charWord = readU16(input);
 	m_characterSet = (charWord & 0xFF00) >> 8;
@@ -107,8 +107,8 @@ void WP6CharacterGroup_FontFaceChangeSubGroup::parse(WP6Listener *listener, cons
  *************************************************************************/
 
 WP6CharacterGroup_SetDotLeaderCharactersSubGroup::WP6CharacterGroup_SetDotLeaderCharactersSubGroup(WPXInputStream *input) :
-	m_characterSet(0),
 	m_character(0),
+	m_characterSet(0),
 	m_numberOfSpaces(0)
 {
 	uint16_t charWord = readU16(input);

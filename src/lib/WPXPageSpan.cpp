@@ -110,8 +110,8 @@ WPXPageSpan::WPXPageSpan(WPXPageSpan &page, float paragraphMarginLeft, float par
 	m_marginRight(page.getMarginRight()+paragraphMarginRight),
 	m_marginTop(page.getMarginTop()),
 	m_marginBottom(page.getMarginBottom()),
-	m_pageSpan(page.getPageSpan()),
-	m_headerFooterList(page.getHeaderFooterList())
+	m_headerFooterList(page.getHeaderFooterList()),
+	m_pageSpan(page.getPageSpan())
 {
 	for (int i=0; i<WP6_NUM_HEADER_FOOTER_TYPES; i++)
 		m_isHeaderFooterSuppressed[i] = false;	

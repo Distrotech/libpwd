@@ -33,9 +33,9 @@ WP42StylesListener::WP42StylesListener(std::vector<WPXPageSpan *> *pageList, WPX
 	WP42Listener(pageList, NULL),
 	m_currentPage(new WPXPageSpan()),
 	m_tableList(tableList), 
-	m_currentPageHasContent(false),
 	m_tempMarginLeft(1.0f),
-	m_tempMarginRight(1.0f)
+	m_tempMarginRight(1.0f),
+	m_currentPageHasContent(false)
 {
 }
 

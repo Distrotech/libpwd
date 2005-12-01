@@ -53,7 +53,7 @@ void WP6ColumnGroup::_readContents(WPXInputStream *input)
 				uint32_t tmpRowSpacing = readU32(input);
 				int16_t tmpRowSpacingIntegerPart = (int16_t)((tmpRowSpacing & 0xffff0000) >> 16);
 				float tmpRowSpacingFractionalPart = (float)((double)(tmpRowSpacing & 0xffff)/(double)0x10000);
-				m_rowSpacing = (float)tmpRowSpacingIntegerPart + tmpRowSpacing;
+				m_rowSpacing = (float)tmpRowSpacingIntegerPart + tmpRowSpacingFractionalPart;
 				m_numColumns = readU8(input);
 				uint8_t tmpDefinition;
 				uint16_t tmpWidth;
@@ -92,7 +92,10 @@ void WP6ColumnGroup::_readContents(WPXInputStream *input)
 void WP6ColumnGroup::parse(WP6Listener *listener)
 {
 	WPD_DEBUG_MSG(("WordPerfect: handling a Column group\n"));
-	
+
+	if (getFlags() & 0x40)  // Ignore function flag
+		return;
+		
 	switch (getSubGroup())
 	{
 		case 0: // Left Margin Set

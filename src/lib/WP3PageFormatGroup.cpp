@@ -34,9 +34,9 @@ WP3PageFormatGroup::WP3PageFormatGroup(WPXInputStream *input) :
 	WP3VariableLengthGroup(),
 	m_leftMargin(0),
 	m_rightMargin(0),
+	m_lineSpacing(1.0f),
 	m_topMargin(0),
 	m_bottomMargin(0),
-	m_lineSpacing(1.0f),
 	m_justification(0),
 	m_indent(0)
 {

@@ -505,77 +505,77 @@ int extendedCharacterWP6ToUCS2(uint8_t character,
 		if (character < WP6_NUM_MULTINATIONAL_CHARACTERS)
 			*chars = &multinationalWP6[character];
 		else
-			*chars = &asciiMap[' '];
+			*chars = &asciiMap[32];
 		return 1;
 		
 	case WP6_PHONETIC_SYMBOL_CHARACTER_SET:
 		if (character < WP6_NUM_PHONETIC_CHARACTERS)
 			*chars = &phoneticWP6[character];
 		else
-			*chars = &asciiMap[' '];
+			*chars = &asciiMap[32];
 		return 1;
 
 	case WP6_BOX_DRAWING_CHARACTER_SET:
 		if (character < WP6_NUM_BOX_DRAWING_CHARACTERS)
 			*chars = &boxdrawingWP6[character];
 		else
-			*chars = &asciiMap[' '];
+			*chars = &asciiMap[32];
 		return 1;
 
 	case WP6_TYPOGRAPHIC_SYMBOL_CHARACTER_SET:
 		if (character < WP6_NUM_TYPOGRAPHIC_CHARACTERS)
 			*chars = &typographicWP6[character];
 		else
-			*chars = &asciiMap[' '];
+			*chars = &asciiMap[32];
 		return 1;
 
 	case WP6_ICONIC_SYMBOL_CHARACTER_SET:
 		if (character < WP6_NUM_ICONIC_CHARACTERS)
 			*chars = &iconicWP6[character];
 		else
-			*chars = &asciiMap[' '];
+			*chars = &asciiMap[32];
 		return 1;
 
 	case WP6_MATH_SCIENTIFIC_CHARACTER_SET:
 		if (character < WP6_NUM_MATH_SCIENTIFIC_CHARACTERS)
 			*chars = &mathWP6[character];
 		else
-			*chars = &asciiMap[' '];
+			*chars = &asciiMap[32];
 		return 1;
 
 	case WP6_MATH_SCIENTIFIC_EXTENDED_CHARACTER_SET:
 		if (character < WP6_NUM_MATH_SCIENTIFIC_EXTENDED_CHARACTERS)
 			*chars = &mathextWP6[character];
 		else
-			*chars = &asciiMap[' '];
+			*chars = &asciiMap[32];
 		return 1;
 
 	case WP6_GREEK_CHARACTER_SET:
 		if (character < WP6_NUM_GREEK_CHARACTERS)
 			*chars = &greekWP6[character];
 		else
-			*chars = &asciiMap[' '];
+			*chars = &asciiMap[32];
 		return 1;
 
 	case WP6_HEBREW_CHARACTER_SET:
 		if (character < WP6_NUM_HEBREW_CHARACTERS)
 			*chars = &hebrewWP6[character];
 		else
-			*chars = &asciiMap[' '];
+			*chars = &asciiMap[32];
 		return 1;
 
 	case WP6_CYRILLIC_CHARACTER_SET:
 		if (character < WP6_NUM_CYRILLIC_CHARACTERS)
 			*chars = &cyrillicWP6[character];
 		else
-			*chars = &asciiMap[' '];
+			*chars = &asciiMap[32];
 		return 1;
 
 	case WP6_JAPANESE_CHARACTER_SET:
 		if (character < WP6_NUM_JAPANESE_CHARACTERS)
 			*chars = &japaneseWP6[character];
 		else
-			*chars = &asciiMap[' '];
+			*chars = &asciiMap[32];
 		return 1;
 
 	case WP6_TIBETAN_CHARACTER_SET:
@@ -586,7 +586,7 @@ int extendedCharacterWP6ToUCS2(uint8_t character,
 			return i;
 		}
 		else {
-			*chars = &asciiMap[' '];
+			*chars = &asciiMap[32];
 			return 1;
 		}
 
@@ -594,19 +594,19 @@ int extendedCharacterWP6ToUCS2(uint8_t character,
 		if (character < WP6_NUM_ARABIC_CHARACTERS)
 			*chars = &arabicWP6[character];
 		else
-			*chars = &asciiMap[' '];
+			*chars = &asciiMap[32];
 		return 1;
 
 	case WP6_ARABIC_SCRIPT_CHARACTER_SET:
 		if (character < WP6_NUM_ARABIC_SCRIPT_CHARACTERS)
 			*chars = &arabicScriptWP6[character];
 		else
-			*chars = &asciiMap[' '];
+			*chars = &asciiMap[32];
 		return 1;
 	}
 
 	// last resort: return whitespace
-	*chars = &asciiMap[' '];
+	*chars = &asciiMap[32];
 	return 1;
 }
 
@@ -848,63 +848,63 @@ int extendedCharacterWP5ToUCS2(uint8_t character,
 		if (character < WP5_NUM_INTERNATIONAL_1_CHARACTERS)
 			*chars = &international1WP5[character];
 		else
-			*chars = &asciiMap[' '];
+			*chars = &asciiMap[32];
 		return 1;
 
 	case WP5_INTERNATIONAL_2_CHARACTER_SET:
 		if (character < WP5_NUM_INTERNATIONAL_2_CHARACTERS)
 			*chars = &international2WP5[character];
 		else
-			*chars = &asciiMap[' '];
+			*chars = &asciiMap[32];
 		return 1;
 
 	case WP5_BOX_DRAWING_CHARACTER_SET:
 		if (character < WP5_NUM_BOX_DRAWING_CHARACTERS)
 			*chars = &boxdrawingWP5[character];
 		else
-			*chars = &asciiMap[' '];
+			*chars = &asciiMap[32];
 		return 1;
 
 	case WP5_TYPOGRAPHIC_SYMBOL_CHARACTER_SET:
 		if (character < WP5_NUM_TYPOGRAPHIC_CHARACTERS)
 			*chars = &typographicWP5[character];
 		else
-			*chars = &asciiMap[' '];
+			*chars = &asciiMap[32];
 		return 1;
 
 	case WP5_ICONIC_SYMBOL_CHARACTER_SET:
 		if (character < WP5_NUM_ICONIC_CHARACTERS)
 			*chars = &iconicWP5[character];
 		else
-			*chars = &asciiMap[' '];
+			*chars = &asciiMap[32];
 		return 1;
 
 	case WP5_MATH_SCIENTIFIC_CHARACTER_SET:
 		if (character < WP5_NUM_MATH_SCIENTIFIC_CHARACTERS)
 			*chars = &mathWP5[character];
 		else
-			*chars = &asciiMap[' '];
+			*chars = &asciiMap[32];
 		return 1;
 
 	case WP5_MATH_SCIENTIFIC_EXTENDED_CHARACTER_SET:
 		if (character < WP5_NUM_MATH_SCIENTIFIC_EXTENDED_CHARACTERS)
 			*chars = &mathextWP5[character];
 		else
-			*chars = &asciiMap[' '];
+			*chars = &asciiMap[32];
 		return 1;
 
 	case WP5_GREEK_CHARACTER_SET:
 		if (character < WP5_NUM_GREEK_CHARACTERS)
 			*chars = &greekWP5[character];
 		else
-			*chars = &asciiMap[' '];
+			*chars = &asciiMap[32];
 		return 1;
 
 	case WP5_HEBREW_CHARACTER_SET:
 		if (character < WP5_NUM_HEBREW_CHARACTERS)
 			*chars = &hebrewWP5[character];
 		else
-			*chars = &asciiMap[' '];
+			*chars = &asciiMap[32];
 		return 1;
 
 	case WP5_CYRILLIC_CHARACTER_SET:
@@ -916,12 +916,12 @@ int extendedCharacterWP5ToUCS2(uint8_t character,
 		if (character < WP5_NUM_JAPANESE_CHARACTERS)
 			*chars = &japaneseWP5[character];
 		else
-			*chars = &asciiMap[' '];
+			*chars = &asciiMap[32];
 		return 1;
 	}
 
 	// last resort: return whitespace
-	*chars = &asciiMap[' '];
+	*chars = &asciiMap[32];
 	return 1;
 }
 
@@ -1035,7 +1035,6 @@ int _extractDisplayReferenceNumberFromBuf(const WPXString &buf, const WPXNumberi
 	{
 		int currentSum = 0;
 		int lastMark = 0;
-		int currentMark = 0;
 		WPXString::Iter i(buf);
 		for (i.rewind(); i.next();)
 		{

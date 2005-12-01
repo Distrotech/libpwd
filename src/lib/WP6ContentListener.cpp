@@ -99,8 +99,8 @@ void WP6OutlineDefinition::_updateNumberingMethods(const WP6OutlineLocation outl
 }
 
 _WP6ParsingState::_WP6ParsingState(WPXTableList tableList, int nextTableIndice) :
-	m_paragraphMarginBottomAbsolute(0.0f),
 	m_paragraphMarginBottomRelative(1.0f),
+	m_paragraphMarginBottomAbsolute(0.0f),
 
 	m_numRemovedParagraphBreaks(0),
 	
@@ -196,7 +196,7 @@ void WP6ContentListener::setLeaderCharacter(const uint16_t character, const uint
 	{
 		m_parseState->m_leaderCharacter = character;
 		m_parseState->m_leaderNumSpaces = numSpaces;
-		for (int i=0; i<m_ps->m_tabStops.size(); i++)
+		for (unsigned int i=0; i<m_ps->m_tabStops.size(); i++)
 		{
 			// change the leader information for those tab stops that use pre-WP9 leader method
 			if (m_parseState->m_tempUsePreWP9LeaderMethod[i])
@@ -602,7 +602,6 @@ void WP6ContentListener::marginChange(uint8_t side, uint16_t margin)
 	if (!isUndoOn())
 	{
 		float marginInch = (float)((double)margin/ (double)WPX_NUM_WPUS_PER_INCH);
-		bool marginChanged = false;
 
 		switch(side)
 		{
@@ -738,7 +737,6 @@ void WP6ContentListener::columnChange(const WPXTextColumnType columnType, const 
 void WP6ContentListener::updateOutlineDefinition(const WP6OutlineLocation outlineLocation, const uint16_t outlineHash,
 					    const uint8_t *numberingMethods, const uint8_t tabBehaviourFlag)
 {
-	WP6OutlineDefinition *tempListDefinition = NULL;
 	WPD_DEBUG_MSG(("WordPerfect: Updating OutlineHash %i\n", outlineHash));
 
 	WP6OutlineDefinition *tempOutlineDefinition;

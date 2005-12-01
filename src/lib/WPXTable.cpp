@@ -135,7 +135,8 @@ std::vector<WPXTableCell *> * WPXTable::_getCellsBottomAdjacent(int i, int j)
 
 std::vector<WPXTableCell *> * WPXTable::_getCellsRightAdjacent(int i, int j)
 {
-	int rightAdjacentCol = j + (*m_tableRows[i])[j]->m_colSpan;
+//	int rightAdjacentCol = j + (*m_tableRows[i])[j]->m_colSpan;
+	int rightAdjacentCol = j + 1;
 	std::vector<WPXTableCell *> * cellsRightAdjacent = new std::vector<WPXTableCell *>;
 
 	if (rightAdjacentCol >= m_tableRows[i]->size()) // num cols is uniform across table: this comparison is valid
@@ -157,8 +158,8 @@ std::vector<WPXTableCell *> * WPXTable::_getCellsRightAdjacent(int i, int j)
 }
 
 WPXTableList::WPXTableList() :
-	m_refCount(new int),
-	m_tableList(new std::vector<WPXTable *>)
+	m_tableList(new std::vector<WPXTable *>),
+	m_refCount(new int)
 {
 	(*m_refCount) = 1;
 }

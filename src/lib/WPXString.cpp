@@ -353,7 +353,6 @@ int
 g_static_utf8_strlen (const char *p)
 {
 	long len = 0;
-	const char *start = p;
 	if (p == NULL)
 		return 0;
 

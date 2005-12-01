@@ -288,7 +288,6 @@ void WP5Listener::marginChange(uint8_t side, uint16_t margin)
 	//if (!isUndoOn())
 	//{
 		float marginInch = (float)((double)margin/ (double)WPX_NUM_WPUS_PER_INCH);
-		bool marginChanged = false;
 
 		switch(side)
 		{
