@@ -520,6 +520,7 @@ void WP3Listener::insertNote(const WPXNoteType noteType, const WP3SubDocument *s
 {
 	if (!isUndoOn())
 	{
+		_closeSpan();
 		m_ps->m_isNote = true;
 		WPXNumberingType numberingType = _extractWPXNumberingTypeFromBuf(m_parseState->m_noteReference, ARABIC);
 		int number = _extractDisplayReferenceNumberFromBuf(m_parseState->m_noteReference, numberingType);

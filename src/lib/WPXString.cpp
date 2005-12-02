@@ -188,8 +188,7 @@ int WPXString::len() const
 
 WPXString& WPXString::operator=(const WPXString &stringBuf)
 {
-	delete static_cast<std::string*>(m_buf);
-	m_buf = static_cast<void *>(new std::string(*static_cast<std::string*>(stringBuf.m_buf)));
+	*static_cast<std::string*>(m_buf) = *static_cast<std::string*>(stringBuf.m_buf);
 	return *this;
 }
 
