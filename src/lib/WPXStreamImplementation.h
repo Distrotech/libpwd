@@ -39,6 +39,7 @@ public:
 
 	bool isOLEStream();
 	WPXInputStream *getDocumentOLEStream(const char * name);
+	/* This method will be replaced by the above method in next release cycle */
 	WPXInputStream *getDocumentOLEStream();
 
 private:
@@ -62,6 +63,7 @@ public:
 
 	bool isOLEStream();
 	WPXInputStream *getDocumentOLEStream(const char * name);
+	/* This method will be replaced by the above method in next release cycle */
 	WPXInputStream *getDocumentOLEStream();
 
 private:
