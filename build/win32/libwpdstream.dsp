@@ -87,6 +87,14 @@ LIB32=link.exe -lib
 
 SOURCE=..\..\src\lib\GSFStream.cpp
 # End Source File
+# Begin Source File
+
+SOURCE=..\..\src\lib\WPXOLEStream.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\lib\WPXStreamImplementation.cpp
+# End Source File
 # End Group
 # Begin Group "Header Files"
 
@@ -94,6 +102,14 @@ SOURCE=..\..\src\lib\GSFStream.cpp
 # Begin Source File
 
 SOURCE=..\..\src\lib\GSFStream.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\lib\WPXOLEStream.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\lib\WPXStreamImplementation.h
 # End Source File
 # End Group
 # End Target
