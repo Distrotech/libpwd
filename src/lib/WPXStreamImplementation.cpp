@@ -33,32 +33,49 @@ class WPXFileStreamPrivate
 {
 public:
 	WPXFileStreamPrivate();
+	~WPXFileStreamPrivate();
 	std::fstream file;
 	std::stringstream buffer;
 	long streamSize;
+	uint8_t *buf;
 };
 
 class WPXStringStreamPrivate
 {
 public:
 	WPXStringStreamPrivate(const std::string str);
+	~WPXStringStreamPrivate();
 	std::stringstream buffer;
 	long streamSize;
+	uint8_t *buf;
 };
 
 WPXFileStreamPrivate::WPXFileStreamPrivate() :
 	file(),
 	buffer(std::ios::binary | std::ios::in | std::ios::out),
-	streamSize(0)
+	streamSize(0),
+	buf(0)
 {	
+}
+
+WPXFileStreamPrivate::~WPXFileStreamPrivate()
+{
+	if (buf)
+		delete [] buf;
 }
 
 WPXStringStreamPrivate::WPXStringStreamPrivate(const std::string str) :
 	buffer(str, std::ios::binary | std::ios::in),
-	streamSize(0)
+	streamSize(0),
+	buf(0)
 {
 }
 
+WPXStringStreamPrivate::~WPXStringStreamPrivate()
+{
+	if (buf)
+		delete [] buf;
+}
 
 WPXFileStream::WPXFileStream(const char* filename) :
 	WPXInputStream(true)
@@ -85,16 +102,18 @@ const uint8_t *WPXFileStream::read(size_t numBytes, size_t &numBytesRead)
 		return 0;
 	}
 
-	uint8_t *buffer = new uint8_t[numBytes];
+	if (d->buf)
+		delete [] d->buf;
+	d->buf = new uint8_t[numBytes];
 
 	if(d->file.good())
 	{
 		long curpos = d->file.tellg();
-		d->file.readsome((char *)buffer, numBytes); 
+		d->file.readsome((char *)(d->buf), numBytes); 
 		numBytesRead = (long)d->file.tellg() - curpos;
 	}
 	
-	return buffer;
+	return d->buf;
 }
 
 long WPXFileStream::tell()
@@ -207,16 +226,18 @@ const uint8_t *WPXStringStream::read(size_t numBytes, size_t &numBytesRead)
 		return 0;
 	}
 
-	uint8_t *buffer = new uint8_t[numBytes];
+	if (d->buf)
+		delete [] d->buf;
+	d->buf = new uint8_t[numBytes];
 
 	if(d->buffer.good())
 	{
 		long curpos = d->buffer.tellg();
-		d->buffer.readsome((char *)buffer, numBytes); 
+		d->buffer.readsome((char *)(d->buf), numBytes); 
 		numBytesRead = (long)d->buffer.tellg() - curpos;
 	}
 	
-	return buffer;
+	return d->buf;
 }
 
 long WPXStringStream::tell()
