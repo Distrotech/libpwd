@@ -19,49 +19,31 @@
  * For further information visit http://libwpd.sourceforge.net
  */
 
-#include <gsf/gsf-utils.h>
-#include <gsf/gsf-input-stdio.h>
 #include <stdio.h>
 #include "HtmlListenerImpl.h"
-#include "GSFStream.h"
+#include "WPXStreamImplementation.h"
 #include "WPDocument.h"
 
 int main(int argc, char *argv[])
 {
-	gsf_init ();
 	if (argc < 2)
 	{
 		printf("Usage: wpd2html <WordPerfect Document>\n");
 		return 1;
 	}
 	
-	GError   *err = 0;
-	GsfInput * input;
-	input = GSF_INPUT(gsf_input_stdio_new (argv[1], &err));
-	if (!input) 
-	{
-		g_return_val_if_fail (err != 0, 1);
-		
-		g_warning ("'%s' error: %s", argv[1], err->message);
-		g_error_free (err);
-		gsf_shutdown();
-		return 1;
-	}
-	
-	GSFInputStream *gsfInput = new GSFInputStream(input);
+	WPXInputStream* input = new WPXFileStream(argv[1]);
 
-	WPDConfidence confidence = WPDocument::isFileFormatSupported(gsfInput, false);
+	WPDConfidence confidence = WPDocument::isFileFormatSupported(input, false);
 	if (confidence == WPD_CONFIDENCE_NONE || confidence == WPD_CONFIDENCE_POOR)
 	{
 		printf("ERROR: Unsupported file format!\n");
-		delete gsfInput;
-		g_object_unref (input);
-		gsf_shutdown();
+		delete input;
 		return 1;
 	}
 
 	HtmlListenerImpl listenerImpl;
- 	WPDResult error = WPDocument::parse(gsfInput, static_cast<WPXHLListenerImpl *>(&listenerImpl));
+ 	WPDResult error = WPDocument::parse(input, static_cast<WPXHLListenerImpl *>(&listenerImpl));
 
 	if (error == WPD_FILE_ACCESS_ERROR)
 		fprintf(stderr, "ERROR: File Exception!\n");
@@ -74,9 +56,7 @@ int main(int argc, char *argv[])
 	else if (error != WPD_OK)
 		fprintf(stderr, "ERROR: Unknown Error!\n");
 
-	delete gsfInput;
-	g_object_unref (input);
-	gsf_shutdown();
+	delete input;
 
 	if (error != WPD_OK)
 		return 1;
