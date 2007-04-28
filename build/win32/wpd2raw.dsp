@@ -45,16 +45,16 @@ MTL=midl.exe
 # ADD BASE MTL /nologo /win32
 # ADD MTL /nologo /win32
 # ADD BASE CPP /nologo /MT /W3 /GX /Zi /I "..\..\src\lib" /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /c
-# ADD CPP /nologo /MT /W3 /GX /Zi /I "..\..\src\lib" /D "NDEBUG" /D "WIN32" /D "_CONSOLE" /c
+# ADD CPP /nologo /MT /W3 /GX /I "..\..\src\lib" /D "NDEBUG" /D "WIN32" /D "_CONSOLE" /c
 # ADD BASE RSC /l 0x409
-# ADD RSC /l 0x409
+# ADD RSC /l 0x409 /d "NDEBUG"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
 LINK32=link.exe
-# ADD BASE LINK32 libwpd-stream-0.8.lib libwpd-0.8.lib kernel32.lib libcpmt.lib libcmt.lib /nologo /subsystem:console /debug /machine:IX86 /libpath:"Release\lib" /out:"Release\bin\wpd2raw.exe"
-# ADD LINK32 libwpd-stream-0.8.lib libwpd-0.8.lib kernel32.lib libcpmt.lib libcmt.lib /nologo /subsystem:console /machine:IX86 /nodefaultlib /libpath:"Release\lib" /out:"Release\bin\wpd2raw.exe"
-# SUBTRACT LINK32 /debug
+# ADD BASE LINK32 libwpd-stream-0.8.lib libwpd-0.8.lib kernel32.lib libcpmt.lib libcmt.lib /nologo /subsystem:console /machine:IX86 /out:"Release\bin\wpd2raw.exe" /libpath:"Release\lib"
+# ADD LINK32 libwpd-stream-0.8.lib libwpd-0.8.lib kernel32.lib libcpmt.lib libcmt.lib /nologo /subsystem:console /machine:IX86 /nodefaultlib /out:"Release\bin\wpd2raw.exe" /libpath:"Release\lib"
+# SUBTRACT LINK32 /incremental:yes /debug
 
 !ELSEIF  "$(CFG)" == "wpd2raw - Win32 Debug"
 
@@ -72,16 +72,16 @@ LINK32=link.exe
 MTL=midl.exe
 # ADD BASE MTL /nologo /win32
 # ADD MTL /nologo /win32
-# ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /I "..\..\src\lib" /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /GZ /c
-# ADD CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /I "..\..\src\lib" /D "_DEBUG" /D "WIN32" /D "_CONSOLE" /GZ /c
+# ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /I "..\..\src\lib" /D "WIN32" /d "_DEBUG" /d "DEBUG" /D "DEBUG" /D "_CONSOLE" /GZ /c
+# ADD CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /I "..\..\src\lib" /d "_DEBUG" /d "DEBUG" /D "DEBUG" /D "WIN32" /D "_CONSOLE" /GZ /c
 # ADD BASE RSC /l 0x409
-# ADD RSC /l 0x409
+# ADD RSC /l 0x409 /d "_DEBUG"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
 LINK32=link.exe
-# ADD BASE LINK32 libwpd-0.8.lib libwpd-stream-0.8.lib libcpmtd.lib libcmtd.lib /nologo /subsystem:console /debug /machine:IX86 /libpath:"Debug\lib" /out:"Debug\bin\wpd2raw.exe"
-# ADD LINK32 libwpd-0.8.lib libwpd-stream-0.8.lib kernel32.lib libcpmtd.lib libcmtd.lib /nologo /subsystem:console /debug /machine:IX86 /nodefaultlib /libpath:"Debug\lib" /out:"Debug\bin\wpd2raw.exe"
+# ADD BASE LINK32 libwpd-0.8.lib libwpd-stream-0.8.lib libcpmtd.lib libcmtd.lib /nologo /subsystem:console /debug /machine:IX86 /out:"Debug\bin\wpd2raw.exe" /libpath:"Debug\lib"
+# ADD LINK32 libwpd-0.8.lib libwpd-stream-0.8.lib kernel32.lib libcpmtd.lib libcmtd.lib /nologo /subsystem:console /incremental:no /debug /machine:IX86 /nodefaultlib /out:"Debug\bin\wpd2raw.exe" /libpath:"Debug\lib"
 
 !ENDIF 
 
