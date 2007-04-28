@@ -53,7 +53,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 libwpd-stream-0.8.lib libwpd-0.8.lib kernel32.lib libcpmt.lib libcmt.lib /nologo /subsystem:console /debug /machine:IX86 /libpath:"Release\lib" /out:"Release\bin\wpd2text.exe"
-# ADD LINK32 libwpd-stream-0.8.lib libwpd-0.8.lib kernel32.lib libcpmt.lib libcmt.lib /nologo /subsystem:console /incremental:yes /machine:IX86 /nodefaultlib /libpath:"Release\lib" /out:"Release\bin\wpd2text.exe"
+# ADD LINK32 libwpd-stream-0.8.lib libwpd-0.8.lib kernel32.lib libcpmt.lib libcmt.lib /nologo /subsystem:console /machine:IX86 /nodefaultlib /libpath:"Release\lib" /out:"Release\bin\wpd2text.exe"
 # SUBTRACT LINK32 /debug
 
 !ELSEIF  "$(CFG)" == "wpd2text - Win32 Debug"
@@ -80,9 +80,8 @@ BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
 LINK32=link.exe
-# ADD BASE LINK32 libwpd-0.8.lib libwpd-stream-0.8.lib kernel32.lib libcpmt.lib libcmt.lib /nologo /subsystem:console /debug /machine:IX86 /libpath:"Debug\lib" /out:"Debug\bin\wpd2text.exe"
-# ADD LINK32 libwpd-0.8.lib libwpd-stream-0.8.lib kernel32.lib libcpmt.lib libcmt.lib /nologo /subsystem:console /debug /machine:IX86 /nodefaultlib /libpath:"Debug\lib"  /out:"Debug\bin\wpd2text.exe"
-# SUBTRACT LINK32 /incremental:no
+# ADD BASE LINK32 libwpd-0.8.lib libwpd-stream-0.8.lib kernel32.lib libcpmtd.lib libcmtd.lib /nologo /subsystem:console /debug /machine:IX86 /libpath:"Debug\lib" /out:"Debug\bin\wpd2text.exe"
+# ADD LINK32 libwpd-0.8.lib libwpd-stream-0.8.lib kernel32.lib libcpmtd.lib libcmtd.lib /nologo /subsystem:console /debug /machine:IX86 /nodefaultlib /libpath:"Debug\lib"  /out:"Debug\bin\wpd2text.exe"
 
 !ENDIF 
 
