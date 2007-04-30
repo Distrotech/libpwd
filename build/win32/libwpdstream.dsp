@@ -40,8 +40,8 @@ RSC=rc.exe
 # PROP Output_Dir "Release"
 # PROP Intermediate_Dir "Release"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_LIB" /YX /FD /c
-# ADD CPP /nologo /W3 /GX /O2 /I "..\..\..\include\glib-2.0" /I "..\..\..\lib\glib-2.0\include" /I "..\..\..\include\libgsf-1" /D "NDEBUG" /D "WIN32" /D "_LIB" /YX /FD /c
+# ADD BASE CPP /nologo /W3 /GX /O2 /I "glib-2.0" /I "..\lib\glib-2.0\include" /I "libgsf-1" /I "libxml2" /D "WIN32" /D "NDEBUG" /D "_LIB" /D "_MT" /YX /FD /c
+# ADD CPP /nologo /W3 /GX /O2 /I "glib-2.0" /I "..\lib\glib-2.0\include" /I "libgsf-1" /I "libxml2" /D "NDEBUG" /D "WIN32" /D "_LIB" /D "_MT" /YX /FD /c
 # ADD BASE RSC /l 0x809 /d "NDEBUG"
 # ADD RSC /l 0x409 /d "NDEBUG"
 BSC32=bscmake.exe
@@ -63,8 +63,8 @@ LIB32=link.exe -lib
 # PROP Output_Dir "Debug"
 # PROP Intermediate_Dir "Debug"
 # PROP Target_Dir ""
-# ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /d "_DEBUG" /d "DEBUG" /D "DEBUG" /D "_LIB" /YX /FD /GZ /c
-# ADD CPP /nologo /W3 /Gm /GX /ZI /Od /d "_DEBUG" /d "DEBUG" /D "DEBUG" /D "WIN32" /D "_LIB" /YX /FD /GZ /c
+# ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /I "glib-2.0" /I "..\lib\glib-2.0\include" /I "libgsf-1" /I "libxml2" /D "WIN32" /D "_DEBUG" /D "DEBUG" /D "_MT" /D "_LIB" /YX /FD /GZ /c
+# ADD CPP /nologo /W3 /Gm /GX /ZI /Od /I "glib-2.0" /I "..\lib\glib-2.0\include" /I "libgsf-1" /I "libxml2" /D "_DEBUG" /D "DEBUG" /D "WIN32" /D "_LIB" /D "_MT" /YX /FD /GZ /c
 # ADD BASE RSC /l 0x809 /d "_DEBUG"
 # ADD RSC /l 0x409 /d "_DEBUG"
 BSC32=bscmake.exe
