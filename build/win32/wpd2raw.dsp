@@ -54,7 +54,7 @@ BSC32=bscmake.exe
 LINK32=link.exe
 # ADD BASE LINK32 libwpd-stream-0.8.lib libwpd-0.8.lib /nologo /subsystem:console /machine:IX86 /out:"Release\bin\wpd2raw.exe" /libpath:"Release\lib"
 # ADD LINK32 libwpd-stream-0.8.lib libwpd-0.8.lib /nologo /subsystem:console /machine:IX86 /out:"Release\bin\wpd2raw.exe" /libpath:"Release\lib"
-# SUBTRACT LINK32 /incremental:yes /debug
+# SUBTRACT LINK32 /nodefaultlib
 
 !ELSEIF  "$(CFG)" == "wpd2raw - Win32 Debug"
 
@@ -72,8 +72,8 @@ LINK32=link.exe
 MTL=midl.exe
 # ADD BASE MTL /nologo /win32
 # ADD MTL /nologo /win32
-# ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /I "..\..\src\lib" /D "WIN32" /D "_DEBUG" /D "DEBUG" /D "_CONSOLE" /GZ /c
-# ADD CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /I "..\..\src\lib" /D "_DEBUG" /D "DEBUG" /D "WIN32" /D "_CONSOLE" /GZ /c
+# ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /I "\..\..\src\lib" /D "WIN32" /D "_DEBUG" /D "DEBUG" /D "_CONSOLE" /GZ /c
+# ADD CPP /nologo /MTd /W3 /GX /ZI /Od /I "..\..\src\lib" /D "_DEBUG" /D "DEBUG" /D "WIN32" /D "_CONSOLE" /GZ /c
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409 /d "_DEBUG"
 BSC32=bscmake.exe
@@ -81,7 +81,8 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 libwpd-0.8.lib libwpd-stream-0.8.lib /nologo /subsystem:console /debug /machine:IX86 /out:"Debug\bin\wpd2raw.exe" /libpath:"Debug\lib"
-# ADD LINK32 libwpd-0.8.lib libwpd-stream-0.8.lib /nologo /subsystem:console /incremental:no /debug /machine:IX86 /out:"Debug\bin\wpd2raw.exe" /libpath:"Debug\lib"
+# ADD LINK32 libwpd-0.8.lib libwpd-stream-0.8.lib kernel32.lib /nologo /subsystem:console /debug /machine:IX86 /out:"Debug\bin\wpd2raw.exe" /libpath:"Debug\lib"
+# SUBTRACT LINK32 /nodefaultlib
 
 !ENDIF 
 
@@ -106,7 +107,7 @@ SOURCE=..\..\src\conv\raw\wpd2raw.cpp
 # PROP Default_Filter "h;hpp;hxx;hm;inl;inc;xsd"
 # Begin Source File
 
-SOURCE=..\..\src\conv\raw\RawListener.h
+SOURCE=..\..\src\conv\raw\RawListenerImpl.h
 # End Source File
 # End Group
 # End Target
