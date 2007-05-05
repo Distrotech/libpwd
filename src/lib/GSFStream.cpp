@@ -71,6 +71,7 @@ int GSFInputStream::seek(long offset, WPX_SEEK_TYPE seekType)
 		gsfSeekType = G_SEEK_CUR;
 		break;
 	case WPX_SEEK_SET:
+	default:
 		gsfSeekType = G_SEEK_SET;
 		break;
 	}

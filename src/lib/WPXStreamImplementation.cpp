@@ -88,6 +88,9 @@ WPXFileStream::WPXFileStream(const char* filename) :
 	d->streamSize = (d->file.good() ? (unsigned long)d->file.tellg() : (unsigned long)-1L);
 	if (d->streamSize == (unsigned long)-1) // tellg() returned ERROR
 		d->streamSize = 0;
+	 // preventing possible unsigned/signed issues later by truncating the file
+	if (d->streamSize > (std::numeric_limits<unsigned long>::max)() / 2)
+		d->streamSize = (std::numeric_limits<unsigned long>::max)() / 2;
 	d->file.seekg( 0, std::ios::beg );
 }
 
@@ -137,15 +140,15 @@ int WPXFileStream::seek(long offset, WPX_SEEK_TYPE seekType)
 	{
 		if (offset < 0)
 			offset = 0;
-		if (offset > d->streamSize)
-			offset = d->streamSize;
+		if (offset > (long)d->streamSize)
+			offset = (long)d->streamSize;
 	}
 
 	if (seekType == WPX_SEEK_CUR)
 	{
 		if (tell() + offset < 0)
 			offset = -tell();
-		if (tell() + offset > d->streamSize)
+		if (tell() + offset > (long)d->streamSize)
 			offset = d->streamSize - tell();
 	}
 
@@ -160,7 +163,7 @@ int WPXFileStream::seek(long offset, WPX_SEEK_TYPE seekType)
 
 bool WPXFileStream::atEOS()
 {
-	return (d->file.tellg() >= d->streamSize);
+	return (d->file.tellg() >= (long)d->streamSize);
 }
 
 bool WPXFileStream::isOLEStream()
@@ -222,8 +225,11 @@ WPXStringStream::WPXStringStream(const char *data, const unsigned int dataSize) 
 	d = new WPXStringStreamPrivate(std::string(data, dataSize));
 	d->buffer.seekg( 0, std::ios::end );
 	d->streamSize = (d->buffer.good() ? (unsigned long)d->buffer.tellg() : (unsigned long)-1L);
-	if (d->streamSize == (unsigned long)-1L)
+	if (d->streamSize == (unsigned long)-1)
 		d->streamSize = 0;
+	 // preventing possible unsigned/signed issues later by truncating the file
+	if (d->streamSize > (std::numeric_limits<unsigned long>::max)() / 2)
+		d->streamSize = (std::numeric_limits<unsigned long>::max)() / 2;
 	d->buffer.seekg( 0, std::ios::beg );
 }
 
@@ -273,7 +279,7 @@ int WPXStringStream::seek(long offset, WPX_SEEK_TYPE seekType)
 	{
 		if (offset < 0)
 			offset = 0;
-		if (offset > d->streamSize)
+		if (offset > (long)d->streamSize)
 			offset = d->streamSize;
 	}
 
@@ -281,7 +287,7 @@ int WPXStringStream::seek(long offset, WPX_SEEK_TYPE seekType)
 	{
 		if (tell() + offset < 0)
 			offset = -tell();
-		if (tell() + offset > d->streamSize)
+		if (tell() + offset > (long)d->streamSize)
 			offset = d->streamSize - tell();
 	}
 
@@ -296,7 +302,7 @@ int WPXStringStream::seek(long offset, WPX_SEEK_TYPE seekType)
 
 bool WPXStringStream::atEOS()
 {
-	return (d->buffer.tellg() >= d->streamSize);
+	return (d->buffer.tellg() >= (long)d->streamSize);
 }
 
 bool WPXStringStream::isOLEStream()
