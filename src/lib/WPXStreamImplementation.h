@@ -38,7 +38,7 @@ public:
 	bool atEOS();
 
 	bool isOLEStream();
-	WPXInputStream *getDocumentOLEStream(const char * name);
+	WPXInputStream *getDocumentOLEStream();
 
 private:
 	WPXFileStreamPrivate* d;
@@ -60,7 +60,7 @@ public:
 	bool atEOS();
 
 	bool isOLEStream();
-	WPXInputStream *getDocumentOLEStream(const char * name);
+	WPXInputStream *getDocumentOLEStream();
 
 private:
 	WPXStringStreamPrivate* d;
