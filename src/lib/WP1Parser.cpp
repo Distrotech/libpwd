@@ -160,6 +160,7 @@ void WP1Parser::parseDocument(WPXInputStream *input, WP1Listener *listener)
 					break;
 				case 0xB8:
 					listener->attributeChange(false, WP1_ATTRIBUTE_SUBSCRIPT);
+					break;
 
 				default:
 					// unsupported or undocumented token, ignore
@@ -180,7 +181,7 @@ void WP1Parser::parseDocument(WPXInputStream *input, WP1Listener *listener)
 	}
 }
 
-void WP1Parser::parse(WPXDocumentInterface *listenerImpl)
+void WP1Parser::parse(WPXHLListenerImpl *listenerImpl)
 {
 	WPXInputStream *input = getInput();
 	std::list<WPXPageSpan> pageList;
