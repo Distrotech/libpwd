@@ -89,7 +89,7 @@ struct _WPXContentParsingState
 	uint32_t m_cellAttributeBits;
 	uint8_t m_paragraphJustificationBeforeTable;
 	
-	std::list<WPXPageSpan>::iterator m_nextPageSpanIter;
+	unsigned m_currentPage;
 	int m_numPagesRemainingInSpan;
 
 	bool m_sectionAttributesChanged;
