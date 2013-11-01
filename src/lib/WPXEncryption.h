@@ -27,10 +27,11 @@
 #ifndef WPXENCRYPTION_H
 #define WPXENCRYPTION_H
 
+#include <librevenge/librevenge.h>
 #include <libwpd/libwpd.h>
 #include "libwpd_types.h"
 
-class WPXInputStream;
+class RVNGInputStream;
 
 class WPXEncryption
 {
@@ -38,7 +39,7 @@ public:
 	WPXEncryption(const char *password, const unsigned long encryptionStartOffset = 0);
 	~WPXEncryption();
 
-	const unsigned char *readAndDecrypt(WPXInputStream *input, unsigned long numBytes, unsigned long &numBytesRead);
+	const unsigned char *readAndDecrypt(RVNGInputStream *input, unsigned long numBytes, unsigned long &numBytesRead);
 	uint16_t getCheckSum() const;
 
 	void setEncryptionStartOffset(unsigned long encryptionStartOffset)
@@ -59,14 +60,14 @@ public:
 		return m_encryptionMaskBase;
 	}
 
-	const WPXString &getEncryptionPassword() const
+	const RVNGString &getEncryptionPassword() const
 	{
 		return m_password;
 	}
 
 private:
 	unsigned char *m_buffer;
-	WPXString m_password;
+	RVNGString m_password;
 	unsigned long m_encryptionStartOffset;
 	unsigned char m_encryptionMaskBase;
 	// Unimplemented to prevent compiler from creating crasher ones

@@ -33,11 +33,11 @@
 class WP6GraphicsCachedFileDataPacket : public WP6PrefixDataPacket
 {
 public:
-	WP6GraphicsCachedFileDataPacket(WPXInputStream *input, WPXEncryption *encryption, int id, uint32_t dataOffset, uint32_t dataSize);
+	WP6GraphicsCachedFileDataPacket(RVNGInputStream *input, WPXEncryption *encryption, int id, uint32_t dataOffset, uint32_t dataSize);
 	~WP6GraphicsCachedFileDataPacket();
-	void _readContents(WPXInputStream *input, WPXEncryption *encryption);
+	void _readContents(RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP6Listener * /* listener */) const {}
-	const WPXBinaryData *getBinaryObject() const
+	const RVNGBinaryData *getBinaryObject() const
 	{
 		return m_object;
 	}
@@ -46,7 +46,7 @@ private:
 	WP6GraphicsCachedFileDataPacket(const WP6GraphicsCachedFileDataPacket &);
 	WP6GraphicsCachedFileDataPacket &operator=(const WP6GraphicsCachedFileDataPacket &);
 	int m_id;
-	WPXBinaryData *m_object;
+	RVNGBinaryData *m_object;
 	uint8_t *m_data;
 
 };

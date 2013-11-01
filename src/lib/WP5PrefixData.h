@@ -32,7 +32,7 @@
 class WP5PrefixData
 {
 public:
-	WP5PrefixData(WPXInputStream *input, WPXEncryption *encryption);
+	WP5PrefixData(RVNGInputStream *input, WPXEncryption *encryption);
 	virtual ~WP5PrefixData();
 	const WP5GeneralPacketData *getGeneralPacketData(const int type) const;
 private:

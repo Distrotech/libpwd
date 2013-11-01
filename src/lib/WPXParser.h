@@ -27,26 +27,26 @@
 #ifndef WPXPARSER_H
 #define WPXPARSER_H
 
-class WPXDocumentInterface;
+class RVNGTextInterface;
 class WPXHeader;
-class WPXInputStream;
+class RVNGInputStream;
 class WPXEncryption;
 
 class WPXParser
 {
 public:
-	WPXParser(WPXInputStream *input, WPXHeader *header, WPXEncryption *encryption);
+	WPXParser(RVNGInputStream *input, WPXHeader *header, WPXEncryption *encryption);
 	virtual ~WPXParser() {}
 
-	virtual void parse(WPXDocumentInterface *documentInterface) = 0;
-	virtual void parseSubDocument(WPXDocumentInterface *documentInterface) = 0;
+	virtual void parse(RVNGTextInterface *documentInterface) = 0;
+	virtual void parseSubDocument(RVNGTextInterface *documentInterface) = 0;
 
 protected:
 	WPXHeader *getHeader()
 	{
 		return m_header;
 	}
-	WPXInputStream *getInput()
+	RVNGInputStream *getInput()
 	{
 		return m_input;
 	}
@@ -58,7 +58,7 @@ protected:
 private:
 	WPXParser(const WPXParser &);
 	WPXParser &operator=(const WPXParser &);
-	WPXInputStream *m_input;
+	RVNGInputStream *m_input;
 	WPXHeader *m_header;
 	WPXEncryption *m_encryption;
 };

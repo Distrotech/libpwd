@@ -31,14 +31,14 @@
 #include "WP3Listener.h"
 #include "libwpd_internal.h"
 
-WP3DoubleByteScriptCharacterGroup::WP3DoubleByteScriptCharacterGroup(WPXInputStream *input, WPXEncryption *encryption, uint8_t groupID) :
+WP3DoubleByteScriptCharacterGroup::WP3DoubleByteScriptCharacterGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID) :
 	WP3FixedLengthGroup(groupID),
 	m_scriptCharacter(0)
 {
 	_read(input, encryption);
 }
 
-void WP3DoubleByteScriptCharacterGroup::_readContents(WPXInputStream *input, WPXEncryption *encryption)
+void WP3DoubleByteScriptCharacterGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
 {
 	m_scriptCharacter = readU16(input, encryption, true);
 }

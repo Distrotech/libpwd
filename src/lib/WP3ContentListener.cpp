@@ -47,7 +47,7 @@ _WP3ContentParsingState::~_WP3ContentParsingState()
 	DELETEP(m_cellFillColor);
 }
 
-WP3ContentListener::WP3ContentListener(std::list<WPXPageSpan> &pageList, std::vector<WP3SubDocument *> &subDocuments, WPXDocumentInterface *documentInterface) :
+WP3ContentListener::WP3ContentListener(std::list<WPXPageSpan> &pageList, std::vector<WP3SubDocument *> &subDocuments, RVNGTextInterface *documentInterface) :
 	WP3Listener(),
 	WPXContentListener(pageList, documentInterface),
 	m_parseState(new WP3ContentParsingState),
@@ -580,7 +580,7 @@ void WP3ContentListener::setTextColor(const RGBSColor *fontColor)
 	}
 }
 
-void WP3ContentListener::setTextFont(const WPXString &fontName)
+void WP3ContentListener::setTextFont(const RVNGString &fontName)
 {
 	if (!isUndoOn())
 	{
@@ -600,7 +600,7 @@ void WP3ContentListener::setFontSize(const uint16_t fontSize)
 	}
 }
 
-void WP3ContentListener::insertPageNumber(const WPXString &pageNumber)
+void WP3ContentListener::insertPageNumber(const RVNGString &pageNumber)
 {
 	if (!isUndoOn())
 	{
@@ -610,7 +610,7 @@ void WP3ContentListener::insertPageNumber(const WPXString &pageNumber)
 	}
 }
 
-void WP3ContentListener::insertNoteReference(const WPXString &noteReference)
+void WP3ContentListener::insertNoteReference(const RVNGString &noteReference)
 {
 	if (!isUndoOn())
 	{
@@ -634,7 +634,7 @@ void WP3ContentListener::insertNote(const WPXNoteType noteType, const WP3SubDocu
 		int number = _extractDisplayReferenceNumberFromBuf(m_parseState->m_noteReference, numberingType);
 		m_parseState->m_noteReference.clear();
 
-		WPXPropertyList propList;
+		RVNGPropertyList propList;
 		propList.insert("libwpd:number", number);
 
 		if (noteType == FOOTNOTE)
@@ -789,14 +789,14 @@ void WP3ContentListener::leftRightIndent(const double offset)
 }
 
 void WP3ContentListener::insertPicture(double height, double width, double verticalOffset, double horizontalOffset, uint8_t leftColumn, uint8_t rightColumn,
-                                       uint16_t figureFlags, const WPXBinaryData &binaryData)
+                                       uint16_t figureFlags, const RVNGBinaryData &binaryData)
 {
 	if (!isUndoOn())
 	{
 		if (!m_ps->m_isSpanOpened)
 			_openSpan();
 
-		WPXPropertyList propList;
+		RVNGPropertyList propList;
 		_handleFrameParameters( propList, height, width, verticalOffset, horizontalOffset, leftColumn, rightColumn, figureFlags );
 		m_documentInterface->openFrame(propList);
 
@@ -816,7 +816,7 @@ void WP3ContentListener::insertTextBox(double height, double width, double verti
 		if (!m_ps->m_isSpanOpened)
 			_openSpan();
 
-		WPXPropertyList propList;
+		RVNGPropertyList propList;
 		_handleFrameParameters( propList, height, width, verticalOffset, horizontalOffset, leftColumn, rightColumn, figureFlags );
 		m_documentInterface->openFrame(propList);
 
@@ -848,7 +848,7 @@ void WP3ContentListener::insertWP51Table(double height, double width, double ver
 		if (!m_ps->m_isSpanOpened)
 			_openSpan();
 
-		WPXPropertyList propList;
+		RVNGPropertyList propList;
 		_handleFrameParameters( propList, height, width, verticalOffset, horizontalOffset, leftColumn, rightColumn, figureFlags );
 		m_documentInterface->openFrame(propList);
 
@@ -873,7 +873,7 @@ void WP3ContentListener::insertWP51Table(double height, double width, double ver
 	}
 }
 
-void WP3ContentListener::_handleFrameParameters( WPXPropertyList &propList, double height, double width, double verticalOffset, double horizontalOffset,
+void WP3ContentListener::_handleFrameParameters( RVNGPropertyList &propList, double height, double width, double verticalOffset, double horizontalOffset,
         uint8_t /* leftColumn */, uint8_t /* rightColumn */, uint16_t figureFlags  )
 {
 	propList.insert("svg:width", (double)((double)width/72.0));

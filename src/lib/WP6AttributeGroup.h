@@ -32,7 +32,7 @@
 class WP6AttributeGroup : public WP6FixedLengthGroup
 {
 public:
-	WP6AttributeGroup(WPXInputStream *input, WPXEncryption *encryption, uint8_t groupID);
+	WP6AttributeGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID);
 	virtual void parse(WP6Listener *listener) = 0;
 	uint8_t getAttribute() const
 	{
@@ -40,7 +40,7 @@ public:
 	}
 
 protected:
-	void _readContents(WPXInputStream *input, WPXEncryption *encryption);
+	void _readContents(RVNGInputStream *input, WPXEncryption *encryption);
 
 private:
 	uint8_t m_attribute;
@@ -49,14 +49,14 @@ private:
 class WP6AttributeOnGroup : public WP6AttributeGroup
 {
 public:
-	WP6AttributeOnGroup(WPXInputStream *input, WPXEncryption *encryption, uint8_t groupID);
+	WP6AttributeOnGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID);
 	void parse(WP6Listener *listener);
 };
 
 class WP6AttributeOffGroup : public WP6AttributeGroup
 {
 public:
-	WP6AttributeOffGroup(WPXInputStream *input, WPXEncryption *encryption, uint8_t groupID);
+	WP6AttributeOffGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID);
 	void parse(WP6Listener *listener);
 };
 

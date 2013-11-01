@@ -30,7 +30,7 @@
 #include "WP6Listener.h"
 #include "libwpd_internal.h"
 
-WP6ExtendedCharacterGroup::WP6ExtendedCharacterGroup(WPXInputStream *input, WPXEncryption *encryption, uint8_t groupID) :
+WP6ExtendedCharacterGroup::WP6ExtendedCharacterGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID) :
 	WP6FixedLengthGroup(groupID),
 	m_character(0),
 	m_characterSet(0)
@@ -38,7 +38,7 @@ WP6ExtendedCharacterGroup::WP6ExtendedCharacterGroup(WPXInputStream *input, WPXE
 	_read(input, encryption);
 }
 
-void WP6ExtendedCharacterGroup::_readContents(WPXInputStream *input, WPXEncryption *encryption)
+void WP6ExtendedCharacterGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
 {
 	m_character = readU8(input, encryption);
 	m_characterSet = readU8(input, encryption);

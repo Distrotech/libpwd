@@ -28,14 +28,14 @@
 #include "WP6Listener.h"
 #include "libwpd_internal.h"
 
-WP6HeaderFooterGroup::WP6HeaderFooterGroup(WPXInputStream *input, WPXEncryption *encryption) :
+WP6HeaderFooterGroup::WP6HeaderFooterGroup(RVNGInputStream *input, WPXEncryption *encryption) :
 	WP6VariableLengthGroup(),
 	m_occurenceBits(0)
 {
 	_read(input, encryption);
 }
 
-void WP6HeaderFooterGroup::_readContents(WPXInputStream *input, WPXEncryption *encryption)
+void WP6HeaderFooterGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
 {
 	m_occurenceBits = readU8(input, encryption);
 }

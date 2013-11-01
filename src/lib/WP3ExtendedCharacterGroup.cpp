@@ -31,7 +31,7 @@
 #include "WP3Listener.h"
 #include "libwpd_internal.h"
 
-WP3ExtendedCharacterGroup::WP3ExtendedCharacterGroup(WPXInputStream *input, WPXEncryption *encryption, uint8_t groupID) :
+WP3ExtendedCharacterGroup::WP3ExtendedCharacterGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID) :
 	WP3FixedLengthGroup(groupID),
 	m_macCharacter(0),
 	m_characterSet(0),
@@ -40,7 +40,7 @@ WP3ExtendedCharacterGroup::WP3ExtendedCharacterGroup(WPXInputStream *input, WPXE
 	_read(input, encryption);
 }
 
-void WP3ExtendedCharacterGroup::_readContents(WPXInputStream *input, WPXEncryption *encryption)
+void WP3ExtendedCharacterGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
 {
 	m_macCharacter = readU8(input, encryption);
 	m_characterSet = readU8(input, encryption);

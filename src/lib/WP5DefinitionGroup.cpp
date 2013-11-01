@@ -27,7 +27,7 @@
 #include "WP5Listener.h"
 #include "libwpd_internal.h"
 
-WP5DefinitionGroup_DefineTablesSubGroup::WP5DefinitionGroup_DefineTablesSubGroup(WPXInputStream *input, WPXEncryption *encryption, uint16_t subGroupSize) :
+WP5DefinitionGroup_DefineTablesSubGroup::WP5DefinitionGroup_DefineTablesSubGroup(RVNGInputStream *input, WPXEncryption *encryption, uint16_t subGroupSize) :
 	WP5VariableLengthGroup_SubGroup(),
 	m_position(0),
 	m_numColumns(0),
@@ -37,19 +37,19 @@ WP5DefinitionGroup_DefineTablesSubGroup::WP5DefinitionGroup_DefineTablesSubGroup
 {
 	long startPosition = input->tell();
 	// Skip useless old values to read the old column number
-	input->seek(2, WPX_SEEK_CUR);
+	input->seek(2, RVNG_SEEK_CUR);
 	m_numColumns = readU16(input, encryption);
 	// Skip to new values
-	input->seek(20+(5*m_numColumns), WPX_SEEK_CUR);
+	input->seek(20+(5*m_numColumns), RVNG_SEEK_CUR);
 	// Read the new values
 	uint8_t tmpFlags = readU8(input, encryption);
 	m_position = tmpFlags & 0x07;
-	input->seek(1, WPX_SEEK_CUR);
+	input->seek(1, RVNG_SEEK_CUR);
 	m_numColumns = readU16(input, encryption);
-	input->seek(4, WPX_SEEK_CUR);
+	input->seek(4, RVNG_SEEK_CUR);
 	m_leftGutter = readU16(input, encryption);
 	m_rightGutter = readU16(input, encryption);
-	input->seek(10, WPX_SEEK_CUR);
+	input->seek(10, RVNG_SEEK_CUR);
 	m_leftOffset = readU16(input, encryption);
 	int i;
 	if ((m_numColumns > 32) || ((input->tell() - startPosition + m_numColumns*5) > (subGroupSize - 4)))
@@ -86,7 +86,7 @@ void WP5DefinitionGroup_DefineTablesSubGroup::parse(WP5Listener *listener)
 }
 
 
-WP5DefinitionGroup::WP5DefinitionGroup(WPXInputStream *input, WPXEncryption *encryption) :
+WP5DefinitionGroup::WP5DefinitionGroup(RVNGInputStream *input, WPXEncryption *encryption) :
 	WP5VariableLengthGroup(),
 	m_subGroupData(0)
 {
@@ -99,7 +99,7 @@ WP5DefinitionGroup::~WP5DefinitionGroup()
 		delete m_subGroupData;
 }
 
-void WP5DefinitionGroup::_readContents(WPXInputStream *input, WPXEncryption *encryption)
+void WP5DefinitionGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
 {
 	switch(getSubGroup())
 	{

@@ -84,10 +84,10 @@ public:
 	void endTable() {}
 	void undoChange(uint8_t undoType, uint16_t undoLevel);
 	void setTextColor(const RGBSColor * /* fontColor */) {}
-	void setTextFont(const WPXString & /* fontName */) {}
+	void setTextFont(const RVNGString & /* fontName */) {}
 	void setFontSize(uint16_t /* fontSize */) {}
-	void insertPageNumber(const WPXString & /* pageNumber */) {}
-	void insertNoteReference(const WPXString & /* noteReference */) {}
+	void insertPageNumber(const RVNGString & /* pageNumber */) {}
+	void insertNoteReference(const RVNGString & /* noteReference */) {}
 	void insertNote(WPXNoteType /* noteType */, const WP3SubDocument * /* subDocument */)
 	{
 		if (!isUndoOn()) m_currentPageHasContent = true;
@@ -103,7 +103,7 @@ public:
 	void leftRightIndent() {}
 	void leftRightIndent(double /* offset */) {}
 	void insertPicture(double /* height */, double /* width */, double /* verticalOffset */, double /* horizontalOffset */, uint8_t /* leftColumn */, uint8_t /* rightColumn */,
-	                   uint16_t /* figureFlags */, const WPXBinaryData & /* binaryData */) {}
+	                   uint16_t /* figureFlags */, const RVNGBinaryData & /* binaryData */) {}
 	void insertTextBox(double /* height */, double /* width */, double /* verticalOffset */, double /* horizontalOffset */, uint8_t /* leftColumn */, uint8_t /* rightColumn */,
 	                   uint16_t /* figureFlags */, const WP3SubDocument * /* subDocument */, const WP3SubDocument * /* caption */) {}
 	void insertWP51Table(double /* height */, double /* width */, double /* verticalOffset */, double /* horizontalOffset */, uint8_t /* leftColumn */, uint8_t /* rightColumn */,

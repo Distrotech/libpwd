@@ -27,6 +27,7 @@
 #ifndef WP3RESOURCE_H
 #define WP3RESOURCE_H
 
+#include <librevenge/librevenge.h>
 #include <libwpd/libwpd.h>
 #include "WPXParser.h"
 #include "libwpd_types.h"
@@ -37,8 +38,8 @@ class WP3SubDocument;
 class WP3Resource
 {
 public:
-	WP3Resource(uint32_t resourceType, uint32_t resourceReferenceID, const WPXString &resourceName,
-	            uint8_t resourceAttributes, const WPXBinaryData &resourceData);
+	WP3Resource(uint32_t resourceType, uint32_t resourceReferenceID, const RVNGString &resourceName,
+	            uint8_t resourceAttributes, const RVNGBinaryData &resourceData);
 	virtual ~WP3Resource() {}
 
 	uint32_t getResourceType() const
@@ -49,7 +50,7 @@ public:
 	{
 		return m_resourceReferenceID;
 	}
-	const WPXString &getResourceName() const
+	const RVNGString &getResourceName() const
 	{
 		return m_resourceName;
 	}
@@ -57,7 +58,7 @@ public:
 	{
 		return m_resourceAttributes;
 	}
-	const WPXBinaryData &getResourceData() const
+	const RVNGBinaryData &getResourceData() const
 	{
 		return m_resourceData;
 	}
@@ -65,9 +66,9 @@ public:
 private:
 	uint32_t m_resourceType;
 	uint32_t m_resourceReferenceID;
-	const WPXString m_resourceName;
+	const RVNGString m_resourceName;
 	uint8_t m_resourceAttributes;
-	WPXBinaryData m_resourceData;
+	RVNGBinaryData m_resourceData;
 };
 
 #endif /* WP3RESOURCE_H */

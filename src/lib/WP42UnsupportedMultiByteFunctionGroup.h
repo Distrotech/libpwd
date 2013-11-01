@@ -36,9 +36,9 @@
 class WP42UnsupportedMultiByteFunctionGroup : public WP42MultiByteFunctionGroup
 {
 public:
-	WP42UnsupportedMultiByteFunctionGroup(WPXInputStream *input, WPXEncryption *encryption, uint8_t group);
+	WP42UnsupportedMultiByteFunctionGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t group);
 
-	void _readContents(WPXInputStream *input, WPXEncryption *encryption);
+	void _readContents(RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP42Listener * /* listener */) {}
 };
 

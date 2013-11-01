@@ -31,9 +31,9 @@
 class WP42SuppressPageCharacteristicsGroup : public WP42MultiByteFunctionGroup
 {
 public:
-	WP42SuppressPageCharacteristicsGroup(WPXInputStream *input, WPXEncryption *encryption, uint8_t group);
+	WP42SuppressPageCharacteristicsGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t group);
 	~WP42SuppressPageCharacteristicsGroup();
-	void _readContents(WPXInputStream *input, WPXEncryption *encryption);
+	void _readContents(RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP42Listener *listener);
 
 private:

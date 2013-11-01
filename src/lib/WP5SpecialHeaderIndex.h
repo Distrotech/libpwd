@@ -26,14 +26,14 @@
 #ifndef WP5SPECIALHEADERINDEX_H
 #define WP5SPECIALHEADERINDEX_H
 
-#include <libwpd-stream/libwpd-stream.h>
+#include <librevenge-stream/librevenge-stream.h>
 #include "libwpd_types.h"
 #include "WPXEncryption.h"
 
 class WP5SpecialHeaderIndex
 {
 public:
-	WP5SpecialHeaderIndex(WPXInputStream *input, WPXEncryption *encryption);
+	WP5SpecialHeaderIndex(RVNGInputStream *input, WPXEncryption *encryption);
 	uint16_t getType() const
 	{
 		return m_type;
@@ -52,7 +52,7 @@ public:
 	}
 
 protected:
-	void _read(WPXInputStream *input, WPXEncryption *encryption);
+	void _read(RVNGInputStream *input, WPXEncryption *encryption);
 
 private:
 	uint16_t m_type;

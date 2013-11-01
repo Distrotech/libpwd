@@ -34,11 +34,11 @@
 class WP3DoubleByteScriptCharacterGroup : public WP3FixedLengthGroup
 {
 public:
-	WP3DoubleByteScriptCharacterGroup(WPXInputStream *input, WPXEncryption *encryption, uint8_t groupID);
+	WP3DoubleByteScriptCharacterGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID);
 	void parse(WP3Listener *listener);
 
 protected:
-	void _readContents(WPXInputStream *input, WPXEncryption *encryption);
+	void _readContents(RVNGInputStream *input, WPXEncryption *encryption);
 
 private:
 	uint16_t m_scriptCharacter;

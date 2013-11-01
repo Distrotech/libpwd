@@ -27,7 +27,7 @@
 #include "WP3Listener.h"
 #include "libwpd_internal.h"
 
-WP3EndOfLinePageGroup::WP3EndOfLinePageGroup(WPXInputStream *input, WPXEncryption *encryption) :
+WP3EndOfLinePageGroup::WP3EndOfLinePageGroup(RVNGInputStream *input, WPXEncryption *encryption) :
 	WP3VariableLengthGroup()
 {
 	_read(input, encryption);

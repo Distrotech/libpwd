@@ -35,9 +35,9 @@
 class WP3PageFormatGroup : public WP3VariableLengthGroup
 {
 public:
-	WP3PageFormatGroup(WPXInputStream *input, WPXEncryption *encryption);
+	WP3PageFormatGroup(RVNGInputStream *input, WPXEncryption *encryption);
 	~WP3PageFormatGroup();
-	void _readContents(WPXInputStream *input, WPXEncryption *encryption);
+	void _readContents(RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP3Listener *listener);
 
 private:

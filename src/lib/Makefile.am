@@ -14,37 +14,17 @@ else
 version_info = -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE)
 endif
 
-if DEF_FILES
-export_symbols_libwpd = -export-symbols libwpd-@WPD_MAJOR_VERSION@.@WPD_MINOR_VERSION@.def
-export_symbols_libwpd_stream = -export-symbols libwpd-stream-@WPD_MAJOR_VERSION@.@WPD_MINOR_VERSION@.def
-else
-export_symbols_libwpd =
-export_symbols_libwpd_stream =
-endif
-
-if WITH_LIBWPD_STREAM
-target_libwpd_stream = libwpd-stream-@WPD_MAJOR_VERSION@.@WPD_MINOR_VERSION@.la
-else
-target_libwpd_stream =
-endif
-
 lib_LTLIBRARIES = libwpd-@WPD_MAJOR_VERSION@.@WPD_MINOR_VERSION@.la $(target_libwpd_stream)
 libwpd_@WPD_MAJOR_VERSION@_@WPD_MINOR_VERSION@_includedir = $(includedir)/libwpd-@WPD_MAJOR_VERSION@.@WPD_MINOR_VERSION@/libwpd
 libwpd_@WPD_MAJOR_VERSION@_@WPD_MINOR_VERSION@_include_HEADERS = \
 	$(top_srcdir)/inc/libwpd/libwpd.h \
-	$(top_srcdir)/inc/libwpd/WPDocument.h \
-	$(top_srcdir)/inc/libwpd/WPXBinaryData.h \
-	$(top_srcdir)/inc/libwpd/WPXDocumentInterface.h \
-	$(top_srcdir)/inc/libwpd/WPXProperty.h \
-	$(top_srcdir)/inc/libwpd/WPXPropertyList.h \
-	$(top_srcdir)/inc/libwpd/WPXPropertyListVector.h \
-	$(top_srcdir)/inc/libwpd/WPXString.h
+	$(top_srcdir)/inc/libwpd/WPDocument.h
 
-AM_CXXFLAGS = -I$(top_srcdir)/inc $(DEBUG_CXXFLAGS)
+AM_CXXFLAGS = -I$(top_srcdir)/inc $(REVENGE_CFLAGS) $(DEBUG_CXXFLAGS)
 
 libwpd_@WPD_MAJOR_VERSION@_@WPD_MINOR_VERSION@_la_LIBADD  = @LIBWPD_WIN32_RESOURCE@
 libwpd_@WPD_MAJOR_VERSION@_@WPD_MINOR_VERSION@_la_DEPENDENCIES = @LIBWPD_WIN32_RESOURCE@
-libwpd_@WPD_MAJOR_VERSION@_@WPD_MINOR_VERSION@_la_LDFLAGS = $(version_info) -export-dynamic $(no_undefined) $(export_symbols_libwpd)
+libwpd_@WPD_MAJOR_VERSION@_@WPD_MINOR_VERSION@_la_LDFLAGS = $(version_info) -export-dynamic $(no_undefined)
 libwpd_@WPD_MAJOR_VERSION@_@WPD_MINOR_VERSION@_la_SOURCES = \
 	libwpd_internal.cpp \
 	libwpd_math.cpp \
@@ -203,7 +183,6 @@ libwpd_@WPD_MAJOR_VERSION@_@WPD_MINOR_VERSION@_la_SOURCES = \
 	WP6UnsupportedVariableLengthGroup.cpp \
 	WP6VariableLengthGroup.cpp \
 	WPDocument.cpp \
-	WPXBinaryData.cpp \
 	WPXContentListener.cpp \
 	WPXEncryption.cpp \
 	WPXHeader.cpp \
@@ -211,10 +190,6 @@ libwpd_@WPD_MAJOR_VERSION@_@WPD_MINOR_VERSION@_la_SOURCES = \
 	WPXMemoryStream.cpp \
 	WPXPageSpan.cpp \
 	WPXParser.cpp \
-	WPXProperty.cpp \
-	WPXPropertyList.cpp \
-	WPXPropertyListVector.cpp \
-	WPXString.cpp \
 	WPXStylesListener.cpp \
 	WPXSubDocument.cpp \
 	WPXTable.cpp \
@@ -388,53 +363,20 @@ libwpd_@WPD_MAJOR_VERSION@_@WPD_MINOR_VERSION@_la_SOURCES = \
 	WPXSubDocument.h \
 	WPXTable.h
 
-libwpd_stream_headers = \
-	$(top_srcdir)/inc/libwpd-stream/libwpd-stream.h \
-	$(top_srcdir)/inc/libwpd-stream/WPXStream.h \
-	$(top_srcdir)/inc/libwpd-stream/WPXStreamImplementation.h
-
-libwpd_stream_sources = \
-	WPXStreamImplementation.cpp \
-	WPXOLEStream.cpp \
-	WPXZipStream.cpp \
-	WPXOLEStream.h \
-	WPXZipStream.h
-
-if WITH_LIBWPD_STREAM
-
-libwpd_stream_@WPD_MAJOR_VERSION@_@WPD_MINOR_VERSION@_includedir = $(includedir)/libwpd-@WPD_MAJOR_VERSION@.@WPD_MINOR_VERSION@/libwpd-stream
-libwpd_stream_@WPD_MAJOR_VERSION@_@WPD_MINOR_VERSION@_include_HEADERS = $(libwpd_stream_headers)
-
-libwpd_stream_@WPD_MAJOR_VERSION@_@WPD_MINOR_VERSION@_la_LIBADD  = $(ZLIB_LIBS) @LIBWPD_STREAM_WIN32_RESOURCE@
-libwpd_stream_@WPD_MAJOR_VERSION@_@WPD_MINOR_VERSION@_la_DEPENDENCIES = @LIBWPD_STREAM_WIN32_RESOURCE@
-libwpd_stream_@WPD_MAJOR_VERSION@_@WPD_MINOR_VERSION@_la_LDFLAGS = $(version_info) -export-dynamic $(no_undefined) $(export_symbols_libwpd_stream)
-libwpd_stream_@WPD_MAJOR_VERSION@_@WPD_MINOR_VERSION@_la_SOURCES = $(libwpd_stream_sources)
-
-endif
-
 if OS_WIN32
 
 @LIBWPD_WIN32_RESOURCE@ : libwpd.rc $(libwpd_@WPD_MAJOR_VERSION@_@WPD_MINOR_VERSION@_la_OBJECTS)
 	chmod +x $(top_srcdir)/build/win32/*compile-resource
 	WINDRES=@WINDRES@ $(top_srcdir)/build/win32/lt-compile-resource libwpd.rc @LIBWPD_WIN32_RESOURCE@
 
-@LIBWPD_STREAM_WIN32_RESOURCE@ : libwpd-stream.rc $(libwpd_stream_@WPD_MAJOR_VERSION@_@WPD_MINOR_VERSION@_la_OBJECTS)
+@LIBWPD_STREAM_WIN32_RESOURCE@ : librevenge-stream.rc $(libwpd_stream_@WPD_MAJOR_VERSION@_@WPD_MINOR_VERSION@_la_OBJECTS)
 	chmod +x $(top_srcdir)/build/win32/*compile-resource && \
-	WINDRES=@WINDRES@ $(top_srcdir)/build/win32/lt-compile-resource libwpd-stream.rc @LIBWPD_STREAM_WIN32_RESOURCE@
+	WINDRES=@WINDRES@ $(top_srcdir)/build/win32/lt-compile-resource librevenge-stream.rc @LIBWPD_STREAM_WIN32_RESOURCE@
 endif
 
-
-# Include the GSFStream.* in case we build a tarball without stream
 EXTRA_DIST = \
-	$(libwpd_stream_sources) \
-	$(libwpd_stream_headers) \
-	makefile.mk \
-	libwpd-@WPD_MAJOR_VERSION@.@WPD_MINOR_VERSION@.def \
-	libwpd.rc.in \
-	libwpd-stream-@WPD_MAJOR_VERSION@.@WPD_MINOR_VERSION@.def \
-	libwpd-stream.rc.in
+	libwpd.rc.in
 
 # These may be in the builddir too
 BUILD_EXTRA_DIST = \
-	libwpd.rc \
-	libwpd-stream.rc
+	libwpd.rc

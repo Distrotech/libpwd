@@ -32,7 +32,7 @@
 #include "WP1StylesListener.h"
 #include "WP1ContentListener.h"
 
-WP1Parser::WP1Parser(WPXInputStream *input, WPXEncryption *encryption) :
+WP1Parser::WP1Parser(RVNGInputStream *input, WPXEncryption *encryption) :
 	WPXParser(input, 0, encryption)
 {
 }
@@ -41,14 +41,14 @@ WP1Parser::~WP1Parser()
 {
 }
 
-void WP1Parser::parse(WPXInputStream *input, WPXEncryption *encryption, WP1Listener *listener)
+void WP1Parser::parse(RVNGInputStream *input, WPXEncryption *encryption, WP1Listener *listener)
 {
 	listener->startDocument();
 
 	if (encryption)
-		input->seek(6, WPX_SEEK_SET);
+		input->seek(6, RVNG_SEEK_SET);
 	else
-		input->seek(0, WPX_SEEK_SET);
+		input->seek(0, RVNG_SEEK_SET);
 
 	WPD_DEBUG_MSG(("WordPerfect: Starting document body parse (position = %ld)\n",(long)input->tell()));
 
@@ -58,7 +58,7 @@ void WP1Parser::parse(WPXInputStream *input, WPXEncryption *encryption, WP1Liste
 }
 
 // parseDocument: parses a document body (may call itself recursively, on other streams, or itself)
-void WP1Parser::parseDocument(WPXInputStream *input, WPXEncryption *encryption, WP1Listener *listener)
+void WP1Parser::parseDocument(RVNGInputStream *input, WPXEncryption *encryption, WP1Listener *listener)
 {
 	while (!input->atEOS())
 	{
@@ -185,9 +185,9 @@ void WP1Parser::parseDocument(WPXInputStream *input, WPXEncryption *encryption, 
 	}
 }
 
-void WP1Parser::parse(WPXDocumentInterface *documentInterface)
+void WP1Parser::parse(RVNGTextInterface *documentInterface)
 {
-	WPXInputStream *input = getInput();
+	RVNGInputStream *input = getInput();
 	WPXEncryption *encryption = getEncryption();
 	std::list<WPXPageSpan> pageList;
 	std::vector<WP1SubDocument *> subDocuments;
@@ -242,12 +242,12 @@ void WP1Parser::parse(WPXDocumentInterface *documentInterface)
 
 }
 
-void WP1Parser::parseSubDocument(WPXDocumentInterface *documentInterface)
+void WP1Parser::parseSubDocument(RVNGTextInterface *documentInterface)
 {
 	std::list<WPXPageSpan> pageList;
 	std::vector<WP1SubDocument *> subDocuments;
 
-	WPXInputStream *input = getInput();
+	RVNGInputStream *input = getInput();
 
 	try
 	{
@@ -256,7 +256,7 @@ void WP1Parser::parseSubDocument(WPXDocumentInterface *documentInterface)
 		parseDocument(input, 0, &stylesListener);
 		stylesListener.endSubDocument();
 
-		input->seek(0, WPX_SEEK_SET);
+		input->seek(0, RVNG_SEEK_SET);
 
 		WP1ContentListener listener(pageList, subDocuments, documentInterface);
 		listener.startSubDocument();

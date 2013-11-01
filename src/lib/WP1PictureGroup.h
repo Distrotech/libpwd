@@ -34,15 +34,15 @@ class WP1SubDocument;
 class WP1PictureGroup : public WP1VariableLengthGroup
 {
 public:
-	WP1PictureGroup(WPXInputStream *input, WPXEncryption *encryption, uint8_t group);
+	WP1PictureGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t group);
 	~WP1PictureGroup();
-	void _readContents(WPXInputStream *input, WPXEncryption *encryption);
+	void _readContents(RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP1Listener *listener);
 
 private:
 	WP1PictureGroup(const WP1PictureGroup &);
 	WP1PictureGroup &operator=(const WP1PictureGroup &);
-	WPXBinaryData m_binaryData;
+	RVNGBinaryData m_binaryData;
 	uint16_t m_width, m_height;
 };
 

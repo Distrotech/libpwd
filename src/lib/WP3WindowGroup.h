@@ -31,15 +31,15 @@
 #include "libwpd_types.h"
 #include <vector>
 
-class WPXInputStream;
+class RVNGInputStream;
 class WP3Listener;
 
 class WP3WindowGroup : public WP3VariableLengthGroup
 {
 public:
-	WP3WindowGroup(WPXInputStream *input, WPXEncryption *encryption);
+	WP3WindowGroup(RVNGInputStream *input, WPXEncryption *encryption);
 	~WP3WindowGroup();
-	void _readContents(WPXInputStream *input, WPXEncryption *encryption);
+	void _readContents(RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP3Listener *listener);
 
 private:

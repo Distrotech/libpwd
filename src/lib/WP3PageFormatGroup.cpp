@@ -32,7 +32,7 @@
 #include "libwpd_math.h"
 #include "WP3Listener.h"
 
-WP3PageFormatGroup::WP3PageFormatGroup(WPXInputStream *input, WPXEncryption *encryption) :
+WP3PageFormatGroup::WP3PageFormatGroup(RVNGInputStream *input, WPXEncryption *encryption) :
 	WP3VariableLengthGroup(),
 	m_leftMargin(0),
 	m_rightMargin(0),
@@ -52,7 +52,7 @@ WP3PageFormatGroup::~WP3PageFormatGroup()
 {
 }
 
-void WP3PageFormatGroup::_readContents(WPXInputStream *input, WPXEncryption *encryption)
+void WP3PageFormatGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
 {
 	// this group can contain different kinds of data, thus we need to read
 	// the contents accordingly
@@ -65,7 +65,7 @@ void WP3PageFormatGroup::_readContents(WPXInputStream *input, WPXEncryption *enc
 	{
 	case WP3_PAGE_FORMAT_GROUP_HORIZONTAL_MARGINS:
 		// skip 8 bytes (old values of no interest for us)
-		input->seek(8, WPX_SEEK_CUR);
+		input->seek(8, RVNG_SEEK_CUR);
 		m_leftMargin = readU32(input, encryption, true);
 		m_rightMargin = readU32(input, encryption, true);
 		WPD_DEBUG_MSG(("WordPerfect: Page format group horizontal margins\n"));
@@ -73,7 +73,7 @@ void WP3PageFormatGroup::_readContents(WPXInputStream *input, WPXEncryption *enc
 
 	case WP3_PAGE_FORMAT_GROUP_LINE_SPACING:
 		// skip 4 bytes (old spacing of no interest for us)
-		input->seek(4, WPX_SEEK_CUR);
+		input->seek(4, RVNG_SEEK_CUR);
 		{
 			uint32_t lineSpacing = readU32(input, encryption, true);
 			int16_t lineSpacingIntegerPart = (int16_t)((lineSpacing & 0xFFFF0000) >> 16);
@@ -89,7 +89,7 @@ void WP3PageFormatGroup::_readContents(WPXInputStream *input, WPXEncryption *enc
 		if (0xFF != readU8(input, encryption))
 		{
 			while (readU8(input, encryption) != 0xFF)
-				input->seek(4, WPX_SEEK_CUR);
+				input->seek(4, RVNG_SEEK_CUR);
 		}
 
 		m_isRelative = (readU8(input, encryption) & 0x01);
@@ -170,7 +170,7 @@ void WP3PageFormatGroup::_readContents(WPXInputStream *input, WPXEncryption *enc
 
 	case WP3_PAGE_FORMAT_GROUP_VERTICAL_MARGINS:
 		// skip 8 bytes (old values of no interest for us)
-		input->seek(8, WPX_SEEK_CUR);
+		input->seek(8, RVNG_SEEK_CUR);
 		m_topMargin = readU32(input, encryption, true);
 		m_bottomMargin = readU32(input, encryption, true);
 		WPD_DEBUG_MSG(("WordPerfect: Page format group vertical margins\n"));
@@ -178,19 +178,19 @@ void WP3PageFormatGroup::_readContents(WPXInputStream *input, WPXEncryption *enc
 
 	case WP3_PAGE_FORMAT_GROUP_JUSTIFICATION_MODE:
 		// skip 1 byte (old justifcation value of no interest for us)
-		input->seek(1, WPX_SEEK_CUR);
+		input->seek(1, RVNG_SEEK_CUR);
 		m_justification = readU8(input, encryption);
 		break;
 
 	case WP3_PAGE_FORMAT_GROUP_SUPPRESS_PAGE:
 		// skip 2 bytes (old suppress code)
-		input->seek(2, WPX_SEEK_CUR);
+		input->seek(2, RVNG_SEEK_CUR);
 		m_suppressCode = readU16(input, encryption, true);
 		break;
 
 	case WP3_PAGE_FORMAT_GROUP_INDENT_AT_BEGINNING_OF_PARAGRAPH:
 		// skip 4 bytes (old indent indent value of no interest for us)
-		input->seek(4, WPX_SEEK_CUR);
+		input->seek(4, RVNG_SEEK_CUR);
 		m_indent = readU32(input, encryption, true);
 		break;
 

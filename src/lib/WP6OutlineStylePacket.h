@@ -33,9 +33,9 @@
 class WP6OutlineStylePacket : public WP6PrefixDataPacket
 {
 public:
-	WP6OutlineStylePacket(WPXInputStream *input, WPXEncryption *encryption, int id, uint32_t dataOffset, uint32_t dataSize);
+	WP6OutlineStylePacket(RVNGInputStream *input, WPXEncryption *encryption, int id, uint32_t dataOffset, uint32_t dataSize);
 	~WP6OutlineStylePacket();
-	void _readContents(WPXInputStream *input, WPXEncryption *encryption);
+	void _readContents(RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP6Listener *listener) const;
 
 private:

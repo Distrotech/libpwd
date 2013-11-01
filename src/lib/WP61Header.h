@@ -31,7 +31,7 @@
 class WP61Header : public WP6Header
 {
 public:
-	WP61Header(WPXInputStream *input, WPXEncryption *encryption, uint32_t documentOffset, uint8_t productType,
+	WP61Header(RVNGInputStream *input, WPXEncryption *encryption, uint32_t documentOffset, uint8_t productType,
 	           uint8_t fileType, uint8_t majorVersion, uint8_t minorVersion, uint16_t documentEncryption);
 	~WP61Header();
 

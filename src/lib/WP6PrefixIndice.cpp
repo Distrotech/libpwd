@@ -28,7 +28,7 @@
 #include "WP6FileStructure.h"
 #include "libwpd_internal.h"
 
-WP6PrefixIndice::WP6PrefixIndice(WPXInputStream *input, WPXEncryption *encryption, int id)
+WP6PrefixIndice::WP6PrefixIndice(RVNGInputStream *input, WPXEncryption *encryption, int id)
 	: m_id(id),
 	  m_type(0),
 	  m_flags(0),
@@ -41,7 +41,7 @@ WP6PrefixIndice::WP6PrefixIndice(WPXInputStream *input, WPXEncryption *encryptio
 	_read(input, encryption);
 }
 
-void WP6PrefixIndice::_read(WPXInputStream *input, WPXEncryption *encryption)
+void WP6PrefixIndice::_read(RVNGInputStream *input, WPXEncryption *encryption)
 {
 	m_flags = readU8(input, encryption);
 	m_type = readU8(input, encryption);

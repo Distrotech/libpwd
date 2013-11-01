@@ -43,13 +43,13 @@ public:
 	WP6VariableLengthGroup(); // WP6VariableLengthGroup should _never_ be constructed, only its inherited classes
 	virtual ~WP6VariableLengthGroup();
 
-	static WP6VariableLengthGroup *constructVariableLengthGroup(WPXInputStream *input, WPXEncryption *encryption, const uint8_t groupID);
+	static WP6VariableLengthGroup *constructVariableLengthGroup(RVNGInputStream *input, WPXEncryption *encryption, const uint8_t groupID);
 
-	static bool isGroupConsistent(WPXInputStream *input, WPXEncryption *encryption, const uint8_t groupID);
+	static bool isGroupConsistent(RVNGInputStream *input, WPXEncryption *encryption, const uint8_t groupID);
 
 protected:
-	void _read(WPXInputStream *input, WPXEncryption *encryption);
-	virtual void _readContents(WPXInputStream * /* input */, WPXEncryption * /* encryption */) {} // we don't always need more information than that provided generically
+	void _read(RVNGInputStream *input, WPXEncryption *encryption);
+	virtual void _readContents(RVNGInputStream * /* input */, WPXEncryption * /* encryption */) {} // we don't always need more information than that provided generically
 
 	uint8_t getSubGroup() const
 	{

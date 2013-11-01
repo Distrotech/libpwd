@@ -43,7 +43,7 @@ WP5VariableLengthGroup::WP5VariableLengthGroup() :
 {
 }
 
-WP5VariableLengthGroup *WP5VariableLengthGroup::constructVariableLengthGroup(WPXInputStream *input, WPXEncryption *encryption, const uint8_t group)
+WP5VariableLengthGroup *WP5VariableLengthGroup::constructVariableLengthGroup(RVNGInputStream *input, WPXEncryption *encryption, const uint8_t group)
 {
 	WPD_DEBUG_MSG(("WordPerfect: handling a variable length group Ox%x\n", group));
 	switch (group)
@@ -70,7 +70,7 @@ WP5VariableLengthGroup *WP5VariableLengthGroup::constructVariableLengthGroup(WPX
 	}
 }
 
-bool WP5VariableLengthGroup::isGroupConsistent(WPXInputStream *input, WPXEncryption *encryption, const uint8_t group)
+bool WP5VariableLengthGroup::isGroupConsistent(RVNGInputStream *input, WPXEncryption *encryption, const uint8_t group)
 {
 	long startPosition = input->tell();
 
@@ -79,38 +79,38 @@ bool WP5VariableLengthGroup::isGroupConsistent(WPXInputStream *input, WPXEncrypt
 		uint8_t subGroup = readU8(input, encryption);
 		uint16_t size = readU16(input, encryption);
 
-		if (input->seek((startPosition + size - 1), WPX_SEEK_SET) || input->atEOS())
+		if (input->seek((startPosition + size - 1), RVNG_SEEK_SET) || input->atEOS())
 		{
-			input->seek(startPosition, WPX_SEEK_SET);
+			input->seek(startPosition, RVNG_SEEK_SET);
 			return false;
 		}
 		if (size != readU16(input, encryption))
 		{
-			input->seek(startPosition, WPX_SEEK_SET);
+			input->seek(startPosition, RVNG_SEEK_SET);
 			return false;
 		}
 		if (subGroup != readU8(input, encryption))
 		{
-			input->seek(startPosition, WPX_SEEK_SET);
+			input->seek(startPosition, RVNG_SEEK_SET);
 			return false;
 		}
 		if (group != readU8(input, encryption))
 		{
-			input->seek(startPosition, WPX_SEEK_SET);
+			input->seek(startPosition, RVNG_SEEK_SET);
 			return false;
 		}
 
-		input->seek(startPosition, WPX_SEEK_SET);
+		input->seek(startPosition, RVNG_SEEK_SET);
 		return true;
 	}
 	catch(...)
 	{
-		input->seek(startPosition, WPX_SEEK_SET);
+		input->seek(startPosition, RVNG_SEEK_SET);
 		return false;
 	}
 }
 
-void WP5VariableLengthGroup::_read(WPXInputStream *input, WPXEncryption *encryption)
+void WP5VariableLengthGroup::_read(RVNGInputStream *input, WPXEncryption *encryption)
 {
 	long startPosition = input->tell();
 
@@ -121,7 +121,7 @@ void WP5VariableLengthGroup::_read(WPXInputStream *input, WPXEncryption *encrypt
 
 	_readContents(input, encryption);
 
-	input->seek((startPosition + m_size - 5), WPX_SEEK_SET);
+	input->seek((startPosition + m_size - 5), RVNG_SEEK_SET);
 
 	if (m_size != (readU16(input, encryption) + 4))
 	{
@@ -134,6 +134,6 @@ void WP5VariableLengthGroup::_read(WPXInputStream *input, WPXEncryption *encrypt
 		throw FileException();
 	}
 
-	input->seek((startPosition + m_size - 1), WPX_SEEK_SET);
+	input->seek((startPosition + m_size - 1), RVNG_SEEK_SET);
 }
 /* vim:set shiftwidth=4 softtabstop=4 noexpandtab: */

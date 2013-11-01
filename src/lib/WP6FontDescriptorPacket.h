@@ -27,22 +27,23 @@
 #ifndef WP6FONTDESCRIPTORPACKET_H
 #define WP6FONTDESCRIPTORPACKET_H
 
+#include <librevenge/librevenge.h>
 #include <libwpd/libwpd.h>
 #include "WP6PrefixDataPacket.h"
 
 class WP6FontDescriptorPacket : public WP6PrefixDataPacket
 {
 public:
-	WP6FontDescriptorPacket(WPXInputStream *input, WPXEncryption *encryption, int id, uint32_t dataOffset, uint32_t dataSize);
+	WP6FontDescriptorPacket(RVNGInputStream *input, WPXEncryption *encryption, int id, uint32_t dataOffset, uint32_t dataSize);
 	~WP6FontDescriptorPacket();
-	void _readContents(WPXInputStream *input, WPXEncryption *encryption);
-	const WPXString &getFontName() const
+	void _readContents(RVNGInputStream *input, WPXEncryption *encryption);
+	const RVNGString &getFontName() const
 	{
 		return m_fontName;
 	}
 
 private:
-	void _readFontName(WPXInputStream *input, WPXEncryption *encryption);
+	void _readFontName(RVNGInputStream *input, WPXEncryption *encryption);
 
 	WP6FontDescriptorPacket(const WP6FontDescriptorPacket &);
 	WP6FontDescriptorPacket &operator=(const WP6FontDescriptorPacket &);
@@ -67,7 +68,7 @@ private:
 
 	uint16_t m_fontNameLength;
 
-	WPXString m_fontName;
+	RVNGString m_fontName;
 };
 #endif
 /* vim:set shiftwidth=4 softtabstop=4 noexpandtab: */

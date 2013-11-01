@@ -34,7 +34,7 @@
 #include "WP42StylesListener.h"
 #include "WP42ContentListener.h"
 
-WP42Parser::WP42Parser(WPXInputStream *input, WPXEncryption *encryption) :
+WP42Parser::WP42Parser(RVNGInputStream *input, WPXEncryption *encryption) :
 	WPXParser(input, 0, encryption)
 {
 }
@@ -43,11 +43,11 @@ WP42Parser::~WP42Parser()
 {
 }
 
-void WP42Parser::parse(WPXInputStream *input, WPXEncryption *encryption, WP42Listener *listener)
+void WP42Parser::parse(RVNGInputStream *input, WPXEncryption *encryption, WP42Listener *listener)
 {
 	listener->startDocument();
 
-	input->seek(0, WPX_SEEK_SET);
+	input->seek(0, RVNG_SEEK_SET);
 
 	WPD_DEBUG_MSG(("WordPerfect: Starting document body parse (position = %ld)\n",(long)input->tell()));
 
@@ -57,7 +57,7 @@ void WP42Parser::parse(WPXInputStream *input, WPXEncryption *encryption, WP42Lis
 }
 
 // parseDocument: parses a document body (may call itself recursively, on other streams, or itself)
-void WP42Parser::parseDocument(WPXInputStream *input, WPXEncryption *encryption, WP42Listener *listener)
+void WP42Parser::parseDocument(RVNGInputStream *input, WPXEncryption *encryption, WP42Listener *listener)
 {
 	while (!input->atEOS())
 	{
@@ -163,9 +163,9 @@ void WP42Parser::parseDocument(WPXInputStream *input, WPXEncryption *encryption,
 	}
 }
 
-void WP42Parser::parse(WPXDocumentInterface *documentInterface)
+void WP42Parser::parse(RVNGTextInterface *documentInterface)
 {
-	WPXInputStream *input = getInput();
+	RVNGInputStream *input = getInput();
 	WPXEncryption *encryption = getEncryption();
 	std::list<WPXPageSpan> pageList;
 	std::vector<WP42SubDocument *> subDocuments;
@@ -220,12 +220,12 @@ void WP42Parser::parse(WPXDocumentInterface *documentInterface)
 
 }
 
-void WP42Parser::parseSubDocument(WPXDocumentInterface *documentInterface)
+void WP42Parser::parseSubDocument(RVNGTextInterface *documentInterface)
 {
 	std::list<WPXPageSpan> pageList;
 	std::vector<WP42SubDocument *> subDocuments;
 
-	WPXInputStream *input = getInput();
+	RVNGInputStream *input = getInput();
 
 	try
 	{

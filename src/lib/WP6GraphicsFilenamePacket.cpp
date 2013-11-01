@@ -29,7 +29,7 @@
 #include "WP6Parser.h"
 #include "libwpd_internal.h"
 
-WP6GraphicsFilenamePacket::WP6GraphicsFilenamePacket(WPXInputStream *input, WPXEncryption *encryption, int /* id */, const uint8_t flags, uint32_t dataOffset, uint32_t dataSize):
+WP6GraphicsFilenamePacket::WP6GraphicsFilenamePacket(RVNGInputStream *input, WPXEncryption *encryption, int /* id */, const uint8_t flags, uint32_t dataOffset, uint32_t dataSize):
 	WP6PrefixDataPacket(input, encryption),
 	m_childIds(),
 	m_flags(flags)
@@ -41,7 +41,7 @@ WP6GraphicsFilenamePacket::~WP6GraphicsFilenamePacket()
 {
 }
 
-void WP6GraphicsFilenamePacket::_readContents(WPXInputStream *input, WPXEncryption *encryption)
+void WP6GraphicsFilenamePacket::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
 {
 	if ((m_flags & 0x01) == 0x00)
 		return;

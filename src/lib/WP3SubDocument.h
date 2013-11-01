@@ -33,7 +33,7 @@
 class WP3SubDocument : public WPXSubDocument
 {
 public:
-	WP3SubDocument(WPXInputStream *input, WPXEncryption *encryption, const unsigned dataSize);
+	WP3SubDocument(RVNGInputStream *input, WPXEncryption *encryption, const unsigned dataSize);
 	void parse(WP3Listener *listener) const;
 
 };

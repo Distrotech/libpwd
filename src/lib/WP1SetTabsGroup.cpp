@@ -27,7 +27,7 @@
 #include "libwpd_internal.h"
 #include <vector>
 
-WP1SetTabsGroup::WP1SetTabsGroup(WPXInputStream *input, WPXEncryption *encryption, uint8_t group) :
+WP1SetTabsGroup::WP1SetTabsGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t group) :
 	WP1VariableLengthGroup(group),
 	m_tabStops(std::vector<WPXTabStop>())
 {
@@ -38,11 +38,11 @@ WP1SetTabsGroup::~WP1SetTabsGroup()
 {
 }
 
-void WP1SetTabsGroup::_readContents(WPXInputStream *input, WPXEncryption *encryption)
+void WP1SetTabsGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
 {
 	// Skip first the old condensed tab table
 	while (readU8(input, encryption) != 0xff && !input->atEOS())
-		input->seek(2, WPX_SEEK_CUR);
+		input->seek(2, RVNG_SEEK_CUR);
 
 	// Now read the new condensed tab table
 	int8_t tmpTabType = 0;

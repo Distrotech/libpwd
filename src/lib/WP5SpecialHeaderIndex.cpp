@@ -26,7 +26,7 @@
 #include "WP5SpecialHeaderIndex.h"
 #include "libwpd_internal.h"
 
-WP5SpecialHeaderIndex::WP5SpecialHeaderIndex(WPXInputStream *input, WPXEncryption *encryption) :
+WP5SpecialHeaderIndex::WP5SpecialHeaderIndex(RVNGInputStream *input, WPXEncryption *encryption) :
 	m_type(0),
 	m_numOfIndexes(0),
 	m_indexBlockSize(0),
@@ -35,7 +35,7 @@ WP5SpecialHeaderIndex::WP5SpecialHeaderIndex(WPXInputStream *input, WPXEncryptio
 	_read(input, encryption);
 }
 
-void WP5SpecialHeaderIndex::_read(WPXInputStream *input, WPXEncryption *encryption)
+void WP5SpecialHeaderIndex::_read(RVNGInputStream *input, WPXEncryption *encryption)
 {
 	m_type = readU16(input, encryption);
 

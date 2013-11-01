@@ -27,7 +27,7 @@
 #include "WP3Parser.h"
 #include "libwpd_internal.h"
 
-WP3SubDocument::WP3SubDocument(WPXInputStream *input, WPXEncryption *encryption, const unsigned dataSize) :
+WP3SubDocument::WP3SubDocument(RVNGInputStream *input, WPXEncryption *encryption, const unsigned dataSize) :
 	WPXSubDocument(input, encryption, dataSize)
 {
 }
@@ -37,7 +37,7 @@ void WP3SubDocument::parse(WP3Listener *listener) const
 	WPXMemoryInputStream *tmpStream = getStream();
 	if (!tmpStream)
 		return;
-	tmpStream->seek(0, WPX_SEEK_SET);
+	tmpStream->seek(0, RVNG_SEEK_SET);
 	WP3Parser::parseDocument(tmpStream, 0, listener);
 }
 /* vim:set shiftwidth=4 softtabstop=4 noexpandtab: */

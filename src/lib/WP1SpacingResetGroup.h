@@ -31,9 +31,9 @@
 class WP1SpacingResetGroup : public WP1FixedLengthGroup
 {
 public:
-	WP1SpacingResetGroup(WPXInputStream *input, WPXEncryption *encryption, uint8_t group);
+	WP1SpacingResetGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t group);
 	~WP1SpacingResetGroup();
-	void _readContents(WPXInputStream *input, WPXEncryption *encryption);
+	void _readContents(RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP1Listener *listener);
 
 private:

@@ -23,7 +23,7 @@
 #include <stdio.h>
 #include "HtmlDocumentGenerator.h"
 #include <libwpd/libwpd.h>
-#include <libwpd-stream/libwpd-stream.h>
+#include <librevenge-stream/librevenge-stream.h>
 #include <string.h>
 
 #ifdef HAVE_CONFIG_H
@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
 	if (!file)
 		return printUsage();
 
-	WPXFileStream input(file);
+	RVNGFileStream input(file);
 
 	WPDConfidence confidence = WPDocument::isFileFormatSupported(&input);
 	if (confidence != WPD_CONFIDENCE_EXCELLENT && confidence != WPD_CONFIDENCE_SUPPORTED_ENCRYPTION)

@@ -33,11 +33,11 @@
 class WP3UndoGroup : public WP3FixedLengthGroup
 {
 public:
-	WP3UndoGroup(WPXInputStream *input, WPXEncryption *encryption, uint8_t groupID);
+	WP3UndoGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID);
 	void parse(WP3Listener *listener);
 
 protected:
-	void _readContents(WPXInputStream *input, WPXEncryption *encryption);
+	void _readContents(RVNGInputStream *input, WPXEncryption *encryption);
 
 private:
 	uint8_t m_undoType;

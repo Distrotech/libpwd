@@ -29,14 +29,14 @@
 #include "WP6Listener.h"
 #include "libwpd_internal.h"
 
-WP6HighlightGroup::WP6HighlightGroup(WPXInputStream *input, WPXEncryption *encryption, uint8_t groupID) :
+WP6HighlightGroup::WP6HighlightGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID) :
 	WP6FixedLengthGroup(groupID),
 	m_color()
 {
 	_read(input, encryption);
 }
 
-void WP6HighlightGroup::_readContents(WPXInputStream *input, WPXEncryption *encryption)
+void WP6HighlightGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
 {
 	m_color.m_r = readU8(input, encryption);
 	m_color.m_g = readU8(input, encryption);
@@ -44,7 +44,7 @@ void WP6HighlightGroup::_readContents(WPXInputStream *input, WPXEncryption *encr
 	m_color.m_s = readU8(input, encryption);
 }
 
-WP6HighlightOnGroup::WP6HighlightOnGroup(WPXInputStream *input, WPXEncryption *encryption, uint8_t groupID) :
+WP6HighlightOnGroup::WP6HighlightOnGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID) :
 	WP6HighlightGroup(input, encryption, groupID)
 {
 }
@@ -54,7 +54,7 @@ void WP6HighlightOnGroup::parse(WP6Listener *listener)
 	listener->highlightChange(true, getColor());
 }
 
-WP6HighlightOffGroup::WP6HighlightOffGroup(WPXInputStream *input, WPXEncryption *encryption, uint8_t groupID) :
+WP6HighlightOffGroup::WP6HighlightOffGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID) :
 	WP6HighlightGroup(input, encryption, groupID)
 {
 }

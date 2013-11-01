@@ -41,12 +41,12 @@
 #include "WP6GraphicsCachedFileDataPacket.h"
 #include "libwpd_internal.h"
 
-WP6PrefixDataPacket::WP6PrefixDataPacket(WPXInputStream * /* input */, WPXEncryption * /* encryption */) :
+WP6PrefixDataPacket::WP6PrefixDataPacket(RVNGInputStream * /* input */, WPXEncryption * /* encryption */) :
 	m_dataSize(0)
 {
 }
 
-WP6PrefixDataPacket *WP6PrefixDataPacket::constructPrefixDataPacket(WPXInputStream *input, WPXEncryption *encryption, WP6PrefixIndice *prefixIndice)
+WP6PrefixDataPacket *WP6PrefixDataPacket::constructPrefixDataPacket(RVNGInputStream *input, WPXEncryption *encryption, WP6PrefixIndice *prefixIndice)
 {
 	WP6PrefixDataPacket *tmpPacket = 0;
 	try
@@ -110,14 +110,14 @@ WP6PrefixDataPacket *WP6PrefixDataPacket::constructPrefixDataPacket(WPXInputStre
 	return tmpPacket;
 }
 
-void WP6PrefixDataPacket::_read(WPXInputStream *input, WPXEncryption *encryption, uint32_t dataOffset, uint32_t dataSize)
+void WP6PrefixDataPacket::_read(RVNGInputStream *input, WPXEncryption *encryption, uint32_t dataOffset, uint32_t dataSize)
 {
 	m_dataSize = dataSize;
 
 	if (!m_dataSize)
 		return;
 
-	input->seek(dataOffset, WPX_SEEK_SET);
+	input->seek(dataOffset, RVNG_SEEK_SET);
 
 	_readContents(input, encryption);
 

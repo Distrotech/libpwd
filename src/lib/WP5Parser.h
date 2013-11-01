@@ -29,25 +29,25 @@
 
 #include "WPXParser.h"
 
-class WPXDocumentInterface;
+class RVNGTextInterface;
 class WP5Listener;
 class WP5PrefixData;
 
 class WP5Parser : public WPXParser
 {
 public:
-	WP5Parser(WPXInputStream *input, WPXHeader *header, WPXEncryption *encryption);
+	WP5Parser(RVNGInputStream *input, WPXHeader *header, WPXEncryption *encryption);
 	~WP5Parser();
 
-	void parse(WPXDocumentInterface *documentInterface);
-	void parseSubDocument(WPXDocumentInterface *documentInterface);
+	void parse(RVNGTextInterface *documentInterface);
+	void parseSubDocument(RVNGTextInterface *documentInterface);
 
-	static void parseDocument(WPXInputStream *input, WPXEncryption *encryption, WP5Listener *listener);
+	static void parseDocument(RVNGInputStream *input, WPXEncryption *encryption, WP5Listener *listener);
 
 private:
-	WP5PrefixData *getPrefixData(WPXInputStream *input, WPXEncryption *encryption);
+	WP5PrefixData *getPrefixData(RVNGInputStream *input, WPXEncryption *encryption);
 
-	void parse(WPXInputStream *input, WPXEncryption *encryption, WP5Listener *listener);
+	void parse(RVNGInputStream *input, WPXEncryption *encryption, WP5Listener *listener);
 };
 
 #endif /* WP5PARSER_H */

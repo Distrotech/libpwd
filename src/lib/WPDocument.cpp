@@ -42,7 +42,7 @@ This document contains both the libwpd API specification and the normal libwpd
 documentation.
 \section api_docs libwpd API documentation
 The external libwpd API is provided by the WPDocument class. This class, combined
-with the WPXDocumentInterface class, are the only two classes that will be of interest
+with the RVNGTextInterface class, are the only two classes that will be of interest
 for the application programmer using libwpd.
 \section lib_docs libwpd documentation
 If you are interrested in the structure of libwpd itself, this whole document
@@ -57,13 +57,13 @@ Analyzes the content of an input stream to see if it can be parsed
 \return A confidence value which represents the likelyhood that the content from
 the input stream can be parsed
 */
-WPDConfidence WPDocument::isFileFormatSupported(WPXInputStream *input)
+WPDConfidence WPDocument::isFileFormatSupported(RVNGInputStream *input)
 {
 	WPD_DEBUG_MSG(("WPDocument::isFileFormatSupported()\n"));
 
 	// by-pass the OLE stream (if it exists) and returns the (sub) stream with the
 	// WordPerfect document.
-	WPXInputStream *document = 0;
+	RVNGInputStream *document = 0;
 	bool isDocumentOLE = false;
 
 	if (input->isOLEStream())
@@ -166,14 +166,14 @@ Checks whether the given password was used to encrypt the document
 \param password The password used to protect the document or NULL if the document is not protected
 \return A value which indicates between the given password and the password that was used to protect the document
 */
-WPDPasswordMatch WPDocument::verifyPassword(WPXInputStream *input, const char *password)
+WPDPasswordMatch WPDocument::verifyPassword(RVNGInputStream *input, const char *password)
 {
 	if (!password)
 		return WPD_PASSWORD_MATCH_DONTKNOW;
 	if (!input)
 		return WPD_PASSWORD_MATCH_DONTKNOW;
 
-	input->seek(0, WPX_SEEK_SET);
+	input->seek(0, RVNG_SEEK_SET);
 
 	WPDPasswordMatch passwordMatch = WPD_PASSWORD_MATCH_NONE;
 	WPXEncryption encryption(password);
@@ -184,7 +184,7 @@ WPDPasswordMatch WPDocument::verifyPassword(WPXInputStream *input, const char *p
 
 	// by-pass the OLE stream (if it exists) and returns the (sub) stream with the
 	// WordPerfect document.
-	WPXInputStream *document = 0;
+	RVNGInputStream *document = 0;
 	bool isDocumentOLE = false;
 
 	if (input->isOLEStream())
@@ -248,16 +248,16 @@ WPDPasswordMatch WPDocument::verifyPassword(WPXInputStream *input, const char *p
 
 /**
 Parses the input stream content. It will make callbacks to the functions provided by a
-WPXDocumentInterface class implementation when needed. This is often commonly called the
+RVNGTextInterface class implementation when needed. This is often commonly called the
 'main parsing routine'.
 \param input The input stream
-\param documentInterface A WPXDocumentInterface implementation
+\param documentInterface A RVNGTextInterface implementation
 \param password The password used to protect the document or NULL if the document
 is not protected
 \return A value that indicates whether the conversion was successful and in case it
 was not, it indicates the reason of the error
 */
-WPDResult WPDocument::parse(WPXInputStream *input, WPXDocumentInterface *documentInterface, const char *password)
+WPDResult WPDocument::parse(RVNGInputStream *input, RVNGTextInterface *documentInterface, const char *password)
 {
 	if (!input)
 		return WPD_FILE_ACCESS_ERROR;
@@ -265,14 +265,14 @@ WPDResult WPDocument::parse(WPXInputStream *input, WPXDocumentInterface *documen
 	if (password && verifyPassword(input, password) != WPD_PASSWORD_MATCH_OK)
 		return WPD_PASSWORD_MISSMATCH_ERROR;
 
-	input->seek(0, WPX_SEEK_SET);
+	input->seek(0, RVNG_SEEK_SET);
 
 	WPXParser *parser = 0;
 
 	// by-pass the OLE stream (if it exists) and returns the (sub) stream with the
 	// WordPerfect document.
 
-	WPXInputStream *document = 0;
+	RVNGInputStream *document = 0;
 	bool isDocumentOLE = false;
 
 	WPD_DEBUG_MSG(("WPDocument::parse()\n"));
@@ -373,7 +373,7 @@ WPDResult WPDocument::parse(WPXInputStream *input, WPXDocumentInterface *documen
 				if (password)
 				{
 					encryption = new WPXEncryption(password, 6);
-					input->seek(6, WPX_SEEK_SET);
+					input->seek(6, RVNG_SEEK_SET);
 				}
 				parser = new WP42Parser(document, encryption);
 				parser->parse(documentInterface);
@@ -413,7 +413,7 @@ WPDResult WPDocument::parse(WPXInputStream *input, WPXDocumentInterface *documen
 	return error;
 }
 
-WPDResult WPDocument::parseSubDocument(WPXInputStream *input, WPXDocumentInterface *documentInterface, WPDFileFormat fileFormat)
+WPDResult WPDocument::parseSubDocument(RVNGInputStream *input, RVNGTextInterface *documentInterface, WPDFileFormat fileFormat)
 {
 	WPXParser *parser = 0;
 

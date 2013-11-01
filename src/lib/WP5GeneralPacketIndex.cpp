@@ -26,7 +26,7 @@
 #include "WP5GeneralPacketIndex.h"
 #include "libwpd_internal.h"
 
-WP5GeneralPacketIndex::WP5GeneralPacketIndex(WPXInputStream *input, WPXEncryption *encryption, int id)
+WP5GeneralPacketIndex::WP5GeneralPacketIndex(RVNGInputStream *input, WPXEncryption *encryption, int id)
 	: m_id(id),
 	  m_type(0),
 	  m_dataSize(0),
@@ -35,7 +35,7 @@ WP5GeneralPacketIndex::WP5GeneralPacketIndex(WPXInputStream *input, WPXEncryptio
 	_read(input, encryption);
 }
 
-void WP5GeneralPacketIndex::_read(WPXInputStream *input, WPXEncryption *encryption)
+void WP5GeneralPacketIndex::_read(RVNGInputStream *input, WPXEncryption *encryption)
 {
 	m_type = readU16(input, encryption);
 

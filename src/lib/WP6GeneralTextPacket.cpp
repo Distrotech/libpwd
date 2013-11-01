@@ -30,7 +30,7 @@
 #include "WP6Parser.h"
 #include "libwpd_internal.h"
 
-WP6GeneralTextPacket::WP6GeneralTextPacket(WPXInputStream *input, WPXEncryption *encryption, int /* id */, uint32_t dataOffset, uint32_t dataSize):
+WP6GeneralTextPacket::WP6GeneralTextPacket(RVNGInputStream *input, WPXEncryption *encryption, int /* id */, uint32_t dataOffset, uint32_t dataSize):
 	WP6PrefixDataPacket(input, encryption),
 	m_subDocument(0),
 	m_streamData(0)
@@ -46,11 +46,11 @@ WP6GeneralTextPacket::~WP6GeneralTextPacket()
 		delete [] m_streamData;
 }
 
-void WP6GeneralTextPacket::_readContents(WPXInputStream *input, WPXEncryption *encryption)
+void WP6GeneralTextPacket::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
 {
 	long startPosition = input->tell();
 	uint16_t numTextBlocks = readU16(input, encryption);
-	input->seek(4, WPX_SEEK_CUR);
+	input->seek(4, RVNG_SEEK_CUR);
 
 	if (numTextBlocks < 1)
 	{

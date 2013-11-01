@@ -53,7 +53,7 @@ struct _WPXContentParsingState
 
 	uint32_t m_textAttributeBits;
 	double m_fontSize;
-	WPXString *m_fontName;
+	RVNGString *m_fontName;
 	RGBSColor *m_fontColor;
 	RGBSColor *m_highlightColor;
 
@@ -147,7 +147,7 @@ private:
 class WPXContentListener : public WPXListener
 {
 protected:
-	WPXContentListener(std::list<WPXPageSpan> &pageList, WPXDocumentInterface *documentInterface);
+	WPXContentListener(std::list<WPXPageSpan> &pageList, RVNGTextInterface *documentInterface);
 	virtual ~WPXContentListener();
 
 	void startDocument();
@@ -160,8 +160,8 @@ protected:
 	void justificationChange(const uint8_t justification);
 
 	WPXContentParsingState *m_ps; // parse state
-	WPXDocumentInterface *m_documentInterface;
-	WPXPropertyList m_metaData;
+	RVNGTextInterface *m_documentInterface;
+	RVNGPropertyList m_metaData;
 
 	virtual void _handleSubDocument(const WPXSubDocument *subDocument, WPXSubDocumentType subDocumentType, WPXTableList tableList, unsigned nextTableIndice) = 0;
 	virtual void _flushText() = 0;
@@ -173,9 +173,9 @@ protected:
 	void _openPageSpan();
 	void _closePageSpan();
 
-	void _appendParagraphProperties(WPXPropertyList &propList, const bool isListElement=false);
-	void _getTabStops(WPXPropertyListVector &tabStops);
-	void _appendJustification(WPXPropertyList &propList, int justification);
+	void _appendParagraphProperties(RVNGPropertyList &propList, const bool isListElement=false);
+	void _getTabStops(RVNGPropertyListVector &tabStops);
+	void _appendJustification(RVNGPropertyList &propList, int justification);
 	void _resetParagraphState(const bool isListElement=false);
 	virtual void _openParagraph();
 	void _closeParagraph();
@@ -201,19 +201,19 @@ protected:
 	double _getNextTabStop() const;
 	double _getPreviousTabStop() const;
 
-	void _insertText(const WPXString &textBuffer);
+	void _insertText(const RVNGString &textBuffer);
 
-	void _insertBreakIfNecessary(WPXPropertyList &propList);
+	void _insertBreakIfNecessary(RVNGPropertyList &propList);
 
-	void _insertPageNumberParagraph(WPXPageNumberPosition position, WPXNumberingType type, WPXString fontName, double fontSize);
+	void _insertPageNumberParagraph(WPXPageNumberPosition position, WPXNumberingType type, RVNGString fontName, double fontSize);
 
 	uint32_t _mapNonUnicodeCharacter(uint32_t character);
 
 private:
 	WPXContentListener(const WPXContentListener &);
 	WPXContentListener &operator=(const WPXContentListener &);
-	WPXString _colorToString(const RGBSColor *color);
-	WPXString _mergeColorsToString(const RGBSColor *fgColor, const RGBSColor *bgColor);
+	RVNGString _colorToString(const RGBSColor *color);
+	RVNGString _mergeColorsToString(const RGBSColor *fgColor, const RGBSColor *bgColor);
 	uint32_t _mapSymbolFontCharacter(uint32_t character);
 	uint32_t _mapDingbatsFontCharacter(uint32_t character);
 };

@@ -31,7 +31,7 @@
 _WPXContentParsingState::_WPXContentParsingState() :
 	m_textAttributeBits(0),
 	m_fontSize(12.0/*WP6_DEFAULT_FONT_SIZE*/), // FIXME ME!!!!!!!!!!!!!!!!!!! HELP WP6_DEFAULT_FONT_SIZE
-	m_fontName(new WPXString(/*WP6_DEFAULT_FONT_NAME*/"Times New Roman")), // EN PAS DEFAULT FONT AAN VOOR WP5/6/etc
+	m_fontName(new RVNGString(/*WP6_DEFAULT_FONT_NAME*/"Times New Roman")), // EN PAS DEFAULT FONT AAN VOOR WP5/6/etc
 	m_fontColor(new RGBSColor(0x00,0x00,0x00,0x64)), //Set default to black. Maybe once it will change, but for the while...
 	m_highlightColor(0),
 
@@ -126,7 +126,7 @@ _WPXContentParsingState::~_WPXContentParsingState()
 	DELETEP(m_highlightColor);
 }
 
-WPXContentListener::WPXContentListener(std::list<WPXPageSpan> &pageList, WPXDocumentInterface *documentInterface) :
+WPXContentListener::WPXContentListener(std::list<WPXPageSpan> &pageList, RVNGTextInterface *documentInterface) :
 	WPXListener(pageList),
 	m_ps(new WPXContentParsingState),
 	m_documentInterface(documentInterface),
@@ -201,7 +201,7 @@ void WPXContentListener::_openSection()
 		if (!m_ps->m_isPageSpanOpened)
 			_openPageSpan();
 
-		WPXPropertyList propList;
+		RVNGPropertyList propList;
 
 		propList.insert("fo:margin-left", m_ps->m_sectionMarginLeft);
 		propList.insert("fo:margin-right", m_ps->m_sectionMarginRight);
@@ -213,13 +213,13 @@ void WPXContentListener::_openSection()
 		else
 			propList.insert("libwpd:margin-bottom", 0.0);
 
-		WPXPropertyListVector columns;
+		RVNGPropertyListVector columns;
 		typedef std::vector<WPXColumnDefinition>::const_iterator CDVIter;
 		for (CDVIter iter = m_ps->m_textColumns.begin(); iter != m_ps->m_textColumns.end(); ++iter)
 		{
-			WPXPropertyList column;
+			RVNGPropertyList column;
 			// The "style:rel-width" is expressed in twips (1440 twips per inch) and includes the left and right Gutter
-			column.insert("style:rel-width", (*iter).m_width * 1440.0, WPX_TWIP);
+			column.insert("style:rel-width", (*iter).m_width * 1440.0, RVNG_TWIP);
 			column.insert("fo:start-indent", (*iter).m_leftGutter);
 			column.insert("fo:end-indent", (*iter).m_rightGutter);
 			columns.append(column);
@@ -249,9 +249,9 @@ void WPXContentListener::_closeSection()
 	}
 }
 
-void WPXContentListener::_insertPageNumberParagraph(WPXPageNumberPosition position, WPXNumberingType numberingType, WPXString fontName, double fontSize)
+void WPXContentListener::_insertPageNumberParagraph(WPXPageNumberPosition position, WPXNumberingType numberingType, RVNGString fontName, double fontSize)
 {
-	WPXPropertyList propList;
+	RVNGPropertyList propList;
 	switch (position)
 	{
 	case PAGENUMBER_POSITION_TOP_LEFT:
@@ -275,17 +275,17 @@ void WPXContentListener::_insertPageNumberParagraph(WPXPageNumberPosition positi
 		break;
 	}
 
-	m_documentInterface->openParagraph(propList, WPXPropertyListVector());
+	m_documentInterface->openParagraph(propList, RVNGPropertyListVector());
 
 	propList.clear();
 	propList.insert("style:font-name", fontName.cstr());
-	propList.insert("fo:font-size", fontSize, WPX_POINT);
+	propList.insert("fo:font-size", fontSize, RVNG_POINT);
 	m_documentInterface->openSpan(propList);
 
 
 	propList.clear();
 	propList.insert("style:num-format", _numberingTypeToString(numberingType));
-	m_documentInterface->insertField(WPXString("text:page-number"), propList);
+	m_documentInterface->insertField(RVNGString("text:page-number"), propList);
 
 	propList.clear();
 	m_documentInterface->closeSpan();
@@ -325,7 +325,7 @@ void WPXContentListener::_openPageSpan()
 
 	WPXPageSpan currentPage = (*currentPageSpanIter);
 
-	WPXPropertyList propList;
+	RVNGPropertyList propList;
 	propList.insert("libwpd:num-pages", currentPage.getPageSpan());
 
 	propList.insert("libwpd:is-last-page-span", ((m_ps->m_currentPage + 1 == m_pageList.size()) ? true : false));
@@ -510,10 +510,10 @@ void WPXContentListener::_openParagraph()
 				_openSection();
 		}
 
-		WPXPropertyListVector tabStops;
+		RVNGPropertyListVector tabStops;
 		_getTabStops(tabStops);
 
-		WPXPropertyList propList;
+		RVNGPropertyList propList;
 		_appendParagraphProperties(propList);
 
 		if (!m_ps->m_isParagraphOpened)
@@ -552,7 +552,7 @@ void WPXContentListener::_resetParagraphState(const bool isListElement)
 	m_ps->m_listBeginPosition = m_ps->m_paragraphMarginLeft + m_ps->m_paragraphTextIndent;
 }
 
-void WPXContentListener::_appendJustification(WPXPropertyList &propList, int justification)
+void WPXContentListener::_appendJustification(RVNGPropertyList &propList, int justification)
 {
 	switch (justification)
 	{
@@ -578,7 +578,7 @@ void WPXContentListener::_appendJustification(WPXPropertyList &propList, int jus
 	}
 }
 
-void WPXContentListener::_appendParagraphProperties(WPXPropertyList &propList, const bool isListElement)
+void WPXContentListener::_appendParagraphProperties(RVNGPropertyList &propList, const bool isListElement)
 {
 	int justification;
 	if (m_ps->m_tempParagraphJustification)
@@ -604,7 +604,7 @@ void WPXContentListener::_appendParagraphProperties(WPXPropertyList &propList, c
 	}
 	propList.insert("fo:margin-top", m_ps->m_paragraphMarginTop);
 	propList.insert("fo:margin-bottom", m_ps->m_paragraphMarginBottom);
-	propList.insert("fo:line-height", m_ps->m_paragraphLineSpacing, WPX_PERCENT);
+	propList.insert("fo:line-height", m_ps->m_paragraphLineSpacing, RVNG_PERCENT);
 
 	if (!m_ps->m_inSubDocument && m_ps->m_firstParagraphInPageSpan)
 	{
@@ -620,16 +620,16 @@ void WPXContentListener::_appendParagraphProperties(WPXPropertyList &propList, c
 	_insertBreakIfNecessary(propList);
 }
 
-void WPXContentListener::_insertText(const WPXString &textBuffer)
+void WPXContentListener::_insertText(const RVNGString &textBuffer)
 {
 	if (textBuffer.len() <= 0)
 		return;
 
-	WPXString tmpText;
+	RVNGString tmpText;
 	const char ASCII_SPACE = 0x0020;
 
 	int numConsecutiveSpaces = 0;
-	WPXString::Iter i(textBuffer);
+	RVNGString::Iter i(textBuffer);
 	for (i.rewind(); i.next();)
 	{
 		if (*(i()) == ASCII_SPACE)
@@ -656,7 +656,7 @@ void WPXContentListener::_insertText(const WPXString &textBuffer)
 	m_documentInterface->insertText(tmpText);
 }
 
-void WPXContentListener::_insertBreakIfNecessary(WPXPropertyList &propList)
+void WPXContentListener::_insertBreakIfNecessary(RVNGPropertyList &propList)
 {
 	if (m_ps->m_isParagraphPageBreak && !m_ps->m_inSubDocument) // no hard page-breaks in subdocuments
 		propList.insert("fo:break-before", "page");
@@ -669,11 +669,11 @@ void WPXContentListener::_insertBreakIfNecessary(WPXPropertyList &propList)
 	}
 }
 
-void WPXContentListener::_getTabStops(WPXPropertyListVector &tabStops)
+void WPXContentListener::_getTabStops(RVNGPropertyListVector &tabStops)
 {
 	for (unsigned i=0; i<m_ps->m_tabStops.size(); i++)
 	{
-		WPXPropertyList tmpTabStop;
+		RVNGPropertyList tmpTabStop;
 
 		// type
 		switch (m_ps->m_tabStops[i].m_alignment)
@@ -697,7 +697,7 @@ void WPXContentListener::_getTabStops(WPXPropertyListVector &tabStops)
 		// leader character
 		if (m_ps->m_tabStops[i].m_leaderCharacter != 0x0000)
 		{
-			WPXString sLeader;
+			RVNGString sLeader;
 			sLeader.sprintf("%c", m_ps->m_tabStops[i].m_leaderCharacter);
 			tmpTabStop.insert("style:leader-text", sLeader);
 			tmpTabStop.insert("style:leader-style", "solid");
@@ -754,10 +754,10 @@ void WPXContentListener::_openListElement()
 				_openSection();
 		}
 
-		WPXPropertyList propList;
+		RVNGPropertyList propList;
 		_appendParagraphProperties(propList, true);
 
-		WPXPropertyListVector tabStops;
+		RVNGPropertyListVector tabStops;
 		_getTabStops(tabStops);
 
 		if (!m_ps->m_isListElementOpened)
@@ -829,17 +829,17 @@ void WPXContentListener::_openSpan()
 		break;
 	}
 
-	WPXPropertyList propList;
+	RVNGPropertyList propList;
 	if (attributeBits & WPX_SUPERSCRIPT_BIT)
 	{
-		WPXString sSuperScript("super ");
+		RVNGString sSuperScript("super ");
 		sSuperScript.append(doubleToString(WPX_DEFAULT_SUPER_SUB_SCRIPT));
 		sSuperScript.append("%");
 		propList.insert("style:text-position", sSuperScript);
 	}
 	else if (attributeBits & WPX_SUBSCRIPT_BIT)
 	{
-		WPXString sSubScript("sub ");
+		RVNGString sSubScript("sub ");
 		sSubScript.append(doubleToString(WPX_DEFAULT_SUPER_SUB_SCRIPT));
 		sSubScript.append("%");
 		propList.insert("style:text-position", sSubScript);
@@ -866,7 +866,7 @@ void WPXContentListener::_openSpan()
 	if (m_ps->m_fontName)
 		propList.insert("style:font-name", m_ps->m_fontName->cstr());
 
-	propList.insert("fo:font-size", fontSizeChange*m_ps->m_fontSize, WPX_POINT);
+	propList.insert("fo:font-size", fontSizeChange*m_ps->m_fontSize, RVNG_POINT);
 
 	// Here we give the priority to the redline bit over the font color. This is how WordPerfect behaves:
 	// redline overrides font color even if the color is changed when redline was already defined.
@@ -900,7 +900,7 @@ void WPXContentListener::_openTable()
 {
 	_closeTable();
 
-	WPXPropertyList propList;
+	RVNGPropertyList propList;
 	switch (m_ps->m_tableDefinition.m_positionBits)
 	{
 	case WPX_TABLE_POSITION_ALIGN_WITH_LEFT_MARGIN:
@@ -933,11 +933,11 @@ void WPXContentListener::_openTable()
 	m_ps->m_isParagraphPageBreak = false;
 
 	double tableWidth = 0.0;
-	WPXPropertyListVector columns;
+	RVNGPropertyListVector columns;
 	typedef std::vector<WPXColumnDefinition>::const_iterator CDVIter;
 	for (CDVIter iter = m_ps->m_tableDefinition.m_columns.begin(); iter != m_ps->m_tableDefinition.m_columns.end(); ++iter)
 	{
-		WPXPropertyList column;
+		RVNGPropertyList column;
 		// The "style:rel-width" is expressed in twips (1440 twips per inch) and includes the left and right Gutter
 		column.insert("style:column-width", (*iter).m_width);
 		columns.append(column);
@@ -995,7 +995,7 @@ void WPXContentListener::_openTableRow(const double height, const bool isMinimum
 	m_ps->m_currentTableCellNumberInRow = 0;
 
 
-	WPXPropertyList propList;
+	RVNGPropertyList propList;
 	if (isMinimumHeight && height != 0.0) // minimum height kind of stupid if it's not set, right?
 		propList.insert("style:min-row-height", height);
 	else if (height != 0.0) // this indicates that wordperfect didn't set a height
@@ -1044,7 +1044,7 @@ void WPXContentListener::_closeTableRow()
 		if (m_ps->m_isRowWithoutCell)
 		{
 			m_ps->m_isRowWithoutCell = false;
-			WPXPropertyList tmpBlankList;
+			RVNGPropertyList tmpBlankList;
 			m_documentInterface->insertCoveredTableCell(tmpBlankList);
 		}
 		m_documentInterface->closeTableRow();
@@ -1054,7 +1054,7 @@ void WPXContentListener::_closeTableRow()
 
 const double WPX_DEFAULT_TABLE_BORDER_WIDTH = 0.0007f;
 
-static void addBorderProps(const char *border, bool borderOn, const WPXString &borderColor, WPXPropertyList &propList)
+static void addBorderProps(const char *border, bool borderOn, const RVNGString &borderColor, RVNGPropertyList &propList)
 {
 #if 0
 // WLACH: a (not working, obviously) sketch of an alternate way of doing this
@@ -1071,9 +1071,9 @@ static void addBorderProps(const char *border, bool borderOn, const WPXString &b
 		propList.insert("fo:border-left-width", 0.0);
 #endif
 
-	WPXString borderStyle;
+	RVNGString borderStyle;
 	borderStyle.sprintf("fo:border-%s", border);
-	WPXString props;
+	RVNGString props;
 	if (borderOn)
 	{
 		props.append(doubleToString(WPX_DEFAULT_TABLE_BORDER_WIDTH));
@@ -1106,14 +1106,14 @@ void WPXContentListener::_openTableCell(const uint8_t colSpan, const uint8_t row
 		m_ps->m_currentTableCol++;
 	}
 
-	WPXPropertyList propList;
+	RVNGPropertyList propList;
 	propList.insert("libwpd:column", m_ps->m_currentTableCol);
 	propList.insert("libwpd:row", m_ps->m_currentTableRow);
 
 	propList.insert("table:number-columns-spanned", colSpan);
 	propList.insert("table:number-rows-spanned", rowSpan);
 
-	WPXString borderColor = _colorToString(cellBorderColor);
+	RVNGString borderColor = _colorToString(cellBorderColor);
 	addBorderProps("left", !(borderBits & WPX_TABLE_CELL_LEFT_BORDER_OFF), borderColor, propList);
 	addBorderProps("right", !(borderBits & WPX_TABLE_CELL_RIGHT_BORDER_OFF), borderColor, propList);
 	addBorderProps("top", !(borderBits & WPX_TABLE_CELL_TOP_BORDER_OFF), borderColor, propList);
@@ -1365,9 +1365,9 @@ double WPXContentListener::_getPreviousTabStop() const
 	return (std::numeric_limits<double>::max)();
 }
 
-WPXString WPXContentListener::_colorToString(const RGBSColor *color)
+RVNGString WPXContentListener::_colorToString(const RGBSColor *color)
 {
-	WPXString tmpString;
+	RVNGString tmpString;
 
 	if (color)
 	{
@@ -1384,10 +1384,10 @@ WPXString WPXContentListener::_colorToString(const RGBSColor *color)
 	return tmpString;
 }
 
-WPXString WPXContentListener::_mergeColorsToString(const RGBSColor *fgColor,
+RVNGString WPXContentListener::_mergeColorsToString(const RGBSColor *fgColor,
         const RGBSColor * /* bgColor */)
 {
-	WPXString tmpColor;
+	RVNGString tmpColor;
 	RGBSColor tmpFgColor, tmpBgColor;
 
 	if (fgColor)

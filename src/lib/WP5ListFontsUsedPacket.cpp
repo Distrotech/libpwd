@@ -29,7 +29,7 @@
 #include "WP5Parser.h"
 #include "libwpd_internal.h"
 
-WP5ListFontsUsedPacket::WP5ListFontsUsedPacket(WPXInputStream *input, WPXEncryption *encryption, int /* id */, uint32_t dataOffset, uint32_t dataSize, uint16_t packetType) :
+WP5ListFontsUsedPacket::WP5ListFontsUsedPacket(RVNGInputStream *input, WPXEncryption *encryption, int /* id */, uint32_t dataOffset, uint32_t dataSize, uint16_t packetType) :
 	WP5GeneralPacketData(),
 	m_packetType(packetType),
 	m_fontNameOffset(),
@@ -42,7 +42,7 @@ WP5ListFontsUsedPacket::~WP5ListFontsUsedPacket()
 {
 }
 
-void WP5ListFontsUsedPacket::_readContents(WPXInputStream *input, WPXEncryption *encryption, uint32_t dataSize)
+void WP5ListFontsUsedPacket::_readContents(RVNGInputStream *input, WPXEncryption *encryption, uint32_t dataSize)
 {
 	unsigned numFonts = dataSize / 86; // 86 == size of the structure describing the font
 	WPD_DEBUG_MSG(("WP5 List Fonts Used Packet, data size: %u, number fonts: %u\n", dataSize, numFonts));
@@ -50,19 +50,19 @@ void WP5ListFontsUsedPacket::_readContents(WPXInputStream *input, WPXEncryption 
 	double tempFontSize;
 	for (unsigned i=0; i<numFonts; i++)
 	{
-		input->seek(18, WPX_SEEK_CUR);
+		input->seek(18, RVNG_SEEK_CUR);
 		tempFontNameOffset=readU16(input, encryption);
 		if (m_packetType == WP50_LIST_FONTS_USED_PACKET)
 		{
-			input->seek(2, WPX_SEEK_CUR);
+			input->seek(2, RVNG_SEEK_CUR);
 			tempFontSize=(double)(readU16(input, encryption) / 50);
-			input->seek(62, WPX_SEEK_CUR);
+			input->seek(62, RVNG_SEEK_CUR);
 		}
 		else
 		{
-			input->seek(27, WPX_SEEK_CUR);
+			input->seek(27, RVNG_SEEK_CUR);
 			tempFontSize=(double)(readU16(input, encryption) / 50);
-			input->seek(37, WPX_SEEK_CUR);
+			input->seek(37, RVNG_SEEK_CUR);
 		}
 		WPD_DEBUG_MSG(("WP5 List Fonts Used Packet, font number: %u, font name offset: %u, font size, %.4f\n", i, tempFontNameOffset, tempFontSize));
 		m_fontNameOffset.push_back(tempFontNameOffset);

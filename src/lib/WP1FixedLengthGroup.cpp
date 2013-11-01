@@ -49,7 +49,7 @@ WP1FixedLengthGroup::WP1FixedLengthGroup(uint8_t group)
 {
 }
 
-WP1FixedLengthGroup *WP1FixedLengthGroup::constructFixedLengthGroup(WPXInputStream *input, WPXEncryption *encryption, uint8_t group)
+WP1FixedLengthGroup *WP1FixedLengthGroup::constructFixedLengthGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t group)
 {
 	switch (group)
 	{
@@ -87,7 +87,7 @@ WP1FixedLengthGroup *WP1FixedLengthGroup::constructFixedLengthGroup(WPXInputStre
 	}
 }
 
-void WP1FixedLengthGroup::_read(WPXInputStream *input, WPXEncryption *encryption)
+void WP1FixedLengthGroup::_read(RVNGInputStream *input, WPXEncryption *encryption)
 {
 	long startPosition = input->tell();
 
@@ -99,7 +99,7 @@ void WP1FixedLengthGroup::_read(WPXInputStream *input, WPXEncryption *encryption
 
 		_readContents(input, encryption);
 
-		input->seek((startPosition + size - 2), WPX_SEEK_SET);
+		input->seek((startPosition + size - 2), RVNG_SEEK_SET);
 		if (m_group != readU8(input, encryption))
 		{
 			WPD_DEBUG_MSG(("WordPerfect: Possible corruption detected. Bailing out!\n"));

@@ -31,7 +31,7 @@
 #include "WP5Listener.h"
 #include "WP5GraphicsInformationPacket.h"
 
-WP5BoxGroup::WP5BoxGroup(WPXInputStream *input, WPXEncryption *encryption) :
+WP5BoxGroup::WP5BoxGroup(RVNGInputStream *input, WPXEncryption *encryption) :
 	WP5VariableLengthGroup(),
 	m_boxNumber(0),
 	m_positionAndType(0),
@@ -47,7 +47,7 @@ WP5BoxGroup::WP5BoxGroup(WPXInputStream *input, WPXEncryption *encryption) :
 	_read(input, encryption);
 }
 
-void WP5BoxGroup::_readContents(WPXInputStream *input, WPXEncryption *encryption)
+void WP5BoxGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
 {
 	switch(getSubGroup())
 	{
@@ -59,11 +59,11 @@ void WP5BoxGroup::_readContents(WPXInputStream *input, WPXEncryption *encryption
 		m_height = readU16(input, encryption);
 		m_x = readU16(input, encryption);
 		m_y = readU16(input, encryption);
-		input->seek(36, WPX_SEEK_CUR);
+		input->seek(36, RVNG_SEEK_CUR);
 		m_boxType = readU8(input, encryption);
 		if (m_boxType == 0x80)
 		{
-			input->seek(60, WPX_SEEK_CUR);
+			input->seek(60, RVNG_SEEK_CUR);
 			m_graphicsOffset = readU16(input, encryption);
 		}
 		break;

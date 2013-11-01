@@ -30,7 +30,7 @@
 
 #include "libwpd_internal.h"
 
-class WPXInputStream;
+class RVNGInputStream;
 class WP6Listener;
 
 class WP6Part
@@ -38,7 +38,7 @@ class WP6Part
 public:
 	virtual ~WP6Part() {}
 
-	static WP6Part *constructPart(WPXInputStream *input, WPXEncryption *encryption, const uint8_t readVal);
+	static WP6Part *constructPart(RVNGInputStream *input, WPXEncryption *encryption, const uint8_t readVal);
 	virtual void parse(WP6Listener *listener) = 0;
 };
 

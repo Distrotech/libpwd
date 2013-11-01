@@ -27,7 +27,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <libwpd/libwpd.h>
-#include <libwpd-stream/libwpd-stream.h>
+#include <librevenge-stream/librevenge-stream.h>
 #include "TextDocumentGenerator.h"
 
 #ifdef HAVE_CONFIG_H
@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
 	if (!szInputFile)
 		return printUsage();
 
-	WPXFileStream input(szInputFile);
+	RVNGFileStream input(szInputFile);
 
 	WPDConfidence confidence = WPDocument::isFileFormatSupported(&input);
 	if (confidence != WPD_CONFIDENCE_EXCELLENT && confidence != WPD_CONFIDENCE_SUPPORTED_ENCRYPTION)

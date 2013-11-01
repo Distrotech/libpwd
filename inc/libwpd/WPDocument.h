@@ -33,8 +33,8 @@ enum WPDResult { WPD_OK, WPD_FILE_ACCESS_ERROR, WPD_PARSE_ERROR, WPD_UNSUPPORTED
 enum WPDPasswordMatch { WPD_PASSWORD_MATCH_NONE, WPD_PASSWORD_MATCH_DONTKNOW, WPD_PASSWORD_MATCH_OK };
 enum WPDFileFormat { WPD_FILE_FORMAT_WP6, WPD_FILE_FORMAT_WP5, WPD_FILE_FORMAT_WP42, WPD_FILE_FORMAT_WP3, WPD_FILE_FORMAT_WP1, WPD_FILE_FORMAT_UNKNOWN };
 
-class WPXDocumentInterface;
-class WPXInputStream;
+class RVNGTextInterface;
+class RVNGInputStream;
 
 /**
 This class provides all the functions an application would need to parse
@@ -44,10 +44,10 @@ WordPerfect documents.
 class WPDocument
 {
 public:
-	static WPDConfidence isFileFormatSupported(WPXInputStream *input);
-	static WPDPasswordMatch verifyPassword(WPXInputStream *input, const char *password);
-	static WPDResult parse(WPXInputStream *input, WPXDocumentInterface *documentInterface, const char *password);
-	static WPDResult parseSubDocument(WPXInputStream *input, WPXDocumentInterface *documentInterface, WPDFileFormat fileFormat);
+	static WPDConfidence isFileFormatSupported(RVNGInputStream *input);
+	static WPDPasswordMatch verifyPassword(RVNGInputStream *input, const char *password);
+	static WPDResult parse(RVNGInputStream *input, RVNGTextInterface *documentInterface, const char *password);
+	static WPDResult parseSubDocument(RVNGInputStream *input, RVNGTextInterface *documentInterface, WPDFileFormat fileFormat);
 };
 
 #endif /* WPDOCUMENT_H */

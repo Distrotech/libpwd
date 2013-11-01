@@ -43,7 +43,7 @@ _WP5ContentParsingState::~_WP5ContentParsingState()
 {
 }
 
-WP5ContentListener::WP5ContentListener(std::list<WPXPageSpan> &pageList, std::vector<WP5SubDocument *> &subDocuments, WPXDocumentInterface *documentInterface) :
+WP5ContentListener::WP5ContentListener(std::list<WPXPageSpan> &pageList, std::vector<WP5SubDocument *> &subDocuments, RVNGTextInterface *documentInterface) :
 	WP5Listener(),
 	WPXContentListener(pageList, documentInterface),
 	m_parseState(new WP5ContentParsingState),
@@ -495,7 +495,7 @@ void WP5ContentListener::characterColorChange(uint8_t red, uint8_t green, uint8_
 	}
 }
 
-void WP5ContentListener::setFont(const WPXString &fontName, double fontSize)
+void WP5ContentListener::setFont(const RVNGString &fontName, double fontSize)
 {
 	if (!isUndoOn())
 	{
@@ -515,7 +515,7 @@ void WP5ContentListener::setTabs(const std::vector<WPXTabStop> &tabStops, uint16
 }
 
 
-void WP5ContentListener::insertNoteReference(const WPXString &noteReference)
+void WP5ContentListener::insertNoteReference(const RVNGString &noteReference)
 {
 	if (!isUndoOn() && !m_ps->m_isNote)
 	{
@@ -539,7 +539,7 @@ void WP5ContentListener::insertNote(WPXNoteType noteType, const WP5SubDocument *
 		int number = _extractDisplayReferenceNumberFromBuf(m_parseState->m_noteReference, numberingType);
 		m_parseState->m_noteReference.clear();
 
-		WPXPropertyList propList;
+		RVNGPropertyList propList;
 		propList.insert("libwpd:number", number);
 
 		if (noteType == FOOTNOTE)
@@ -601,7 +601,7 @@ void WP5ContentListener::headerFooterGroup(uint8_t /* headerFooterType */, uint8
 		m_subDocuments.push_back(subDocument);
 }
 
-void WP5ContentListener::setDefaultFont(const WPXString &fontName, double fontSize)
+void WP5ContentListener::setDefaultFont(const RVNGString &fontName, double fontSize)
 {
 	m_defaultFontName = fontName;
 	m_defaultFontSize = fontSize;
@@ -659,7 +659,7 @@ void WP5ContentListener::boxOn(uint8_t positionAndType, uint8_t alignment, uint1
 	else
 		_flushText();
 
-	WPXPropertyList propList;
+	RVNGPropertyList propList;
 
 	propList.insert("svg:height", (double)((double)height/(double)WPX_NUM_WPUS_PER_INCH));
 	propList.insert("svg:width", (double)((double)width/(double)WPX_NUM_WPUS_PER_INCH));
@@ -806,14 +806,14 @@ void WP5ContentListener::boxOff()
 	}
 }
 
-void WP5ContentListener::insertGraphicsData(const WPXBinaryData *data)
+void WP5ContentListener::insertGraphicsData(const RVNGBinaryData *data)
 {
 	if (isUndoOn() || !m_parseState->m_isFrameOpened)
 		return;
 
 	if (data)
 	{
-		WPXPropertyList propList;
+		RVNGPropertyList propList;
 		propList.insert("libwpd:mimetype", "image/x-wpg");
 		m_documentInterface->insertBinaryObject(propList, *data);
 	}

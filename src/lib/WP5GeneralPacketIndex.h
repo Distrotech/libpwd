@@ -26,7 +26,7 @@
 #ifndef WP5GENERALPACKETINDEX_H
 #define WP5GENERALPACKETINDEX_H
 
-#include <libwpd-stream/libwpd-stream.h>
+#include <librevenge-stream/librevenge-stream.h>
 #include "libwpd_types.h"
 
 class WPXEncryption;
@@ -34,7 +34,7 @@ class WPXEncryption;
 class WP5GeneralPacketIndex
 {
 public:
-	WP5GeneralPacketIndex(WPXInputStream *input, WPXEncryption *encryption, int id);
+	WP5GeneralPacketIndex(RVNGInputStream *input, WPXEncryption *encryption, int id);
 	int getID() const
 	{
 		return m_id;
@@ -53,7 +53,7 @@ public:
 	}
 
 protected:
-	void _read(WPXInputStream *input, WPXEncryption *encryption);
+	void _read(RVNGInputStream *input, WPXEncryption *encryption);
 
 private:
 	int m_id;

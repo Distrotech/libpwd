@@ -36,7 +36,7 @@
 #include "WP5ListFontsUsedPacket.h"
 #include "WP5FontNameStringPoolPacket.h"
 
-WP5Parser::WP5Parser(WPXInputStream *input, WPXHeader *header, WPXEncryption *encryption) :
+WP5Parser::WP5Parser(RVNGInputStream *input, WPXHeader *header, WPXEncryption *encryption) :
 	WPXParser(input, header, encryption)
 {
 }
@@ -45,7 +45,7 @@ WP5Parser::~WP5Parser()
 {
 }
 
-WP5PrefixData *WP5Parser::getPrefixData(WPXInputStream *input, WPXEncryption *encryption)
+WP5PrefixData *WP5Parser::getPrefixData(RVNGInputStream *input, WPXEncryption *encryption)
 {
 	WP5PrefixData *prefixData = 0;
 	try
@@ -60,11 +60,11 @@ WP5PrefixData *WP5Parser::getPrefixData(WPXInputStream *input, WPXEncryption *en
 	}
 }
 
-void WP5Parser::parse(WPXInputStream *input, WPXEncryption *encryption, WP5Listener *listener)
+void WP5Parser::parse(RVNGInputStream *input, WPXEncryption *encryption, WP5Listener *listener)
 {
 	listener->startDocument();
 
-	input->seek(getHeader()->getDocumentOffset(), WPX_SEEK_SET);
+	input->seek(getHeader()->getDocumentOffset(), RVNG_SEEK_SET);
 
 	WPD_DEBUG_MSG(("WordPerfect: Starting document body parse (position = %ld)\n", (long)input->tell()));
 
@@ -74,7 +74,7 @@ void WP5Parser::parse(WPXInputStream *input, WPXEncryption *encryption, WP5Liste
 }
 
 // parseDocument: parses a document body (may call itself recursively, on other streams, or itself)
-void WP5Parser::parseDocument(WPXInputStream *input, WPXEncryption *encryption, WP5Listener *listener)
+void WP5Parser::parseDocument(RVNGInputStream *input, WPXEncryption *encryption, WP5Listener *listener)
 {
 	while (!input->atEOS())
 	{
@@ -125,9 +125,9 @@ void WP5Parser::parseDocument(WPXInputStream *input, WPXEncryption *encryption, 
 	}
 }
 
-void WP5Parser::parse(WPXDocumentInterface *documentInterface)
+void WP5Parser::parse(RVNGTextInterface *documentInterface)
 {
-	WPXInputStream *input = getInput();
+	RVNGInputStream *input = getInput();
 	WPXEncryption *encryption = getEncryption();
 	std::list<WPXPageSpan> pageList;
 	WPXTableList tableList;
@@ -170,7 +170,7 @@ void WP5Parser::parse(WPXDocumentInterface *documentInterface)
 		// FIXME: UGLY, UGLY, UGLY!!! FIND A BETTER WAY TO ACHIEVE THE SAME
 		unsigned tmpFontNameOffset = 0; // The default font in WP5 is at the position 0
 		double tmpFontSize = 12.0;
-		WPXString tmpFontName("Times New Roman");
+		RVNGString tmpFontName("Times New Roman");
 		bool tmpHasFontsUsedPacket = true;
 
 		if (listener.getGeneralPacketData(15))
@@ -219,13 +219,13 @@ void WP5Parser::parse(WPXDocumentInterface *documentInterface)
 	}
 }
 
-void WP5Parser::parseSubDocument(WPXDocumentInterface *documentInterface)
+void WP5Parser::parseSubDocument(RVNGTextInterface *documentInterface)
 {
 	std::list<WPXPageSpan> pageList;
 	WPXTableList tableList;
 	std::vector<WP5SubDocument *> subDocuments;
 
-	WPXInputStream *input = getInput();
+	RVNGInputStream *input = getInput();
 
 	try
 	{
@@ -234,7 +234,7 @@ void WP5Parser::parseSubDocument(WPXDocumentInterface *documentInterface)
 		parseDocument(input, 0, &stylesListener);
 		stylesListener.endSubDocument();
 
-		input->seek(0, WPX_SEEK_SET);
+		input->seek(0, RVNG_SEEK_SET);
 
 		WP5ContentListener listener(pageList, subDocuments, documentInterface);
 		listener.startSubDocument();

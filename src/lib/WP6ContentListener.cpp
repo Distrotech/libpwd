@@ -152,7 +152,7 @@ _WP6ContentParsingState::~_WP6ContentParsingState()
 	// FIXME: erase current fontname
 }
 
-WP6ContentListener::WP6ContentListener(std::list<WPXPageSpan> &pageList, WPXTableList tableList, WPXDocumentInterface *documentInterface) :
+WP6ContentListener::WP6ContentListener(std::list<WPXPageSpan> &pageList, WPXTableList tableList, RVNGTextInterface *documentInterface) :
 	WP6Listener(),
 	WPXContentListener(pageList, documentInterface),
 	m_parseState(new WP6ContentParsingState(tableList)),
@@ -189,7 +189,7 @@ void WP6ContentListener::setDate(const uint16_t type, const uint16_t year,
 	// seconds" format described at http://www.w3.org/TR/NOTE-datetime, i.e.
 	// YYYY-MM-DDThh:mm:ssTZD (eg 1997-07-16T19:20:30+01:00), but without TZD.
 	// WordPerfect does not use the timeZone field, so we don't know the offset
-	WPXString dateStr;      // filled in and passed to m_metaData.insert()
+	RVNGString dateStr;      // filled in and passed to m_metaData.insert()
 
 	m_tm.tm_sec       = second;
 	m_tm.tm_min       = minute;
@@ -239,7 +239,7 @@ void WP6ContentListener::setDate(const uint16_t type, const uint16_t year,
 	}
 }
 
-void WP6ContentListener::setExtendedInformation(const uint16_t type, const WPXString &data)
+void WP6ContentListener::setExtendedInformation(const uint16_t type, const RVNGString &data)
 {
 	switch (type)
 	{
@@ -702,7 +702,7 @@ void WP6ContentListener::highlightChange(const bool isOn, const RGBSColor &color
 	}
 }
 
-void WP6ContentListener::fontChange(const uint16_t matchedFontPointSize, const uint16_t fontPID, const WPXString &fontName)
+void WP6ContentListener::fontChange(const uint16_t matchedFontPointSize, const uint16_t fontPID, const RVNGString &fontName)
 {
 	if (!isUndoOn())
 	{
@@ -718,7 +718,7 @@ void WP6ContentListener::fontChange(const uint16_t matchedFontPointSize, const u
 		}
 		if (fontPID)
 		{
-			WPXString pidFontName = WP6Listener::getFontNameForPID(fontPID);
+			RVNGString pidFontName = WP6Listener::getFontNameForPID(fontPID);
 			if (!!pidFontName)
 				*(m_ps->m_fontName) = pidFontName;
 		}
@@ -1115,16 +1115,16 @@ void WP6ContentListener::displayNumberReferenceGroupOff(const uint8_t subGroup)
 			// in theory the page numbering type should only apply to thepage number itself, however, I can't think of a case where you'd
 			// want the total num of pages to be in a different format plus I don't see a way of changing that. so...
 			{
-				WPXPropertyList propList;
+				RVNGPropertyList propList;
 				propList.insert("style:num-format", _numberingTypeToString(m_parseState->m_currentPageNumberingType));
 
 				if (subGroup == WP6_DISPLAY_NUMBER_REFERENCE_GROUP_PAGE_NUMBER_DISPLAY_OFF)
 				{
-					m_documentInterface->insertField(WPXString("text:page-number"), propList);
+					m_documentInterface->insertField(RVNGString("text:page-number"), propList);
 				}
 				else // WP6_DISPLAY_NUMBER_REFERENCE_GROUP_TOTAL_NUMBER_OF_PAGES_DISPLAY_OFF
 				{
-					m_documentInterface->insertField(WPXString("text:page-count"), propList);
+					m_documentInterface->insertField(RVNGString("text:page-count"), propList);
 				}
 			}
 			m_parseState->m_styleStateSequence.setCurrentState(m_parseState->m_styleStateSequence.getPreviousState());
@@ -1252,7 +1252,7 @@ void WP6ContentListener::noteOff(const WPXNoteType noteType)
 		int number = _extractDisplayReferenceNumberFromBuf(m_parseState->m_numberText, numberingType);
 		m_parseState->m_numberText.clear(); // we do not need the text version of the number anymore
 
-		WPXPropertyList propList;
+		RVNGPropertyList propList;
 		if (number)
 			propList.insert("libwpd:number", number);
 
@@ -1467,7 +1467,7 @@ void WP6ContentListener::boxOn(const uint8_t /* anchoringType */, const uint8_t 
 	else
 		_flushText();
 
-	WPXPropertyList propList;
+	RVNGPropertyList propList;
 
 	if (heightFlags & 0x01)
 		propList.insert("style:rel-height", "scale");
@@ -1702,7 +1702,7 @@ void WP6ContentListener::insertGraphicsData(const uint16_t packetId)
 
 	if (const WP6GraphicsCachedFileDataPacket *gcfdPacket = dynamic_cast<const WP6GraphicsCachedFileDataPacket *>(this->getPrefixDataPacket(packetId)))
 	{
-		WPXPropertyList propList;
+		RVNGPropertyList propList;
 		propList.insert("libwpd:mimetype", "image/x-wpg");
 		if (gcfdPacket->getBinaryObject())
 			m_documentInterface->insertBinaryObject(propList, *(gcfdPacket->getBinaryObject()));
@@ -1713,7 +1713,7 @@ void WP6ContentListener::insertTextBox(const WP6SubDocument *subDocument)
 {
 	if (!isUndoOn() && subDocument && m_parseState->m_isFrameOpened)
 	{
-		WPXPropertyList propList;
+		RVNGPropertyList propList;
 		m_documentInterface->openTextBox(propList);
 
 		// Positioned objects like text boxes are special beasts. They can contain all hierarchical elements up
@@ -1737,7 +1737,7 @@ void WP6ContentListener::commentAnnotation(const uint16_t textPID)
 			_closeSpan();
 		}
 
-		WPXPropertyList propList;
+		RVNGPropertyList propList;
 		m_documentInterface->openComment(propList);
 
 		m_ps->m_isNote = true;
@@ -1896,7 +1896,7 @@ void WP6ContentListener::_handleListChange(const uint16_t outlineHash)
 
 	if (m_ps->m_currentListLevel > oldListLevel)
 	{
-		WPXPropertyList propList;
+		RVNGPropertyList propList;
 		propList.insert("libwpd:id", m_parseState->m_currentOutlineHash);
 		propList.insert("libwpd:level", m_ps->m_currentListLevel);
 
@@ -1929,7 +1929,7 @@ void WP6ContentListener::_handleListChange(const uint16_t outlineHash)
 
 			WPD_DEBUG_MSG(("Pushed level %u onto the list level stack\n", i));
 
-			WPXPropertyList propList2;
+			RVNGPropertyList propList2;
 			propList2.insert("libwpd:id", m_parseState->m_currentOutlineHash);
 
 			if (m_parseState->m_putativeListElementHasDisplayReferenceNumber)

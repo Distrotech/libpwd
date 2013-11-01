@@ -30,21 +30,21 @@
 #include "WPXParser.h"
 #include "WP42Listener.h"
 
-class WPXDocumentInterface;
+class RVNGTextInterface;
 
 class WP42Parser : public WPXParser
 {
 public:
-	WP42Parser(WPXInputStream *input, WPXEncryption *encryption);
+	WP42Parser(RVNGInputStream *input, WPXEncryption *encryption);
 	~WP42Parser();
 
-	void parse(WPXDocumentInterface *documentInterface);
-	void parseSubDocument(WPXDocumentInterface *documentInterface);
+	void parse(RVNGTextInterface *documentInterface);
+	void parseSubDocument(RVNGTextInterface *documentInterface);
 
-	static void parseDocument(WPXInputStream *input, WPXEncryption *encryption, WP42Listener *listener);
+	static void parseDocument(RVNGInputStream *input, WPXEncryption *encryption, WP42Listener *listener);
 
 private:
-	void parse(WPXInputStream *input, WPXEncryption *encryption, WP42Listener *listener);
+	void parse(RVNGInputStream *input, WPXEncryption *encryption, WP42Listener *listener);
 };
 
 #endif /* WP42PARSER_H */

@@ -31,14 +31,14 @@
 #include <vector>
 #include "libwpd_internal.h"
 
-class WPXInputStream;
+class RVNGInputStream;
 class WP6Listener;
 
 class WP6ColumnGroup : public WP6VariableLengthGroup
 {
 public:
-	WP6ColumnGroup(WPXInputStream *input, WPXEncryption *encryption);
-	void _readContents(WPXInputStream *input, WPXEncryption *encryption);
+	WP6ColumnGroup(RVNGInputStream *input, WPXEncryption *encryption);
+	void _readContents(RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP6Listener *listener);
 
 private:

@@ -43,7 +43,7 @@ public:
 
 	void startDocument() {}
 	void startSubDocument() {}
-	void setFont(const WPXString & /* fontName */, double /* fontSize */) {}
+	void setFont(const RVNGString & /* fontName */, double /* fontSize */) {}
 	void setTabs(const std::vector<WPXTabStop> & /* tabStops */, uint16_t /* tabOffset */) {}
 	void insertCharacter(uint32_t /* character */)
 	{
@@ -83,14 +83,14 @@ public:
 	                bool useCellAttributes, uint32_t cellAttributes);
 	void endTable() {}
 
-	void insertNoteReference(const WPXString & /* noteReference */) {}
+	void insertNoteReference(const RVNGString & /* noteReference */) {}
 	void insertNote(WPXNoteType /* noteType */, const WP5SubDocument * /* subDocument */) {}
 	void headerFooterGroup(uint8_t headerFooterType, uint8_t occurenceBits, WP5SubDocument *subDocument);
 	void suppressPageCharacteristics(uint8_t suppressCode);
 
 	void boxOn(uint8_t /* positionAndType */, uint8_t /* alignment */, uint16_t /* width */, uint16_t /* height */, uint16_t /* x */, uint16_t /* y */) {}
 	virtual void boxOff() {}
-	virtual void insertGraphicsData(const WPXBinaryData * /* data */) {}
+	virtual void insertGraphicsData(const RVNGBinaryData * /* data */) {}
 
 protected:
 	void _handleSubDocument(const WPXSubDocument *subDocument, WPXSubDocumentType subDocumentType, WPXTableList tableList, int nextTableIndice = 0);

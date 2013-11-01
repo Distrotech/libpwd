@@ -35,7 +35,7 @@
 class WP5UnsupportedVariableLengthGroup : public WP5VariableLengthGroup
 {
 public:
-	WP5UnsupportedVariableLengthGroup(WPXInputStream *input, WPXEncryption *encryption);
+	WP5UnsupportedVariableLengthGroup(RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP5Listener * /* listener */) {}
 };
 

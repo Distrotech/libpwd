@@ -28,15 +28,15 @@
 
 #include "WP1FixedLengthGroup.h"
 
-class WPXInputStream;
+class RVNGInputStream;
 class WP1Listener;
 
 class WP1MarginResetGroup : public WP1FixedLengthGroup
 {
 public:
-	WP1MarginResetGroup(WPXInputStream *input, WPXEncryption *encryption, uint8_t group);
+	WP1MarginResetGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t group);
 	~WP1MarginResetGroup();
-	void _readContents(WPXInputStream *input, WPXEncryption *encryption);
+	void _readContents(RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP1Listener *listener);
 
 private:

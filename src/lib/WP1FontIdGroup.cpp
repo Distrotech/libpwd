@@ -26,7 +26,7 @@
 #include "WP1FontIdGroup.h"
 #include "libwpd_internal.h"
 
-WP1FontIdGroup::WP1FontIdGroup(WPXInputStream *input, WPXEncryption *encryption, uint8_t group) :
+WP1FontIdGroup::WP1FontIdGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t group) :
 	WP1FixedLengthGroup(group),
 	m_oldFontId(0),
 	m_newFontId(0)
@@ -38,7 +38,7 @@ WP1FontIdGroup::~WP1FontIdGroup()
 {
 }
 
-void WP1FontIdGroup::_readContents(WPXInputStream *input, WPXEncryption *encryption)
+void WP1FontIdGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
 {
 	m_oldFontId = readU16(input, encryption, true);
 	m_newFontId = readU16(input, encryption, true);

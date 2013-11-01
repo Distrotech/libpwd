@@ -31,7 +31,7 @@
 #include "libwpd_internal.h"
 
 
-WP6NumberingMethodGroup::WP6NumberingMethodGroup(WPXInputStream *input,
+WP6NumberingMethodGroup::WP6NumberingMethodGroup(RVNGInputStream *input,
         WPXEncryption *encryption) :
 	WP6VariableLengthGroup(),
 	m_levelNumber(0x00),
@@ -44,7 +44,7 @@ WP6NumberingMethodGroup::~WP6NumberingMethodGroup()
 {
 }
 
-void WP6NumberingMethodGroup::_readContents(WPXInputStream *input, WPXEncryption *encryption)
+void WP6NumberingMethodGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
 {
 	switch (getSubGroup())
 	{

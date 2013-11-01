@@ -26,20 +26,21 @@
 #ifndef WP3DISPLAYGROUP_H
 #define WP3DISPLAYGROUP_H
 
-#include "WP3VariableLengthGroup.h"
+#include <librevenge/librevenge.h>
 #include <libwpd/libwpd.h>
+#include "WP3VariableLengthGroup.h"
 
 class WP3DisplayGroup : public WP3VariableLengthGroup
 {
 public:
-	WP3DisplayGroup(WPXInputStream *input, WPXEncryption *encryption);
+	WP3DisplayGroup(RVNGInputStream *input, WPXEncryption *encryption);
 	~WP3DisplayGroup();
-	void _readContents(WPXInputStream *input, WPXEncryption *encryption);
+	void _readContents(RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP3Listener *listener);
 
 private:
-	WPXString m_noteReference;
-	WPXString m_pageNumber;
+	RVNGString m_noteReference;
+	RVNGString m_pageNumber;
 };
 
 #endif /* WP3DISPLAYGROUP_H */

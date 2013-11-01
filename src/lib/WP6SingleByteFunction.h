@@ -32,7 +32,7 @@
 class WP6SingleByteFunction : public WP6Part
 {
 public:
-	static WP6SingleByteFunction *constructSingleByteFunction(WPXInputStream *input, WPXEncryption *encryption, uint8_t groupID);
+	static WP6SingleByteFunction *constructSingleByteFunction(RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID);
 };
 
 class WP6SpaceFunction : public WP6SingleByteFunction

@@ -138,7 +138,7 @@ public:
 	{
 		return m_pageNumberingFontSize;
 	}
-	WPXString getPageNumberingFontName() const
+	RVNGString getPageNumberingFontName() const
 	{
 		return m_pageNumberingFontName;
 	}
@@ -206,7 +206,7 @@ public:
 	{
 		m_pageNumberingFontSize = pageNumberingFontSize;
 	}
-	void setPageNumberingFontName(const WPXString &pageNumberingFontName)
+	void setPageNumberingFontName(const RVNGString &pageNumberingFontName)
 	{
 		m_pageNumberingFontName = pageNumberingFontName;
 	}
@@ -230,7 +230,7 @@ private:
 	bool m_isPageNumberOverridden;
 	int m_pageNumberOverride;
 	WPXNumberingType m_pageNumberingType;
-	WPXString m_pageNumberingFontName;
+	RVNGString m_pageNumberingFontName;
 	double m_pageNumberingFontSize;
 	std::vector<WPXHeaderFooter> m_headerFooterList;
 

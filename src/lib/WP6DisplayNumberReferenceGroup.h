@@ -32,8 +32,8 @@
 class WP6DisplayNumberReferenceGroup : public WP6VariableLengthGroup
 {
 public:
-	WP6DisplayNumberReferenceGroup(WPXInputStream *input, WPXEncryption *encryption);
-	void _readContents(WPXInputStream *input, WPXEncryption *encryption);
+	WP6DisplayNumberReferenceGroup(RVNGInputStream *input, WPXEncryption *encryption);
+	void _readContents(RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP6Listener *listener);
 
 private:

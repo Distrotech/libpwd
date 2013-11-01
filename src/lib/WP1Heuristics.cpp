@@ -30,12 +30,12 @@
 #include "libwpd_internal.h"
 #include <limits>
 
-WPDPasswordMatch WP1Heuristics::verifyPassword(WPXInputStream *input, const char *password)
+WPDPasswordMatch WP1Heuristics::verifyPassword(RVNGInputStream *input, const char *password)
 {
 	if (!password)
 		return WPD_PASSWORD_MATCH_DONTKNOW;
 
-	input->seek(0, WPX_SEEK_SET);
+	input->seek(0, RVNG_SEEK_SET);
 	WPXEncryption *encryption = 0;
 	try
 	{
@@ -65,9 +65,9 @@ WPDPasswordMatch WP1Heuristics::verifyPassword(WPXInputStream *input, const char
 	}
 }
 
-WPDConfidence WP1Heuristics::isWP1FileFormat(WPXInputStream *input, const char *password)
+WPDConfidence WP1Heuristics::isWP1FileFormat(RVNGInputStream *input, const char *password)
 {
-	input->seek(0, WPX_SEEK_SET);
+	input->seek(0, RVNG_SEEK_SET);
 	WPXEncryption *encryption = 0;
 
 	try
@@ -91,9 +91,9 @@ WPDConfidence WP1Heuristics::isWP1FileFormat(WPXInputStream *input, const char *
 			}
 		}
 
-		input->seek(0, WPX_SEEK_SET);
+		input->seek(0, RVNG_SEEK_SET);
 		if (password && encryption)
-			input->seek(6, WPX_SEEK_SET);
+			input->seek(6, RVNG_SEEK_SET);
 
 		int functionGroupCount = 0;
 
@@ -154,7 +154,7 @@ WPDConfidence WP1Heuristics::isWP1FileFormat(WPXInputStream *input, const char *
 					}
 					WPD_DEBUG_MSG(("WP1Heuristics functionLength = 0x%.8x\n", (unsigned int)functionLength));
 
-					input->seek(functionLength, WPX_SEEK_CUR);
+					input->seek(functionLength, RVNG_SEEK_CUR);
 					unsigned long closingFunctionLength = readU32(input, encryption, true);
 					WPD_DEBUG_MSG(("WP1Heuristics closingFunctionLength = 0x%.8x\n", (unsigned int)closingFunctionLength));
 					if (functionLength != closingFunctionLength)
@@ -192,7 +192,7 @@ WPDConfidence WP1Heuristics::isWP1FileFormat(WPXInputStream *input, const char *
 					// fixed length function group
 
 					// seek to the position where the closing gate should be
-					int res = input->seek(WP1_FUNCTION_GROUP_SIZE[readVal-0xC0]-2, WPX_SEEK_CUR);
+					int res = input->seek(WP1_FUNCTION_GROUP_SIZE[readVal-0xC0]-2, RVNG_SEEK_CUR);
 					// when passed the complete file, we should be able to do that
 					if (res)
 					{

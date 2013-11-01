@@ -33,7 +33,7 @@
 #include "libwpd_internal.h"
 #include "WPXTable.h"
 
-WP3Parser::WP3Parser(WPXInputStream *input, WPXHeader *header, WPXEncryption *encryption) :
+WP3Parser::WP3Parser(RVNGInputStream *input, WPXHeader *header, WPXEncryption *encryption) :
 	WPXParser(input, header, encryption)
 {
 }
@@ -42,7 +42,7 @@ WP3Parser::~WP3Parser()
 {
 }
 
-WP3ResourceFork *WP3Parser::getResourceFork(WPXInputStream *input, WPXEncryption *encryption)
+WP3ResourceFork *WP3Parser::getResourceFork(RVNGInputStream *input, WPXEncryption *encryption)
 {
 	WP3ResourceFork *resourceFork = 0;
 
@@ -65,11 +65,11 @@ WP3ResourceFork *WP3Parser::getResourceFork(WPXInputStream *input, WPXEncryption
 	}
 }
 
-void WP3Parser::parse(WPXInputStream *input, WPXEncryption *encryption, WP3Listener *listener)
+void WP3Parser::parse(RVNGInputStream *input, WPXEncryption *encryption, WP3Listener *listener)
 {
 	listener->startDocument();
 
-	input->seek(getHeader()->getDocumentOffset(), WPX_SEEK_SET);
+	input->seek(getHeader()->getDocumentOffset(), RVNG_SEEK_SET);
 
 	WPD_DEBUG_MSG(("WordPerfect: Starting document body parse (position = %ld)\n",(long)input->tell()));
 
@@ -79,7 +79,7 @@ void WP3Parser::parse(WPXInputStream *input, WPXEncryption *encryption, WP3Liste
 }
 
 // parseDocument: parses a document body (may call itself recursively, on other streams, or itself)
-void WP3Parser::parseDocument(WPXInputStream *input, WPXEncryption *encryption, WP3Listener *listener)
+void WP3Parser::parseDocument(RVNGInputStream *input, WPXEncryption *encryption, WP3Listener *listener)
 {
 	while (!input->atEOS())
 	{
@@ -111,9 +111,9 @@ void WP3Parser::parseDocument(WPXInputStream *input, WPXEncryption *encryption, 
 	}
 }
 
-void WP3Parser::parse(WPXDocumentInterface *documentInterface)
+void WP3Parser::parse(RVNGTextInterface *documentInterface)
 {
-	WPXInputStream *input = getInput();
+	RVNGInputStream *input = getInput();
 	WPXEncryption *encryption = getEncryption();
 	std::list<WPXPageSpan> pageList;
 	WPXTableList tableList;
@@ -177,13 +177,13 @@ void WP3Parser::parse(WPXDocumentInterface *documentInterface)
 	}
 }
 
-void WP3Parser::parseSubDocument(WPXDocumentInterface *documentInterface)
+void WP3Parser::parseSubDocument(RVNGTextInterface *documentInterface)
 {
 	std::list<WPXPageSpan> pageList;
 	WPXTableList tableList;
 	std::vector<WP3SubDocument *> subDocuments;
 
-	WPXInputStream *input = getInput();
+	RVNGInputStream *input = getInput();
 
 	try
 	{
@@ -192,7 +192,7 @@ void WP3Parser::parseSubDocument(WPXDocumentInterface *documentInterface)
 		parseDocument(input, 0, &stylesListener);
 		stylesListener.endSubDocument();
 
-		input->seek(0, WPX_SEEK_SET);
+		input->seek(0, RVNG_SEEK_SET);
 
 		WP3ContentListener listener(pageList, subDocuments, documentInterface);
 		listener.startSubDocument();

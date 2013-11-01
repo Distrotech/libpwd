@@ -30,7 +30,7 @@
 #include "WP5Listener.h"
 #include "libwpd_internal.h"
 
-WP5TableEOLGroup::WP5TableEOLGroup(WPXInputStream *input, WPXEncryption *encryption) :
+WP5TableEOLGroup::WP5TableEOLGroup(RVNGInputStream *input, WPXEncryption *encryption) :
 	WP5VariableLengthGroup(),
 	m_cellVerticalAlignment(0),
 	m_useCellAttributes(false),
@@ -49,7 +49,7 @@ WP5TableEOLGroup::~WP5TableEOLGroup()
 {
 }
 
-void WP5TableEOLGroup::_readContents(WPXInputStream *input, WPXEncryption *encryption)
+void WP5TableEOLGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
 {
 	uint8_t tmpFlags, tmpColumnSpanning;
 	switch (getSubGroup())
@@ -67,7 +67,7 @@ void WP5TableEOLGroup::_readContents(WPXInputStream *input, WPXEncryption *encry
 		if ((tmpColumnSpanning & 0x80) == 0x80)
 			m_spannedFromAbove = true;
 		m_rowSpan = readU8(input, encryption);
-		input->seek(4, WPX_SEEK_CUR);
+		input->seek(4, RVNG_SEEK_CUR);
 		m_cellAttributes = readU16(input, encryption);
 		m_cellJustification = readU8(input, encryption);
 		break;

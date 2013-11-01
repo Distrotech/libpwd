@@ -26,7 +26,7 @@
 #include "WP1LeftIndentGroup.h"
 #include "libwpd_internal.h"
 
-WP1LeftIndentGroup::WP1LeftIndentGroup(WPXInputStream *input, WPXEncryption *encryption, uint8_t group) :
+WP1LeftIndentGroup::WP1LeftIndentGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t group) :
 	WP1FixedLengthGroup(group),
 	m_oldLeftMargin(0),
 	m_newLeftMargin(0)
@@ -38,7 +38,7 @@ WP1LeftIndentGroup::~WP1LeftIndentGroup()
 {
 }
 
-void WP1LeftIndentGroup::_readContents(WPXInputStream *input, WPXEncryption *encryption)
+void WP1LeftIndentGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
 {
 	m_oldLeftMargin = readU16(input, encryption, true);
 	m_newLeftMargin = readU16(input, encryption, true);

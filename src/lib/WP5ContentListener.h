@@ -39,8 +39,8 @@ struct _WP5ContentParsingState
 {
 	_WP5ContentParsingState();
 	~_WP5ContentParsingState();
-	WPXString m_textBuffer;
-	WPXString m_noteReference;
+	RVNGString m_textBuffer;
+	RVNGString m_noteReference;
 
 	WPXTableList m_tableList;
 
@@ -50,7 +50,7 @@ struct _WP5ContentParsingState
 class WP5ContentListener : public WP5Listener, protected WPXContentListener
 {
 public:
-	WP5ContentListener(std::list<WPXPageSpan> &pageList, std::vector<WP5SubDocument *> &subDocuments, WPXDocumentInterface *documentInterface);
+	WP5ContentListener(std::list<WPXPageSpan> &pageList, std::vector<WP5SubDocument *> &subDocuments, RVNGTextInterface *documentInterface);
 	~WP5ContentListener();
 
 	void startDocument()
@@ -61,7 +61,7 @@ public:
 	{
 		WPXContentListener::startSubDocument();
 	}
-	void setFont(const WPXString &fontName, double fontSize);
+	void setFont(const RVNGString &fontName, double fontSize);
 	void setTabs(const std::vector<WPXTabStop> &tabStops, uint16_t tabOffset);
 	void insertCharacter(uint32_t character);
 	void insertTab(uint8_t tabType, double tabPosition);
@@ -105,16 +105,16 @@ public:
 	                bool useCellAttributes, uint32_t cellAttributes);
 	void endTable();
 
-	void insertNoteReference(const WPXString &noteReference);
+	void insertNoteReference(const RVNGString &noteReference);
 	void insertNote(WPXNoteType noteType, const WP5SubDocument *subDocument);
 	void headerFooterGroup(uint8_t headerFooterType, uint8_t occurenceBits, WP5SubDocument *subDocument);
 	void suppressPageCharacteristics(uint8_t /* suppressCode */) {}
 
-	void setDefaultFont(const WPXString &fontName, double fontSize);
+	void setDefaultFont(const RVNGString &fontName, double fontSize);
 
 	void boxOn(uint8_t positionAndType, uint8_t alignment, uint16_t width, uint16_t height, uint16_t x, uint16_t y);
 	virtual void boxOff();
-	virtual void insertGraphicsData(const WPXBinaryData *data);
+	virtual void insertGraphicsData(const RVNGBinaryData *data);
 
 protected:
 	void _handleSubDocument(const WPXSubDocument *subDocument, WPXSubDocumentType subDocumentType, WPXTableList tableList, unsigned nextTableIndice = 0);
@@ -128,7 +128,7 @@ private:
 	WP5ContentParsingState *m_parseState;
 	std::vector<WP5SubDocument *> &m_subDocuments;
 	double m_defaultFontSize;
-	WPXString m_defaultFontName;
+	RVNGString m_defaultFontName;
 };
 
 #endif /* WP5CONTENTLISTENER_H */

@@ -30,7 +30,7 @@
 #include "libwpd_internal.h"
 #include "WPXMemoryStream.h"
 
-WP6GraphicsCachedFileDataPacket::WP6GraphicsCachedFileDataPacket(WPXInputStream *input, WPXEncryption *encryption, int  id, uint32_t dataOffset, uint32_t dataSize):
+WP6GraphicsCachedFileDataPacket::WP6GraphicsCachedFileDataPacket(RVNGInputStream *input, WPXEncryption *encryption, int  id, uint32_t dataOffset, uint32_t dataSize):
 	WP6PrefixDataPacket(input, encryption),
 	m_id(id),
 	m_object(0),
@@ -49,14 +49,14 @@ WP6GraphicsCachedFileDataPacket::~WP6GraphicsCachedFileDataPacket()
 	m_object = 0;
 }
 
-void WP6GraphicsCachedFileDataPacket::_readContents(WPXInputStream *input, WPXEncryption *encryption)
+void WP6GraphicsCachedFileDataPacket::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
 {
 	uint32_t tmpDataSize = getDataSize();
 	m_data = new uint8_t[tmpDataSize];
 	for (uint32_t i = 0; i < tmpDataSize; i++)
 		m_data[i] = readU8(input, encryption);
 #if 0
-	WPXString filename;
+	RVNGString filename;
 	filename.sprintf("binarydump%.4x.wpg", m_id);
 	FILE *f = fopen(filename.cstr(), "wb");
 	if (f) // don't crash when current directory is on read-only file-system
@@ -66,6 +66,6 @@ void WP6GraphicsCachedFileDataPacket::_readContents(WPXInputStream *input, WPXEn
 		fclose(f);
 	}
 #endif
-	m_object = new WPXBinaryData(m_data, tmpDataSize);
+	m_object = new RVNGBinaryData(m_data, tmpDataSize);
 }
 /* vim:set shiftwidth=4 softtabstop=4 noexpandtab: */

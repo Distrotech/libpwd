@@ -32,23 +32,23 @@
 
 class WP6PrefixData;
 class WP6Listener;
-class WPXDocumentInterface;
+class RVNGTextInterface;
 
 class WP6Parser : public WPXParser
 {
 public:
-	WP6Parser(WPXInputStream *input, WPXHeader *header, WPXEncryption *encryption);
+	WP6Parser(RVNGInputStream *input, WPXHeader *header, WPXEncryption *encryption);
 	~WP6Parser();
 
-	void parse(WPXDocumentInterface *documentInterface);
-	void parseSubDocument(WPXDocumentInterface *documentInterface);
+	void parse(RVNGTextInterface *documentInterface);
+	void parseSubDocument(RVNGTextInterface *documentInterface);
 
-	static void parseDocument(WPXInputStream *input, WPXEncryption *encryption, WP6Listener *listener);
+	static void parseDocument(RVNGInputStream *input, WPXEncryption *encryption, WP6Listener *listener);
 
 private:
-	WP6PrefixData *getPrefixData(WPXInputStream *input, WPXEncryption *encryption);
+	WP6PrefixData *getPrefixData(RVNGInputStream *input, WPXEncryption *encryption);
 
-	void parse(WPXInputStream *input, WPXEncryption *encryption, WP6Listener *listener);
+	void parse(RVNGInputStream *input, WPXEncryption *encryption, WP6Listener *listener);
 
 	void parsePacket(WP6PrefixData *prefixData, int type, WP6Listener *listener);
 	void parsePackets(WP6PrefixData *prefixData, int type, WP6Listener *listener);

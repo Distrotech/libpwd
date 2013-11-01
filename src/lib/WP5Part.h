@@ -30,7 +30,7 @@
 
 #include "libwpd_internal.h"
 
-class WPXInputStream;
+class RVNGInputStream;
 class WP5Listener;
 class WPXEncryption;
 
@@ -39,7 +39,7 @@ class WP5Part
 public:
 	virtual ~WP5Part() {}
 
-	static WP5Part *constructPart(WPXInputStream *input, WPXEncryption *encryption, const uint8_t readVal);
+	static WP5Part *constructPart(RVNGInputStream *input, WPXEncryption *encryption, const uint8_t readVal);
 	virtual void parse(WP5Listener *listener) = 0;
 };
 

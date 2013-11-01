@@ -25,9 +25,9 @@
 
 #ifndef MEMORYSTREAM_H
 #define MEMORYSTREAM_H
-#include <libwpd-stream/libwpd-stream.h>
+#include <librevenge-stream/librevenge-stream.h>
 
-class WPXMemoryInputStream : public WPXInputStream
+class WPXMemoryInputStream : public RVNGInputStream
 {
 public:
 	WPXMemoryInputStream(unsigned char *data, unsigned long size);
@@ -37,13 +37,13 @@ public:
 	{
 		return false;
 	}
-	virtual WPXInputStream *getDocumentOLEStream(const char *)
+	virtual RVNGInputStream *getDocumentOLEStream(const char *)
 	{
 		return 0;
 	}
 
 	virtual const unsigned char *read(unsigned long numBytes, unsigned long &numBytesRead);
-	virtual int seek(long offset, WPX_SEEK_TYPE seekType);
+	virtual int seek(long offset, RVNG_SEEK_TYPE seekType);
 	virtual long tell();
 	virtual bool atEOS();
 	virtual unsigned long getSize() const

@@ -34,9 +34,9 @@
 class WP6GraphicsFilenamePacket : public WP6PrefixDataPacket
 {
 public:
-	WP6GraphicsFilenamePacket(WPXInputStream *input, WPXEncryption *encryption, int id, const uint8_t flags, uint32_t dataOffset, uint32_t dataSize);
+	WP6GraphicsFilenamePacket(RVNGInputStream *input, WPXEncryption *encryption, int id, const uint8_t flags, uint32_t dataOffset, uint32_t dataSize);
 	~WP6GraphicsFilenamePacket();
-	void _readContents(WPXInputStream *input, WPXEncryption *encryption);
+	void _readContents(RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP6Listener * /*listener */) const {}
 	const std::vector<unsigned> getChildIds() const;
 

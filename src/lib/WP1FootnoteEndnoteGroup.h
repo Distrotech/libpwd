@@ -34,9 +34,9 @@ class WP1SubDocument;
 class WP1FootnoteEndnoteGroup : public WP1VariableLengthGroup
 {
 public:
-	WP1FootnoteEndnoteGroup(WPXInputStream *input, WPXEncryption *encryption, uint8_t group);
+	WP1FootnoteEndnoteGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t group);
 	~WP1FootnoteEndnoteGroup();
-	void _readContents(WPXInputStream *input, WPXEncryption *encryption);
+	void _readContents(RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP1Listener *listener);
 
 private:

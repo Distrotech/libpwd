@@ -33,7 +33,7 @@
 class WP6HighlightGroup : public WP6FixedLengthGroup
 {
 public:
-	WP6HighlightGroup(WPXInputStream *input, WPXEncryption *encryption, uint8_t groupID);
+	WP6HighlightGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID);
 	virtual void parse(WP6Listener *listener) = 0;
 	const RGBSColor getColor() const
 	{
@@ -41,7 +41,7 @@ public:
 	}
 
 protected:
-	virtual void _readContents(WPXInputStream *input, WPXEncryption *encryption);
+	virtual void _readContents(RVNGInputStream *input, WPXEncryption *encryption);
 
 private:
 	RGBSColor m_color;
@@ -50,14 +50,14 @@ private:
 class WP6HighlightOnGroup : public WP6HighlightGroup
 {
 public:
-	WP6HighlightOnGroup(WPXInputStream *input, WPXEncryption *encryption, uint8_t groupID);
+	WP6HighlightOnGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID);
 	void parse(WP6Listener *listener);
 };
 
 class WP6HighlightOffGroup : public WP6HighlightGroup
 {
 public:
-	WP6HighlightOffGroup(WPXInputStream *input, WPXEncryption *encryption, uint8_t groupID);
+	WP6HighlightOffGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID);
 	void parse(WP6Listener *listener);
 };
 

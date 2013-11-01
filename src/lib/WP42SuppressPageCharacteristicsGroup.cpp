@@ -27,7 +27,7 @@
 #include "libwpd_internal.h"
 #include <string>
 
-WP42SuppressPageCharacteristicsGroup::WP42SuppressPageCharacteristicsGroup(WPXInputStream *input, WPXEncryption *encryption, uint8_t group) :
+WP42SuppressPageCharacteristicsGroup::WP42SuppressPageCharacteristicsGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t group) :
 	WP42MultiByteFunctionGroup(group),
 	m_suppressCode(0)
 {
@@ -38,7 +38,7 @@ WP42SuppressPageCharacteristicsGroup::~WP42SuppressPageCharacteristicsGroup()
 {
 }
 
-void WP42SuppressPageCharacteristicsGroup::_readContents(WPXInputStream *input, WPXEncryption *encryption)
+void WP42SuppressPageCharacteristicsGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
 {
 	m_suppressCode = readU8(input, encryption);
 }

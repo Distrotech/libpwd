@@ -46,7 +46,7 @@ WP3VariableLengthGroup::WP3VariableLengthGroup() :
 {
 }
 
-WP3VariableLengthGroup *WP3VariableLengthGroup::constructVariableLengthGroup(WPXInputStream *input, WPXEncryption *encryption, const uint8_t group)
+WP3VariableLengthGroup *WP3VariableLengthGroup::constructVariableLengthGroup(RVNGInputStream *input, WPXEncryption *encryption, const uint8_t group)
 {
 	switch (group)
 	{
@@ -76,7 +76,7 @@ WP3VariableLengthGroup *WP3VariableLengthGroup::constructVariableLengthGroup(WPX
 	}
 }
 
-bool WP3VariableLengthGroup::isGroupConsistent(WPXInputStream *input, WPXEncryption *encryption, const uint8_t group)
+bool WP3VariableLengthGroup::isGroupConsistent(RVNGInputStream *input, WPXEncryption *encryption, const uint8_t group)
 {
 	long startPosition = input->tell();
 	if (0 > startPosition  || startPosition > ((std::numeric_limits<long>::max)()))
@@ -88,42 +88,42 @@ bool WP3VariableLengthGroup::isGroupConsistent(WPXInputStream *input, WPXEncrypt
 		uint16_t size = readU16(input, encryption, true);
 		if (startPosition + size < startPosition)
 		{
-			input->seek(startPosition, WPX_SEEK_SET);
+			input->seek(startPosition, RVNG_SEEK_SET);
 			return false;
 		}
 
-		if (input->seek((startPosition + size - 1), WPX_SEEK_SET) || input->atEOS())
+		if (input->seek((startPosition + size - 1), RVNG_SEEK_SET) || input->atEOS())
 		{
-			input->seek(startPosition, WPX_SEEK_SET);
+			input->seek(startPosition, RVNG_SEEK_SET);
 			return false;
 		}
 		if (size != readU16(input, encryption, true))
 		{
-			input->seek(startPosition, WPX_SEEK_SET);
+			input->seek(startPosition, RVNG_SEEK_SET);
 			return false;
 		}
 		if (subGroup != readU8(input, encryption))
 		{
-			input->seek(startPosition, WPX_SEEK_SET);
+			input->seek(startPosition, RVNG_SEEK_SET);
 			return false;
 		}
 		if (group != readU8(input, encryption))
 		{
-			input->seek(startPosition, WPX_SEEK_SET);
+			input->seek(startPosition, RVNG_SEEK_SET);
 			return false;
 		}
 
-		input->seek(startPosition, WPX_SEEK_SET);
+		input->seek(startPosition, RVNG_SEEK_SET);
 		return true;
 	}
 	catch(...)
 	{
-		input->seek(startPosition, WPX_SEEK_SET);
+		input->seek(startPosition, RVNG_SEEK_SET);
 		return false;
 	}
 }
 
-void WP3VariableLengthGroup::_read(WPXInputStream *input, WPXEncryption *encryption)
+void WP3VariableLengthGroup::_read(RVNGInputStream *input, WPXEncryption *encryption)
 {
 	long startPosition = input->tell();
 
@@ -136,7 +136,7 @@ void WP3VariableLengthGroup::_read(WPXInputStream *input, WPXEncryption *encrypt
 
 	_readContents(input, encryption);
 
-	input->seek((startPosition + m_size - 5), WPX_SEEK_SET);
+	input->seek((startPosition + m_size - 5), RVNG_SEEK_SET);
 
 	if (m_size != (readU16(input, encryption, true) + 4))
 	{
@@ -149,7 +149,7 @@ void WP3VariableLengthGroup::_read(WPXInputStream *input, WPXEncryption *encrypt
 		throw FileException();
 	}
 
-	input->seek((startPosition + m_size - 1), WPX_SEEK_SET);
+	input->seek((startPosition + m_size - 1), RVNG_SEEK_SET);
 
 }
 /* vim:set shiftwidth=4 softtabstop=4 noexpandtab: */

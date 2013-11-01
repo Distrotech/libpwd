@@ -29,7 +29,7 @@
 #include "WP6Parser.h"
 #include "libwpd_internal.h"
 
-WP6FillStylePacket::WP6FillStylePacket(WPXInputStream *input, WPXEncryption *encryption, int /* id */, uint32_t dataOffset, uint32_t dataSize) :
+WP6FillStylePacket::WP6FillStylePacket(RVNGInputStream *input, WPXEncryption *encryption, int /* id */, uint32_t dataOffset, uint32_t dataSize) :
 	WP6PrefixDataPacket(input, encryption),
 	m_fgColor(0xff, 0xff, 0xff),
 	m_bgColor(0xff, 0xff, 0xff)
@@ -46,16 +46,16 @@ WP6FillStylePacket::~WP6FillStylePacket()
 const int WP6_FILL_STYLE_PACKET_SKIPABLE_DATA_AFTER_PREFIX_PACKETS = 6;
 const int WP6_FILL_STYLE_PACKET_SKIPABLE_DATA_AFTER_FILL_NAME = 3;
 
-void WP6FillStylePacket::_readContents(WPXInputStream *input, WPXEncryption *encryption)
+void WP6FillStylePacket::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
 {
 	/* skip a whole bunch of useless crap */
 	uint16_t numChildPrefixIDs = readU16(input, encryption);
-	input->seek(sizeof(uint16_t)*numChildPrefixIDs, WPX_SEEK_CUR);
-	input->seek(WP6_FILL_STYLE_PACKET_SKIPABLE_DATA_AFTER_PREFIX_PACKETS, WPX_SEEK_CUR);
+	input->seek(sizeof(uint16_t)*numChildPrefixIDs, RVNG_SEEK_CUR);
+	input->seek(WP6_FILL_STYLE_PACKET_SKIPABLE_DATA_AFTER_PREFIX_PACKETS, RVNG_SEEK_CUR);
 	int16_t fillNameLength = readS16(input, encryption);
 	if (fillNameLength > 0)
-		input->seek(fillNameLength, WPX_SEEK_CUR);
-	input->seek(WP6_FILL_STYLE_PACKET_SKIPABLE_DATA_AFTER_FILL_NAME, WPX_SEEK_CUR);
+		input->seek(fillNameLength, RVNG_SEEK_CUR);
+	input->seek(WP6_FILL_STYLE_PACKET_SKIPABLE_DATA_AFTER_FILL_NAME, RVNG_SEEK_CUR);
 
 	/* now we can finally grab the meat */
 	m_fgColor.m_r = readU8(input, encryption);

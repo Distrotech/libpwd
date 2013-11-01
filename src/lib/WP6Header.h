@@ -31,7 +31,7 @@
 class WP6Header : public WPXHeader
 {
 public:
-	WP6Header(WPXInputStream *input, WPXEncryption *encryption, uint32_t documentOffset, uint8_t productType,
+	WP6Header(RVNGInputStream *input, WPXEncryption *encryption, uint32_t documentOffset, uint8_t productType,
 	          uint8_t fileType, uint8_t majorVersion, uint8_t minorVersion, uint16_t documentEncryption);
 	virtual ~WP6Header() {}
 
@@ -45,7 +45,7 @@ public:
 	}
 
 protected:
-	void _readIndexInformation(WPXInputStream *input, WPXEncryption *encryption);
+	void _readIndexInformation(RVNGInputStream *input, WPXEncryption *encryption);
 
 private:
 	uint16_t m_indexHeaderOffset;

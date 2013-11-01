@@ -24,12 +24,66 @@
  * Corel Corporation or Corel Corporation Limited."
  */
 #include "libwpd_internal.h"
-#include <libwpd-stream/libwpd-stream.h>
+#include <librevenge-stream/librevenge-stream.h>
 #include <ctype.h>
 #include <locale.h>
 #include <string>
 
-uint8_t readU8(WPXInputStream *input, WPXEncryption *encryption)
+namespace
+{
+
+static int libwpd_unichar_to_utf8 (uint32_t c, char *outbuf)
+{
+	uint8_t len = 1;
+	uint8_t first = 0;
+
+	if (c < 0x80)
+	{
+		first = 0;
+		len = 1;
+	}
+	else if (c < 0x800)
+	{
+		first = 0xc0;
+		len = 2;
+	}
+	else if (c < 0x10000)
+	{
+		first = 0xe0;
+		len = 3;
+	}
+	else if (c < 0x200000)
+	{
+		first = 0xf0;
+		len = 4;
+	}
+	else if (c < 0x4000000)
+	{
+		first = 0xf8;
+		len = 5;
+	}
+	else
+	{
+		first = 0xfc;
+		len = 6;
+	}
+
+	if (outbuf)
+	{
+		for (uint8_t i = (uint8_t)(len - 1); i > 0; --i)
+		{
+			outbuf[i] = (char)((c & 0x3f) | 0x80);
+			c >>= 6;
+		}
+		outbuf[0] = (char)(c | first);
+	}
+
+	return len;
+}
+
+} // anonymous namespace
+
+uint8_t readU8(RVNGInputStream *input, WPXEncryption *encryption)
 {
 	unsigned long numBytesRead = 0;
 	uint8_t const *p = (encryption ?
@@ -42,7 +96,7 @@ uint8_t readU8(WPXInputStream *input, WPXEncryption *encryption)
 	return p[0];
 }
 
-uint16_t readU16(WPXInputStream *input, WPXEncryption *encryption, bool bigendian)
+uint16_t readU16(RVNGInputStream *input, WPXEncryption *encryption, bool bigendian)
 {
 	unsigned long numBytesRead = 0;
 	uint8_t const *p = (encryption ?
@@ -57,12 +111,12 @@ uint16_t readU16(WPXInputStream *input, WPXEncryption *encryption, bool bigendia
 	return (uint16_t)(p[0]|((uint16_t)p[1]<<8));
 }
 
-int16_t readS16(WPXInputStream *input, WPXEncryption *encryption, bool bigendian)
+int16_t readS16(RVNGInputStream *input, WPXEncryption *encryption, bool bigendian)
 {
 	return (int16_t)readU16(input, encryption, bigendian);
 }
 
-uint32_t readU32(WPXInputStream *input, WPXEncryption *encryption, bool bigendian)
+uint32_t readU32(RVNGInputStream *input, WPXEncryption *encryption, bool bigendian)
 {
 	unsigned long numBytesRead = 0;
 	uint8_t const *p = (encryption ?
@@ -77,10 +131,21 @@ uint32_t readU32(WPXInputStream *input, WPXEncryption *encryption, bool bigendia
 	return (uint32_t)p[0]|((uint32_t)p[1]<<8)|((uint32_t)p[2]<<16)|((uint32_t)p[3]<<24);
 }
 
-WPXString readPascalString(WPXInputStream *input, WPXEncryption *encryption)
+void appendUCS4(RVNGString &str, uint32_t ucs4)
+{
+	int charLength = libwpd_unichar_to_utf8(ucs4, 0);
+	char *utf8 = new char[charLength+1];
+	utf8[charLength] = '\0';
+	libwpd_unichar_to_utf8(ucs4, utf8);
+	str.append(utf8);
+
+	delete[] utf8;
+}
+
+RVNGString readPascalString(RVNGInputStream *input, WPXEncryption *encryption)
 {
 	int pascalStringLength = readU8(input, encryption);
-	WPXString tmpString;
+	RVNGString tmpString;
 	for (int i=0; i<pascalStringLength; i++)
 	{
 		uint16_t tmpChar = readU8(input, encryption);
@@ -98,9 +163,9 @@ WPXString readPascalString(WPXInputStream *input, WPXEncryption *encryption)
 	return tmpString;
 }
 
-WPXString readCString(WPXInputStream *input, WPXEncryption *encryption)
+RVNGString readCString(RVNGInputStream *input, WPXEncryption *encryption)
 {
-	WPXString tmpString;
+	RVNGString tmpString;
 	char character;
 	while ((character = (char)readU8(input, encryption)) != '\0')
 		tmpString.append(character);
@@ -1171,13 +1236,13 @@ int _extractNumericValueFromRoman(const char romanChar)
 // as letters, numbers, or roman numerals.. return an integer value representing its number
 // HACK: this function is really cheesey
 // NOTE: if the input is not valid, the output is unspecified
-int _extractDisplayReferenceNumberFromBuf(const WPXString &buf, const WPXNumberingType listType)
+int _extractDisplayReferenceNumberFromBuf(const RVNGString &buf, const WPXNumberingType listType)
 {
 	if (listType == LOWERCASE_ROMAN || listType == UPPERCASE_ROMAN)
 	{
 		int currentSum = 0;
 		int lastMark = 0;
-		WPXString::Iter i(buf);
+		RVNGString::Iter i(buf);
 		for (i.rewind(); i.next();)
 		{
 			int currentMark = _extractNumericValueFromRoman(*(i()));
@@ -1205,7 +1270,7 @@ int _extractDisplayReferenceNumberFromBuf(const WPXString &buf, const WPXNumberi
 	else if (listType == ARABIC)
 	{
 		int currentSum = 0;
-		WPXString::Iter i(buf);
+		RVNGString::Iter i(buf);
 		for (i.rewind(); i.next();)
 		{
 			currentSum *= 10;
@@ -1217,9 +1282,9 @@ int _extractDisplayReferenceNumberFromBuf(const WPXString &buf, const WPXNumberi
 	return 1;
 }
 
-WPXNumberingType _extractWPXNumberingTypeFromBuf(const WPXString &buf, const WPXNumberingType putativeWPXNumberingType)
+WPXNumberingType _extractWPXNumberingTypeFromBuf(const RVNGString &buf, const WPXNumberingType putativeWPXNumberingType)
 {
-	WPXString::Iter i(buf);
+	RVNGString::Iter i(buf);
 	for (i.rewind(); i.next();)
 	{
 		if ((*(i()) == 'I' || *(i()) == 'V' || *(i()) == 'X') &&
@@ -1237,9 +1302,9 @@ WPXNumberingType _extractWPXNumberingTypeFromBuf(const WPXString &buf, const WPX
 	return ARABIC;
 }
 
-WPXString _numberingTypeToString(WPXNumberingType t)
+RVNGString _numberingTypeToString(WPXNumberingType t)
 {
-	WPXString sListTypeSymbol("1");
+	RVNGString sListTypeSymbol("1");
 	switch (t)
 	{
 	case ARABIC:
@@ -1299,9 +1364,9 @@ const uint32_t macRomanCharacterMap[] =
 	0x00af, 0x02d8, 0x02d9, 0x02da, 0x00b8, 0x02dd, 0x02db, 0x02c7
 };
 
-WPXString doubleToString(const double value)
+RVNGString doubleToString(const double value)
 {
-	WPXString tempString;
+	RVNGString tempString;
 	if (value < 0.0001 && value > -0.0001)
 		tempString.sprintf("0.0000");
 	else
@@ -1320,7 +1385,7 @@ WPXString doubleToString(const double value)
 		while ((pos = stringValue.find(decimalPoint)) != std::string::npos)
 			stringValue.replace(pos,decimalPoint.size(),".");
 	}
-	return WPXString(stringValue.c_str());
+	return RVNGString(stringValue.c_str());
 }
 
 int appleWorldScriptToUCS4(uint16_t character, const uint32_t **chars)

@@ -26,7 +26,7 @@
 #include "WP1BottomMarginGroup.h"
 #include "libwpd_internal.h"
 
-WP1BottomMarginGroup::WP1BottomMarginGroup(WPXInputStream *input, WPXEncryption *encryption, uint8_t group) :
+WP1BottomMarginGroup::WP1BottomMarginGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t group) :
 	WP1FixedLengthGroup(group),
 	m_bottomMargin(0)
 {
@@ -37,9 +37,9 @@ WP1BottomMarginGroup::~WP1BottomMarginGroup()
 {
 }
 
-void WP1BottomMarginGroup::_readContents(WPXInputStream *input, WPXEncryption *encryption)
+void WP1BottomMarginGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
 {
-	input->seek(2, WPX_SEEK_CUR);
+	input->seek(2, RVNG_SEEK_CUR);
 	m_bottomMargin = readU16(input, encryption, true);
 }
 

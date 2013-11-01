@@ -37,7 +37,7 @@ const char *FONT_WEIGHT_STRINGS [] = {	"Bold", "bold", "Demi", "demi", "Extended
 const char *USELESS_WP_POSTFIX = "-WP";
 #define countElements(a) ((sizeof(a) / sizeof(a[0])))
 
-WP6FontDescriptorPacket::WP6FontDescriptorPacket(WPXInputStream *input, WPXEncryption *encryption, int /* id */, uint32_t dataOffset, uint32_t dataSize) :
+WP6FontDescriptorPacket::WP6FontDescriptorPacket(RVNGInputStream *input, WPXEncryption *encryption, int /* id */, uint32_t dataOffset, uint32_t dataSize) :
 	WP6PrefixDataPacket(input, encryption),
 	m_characterWidth(0),
 	m_ascenderHeight(0),
@@ -66,7 +66,7 @@ WP6FontDescriptorPacket::~WP6FontDescriptorPacket()
 {
 }
 
-void WP6FontDescriptorPacket::_readContents(WPXInputStream *input, WPXEncryption *encryption)
+void WP6FontDescriptorPacket::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
 {
 	// short sized characteristics
 	m_characterWidth = readU16(input, encryption);
@@ -93,7 +93,7 @@ void WP6FontDescriptorPacket::_readContents(WPXInputStream *input, WPXEncryption
 	_readFontName(input, encryption);
 }
 
-void WP6FontDescriptorPacket::_readFontName(WPXInputStream *input, WPXEncryption *encryption)
+void WP6FontDescriptorPacket::_readFontName(RVNGInputStream *input, WPXEncryption *encryption)
 {
 	if (m_fontNameLength > ((std::numeric_limits<uint16_t>::max)() / 2))
 		m_fontNameLength = ((std::numeric_limits<uint16_t>::max)() / 2);
@@ -140,7 +140,7 @@ void WP6FontDescriptorPacket::_readFontName(WPXInputStream *input, WPXEncryption
 			while ((pos = stringValue.find("-", stringValue.size() - 1)) != std::string::npos)
 				stringValue.replace(pos, strlen("-"), "");
 
-		m_fontName = WPXString(stringValue.c_str());
+		m_fontName = RVNGString(stringValue.c_str());
 		WPD_DEBUG_MSG(("WordPerfect: stripping font name (final: %s)\n", m_fontName.cstr()));
 	}
 }

@@ -31,7 +31,7 @@
 #include "libwpd_internal.h"
 #include <vector>
 
-class WPXString;
+class RVNGString;
 class WP6DefaultInitialFontPacket;
 class WP6PrefixData;
 class WP6PrefixDataPacket;
@@ -52,7 +52,7 @@ public:
 	                     const uint8_t hour, const uint8_t minute,
 	                     const uint8_t second, const uint8_t dayOfWeek,
 	                     const uint8_t timeZone, const uint8_t unused) = 0;
-	virtual void setExtendedInformation(const uint16_t type, const WPXString &data) = 0;
+	virtual void setExtendedInformation(const uint16_t type, const RVNGString &data) = 0;
 	virtual void setAlignmentCharacter(const uint32_t character) = 0;
 	virtual void setLeaderCharacter(const uint32_t character, const uint8_t numSpaces) = 0;
 	virtual void defineTabStops(const bool isRelative, const std::vector<WPXTabStop> &tabStops,
@@ -67,7 +67,7 @@ public:
 	virtual void characterColorChange(const uint8_t red, const uint8_t green, const uint8_t blue) = 0;
 	virtual void characterShadingChange(const uint8_t shading) = 0;
 	virtual void highlightChange(const bool isOn, const RGBSColor &color) = 0;
-	virtual void fontChange(const uint16_t matchedFontPointSize, const uint16_t fontPID, const WPXString &fontName) = 0;
+	virtual void fontChange(const uint16_t matchedFontPointSize, const uint16_t fontPID, const RVNGString &fontName) = 0;
 	virtual void attributeChange(const bool isOn, const uint8_t attribute) = 0;
 	virtual void spacingAfterParagraphChange(const double spacingRelative, const double spacingAbsolute) = 0;
 	virtual void pageMarginChange(const uint8_t side, const uint16_t margin) = 0;
@@ -123,7 +123,7 @@ public:
 		m_prefixData = prefixData;
 	}
 	const WP6PrefixDataPacket *getPrefixDataPacket(const int prefixID) const;
-	WPXString getFontNameForPID(const int prefixID) const;
+	RVNGString getFontNameForPID(const int prefixID) const;
 
 private:
 	WP6Listener(const WP6Listener &);

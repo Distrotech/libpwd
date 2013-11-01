@@ -29,13 +29,13 @@
 #define WP1HEURISTICS_H
 
 #include <libwpd/libwpd.h>
-#include <libwpd-stream/libwpd-stream.h>
+#include <librevenge-stream/librevenge-stream.h>
 
 class WP1Heuristics
 {
 public:
-	static WPDConfidence isWP1FileFormat(WPXInputStream *input, const char *password = 0);
-	static WPDPasswordMatch verifyPassword(WPXInputStream *input, const char *password);
+	static WPDConfidence isWP1FileFormat(RVNGInputStream *input, const char *password = 0);
+	static WPDPasswordMatch verifyPassword(RVNGInputStream *input, const char *password);
 };
 
 #endif /* WP1HEURISTICS_H */

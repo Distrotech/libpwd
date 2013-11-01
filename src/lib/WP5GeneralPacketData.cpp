@@ -36,7 +36,7 @@ WP5GeneralPacketData::WP5GeneralPacketData()
 {
 }
 
-WP5GeneralPacketData *WP5GeneralPacketData::constructGeneralPacketData(WPXInputStream *input, WPXEncryption *encryption, WP5GeneralPacketIndex *packetIndex)
+WP5GeneralPacketData *WP5GeneralPacketData::constructGeneralPacketData(RVNGInputStream *input, WPXEncryption *encryption, WP5GeneralPacketIndex *packetIndex)
 {
 	switch (packetIndex->getType())
 	{
@@ -55,9 +55,9 @@ WP5GeneralPacketData *WP5GeneralPacketData::constructGeneralPacketData(WPXInputS
 	}
 }
 
-void WP5GeneralPacketData::_read(WPXInputStream *input, WPXEncryption *encryption, uint32_t dataOffset, uint32_t dataSize)
+void WP5GeneralPacketData::_read(RVNGInputStream *input, WPXEncryption *encryption, uint32_t dataOffset, uint32_t dataSize)
 {
-	input->seek(dataOffset, WPX_SEEK_SET);
+	input->seek(dataOffset, RVNG_SEEK_SET);
 
 	_readContents(input, encryption, dataSize);
 

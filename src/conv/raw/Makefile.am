@@ -1,21 +1,10 @@
-if WITH_LIBWPD_STREAM
-target_wpd2raw = wpd2raw
-else
-target_wpd2raw =
-endif
+bin_PROGRAMS = wpd2raw
 
-bin_PROGRAMS = $(target_wpd2raw)
-
-AM_CXXFLAGS = -I$(top_srcdir)/inc $(DEBUG_CXXFLAGS)
+AM_CXXFLAGS = -I$(top_srcdir)/inc $(REVENGE_CFLAGS) $(DEBUG_CXXFLAGS)
 
 wpd2raw_DEPENDENCIES = @WPD2RAW_WIN32_RESOURCE@
 
-if STATIC_TOOLS
-wpd2raw_LDADD = ../../lib/@WPD_OBJDIR@/libwpd-@WPD_MAJOR_VERSION@.@WPD_MINOR_VERSION@.a ../../lib/@WPD_OBJDIR@/libwpd-stream-@WPD_MAJOR_VERSION@.@WPD_MINOR_VERSION@.a @WPD2RAW_WIN32_RESOURCE@
-wpd2raw_LDFLAGS = -all-static
-else
-wpd2raw_LDADD = ../../lib/libwpd-@WPD_MAJOR_VERSION@.@WPD_MINOR_VERSION@.la ../../lib/libwpd-stream-@WPD_MAJOR_VERSION@.@WPD_MINOR_VERSION@.la @WPD2RAW_WIN32_RESOURCE@
-endif
+wpd2raw_LDADD = ../../lib/libwpd-@WPD_MAJOR_VERSION@.@WPD_MINOR_VERSION@.la $(REVENGE_LIBS) @WPD2RAW_WIN32_RESOURCE@
 
 wpd2raw_SOURCES = \
 	RawDocumentGenerator.cpp	 \

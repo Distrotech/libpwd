@@ -29,14 +29,14 @@
 #include "WP6VariableLengthGroup.h"
 #include "libwpd_internal.h"
 
-class WPXInputStream;
+class RVNGInputStream;
 class WP6Listener;
 
 class WP6BoxGroup : public WP6VariableLengthGroup
 {
 public:
-	WP6BoxGroup(WPXInputStream *input, WPXEncryption *encryption);
-	void _readContents(WPXInputStream *input, WPXEncryption *encryption);
+	WP6BoxGroup(RVNGInputStream *input, WPXEncryption *encryption);
+	void _readContents(RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP6Listener *listener);
 
 private:

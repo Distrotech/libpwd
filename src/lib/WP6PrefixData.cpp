@@ -31,7 +31,7 @@
 #include "WP6DefaultInitialFontPacket.h"
 #include "libwpd_internal.h"
 
-WP6PrefixData::WP6PrefixData(WPXInputStream *input, WPXEncryption *encryption, const int numPrefixIndices) :
+WP6PrefixData::WP6PrefixData(RVNGInputStream *input, WPXEncryption *encryption, const int numPrefixIndices) :
 	m_prefixDataPacketHash(),
 	m_prefixDataPacketTypeHash(),
 	m_defaultInitialFontPID((-1))

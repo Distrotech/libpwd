@@ -32,7 +32,7 @@
 
 class WP3SubDocument;
 class WP3ResourceFork;
-class WPXBinaryData;
+class RVNGBinaryData;
 
 class WP3Listener
 {
@@ -71,10 +71,10 @@ public:
 	virtual void undoChange(uint8_t undoType, uint16_t undoLevel) = 0;
 	virtual void justificationChange(uint8_t justification) = 0;
 	virtual void setTextColor(const RGBSColor *fontColor) = 0;
-	virtual void setTextFont(const WPXString &fontName) = 0;
+	virtual void setTextFont(const RVNGString &fontName) = 0;
 	virtual void setFontSize(uint16_t fontSize) = 0;
-	virtual void insertPageNumber(const WPXString &pageNumber) = 0;
-	virtual void insertNoteReference(const WPXString &noteReference) = 0;
+	virtual void insertPageNumber(const RVNGString &pageNumber) = 0;
+	virtual void insertNoteReference(const RVNGString &noteReference) = 0;
 	virtual void insertNote(WPXNoteType noteType, const WP3SubDocument *subDocument) = 0;
 	virtual void headerFooterGroup(uint8_t headerFooterType, uint8_t occurenceBits, WP3SubDocument *subDocument) = 0;
 	virtual void suppressPage(uint16_t suppressCode) = 0;
@@ -84,7 +84,7 @@ public:
 	virtual void leftRightIndent() = 0;
 	virtual void leftRightIndent(double offset) = 0;
 	virtual void insertPicture(double height, double width, double verticalOffset, double horizontalOffset, uint8_t leftColumn, uint8_t rightColumn,
-	                           uint16_t figureFlags, const WPXBinaryData &binaryData) = 0;
+	                           uint16_t figureFlags, const RVNGBinaryData &binaryData) = 0;
 	virtual void insertTextBox(double height, double width, double verticalOffset, double horizontalOffset, uint8_t leftColumn, uint8_t rightColumn,
 	                           uint16_t figureFlags, const WP3SubDocument *subDocument, const WP3SubDocument *caption) = 0;
 	virtual void insertWP51Table(double height, double width, double verticalOffset, double horizontalOffset, uint8_t leftColumn, uint8_t rightColumn,
