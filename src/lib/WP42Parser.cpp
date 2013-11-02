@@ -59,7 +59,7 @@ void WP42Parser::parse(RVNGInputStream *input, WPXEncryption *encryption, WP42Li
 // parseDocument: parses a document body (may call itself recursively, on other streams, or itself)
 void WP42Parser::parseDocument(RVNGInputStream *input, WPXEncryption *encryption, WP42Listener *listener)
 {
-	while (!input->atEOS())
+	while (!input->isEnd())
 	{
 		uint8_t readVal;
 		readVal = readU8(input, encryption);

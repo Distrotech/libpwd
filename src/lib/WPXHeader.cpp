@@ -57,7 +57,7 @@ WPXHeader *WPXHeader::constructHeader(RVNGInputStream *input, WPXEncryption *enc
 	char fileMagic[4] = { 0, 0, 0, 0 };
 	/* check the magic */
 	input->seek(WPX_HEADER_MAGIC_OFFSET, RVNG_SEEK_SET);
-	for (int i=0; i<3 && !input->atEOS(); i++)
+	for (int i=0; i<3 && !input->isEnd(); i++)
 		fileMagic[i] = (char)readU8(input, encryption);
 
 	if ( strcmp(fileMagic, "WPC") )

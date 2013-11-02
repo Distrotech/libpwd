@@ -71,7 +71,7 @@ bool WP5FixedLengthGroup::isGroupConsistent(RVNGInputStream *input, WPXEncryptio
 	try
 	{
 		int size = WP5_FIXED_LENGTH_FUNCTION_GROUP_SIZE[groupID-0xC0];
-		if (input->seek((startPosition + size - 2), RVNG_SEEK_SET) || input->atEOS())
+		if (input->seek((startPosition + size - 2), RVNG_SEEK_SET) || input->isEnd())
 		{
 			input->seek(startPosition, RVNG_SEEK_SET);
 			return false;

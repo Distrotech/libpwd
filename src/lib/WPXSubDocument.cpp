@@ -36,7 +36,7 @@ WPXSubDocument::WPXSubDocument(RVNGInputStream *input, WPXEncryption *encryption
 	unsigned i=0;
 	for (; i<dataSize; i++)
 	{
-		if (input->atEOS())
+		if (input->isEnd())
 			break;
 		m_streamData[i] = readU8(input, encryption);
 	}

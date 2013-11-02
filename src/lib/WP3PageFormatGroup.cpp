@@ -97,7 +97,7 @@ void WP3PageFormatGroup::_readContents(RVNGInputStream *input, WPXEncryption *en
 		while ((tmpTmp = readU8(input, encryption)) != 0xff)
 		{
 			tmpTabType = (int8_t) tmpTmp;
-			if (input->atEOS())
+			if (input->isEnd())
 				throw FileException();
 			tmpTabPosition = fixedPointToDouble(readU32(input, encryption, true)) / 72.0;
 

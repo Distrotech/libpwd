@@ -66,9 +66,9 @@ WPDConfidence WPDocument::isFileFormatSupported(RVNGInputStream *input)
 	RVNGInputStream *document = 0;
 	bool isDocumentOLE = false;
 
-	if (input->isOLEStream())
+	if (input->isStructured())
 	{
-		document = input->getDocumentOLEStream("PerfectOffice_MAIN");
+		document = input->getSubStreamByName("PerfectOffice_MAIN");
 		if (document)
 			isDocumentOLE = true;
 		else
@@ -187,9 +187,9 @@ WPDPasswordMatch WPDocument::verifyPassword(RVNGInputStream *input, const char *
 	RVNGInputStream *document = 0;
 	bool isDocumentOLE = false;
 
-	if (input->isOLEStream())
+	if (input->isStructured())
 	{
-		document = input->getDocumentOLEStream("PerfectOffice_MAIN");
+		document = input->getSubStreamByName("PerfectOffice_MAIN");
 		if (document)
 			isDocumentOLE = true;
 		else
@@ -276,9 +276,9 @@ WPDResult WPDocument::parse(RVNGInputStream *input, RVNGTextInterface *documentI
 	bool isDocumentOLE = false;
 
 	WPD_DEBUG_MSG(("WPDocument::parse()\n"));
-	if (input->isOLEStream())
+	if (input->isStructured())
 	{
-		document = input->getDocumentOLEStream("PerfectOffice_MAIN");
+		document = input->getSubStreamByName("PerfectOffice_MAIN");
 		if (document)
 			isDocumentOLE = true;
 		else

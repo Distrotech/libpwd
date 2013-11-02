@@ -99,7 +99,7 @@ WPDConfidence WP1Heuristics::isWP1FileFormat(RVNGInputStream *input, const char 
 
 		WPD_DEBUG_MSG(("WP1Heuristics::isWP1FileFormat()\n"));
 
-		while (!input->atEOS())
+		while (!input->isEnd())
 		{
 			uint8_t readVal = readU8(input, encryption);
 
@@ -165,7 +165,7 @@ WPDConfidence WP1Heuristics::isWP1FileFormat(RVNGInputStream *input, const char 
 					}
 
 					uint8_t closingGate = 0;
-					if (!input->atEOS())
+					if (!input->isEnd())
 					{
 						closingGate = readU8(input, encryption);
 						WPD_DEBUG_MSG(("WP1Heuristics closingGate = 0x%.2x\n", closingGate));
@@ -178,7 +178,7 @@ WPDConfidence WP1Heuristics::isWP1FileFormat(RVNGInputStream *input, const char 
 					}
 
 					// when passed the complete file, we don't allow for open groups when we've reached EOF
-					if (input->atEOS() && (closingGate != readVal))
+					if (input->isEnd() && (closingGate != readVal))
 					{
 						if (encryption)
 							delete encryption;

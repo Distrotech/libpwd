@@ -76,7 +76,7 @@ void WP5Parser::parse(RVNGInputStream *input, WPXEncryption *encryption, WP5List
 // parseDocument: parses a document body (may call itself recursively, on other streams, or itself)
 void WP5Parser::parseDocument(RVNGInputStream *input, WPXEncryption *encryption, WP5Listener *listener)
 {
-	while (!input->atEOS())
+	while (!input->isEnd())
 	{
 		uint8_t readVal;
 		readVal = readU8(input, encryption);

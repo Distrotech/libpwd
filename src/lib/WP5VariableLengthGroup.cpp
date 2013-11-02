@@ -79,7 +79,7 @@ bool WP5VariableLengthGroup::isGroupConsistent(RVNGInputStream *input, WPXEncryp
 		uint8_t subGroup = readU8(input, encryption);
 		uint16_t size = readU16(input, encryption);
 
-		if (input->seek((startPosition + size - 1), RVNG_SEEK_SET) || input->atEOS())
+		if (input->seek((startPosition + size - 1), RVNG_SEEK_SET) || input->isEnd())
 		{
 			input->seek(startPosition, RVNG_SEEK_SET);
 			return false;

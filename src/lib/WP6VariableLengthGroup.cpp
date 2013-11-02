@@ -106,7 +106,7 @@ bool WP6VariableLengthGroup::isGroupConsistent(RVNGInputStream *input, WPXEncryp
 		input->seek(1, RVNG_SEEK_CUR);
 		uint16_t size = readU16(input, encryption);
 
-		if (input->seek((startPosition + size - 4), RVNG_SEEK_SET) || input->atEOS())
+		if (input->seek((startPosition + size - 4), RVNG_SEEK_SET) || input->isEnd())
 		{
 			input->seek(startPosition, RVNG_SEEK_SET);
 			return false;

@@ -66,7 +66,7 @@ void WP6GeneralTextPacket::_readContents(RVNGInputStream *input, WPXEncryption *
 	{
 		if ((input->tell() - startPosition + 4) < 0)
 			throw FileException();
-		if ((unsigned long)(input->tell() - startPosition + 4) > (unsigned long)getDataSize() || input->atEOS())
+		if ((unsigned long)(input->tell() - startPosition + 4) > (unsigned long)getDataSize() || input->isEnd())
 			throw FileException();
 		blockSizes[i] = readU32(input, encryption);
 		unsigned int newTotalSize = totalSize + blockSizes[i];
@@ -84,7 +84,7 @@ void WP6GeneralTextPacket::_readContents(RVNGInputStream *input, WPXEncryption *
 	unsigned streamPos = 0;
 	for(i=0; i<numTextBlocks; i++)
 	{
-		if ((input->tell() - startPosition + blockSizes[i]) > getDataSize() || input->atEOS())
+		if ((input->tell() - startPosition + blockSizes[i]) > getDataSize() || input->isEnd())
 			throw FileException();
 		for (unsigned int j=0; j<blockSizes[i]; j++)
 		{

@@ -93,7 +93,7 @@ long WPXMemoryInputStream::tell()
 	return m_offset;
 }
 
-bool WPXMemoryInputStream::atEOS()
+bool WPXMemoryInputStream::isEnd()
 {
 	if ((long)m_offset == (long)m_size)
 		return true;

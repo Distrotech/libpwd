@@ -90,7 +90,7 @@ WP3ResourceFork::WP3ResourceFork(RVNGInputStream *input, WPXEncryption *encrypti
 			}
 
 			RVNGBinaryData resourceData;
-			for (unsigned long k = 0; k < (unsigned long)resourceDataSize && !input->atEOS(); k++)
+			for (unsigned long k = 0; k < (unsigned long)resourceDataSize && !input->isEnd(); k++)
 				resourceData.append((unsigned char)readU8(input, encryption));
 
 			if (encryption)
@@ -108,7 +108,7 @@ WP3ResourceFork::WP3ResourceFork(RVNGInputStream *input, WPXEncryption *encrypti
 #if 0
 			RVNGInputStream *tmpBinaryStream = const_cast<RVNGInputStream *>(resourceData.getDataStream());
 			int indexNumber = 0;
-			while (!tmpBinaryStream->atEOS())
+			while (!tmpBinaryStream->isEnd())
 			{
 				if (!(indexNumber % 16))
 					printf("%.8x: ", indexNumber);
@@ -132,7 +132,7 @@ WP3ResourceFork::WP3ResourceFork(RVNGInputStream *input, WPXEncryption *encrypti
 			if (f)
 			{
 				RVNGInputStream *tmpStream = const_cast<RVNGInputStream *>(tmpResData.getDataStream());
-				while (!tmpStream->atEOS())
+				while (!tmpStream->isEnd())
 					fprintf(f, "%c", readU8(tmpStream, 0));
 				fclose(f);
 			}

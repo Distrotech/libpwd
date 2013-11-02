@@ -124,7 +124,7 @@ static const uint16_t extendedInternationalCharacterMap[] =
 // parseDocument: parses a document body (may call itself recursively, on other streams, or itself)
 void WP6Parser::parseDocument(RVNGInputStream *input, WPXEncryption *encryption, WP6Listener *listener)
 {
-	while (!input->atEOS())
+	while (!input->isEnd())
 	{
 		uint8_t readVal;
 		readVal = readU8(input, encryption);

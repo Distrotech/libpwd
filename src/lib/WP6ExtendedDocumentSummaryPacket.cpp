@@ -67,7 +67,7 @@ void WP6ExtendedDocumentSummaryPacket::parse(WP6Listener *listener) const
 		return;
 	uint16_t groupLength = 0;
 
-	for (unsigned i=0; i < (unsigned)m_dataSize && !m_stream->atEOS(); i+=groupLength)
+	for (unsigned i=0; i < (unsigned)m_dataSize && !m_stream->isEnd(); i+=groupLength)
 	{
 		try
 		{
@@ -77,19 +77,19 @@ void WP6ExtendedDocumentSummaryPacket::parse(WP6Listener *listener) const
 		{
 			return;
 		}
-		if ((groupLength == 0) || m_stream->atEOS())
+		if ((groupLength == 0) || m_stream->isEnd())
 			return;
 		uint16_t tagID = readU16(m_stream, 0);
-		if (m_stream->atEOS())
+		if (m_stream->isEnd())
 			return;
 		if (m_stream->seek(2, RVNG_SEEK_CUR))
 			return;
 
 		RVNGString name;
 		uint16_t wpChar = 0;
-		if (!m_stream->atEOS())
+		if (!m_stream->isEnd())
 			wpChar = readU16(m_stream, 0);
-		for (; wpChar != 0 && !m_stream->atEOS(); wpChar = readU16(m_stream, 0))
+		for (; wpChar != 0 && !m_stream->isEnd(); wpChar = readU16(m_stream, 0))
 		{
 			uint8_t character = (uint8_t)(wpChar & 0x00FF);
 			uint8_t characterSet = (uint8_t)((wpChar >> 8) & 0x00FF);
@@ -128,9 +128,9 @@ void WP6ExtendedDocumentSummaryPacket::parse(WP6Listener *listener) const
 		else
 		{
 			RVNGString data;
-			if (!m_stream->atEOS())
+			if (!m_stream->isEnd())
 				wpChar = readU16(m_stream, 0);
-			for (; wpChar != 0 && !m_stream->atEOS(); wpChar = readU16(m_stream, 0))
+			for (; wpChar != 0 && !m_stream->isEnd(); wpChar = readU16(m_stream, 0))
 			{
 				uint8_t character = (uint8_t)(wpChar & 0x00FF);
 				uint8_t characterSet = (uint8_t)((wpChar >> 8) & 0x00FF);

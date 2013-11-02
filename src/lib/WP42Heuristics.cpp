@@ -97,7 +97,7 @@ WPDConfidence WP42Heuristics::isWP42FileFormat(RVNGInputStream *input, const cha
 
 		WPD_DEBUG_MSG(("WP42Heuristics::isWP42FileFormat()\n"));
 
-		while (!input->atEOS())
+		while (!input->isEnd())
 		{
 			uint8_t readVal = readU8(input, encryption);
 
@@ -135,7 +135,7 @@ WPDConfidence WP42Heuristics::isWP42FileFormat(RVNGInputStream *input, const cha
 
 					// skip over all the bytes in the group, and scan for the closing gate
 					uint8_t readNextVal = 0;
-					while (!input->atEOS())
+					while (!input->isEnd())
 					{
 						readNextVal = readU8(input, encryption);
 						if (readNextVal == readVal)
@@ -143,7 +143,7 @@ WPDConfidence WP42Heuristics::isWP42FileFormat(RVNGInputStream *input, const cha
 					}
 
 					// when passed the complete file, we don't allow for open groups when we've reached EOF
-					if ((readNextVal == 0) || (input->atEOS() && (readNextVal != readVal)))
+					if ((readNextVal == 0) || (input->isEnd() && (readNextVal != readVal)))
 					{
 						if (encryption)
 							delete encryption;

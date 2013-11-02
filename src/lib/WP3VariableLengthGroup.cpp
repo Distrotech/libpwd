@@ -92,7 +92,7 @@ bool WP3VariableLengthGroup::isGroupConsistent(RVNGInputStream *input, WPXEncryp
 			return false;
 		}
 
-		if (input->seek((startPosition + size - 1), RVNG_SEEK_SET) || input->atEOS())
+		if (input->seek((startPosition + size - 1), RVNG_SEEK_SET) || input->isEnd())
 		{
 			input->seek(startPosition, RVNG_SEEK_SET);
 			return false;

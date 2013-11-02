@@ -77,12 +77,12 @@ bool WP6FixedLengthGroup::isGroupConsistent(RVNGInputStream *input, WPXEncryptio
 	try
 	{
 		uint32_t size = WP6_FIXED_LENGTH_FUNCTION_GROUP_SIZE[(uint8_t)groupID-0xF0];
-		if (input->seek((startPosition + size - 2), RVNG_SEEK_SET) || input->atEOS())
+		if (input->seek((startPosition + size - 2), RVNG_SEEK_SET) || input->isEnd())
 		{
 			input->seek(startPosition, RVNG_SEEK_SET);
 			return false;
 		}
-		if (input->atEOS() || groupID != readU8(input, encryption))
+		if (input->isEnd() || groupID != readU8(input, encryption))
 		{
 			input->seek(startPosition, RVNG_SEEK_SET);
 			return false;

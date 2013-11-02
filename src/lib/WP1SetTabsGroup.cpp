@@ -41,7 +41,7 @@ WP1SetTabsGroup::~WP1SetTabsGroup()
 void WP1SetTabsGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
 {
 	// Skip first the old condensed tab table
-	while (readU8(input, encryption) != 0xff && !input->atEOS())
+	while (readU8(input, encryption) != 0xff && !input->isEnd())
 		input->seek(2, RVNG_SEEK_CUR);
 
 	// Now read the new condensed tab table
@@ -51,7 +51,7 @@ void WP1SetTabsGroup::_readContents(RVNGInputStream *input, WPXEncryption *encry
 
 	while (((tmpTabType = (int8_t)readU8(input, encryption)) & 0xff) != 0xff)
 	{
-		if (input->atEOS())
+		if (input->isEnd())
 			throw FileException();
 		tmpTabPosition = (double)((double)readU16(input, encryption, true) / 72.0);
 

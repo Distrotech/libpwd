@@ -71,7 +71,7 @@ bool WP1VariableLengthGroup::isGroupConsistent(RVNGInputStream *input, WPXEncryp
 		if (size > ((std::numeric_limits<uint32_t>::max)() / 2))
 			return false;
 
-		if (input->seek(size, RVNG_SEEK_CUR) || input->atEOS())
+		if (input->seek(size, RVNG_SEEK_CUR) || input->isEnd())
 		{
 			input->seek(startPosition, RVNG_SEEK_SET);
 			return false;

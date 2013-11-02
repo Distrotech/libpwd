@@ -66,7 +66,7 @@ void WP42MultiByteFunctionGroup::_read(RVNGInputStream *input, WPXEncryption *en
 	_readContents(input, encryption);
 
 	// skip over the remaining bytes of the group, if any
-	while (!input->atEOS() && (readU8(input, encryption) != m_group)) // getGroup()));
+	while (!input->isEnd() && (readU8(input, encryption) != m_group)) // getGroup()));
 	{
 	}
 	// IMPORTANT: if the class that implements _readContent(input, encryption) already reads the closing gate,

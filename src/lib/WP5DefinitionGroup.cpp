@@ -56,19 +56,19 @@ WP5DefinitionGroup_DefineTablesSubGroup::WP5DefinitionGroup_DefineTablesSubGroup
 		throw FileException();
 	for (i=0; i < m_numColumns; i++)
 	{
-		if (input->atEOS())
+		if (input->isEnd())
 			throw FileException();
 		m_columnWidth[i] = readU16(input, encryption);
 	}
 	for (i=0; i < m_numColumns; i++)
 	{
-		if (input->atEOS())
+		if (input->isEnd())
 			throw FileException();
 		m_attributeBits[i] = readU16(input, encryption);
 	}
 	for (i=0; i < m_numColumns; i++)
 	{
-		if (input->atEOS())
+		if (input->isEnd())
 			throw FileException();
 		m_columnAlignment[i] = readU8(input, encryption);
 	}
