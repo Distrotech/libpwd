@@ -22,7 +22,7 @@ libwpd_@WPD_MAJOR_VERSION@_@WPD_MINOR_VERSION@_include_HEADERS = \
 
 AM_CXXFLAGS = -I$(top_srcdir)/inc $(REVENGE_CFLAGS) $(DEBUG_CXXFLAGS)
 
-libwpd_@WPD_MAJOR_VERSION@_@WPD_MINOR_VERSION@_la_LIBADD  = @LIBWPD_WIN32_RESOURCE@
+libwpd_@WPD_MAJOR_VERSION@_@WPD_MINOR_VERSION@_la_LIBADD  = $(REVENGE_LIBS) @LIBWPD_WIN32_RESOURCE@
 libwpd_@WPD_MAJOR_VERSION@_@WPD_MINOR_VERSION@_la_DEPENDENCIES = @LIBWPD_WIN32_RESOURCE@
 libwpd_@WPD_MAJOR_VERSION@_@WPD_MINOR_VERSION@_la_LDFLAGS = $(version_info) -export-dynamic $(no_undefined)
 libwpd_@WPD_MAJOR_VERSION@_@WPD_MINOR_VERSION@_la_SOURCES = \
@@ -368,10 +368,6 @@ if OS_WIN32
 @LIBWPD_WIN32_RESOURCE@ : libwpd.rc $(libwpd_@WPD_MAJOR_VERSION@_@WPD_MINOR_VERSION@_la_OBJECTS)
 	chmod +x $(top_srcdir)/build/win32/*compile-resource
 	WINDRES=@WINDRES@ $(top_srcdir)/build/win32/lt-compile-resource libwpd.rc @LIBWPD_WIN32_RESOURCE@
-
-@LIBWPD_STREAM_WIN32_RESOURCE@ : librevenge-stream.rc $(libwpd_stream_@WPD_MAJOR_VERSION@_@WPD_MINOR_VERSION@_la_OBJECTS)
-	chmod +x $(top_srcdir)/build/win32/*compile-resource && \
-	WINDRES=@WINDRES@ $(top_srcdir)/build/win32/lt-compile-resource librevenge-stream.rc @LIBWPD_STREAM_WIN32_RESOURCE@
 endif
 
 EXTRA_DIST = \
