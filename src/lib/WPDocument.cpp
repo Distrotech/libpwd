@@ -24,6 +24,7 @@
  * Corel Corporation or Corel Corporation Limited."
  */
 
+#include <librevenge/librevenge.h>
 #include "WPXHeader.h"
 #include "WPXParser.h"
 #include "WP1Parser.h"
@@ -64,13 +65,13 @@ WPDConfidence WPDocument::isFileFormatSupported(RVNGInputStream *input)
 	// by-pass the OLE stream (if it exists) and returns the (sub) stream with the
 	// WordPerfect document.
 	RVNGInputStream *document = 0;
-	bool isDocumentOLE = false;
+	bool isStructuredDocument = false;
 
 	if (input->isStructured())
 	{
 		document = input->getSubStreamByName("PerfectOffice_MAIN");
 		if (document)
-			isDocumentOLE = true;
+			isStructuredDocument = true;
 		else
 			return WPD_CONFIDENCE_NONE;
 	}
@@ -133,7 +134,7 @@ WPDConfidence WPDocument::isFileFormatSupported(RVNGInputStream *input)
 
 
 		// dispose of the reference to the ole input stream, if we allocated one
-		if (document && isDocumentOLE)
+		if (document && isStructuredDocument)
 			DELETEP(document);
 
 		return confidence;
@@ -143,7 +144,7 @@ WPDConfidence WPDocument::isFileFormatSupported(RVNGInputStream *input)
 		WPD_DEBUG_MSG(("File Exception trapped\n"));
 
 		// dispose of the reference to the ole input stream, if we allocated one
-		if (document && isDocumentOLE)
+		if (document && isStructuredDocument)
 			DELETEP(document);
 
 		return WPD_CONFIDENCE_NONE;
@@ -153,7 +154,7 @@ WPDConfidence WPDocument::isFileFormatSupported(RVNGInputStream *input)
 		WPD_DEBUG_MSG(("Unknown Exception trapped\n"));
 
 		// dispose of the reference to the ole input stream, if we allocated one
-		if (document && isDocumentOLE)
+		if (document && isStructuredDocument)
 			DELETEP(document);
 
 		return WPD_CONFIDENCE_NONE;
@@ -185,13 +186,13 @@ WPDPasswordMatch WPDocument::verifyPassword(RVNGInputStream *input, const char *
 	// by-pass the OLE stream (if it exists) and returns the (sub) stream with the
 	// WordPerfect document.
 	RVNGInputStream *document = 0;
-	bool isDocumentOLE = false;
+	bool isStructuredDocument = false;
 
 	if (input->isStructured())
 	{
 		document = input->getSubStreamByName("PerfectOffice_MAIN");
 		if (document)
-			isDocumentOLE = true;
+			isStructuredDocument = true;
 		else
 			return WPD_PASSWORD_MATCH_NONE;
 	}
@@ -219,7 +220,7 @@ WPDPasswordMatch WPDocument::verifyPassword(RVNGInputStream *input, const char *
 
 
 		// dispose of the reference to the ole input stream, if we allocated one
-		if (document && isDocumentOLE)
+		if (document && isStructuredDocument)
 			DELETEP(document);
 
 		return passwordMatch;
@@ -229,7 +230,7 @@ WPDPasswordMatch WPDocument::verifyPassword(RVNGInputStream *input, const char *
 		WPD_DEBUG_MSG(("File Exception trapped\n"));
 
 		// dispose of the reference to the ole input stream, if we allocated one
-		if (document && isDocumentOLE)
+		if (document && isStructuredDocument)
 			DELETEP(document);
 
 		return WPD_PASSWORD_MATCH_NONE;
@@ -239,7 +240,7 @@ WPDPasswordMatch WPDocument::verifyPassword(RVNGInputStream *input, const char *
 		WPD_DEBUG_MSG(("Unknown Exception trapped\n"));
 
 		// dispose of the reference to the ole input stream, if we allocated one
-		if (document && isDocumentOLE)
+		if (document && isStructuredDocument)
 			DELETEP(document);
 
 		return WPD_PASSWORD_MATCH_NONE;
@@ -251,13 +252,13 @@ Parses the input stream content. It will make callbacks to the functions provide
 RVNGTextInterface class implementation when needed. This is often commonly called the
 'main parsing routine'.
 \param input The input stream
-\param documentInterface A RVNGTextInterface implementation
+\param textInterface A RVNGTextInterface implementation
 \param password The password used to protect the document or NULL if the document
 is not protected
 \return A value that indicates whether the conversion was successful and in case it
 was not, it indicates the reason of the error
 */
-WPDResult WPDocument::parse(RVNGInputStream *input, RVNGTextInterface *documentInterface, const char *password)
+WPDResult WPDocument::parse(RVNGInputStream *input, RVNGTextInterface *textInterface, const char *password)
 {
 	if (!input)
 		return WPD_FILE_ACCESS_ERROR;
@@ -273,14 +274,14 @@ WPDResult WPDocument::parse(RVNGInputStream *input, RVNGTextInterface *documentI
 	// WordPerfect document.
 
 	RVNGInputStream *document = 0;
-	bool isDocumentOLE = false;
+	bool isStructuredDocument = false;
 
 	WPD_DEBUG_MSG(("WPDocument::parse()\n"));
 	if (input->isStructured())
 	{
 		document = input->getSubStreamByName("PerfectOffice_MAIN");
 		if (document)
-			isDocumentOLE = true;
+			isStructuredDocument = true;
 		else
 			return WPD_OLE_ERROR;
 	}
@@ -306,7 +307,7 @@ WPDResult WPDocument::parse(RVNGInputStream *input, RVNGTextInterface *documentI
 					if (password)
 						encryption = new WPXEncryption(password, 16);
 					parser = new WP5Parser(document, header, encryption);
-					parser->parse(documentInterface);
+					parser->parse(textInterface);
 					break;
 				case 0x02: // WP6
 					WPD_DEBUG_MSG(("WordPerfect: Using the WP6 parser.\n"));
@@ -316,7 +317,7 @@ WPDResult WPDocument::parse(RVNGInputStream *input, RVNGTextInterface *documentI
 						throw UnsupportedEncryptionException();
 					}
 					parser = new WP6Parser(document, header, encryption);
-					parser->parse(documentInterface);
+					parser->parse(textInterface);
 					break;
 				default:
 					// unhandled file format
@@ -334,7 +335,7 @@ WPDResult WPDocument::parse(RVNGInputStream *input, RVNGTextInterface *documentI
 					if (password)
 						encryption = new WPXEncryption(password, header->getDocumentOffset());
 					parser = new WP3Parser(document, header, encryption);
-					parser->parse(documentInterface);
+					parser->parse(textInterface);
 					break;
 				default:
 					// unhandled file format
@@ -363,7 +364,7 @@ WPDResult WPDocument::parse(RVNGInputStream *input, RVNGTextInterface *documentI
 				if (password)
 					encryption = new WPXEncryption(password, 6);
 				parser = new WP1Parser(document, encryption);
-				parser->parse(documentInterface);
+				parser->parse(textInterface);
 				DELETEP(parser);
 			}
 			else if (WP42Heuristics::isWP42FileFormat(document, password) == WPD_CONFIDENCE_EXCELLENT)
@@ -376,7 +377,7 @@ WPDResult WPDocument::parse(RVNGInputStream *input, RVNGTextInterface *documentI
 					input->seek(6, RVNG_SEEK_SET);
 				}
 				parser = new WP42Parser(document, encryption);
-				parser->parse(documentInterface);
+				parser->parse(textInterface);
 				DELETEP(parser);
 			}
 			else
@@ -407,13 +408,13 @@ WPDResult WPDocument::parse(RVNGInputStream *input, RVNGTextInterface *documentI
 	}
 
 	DELETEP(parser);
-	if (document && isDocumentOLE)
+	if (document && isStructuredDocument)
 		DELETEP(document);
 
 	return error;
 }
 
-WPDResult WPDocument::parseSubDocument(RVNGInputStream *input, RVNGTextInterface *documentInterface, WPDFileFormat fileFormat)
+WPDResult WPDocument::parseSubDocument(RVNGInputStream *input, RVNGTextInterface *textInterface, WPDFileFormat fileFormat)
 {
 	WPXParser *parser = 0;
 
@@ -446,7 +447,7 @@ WPDResult WPDocument::parseSubDocument(RVNGInputStream *input, RVNGTextInterface
 		}
 
 		if (parser)
-			parser->parseSubDocument(documentInterface);
+			parser->parseSubDocument(textInterface);
 	}
 	catch (FileException)
 	{

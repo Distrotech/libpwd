@@ -111,9 +111,10 @@ void WP3Parser::parseDocument(RVNGInputStream *input, WPXEncryption *encryption,
 	}
 }
 
-void WP3Parser::parse(RVNGTextInterface *documentInterface)
+void WP3Parser::parse(RVNGTextInterface *textInterface)
 {
 	RVNGInputStream *input = getInput();
+	printf("Fridrich\n");
 	WPXEncryption *encryption = getEncryption();
 	std::list<WPXPageSpan> pageList;
 	WPXTableList tableList;
@@ -148,7 +149,7 @@ void WP3Parser::parse(RVNGTextInterface *documentInterface)
 
 		// second pass: here is where we actually send the messages to the target app
 		// that are necessary to emit the body of the target document
-		WP3ContentListener listener(pageList, subDocuments, documentInterface); // FIXME: SHOULD BE CONTENT_LISTENER, AND SHOULD BE PASSED TABLE DATA!
+		WP3ContentListener listener(pageList, subDocuments, textInterface); // FIXME: SHOULD BE CONTENT_LISTENER, AND SHOULD BE PASSED TABLE DATA!
 		listener.setResourceFork(resourceFork);
 		parse(input, encryption, &listener);
 
@@ -177,7 +178,7 @@ void WP3Parser::parse(RVNGTextInterface *documentInterface)
 	}
 }
 
-void WP3Parser::parseSubDocument(RVNGTextInterface *documentInterface)
+void WP3Parser::parseSubDocument(RVNGTextInterface *textInterface)
 {
 	std::list<WPXPageSpan> pageList;
 	WPXTableList tableList;
@@ -194,7 +195,7 @@ void WP3Parser::parseSubDocument(RVNGTextInterface *documentInterface)
 
 		input->seek(0, RVNG_SEEK_SET);
 
-		WP3ContentListener listener(pageList, subDocuments, documentInterface);
+		WP3ContentListener listener(pageList, subDocuments, textInterface);
 		listener.startSubDocument();
 		parseDocument(input, 0, &listener);
 		listener.endSubDocument();

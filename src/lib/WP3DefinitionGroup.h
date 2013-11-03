@@ -26,11 +26,11 @@
 #ifndef WP3DEFINITIONGROUP_H
 #define WP3DEFINITIONGROUP_H
 
+#include <vector>
+#include <librevenge/librevenge.h>
 #include "WP3VariableLengthGroup.h"
 #include "libwpd_types.h"
-#include <vector>
 
-class RVNGInputStream;
 class WP3Listener;
 
 class WP3DefinitionGroup : public WP3VariableLengthGroup

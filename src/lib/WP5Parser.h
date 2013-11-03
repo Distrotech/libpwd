@@ -27,9 +27,9 @@
 #ifndef WP5PARSER_H
 #define WP5PARSER_H
 
+#include <librevenge/librevenge.h>
 #include "WPXParser.h"
 
-class RVNGTextInterface;
 class WP5Listener;
 class WP5PrefixData;
 

@@ -31,8 +31,6 @@
 #include <libwpd/libwpd.h>
 #include "libwpd_types.h"
 
-class RVNGInputStream;
-
 class WPXEncryption
 {
 public:

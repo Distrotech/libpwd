@@ -27,6 +27,7 @@
 #ifndef WP3FIXEDLENGTHGROUP_H
 #define WP3FIXEDLENGTHGROUP_H
 
+#include <librevenge/librevenge.h>
 #include "WP3Part.h"
 
 class WPXEncryption;

@@ -28,13 +28,13 @@
 #ifndef WP5LISTENER_H
 #define WP5LISTENER_H
 
-#include "libwpd_internal.h"
 #include <vector>
+#include <librevenge/librevenge.h>
+#include "libwpd_internal.h"
 
 class WP5SubDocument;
 class WP5PrefixData;
 class WP5GeneralPacketData;
-class RVNGBinaryData;
 
 class WP5Listener
 {

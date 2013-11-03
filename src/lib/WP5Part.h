@@ -28,9 +28,9 @@
 #ifndef WP5PART_H
 #define WP5PART_H
 
+#include <librevenge/librevenge.h>
 #include "libwpd_internal.h"
 
-class RVNGInputStream;
 class WP5Listener;
 class WPXEncryption;
 

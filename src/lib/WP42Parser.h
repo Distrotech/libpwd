@@ -27,10 +27,9 @@
 #ifndef WP42PARSER_H
 #define WP42PARSER_H
 
+#include <librevenge/librevenge.h>
 #include "WPXParser.h"
 #include "WP42Listener.h"
-
-class RVNGTextInterface;
 
 class WP42Parser : public WPXParser
 {

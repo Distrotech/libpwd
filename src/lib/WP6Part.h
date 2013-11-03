@@ -28,9 +28,9 @@
 #ifndef WP6PART_H
 #define WP6PART_H
 
+#include <librevenge/librevenge.h>
 #include "libwpd_internal.h"
 
-class RVNGInputStream;
 class WP6Listener;
 
 class WP6Part

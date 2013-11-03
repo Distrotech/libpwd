@@ -27,9 +27,9 @@
 #ifndef WP3PART_H
 #define WP3PART_H
 
+#include <librevenge/librevenge.h>
 #include "libwpd_types.h"
 
-class RVNGInputStream;
 class WP3Listener;
 class WPXEncryption;
 

@@ -28,9 +28,9 @@
 #ifndef WP1PARSER_H
 #define WP1PARSER_H
 
+#include <librevenge/librevenge.h>
 #include "WPXParser.h"
 
-class RVNGTextInterface;
 class WP1Listener;
 
 class WP1Parser : public WPXParser

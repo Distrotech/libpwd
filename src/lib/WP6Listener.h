@@ -28,10 +28,10 @@
 #ifndef WP6LISTENER_H
 #define WP6LISTENER_H
 
+#include <librevenge/librevenge.h>
 #include "libwpd_internal.h"
 #include <vector>
 
-class RVNGString;
 class WP6DefaultInitialFontPacket;
 class WP6PrefixData;
 class WP6PrefixDataPacket;

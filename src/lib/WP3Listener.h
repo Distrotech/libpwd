@@ -27,12 +27,12 @@
 #ifndef WP3LISTENER_H
 #define WP3LISTENER_H
 
-#include "libwpd_internal.h"
 #include <vector>
+#include <librevenge/librevenge.h>
+#include "libwpd_internal.h"
 
 class WP3SubDocument;
 class WP3ResourceFork;
-class RVNGBinaryData;
 
 class WP3Listener
 {

@@ -27,10 +27,9 @@
 #ifndef WPXPARSER_H
 #define WPXPARSER_H
 
-class RVNGTextInterface;
-class WPXHeader;
-class RVNGInputStream;
-class WPXEncryption;
+#include <librevenge/librevenge.h>
+#include "WPXHeader.h"
+#include "WPXEncryption.h"
 
 class WPXParser
 {

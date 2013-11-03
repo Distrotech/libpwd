@@ -25,11 +25,11 @@
 
 #ifndef WP3RESOURCEFORK_H
 #define WP3RESOURCEFORK_H
-#include "WP3Resource.h"
 #include <map>
 #include <vector>
+#include <librevenge/librevenge.h>
+#include "WP3Resource.h"
 
-class RVNGInputStream;
 class WPXEncryption;
 
 class WP3ResourceFork

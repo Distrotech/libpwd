@@ -28,7 +28,6 @@
 
 #include "WPXParser.h"
 
-class RVNGTextInterface;
 class WP3Listener;
 class WP3ResourceFork;
 

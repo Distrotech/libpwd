@@ -26,10 +26,10 @@
 #ifndef WP6BOXGROUP_H
 #define WP6BOXGROUP_H
 
+#include <librevenge/librevenge.h>
 #include "WP6VariableLengthGroup.h"
 #include "libwpd_internal.h"
 
-class RVNGInputStream;
 class WP6Listener;
 
 class WP6BoxGroup : public WP6VariableLengthGroup

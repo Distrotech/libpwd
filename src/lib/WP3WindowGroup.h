@@ -26,12 +26,12 @@
 #ifndef WP3WINDOWGROUP_H
 #define WP3WINDOWGROUP_H
 
+#include <librevenge/librevenge.h>
 #include "WP3VariableLengthGroup.h"
 #include "WP3SubDocument.h"
 #include "libwpd_types.h"
 #include <vector>
 
-class RVNGInputStream;
 class WP3Listener;
 
 class WP3WindowGroup : public WP3VariableLengthGroup

@@ -27,12 +27,12 @@
 #ifndef WP6PARSER_H
 #define WP6PARSER_H
 
+#include <librevenge/librevenge.h>
 #include "WPXParser.h"
 #include "WP6Header.h"
 
 class WP6PrefixData;
 class WP6Listener;
-class RVNGTextInterface;
 
 class WP6Parser : public WPXParser
 {

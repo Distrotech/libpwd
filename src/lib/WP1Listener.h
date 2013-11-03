@@ -28,11 +28,11 @@
 #ifndef WP1LISTENER_H
 #define WP1LISTENER_H
 
-#include "libwpd_internal.h"
 #include <vector>
+#include <librevenge/librevenge.h>
+#include "libwpd_internal.h"
 
 class WP1SubDocument;
-class RVNGBinaryData;
 
 class WP1Listener
 {

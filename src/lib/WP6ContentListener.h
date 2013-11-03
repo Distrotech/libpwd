@@ -28,6 +28,7 @@
 #ifndef WP6CONTENTLISTENER_H
 #define WP6CONTENTLISTENER_H
 
+#include <librevenge/librevenge.h>
 #include "WP6Listener.h"
 #include "WPXContentListener.h"
 #include "WP6FileStructure.h"
@@ -36,7 +37,6 @@
 #include <map>
 #include <vector>
 
-class RVNGTextInterface;
 class WPXTable;
 
 enum WP6StyleState { NORMAL, DOCUMENT_NOTE, DOCUMENT_NOTE_GLOBAL,

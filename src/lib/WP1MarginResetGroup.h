@@ -26,9 +26,9 @@
 #ifndef WP1MARGINRESETGROUP_H
 #define WP1MARGINRESETGROUP_H
 
+#include <librevenge/librevenge.h>
 #include "WP1FixedLengthGroup.h"
 
-class RVNGInputStream;
 class WP1Listener;
 
 class WP1MarginResetGroup : public WP1FixedLengthGroup
