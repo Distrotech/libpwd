@@ -114,7 +114,6 @@ void WP3Parser::parseDocument(RVNGInputStream *input, WPXEncryption *encryption,
 void WP3Parser::parse(RVNGTextInterface *textInterface)
 {
 	RVNGInputStream *input = getInput();
-	printf("Fridrich\n");
 	WPXEncryption *encryption = getEncryption();
 	std::list<WPXPageSpan> pageList;
 	WPXTableList tableList;
