@@ -148,12 +148,12 @@ void WP1ContentListener::insertNote(const WPXNoteType noteType, WP1SubDocument *
 
 		if (noteType == FOOTNOTE)
 		{
-			propList.insert("libwpd:number", ++(m_parseState->m_footNoteNumber));
+			propList.insert("librevenge:number", ++(m_parseState->m_footNoteNumber));
 			m_documentInterface->openFootnote(propList);
 		}
 		else
 		{
-			propList.insert("libwpd:number", ++(m_parseState->m_endNoteNumber));
+			propList.insert("librevenge:number", ++(m_parseState->m_endNoteNumber));
 			m_documentInterface->openEndnote(propList);
 		}
 
@@ -548,7 +548,7 @@ void WP1ContentListener::insertPicture(uint16_t width, uint16_t height, const RV
 		m_documentInterface->openFrame(propList);
 
 		propList.clear();
-		propList.insert("libwpd:mimetype", "image/pict");
+		propList.insert("librevenge:mime-type", "image/pict");
 		m_documentInterface->insertBinaryObject(propList, binaryData);
 
 		m_documentInterface->closeFrame();

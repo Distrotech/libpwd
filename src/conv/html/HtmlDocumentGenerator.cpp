@@ -70,13 +70,13 @@ void HtmlDocumentGenerator::setDocumentMetaData(const RVNGPropertyList &propList
 		*m_pOutputStream << "<meta name=\"language\" content=\"" << propList["dc:language"]->getStr().cstr() << "\">" << std::endl;
 	if (propList["dc:description"])
 		*m_pOutputStream << "<meta name=\"abstract\" content=\"" << propList["dc:description"]->getStr().cstr() << "\">" << std::endl;
-	if (propList["libwpd:descriptive-name"])
+	if (propList["librevenge:descriptive-name"])
 	{
-		*m_pOutputStream << "<meta name=\"descriptive-name\" content=\"" << propList["libwpd:descriptive-name"]->getStr().cstr() << "\">" << std::endl;
-		*m_pOutputStream << "<title>" << propList["libwpd:descriptive-name"]->getStr().cstr() << "</title>" << std::endl;
+		*m_pOutputStream << "<meta name=\"descriptive-name\" content=\"" << propList["librevenge:descriptive-name"]->getStr().cstr() << "\">" << std::endl;
+		*m_pOutputStream << "<title>" << propList["librevenge:descriptive-name"]->getStr().cstr() << "</title>" << std::endl;
 	}
-	if (propList["libwpd:descriptive-type"])
-		*m_pOutputStream << "<meta name=\"descriptive-type\" content=\"" << propList["libwpd:descriptive-type"]->getStr().cstr() << "\">" << std::endl;
+	if (propList["librevenge:descriptive-type"])
+		*m_pOutputStream << "<meta name=\"descriptive-type\" content=\"" << propList["librevenge:descriptive-type"]->getStr().cstr() << "\">" << std::endl;
 }
 
 void HtmlDocumentGenerator::startDocument()
@@ -295,12 +295,12 @@ void HtmlDocumentGenerator::openFootnote(const RVNGPropertyList &propList)
 	{
 		if (!m_footNotesCount++)
 		{
-			if (propList["libwpd:number"])
-				*m_pOutputStream << "<sup>(footnote: " << propList["libwpd:number"]->getStr().cstr() << ")</sup>";
+			if (propList["librevenge:number"])
+				*m_pOutputStream << "<sup>(footnote: " << propList["librevenge:number"]->getStr().cstr() << ")</sup>";
 			m_pOutputStream = &m_footNotesStream;
 			// Cheesey hack..
-			if (propList["libwpd:number"])
-				*m_pOutputStream << "<p>" << propList["libwpd:number"]->getStr().cstr() << ":</p>";
+			if (propList["librevenge:number"])
+				*m_pOutputStream << "<p>" << propList["librevenge:number"]->getStr().cstr() << ":</p>";
 			else
 				*m_pOutputStream << "<p/>";
 		}
@@ -327,12 +327,12 @@ void HtmlDocumentGenerator::openEndnote(const RVNGPropertyList &propList)
 	{
 		if (!m_endNotesCount++)
 		{
-			if (propList["libwpd:number"])
-				*m_pOutputStream << "<sup>(endnote: " << propList["libwpd:number"]->getStr().cstr() << ")</sup>";
+			if (propList["librevenge:number"])
+				*m_pOutputStream << "<sup>(endnote: " << propList["librevenge:number"]->getStr().cstr() << ")</sup>";
 			m_pOutputStream = &m_footNotesStream;
 			// Cheesey hack..
-			if (propList["libwpd:number"])
-				*m_pOutputStream << "<p>" << propList["libwpd:number"]->getStr().cstr() << ":</p>";
+			if (propList["librevenge:number"])
+				*m_pOutputStream << "<p>" << propList["librevenge:number"]->getStr().cstr() << ":</p>";
 			else
 				*m_pOutputStream << "<p/>";
 		}

@@ -219,9 +219,12 @@ AM_CONDITIONAL([WITH_LIBWPD_DOCS], [test "x$build_docs" != "xno"])
 # ===============
 # Find librevenge
 # ===============
-PKG_CHECK_MODULES([REVENGE],[librevenge-0.0 librevenge-stream-0.0])
-AC_SUBST(REVENGE_CFLAGS)
-AC_SUBST(REVENGE_LIBS)
+PKG_CHECK_MODULES([REVENGE],[
+	librevenge-0.0
+	librevenge-stream-0.0
+])
+AC_SUBST([REVENGE_CFLAGS])
+AC_SUBST([REVENGE_LIGS])
 
 # =====================
 # Prepare all .in files

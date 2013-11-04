@@ -540,7 +540,7 @@ void WP5ContentListener::insertNote(WPXNoteType noteType, const WP5SubDocument *
 		m_parseState->m_noteReference.clear();
 
 		RVNGPropertyList propList;
-		propList.insert("libwpd:number", number);
+		propList.insert("librevenge:number", number);
 
 		if (noteType == FOOTNOTE)
 			m_documentInterface->openFootnote(propList);
@@ -814,7 +814,7 @@ void WP5ContentListener::insertGraphicsData(const RVNGBinaryData *data)
 	if (data)
 	{
 		RVNGPropertyList propList;
-		propList.insert("libwpd:mimetype", "image/x-wpg");
+		propList.insert("librevenge:mime-type", "image/x-wpg");
 		m_documentInterface->insertBinaryObject(propList, *data);
 	}
 }

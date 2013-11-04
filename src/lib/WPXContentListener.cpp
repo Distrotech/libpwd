@@ -207,11 +207,11 @@ void WPXContentListener::_openSection()
 		propList.insert("fo:margin-right", m_ps->m_sectionMarginRight);
 		if (m_ps->m_numColumns > 1)
 		{
-			propList.insert("libwpd:margin-bottom", 1.0);
+			propList.insert("librevenge:margin-bottom", 1.0);
 			propList.insert("text:dont-balance-text-columns", false);
 		}
 		else
-			propList.insert("libwpd:margin-bottom", 0.0);
+			propList.insert("librevenge:margin-bottom", 0.0);
 
 		RVNGPropertyListVector columns;
 		typedef std::vector<WPXColumnDefinition>::const_iterator CDVIter;
@@ -326,9 +326,9 @@ void WPXContentListener::_openPageSpan()
 	WPXPageSpan currentPage = (*currentPageSpanIter);
 
 	RVNGPropertyList propList;
-	propList.insert("libwpd:num-pages", currentPage.getPageSpan());
+	propList.insert("librevenge:num-pages", currentPage.getPageSpan());
 
-	propList.insert("libwpd:is-last-page-span", ((m_ps->m_currentPage + 1 == m_pageList.size()) ? true : false));
+	propList.insert("librevenge:is-last-page-span", ((m_ps->m_currentPage + 1 == m_pageList.size()) ? true : false));
 	propList.insert("fo:page-height", currentPage.getFormLength());
 	propList.insert("fo:page-width", currentPage.getFormWidth());
 	if (currentPage.getFormOrientation() == LANDSCAPE)
@@ -383,13 +383,13 @@ void WPXContentListener::_openPageSpan()
 			switch ((*iter).getOccurence())
 			{
 			case ODD:
-				propList.insert("libwpd:occurence", "odd");
+				propList.insert("librevenge:occurence", "odd");
 				break;
 			case EVEN:
-				propList.insert("libwpd:occurence", "even");
+				propList.insert("librevenge:occurence", "even");
 				break;
 			case ALL:
-				propList.insert("libwpd:occurence", "all");
+				propList.insert("librevenge:occurence", "all");
 				break;
 			case NEVER:
 			default:
@@ -441,7 +441,7 @@ void WPXContentListener::_openPageSpan()
 		        currentPage.getPageNumberPosition() != PAGENUMBER_POSITION_TOP_INSIDE_LEFT_AND_RIGHT)
 		{
 			propList.clear();
-			propList.insert("libwpd:occurence", "all");
+			propList.insert("librevenge:occurence", "all");
 			m_documentInterface->openFooter(propList);
 			_insertPageNumberParagraph(currentPage.getPageNumberPosition(), currentPage.getPageNumberingType(),
 			                           currentPage.getPageNumberingFontName(), currentPage.getPageNumberingFontSize());
@@ -450,7 +450,7 @@ void WPXContentListener::_openPageSpan()
 		else
 		{
 			propList.clear();
-			propList.insert("libwpd:occurence", "all");
+			propList.insert("librevenge:occurence", "all");
 			m_documentInterface->openHeader(propList);
 			_insertPageNumberParagraph(currentPage.getPageNumberPosition(), currentPage.getPageNumberingType(),
 			                           currentPage.getPageNumberingFontName(), currentPage.getPageNumberingFontSize());
@@ -1005,11 +1005,11 @@ void WPXContentListener::_openTableRow(const double height, const bool isMinimum
 	// The following "Header Row" flags are ignored
 	if (isHeaderRow & !m_ps->m_wasHeaderRow)
 	{
-		propList.insert("libwpd:is-header-row", true);
+		propList.insert("librevenge:is-header-row", true);
 		m_ps->m_wasHeaderRow = true;
 	}
 	else
-		propList.insert("libwpd:is-header-row", false);
+		propList.insert("librevenge:is-header-row", false);
 
 	m_documentInterface->openTableRow(propList);
 
@@ -1107,8 +1107,8 @@ void WPXContentListener::_openTableCell(const uint8_t colSpan, const uint8_t row
 	}
 
 	RVNGPropertyList propList;
-	propList.insert("libwpd:column", m_ps->m_currentTableCol);
-	propList.insert("libwpd:row", m_ps->m_currentTableRow);
+	propList.insert("librevenge:column", m_ps->m_currentTableCol);
+	propList.insert("librevenge:row", m_ps->m_currentTableRow);
 
 	propList.insert("table:number-columns-spanned", colSpan);
 	propList.insert("table:number-rows-spanned", rowSpan);

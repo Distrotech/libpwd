@@ -222,14 +222,14 @@ void WP6ContentListener::setDate(const uint16_t type, const uint16_t year,
 		m_metaData.insert("dcterms:available", dateStr);
 		break;
 	case (WP6_INDEX_HEADER_EXTENDED_DOCUMENT_SUMMARY_RECORDED_DATE):
-		m_metaData.insert("libwpd:recorded-date", dateStr);
+		m_metaData.insert("librevenge:recorded-date", dateStr);
 		break;
 		// NOTE: Revision Date is not set in WP Document Summary
 		// and sometimes contains non-zero data, so it's confusing.
 		// WordPerfect actually uses the file modification time
 		// to display Revision Date in Properties.
 		//case (WP6_INDEX_HEADER_EXTENDED_DOCUMENT_SUMMARY_REVISION_DATE):
-		//	m_metaData.insert("libwpd:revision-date", dateStr);
+		//	m_metaData.insert("librevenge:revision-date", dateStr);
 		//	break;
 	case (WP6_INDEX_HEADER_EXTENDED_DOCUMENT_SUMMARY_VERSION_DATE):
 		m_metaData.insert("dcterms:issued", dateStr);
@@ -265,121 +265,121 @@ void WP6ContentListener::setExtendedInformation(const uint16_t type, const RVNGS
 		m_metaData.insert("dc:description", data);
 		break;
 	case (WP6_INDEX_HEADER_EXTENDED_DOCUMENT_SUMMARY_DESCRIPTIVE_NAME):
-		m_metaData.insert("libwpd:descriptive-name", data);
+		m_metaData.insert("librevenge:descriptive-name", data);
 		break;
 	case (WP6_INDEX_HEADER_EXTENDED_DOCUMENT_SUMMARY_DESCRIPTIVE_TYPE):
-		m_metaData.insert("libwpd:descriptive-type", data);
+		m_metaData.insert("librevenge:descriptive-type", data);
 		break;
 	case (WP6_INDEX_HEADER_EXTENDED_DOCUMENT_SUMMARY_ACCOUNT):
-		m_metaData.insert("libwpd:account", data);
+		m_metaData.insert("librevenge:account", data);
 		break;
 	case (WP6_INDEX_HEADER_EXTENDED_DOCUMENT_SUMMARY_ADDRESS):
-		m_metaData.insert("libwpd:address", data);
+		m_metaData.insert("librevenge:address", data);
 		break;
 	case (WP6_INDEX_HEADER_EXTENDED_DOCUMENT_SUMMARY_ATTACHMENTS):
-		m_metaData.insert("libwpd:attachments", data);
+		m_metaData.insert("librevenge:attachments", data);
 		break;
 	case (WP6_INDEX_HEADER_EXTENDED_DOCUMENT_SUMMARY_AUTHORIZATION):
-		m_metaData.insert("libwpd:authorization", data);
+		m_metaData.insert("librevenge:authorization", data);
 		break;
 	case (WP6_INDEX_HEADER_EXTENDED_DOCUMENT_SUMMARY_BILL_TO):
-		m_metaData.insert("libwpd:bill-to", data);
+		m_metaData.insert("librevenge:bill-to", data);
 		break;
 	case (WP6_INDEX_HEADER_EXTENDED_DOCUMENT_SUMMARY_BLIND_COPY):
-		m_metaData.insert("libwpd:blind-copy", data);
+		m_metaData.insert("librevenge:blind-copy", data);
 		break;
 	case (WP6_INDEX_HEADER_EXTENDED_DOCUMENT_SUMMARY_CARBON_COPY):
-		m_metaData.insert("libwpd:carbon-copy", data);
+		m_metaData.insert("librevenge:carbon-copy", data);
 		break;
 	case (WP6_INDEX_HEADER_EXTENDED_DOCUMENT_SUMMARY_CHECKED_BY):
-		m_metaData.insert("libwpd:checked-by", data);
+		m_metaData.insert("librevenge:checked-by", data);
 		break;
 	case (WP6_INDEX_HEADER_EXTENDED_DOCUMENT_SUMMARY_CLIENT):
-		m_metaData.insert("libwpd:client", data);
+		m_metaData.insert("librevenge:client", data);
 		break;
 	case (WP6_INDEX_HEADER_EXTENDED_DOCUMENT_SUMMARY_COMMENTS):
-		m_metaData.insert("libwpd:comments", data);
+		m_metaData.insert("librevenge:comments", data);
 		break;
 	case (WP6_INDEX_HEADER_EXTENDED_DOCUMENT_SUMMARY_DEPARTMENT):
-		m_metaData.insert("libwpd:department", data);
+		m_metaData.insert("librevenge:department", data);
 		break;
 	case (WP6_INDEX_HEADER_EXTENDED_DOCUMENT_SUMMARY_DESTINATION):
-		m_metaData.insert("libwpd:destination", data);
+		m_metaData.insert("librevenge:destination", data);
 		break;
 	case (WP6_INDEX_HEADER_EXTENDED_DOCUMENT_SUMMARY_DISPOSITION):
-		m_metaData.insert("libwpd:disposition", data);
+		m_metaData.insert("librevenge:disposition", data);
 		break;
 	case (WP6_INDEX_HEADER_EXTENDED_DOCUMENT_SUMMARY_DIVISION):
-		m_metaData.insert("libwpd:division", data);
+		m_metaData.insert("librevenge:division", data);
 		break;
 	case (WP6_INDEX_HEADER_EXTENDED_DOCUMENT_SUMMARY_DOCUMENT_NUMBER):
-		m_metaData.insert("libwpd:document-number", data);
+		m_metaData.insert("librevenge:document-number", data);
 		break;
 	case (WP6_INDEX_HEADER_EXTENDED_DOCUMENT_SUMMARY_EDITOR):
-		m_metaData.insert("libwpd:editor", data);
+		m_metaData.insert("librevenge:editor", data);
 		break;
 	case (WP6_INDEX_HEADER_EXTENDED_DOCUMENT_SUMMARY_FORWARD_TO):
-		m_metaData.insert("libwpd:forward-to", data);
+		m_metaData.insert("librevenge:forward-to", data);
 		break;
 	case (WP6_INDEX_HEADER_EXTENDED_DOCUMENT_SUMMARY_GROUP):
-		m_metaData.insert("libwpd:group", data);
+		m_metaData.insert("librevenge:group", data);
 		break;
 	case (WP6_INDEX_HEADER_EXTENDED_DOCUMENT_SUMMARY_MAIL_STOP):
-		m_metaData.insert("libwpd:mail-stop", data);
+		m_metaData.insert("librevenge:mail-stop", data);
 		break;
 	case (WP6_INDEX_HEADER_EXTENDED_DOCUMENT_SUMMARY_MATTER):
-		m_metaData.insert("libwpd:matter", data);
+		m_metaData.insert("librevenge:matter", data);
 		break;
 	case (WP6_INDEX_HEADER_EXTENDED_DOCUMENT_SUMMARY_OFFICE):
-		m_metaData.insert("libwpd:office", data);
+		m_metaData.insert("librevenge:office", data);
 		break;
 	case (WP6_INDEX_HEADER_EXTENDED_DOCUMENT_SUMMARY_OWNER):
-		m_metaData.insert("libwpd:owner", data);
+		m_metaData.insert("librevenge:owner", data);
 		break;
 	case (WP6_INDEX_HEADER_EXTENDED_DOCUMENT_SUMMARY_PROJECT):
-		m_metaData.insert("libwpd:project", data);
+		m_metaData.insert("librevenge:project", data);
 		break;
 	case (WP6_INDEX_HEADER_EXTENDED_DOCUMENT_SUMMARY_PURPOSE):
-		m_metaData.insert("libwpd:purpose", data);
+		m_metaData.insert("librevenge:purpose", data);
 		break;
 	case (WP6_INDEX_HEADER_EXTENDED_DOCUMENT_SUMMARY_RECEIVED_FROM):
-		m_metaData.insert("libwpd:received-from", data);
+		m_metaData.insert("librevenge:received-from", data);
 		break;
 	case (WP6_INDEX_HEADER_EXTENDED_DOCUMENT_SUMMARY_RECORDED_BY):
-		m_metaData.insert("libwpd:recorded-by", data);
+		m_metaData.insert("librevenge:recorded-by", data);
 		break;
 	case (WP6_INDEX_HEADER_EXTENDED_DOCUMENT_SUMMARY_REFERENCE):
-		m_metaData.insert("libwpd:reference", data);
+		m_metaData.insert("librevenge:reference", data);
 		break;
 	case (WP6_INDEX_HEADER_EXTENDED_DOCUMENT_SUMMARY_REVISION_NOTES):
-		m_metaData.insert("libwpd:revision-notes", data);
+		m_metaData.insert("librevenge:revision-notes", data);
 		break;
 	case (WP6_INDEX_HEADER_EXTENDED_DOCUMENT_SUMMARY_REVISION_NUMBER):
-		m_metaData.insert("libwpd:revision-number", data);
+		m_metaData.insert("librevenge:revision-number", data);
 		break;
 	case (WP6_INDEX_HEADER_EXTENDED_DOCUMENT_SUMMARY_SECTION):
-		m_metaData.insert("libwpd:section", data);
+		m_metaData.insert("librevenge:section", data);
 		break;
 	case (WP6_INDEX_HEADER_EXTENDED_DOCUMENT_SUMMARY_SECURITY):
-		m_metaData.insert("libwpd:security", data);
+		m_metaData.insert("librevenge:security", data);
 		break;
 	case (WP6_INDEX_HEADER_EXTENDED_DOCUMENT_SUMMARY_SOURCE):
 		m_metaData.insert("dc:source", data);
 		break;
 	case (WP6_INDEX_HEADER_EXTENDED_DOCUMENT_SUMMARY_STATUS):
-		m_metaData.insert("libwpd:status", data);
+		m_metaData.insert("librevenge:status", data);
 		break;
 	case (WP6_INDEX_HEADER_EXTENDED_DOCUMENT_SUMMARY_TELEPHONE_NUMBER):
-		m_metaData.insert("libwpd:telephone-number", data);
+		m_metaData.insert("librevenge:telephone-number", data);
 		break;
 	case (WP6_INDEX_HEADER_EXTENDED_DOCUMENT_SUMMARY_TYPIST):
 		m_metaData.insert("dc:creator", data);
 		break;
 	case (WP6_INDEX_HEADER_EXTENDED_DOCUMENT_SUMMARY_VERSION_NOTES):
-		m_metaData.insert("libwpd:version-notes", data);
+		m_metaData.insert("librevenge:version-notes", data);
 		break;
 	case (WP6_INDEX_HEADER_EXTENDED_DOCUMENT_SUMMARY_VERSION_NUMBER):
-		m_metaData.insert("libwpd:version-number", data);
+		m_metaData.insert("librevenge:version-number", data);
 		break;
 	default:
 		break;
@@ -1254,7 +1254,7 @@ void WP6ContentListener::noteOff(const WPXNoteType noteType)
 
 		RVNGPropertyList propList;
 		if (number)
-			propList.insert("libwpd:number", number);
+			propList.insert("librevenge:number", number);
 
 		if (noteType == FOOTNOTE)
 			m_documentInterface->openFootnote(propList);
@@ -1703,7 +1703,7 @@ void WP6ContentListener::insertGraphicsData(const uint16_t packetId)
 	if (const WP6GraphicsCachedFileDataPacket *gcfdPacket = dynamic_cast<const WP6GraphicsCachedFileDataPacket *>(this->getPrefixDataPacket(packetId)))
 	{
 		RVNGPropertyList propList;
-		propList.insert("libwpd:mimetype", "image/x-wpg");
+		propList.insert("librevenge:mime-type", "image/x-wpg");
 		if (gcfdPacket->getBinaryObject())
 			m_documentInterface->insertBinaryObject(propList, *(gcfdPacket->getBinaryObject()));
 	}
@@ -1897,8 +1897,8 @@ void WP6ContentListener::_handleListChange(const uint16_t outlineHash)
 	if (m_ps->m_currentListLevel > oldListLevel)
 	{
 		RVNGPropertyList propList;
-		propList.insert("libwpd:id", m_parseState->m_currentOutlineHash);
-		propList.insert("libwpd:level", m_ps->m_currentListLevel);
+		propList.insert("librevenge:id", m_parseState->m_currentOutlineHash);
+		propList.insert("librevenge:level", m_ps->m_currentListLevel);
 
 		if (m_parseState->m_putativeListElementHasDisplayReferenceNumber)
 		{
@@ -1930,7 +1930,7 @@ void WP6ContentListener::_handleListChange(const uint16_t outlineHash)
 			WPD_DEBUG_MSG(("Pushed level %u onto the list level stack\n", i));
 
 			RVNGPropertyList propList2;
-			propList2.insert("libwpd:id", m_parseState->m_currentOutlineHash);
+			propList2.insert("librevenge:id", m_parseState->m_currentOutlineHash);
 
 			if (m_parseState->m_putativeListElementHasDisplayReferenceNumber)
 			{

@@ -635,7 +635,7 @@ void WP3ContentListener::insertNote(const WPXNoteType noteType, const WP3SubDocu
 		m_parseState->m_noteReference.clear();
 
 		RVNGPropertyList propList;
-		propList.insert("libwpd:number", number);
+		propList.insert("librevenge:number", number);
 
 		if (noteType == FOOTNOTE)
 			m_documentInterface->openFootnote(propList);
@@ -801,7 +801,7 @@ void WP3ContentListener::insertPicture(double height, double width, double verti
 		m_documentInterface->openFrame(propList);
 
 		propList.clear();
-		propList.insert("libwpd:mimetype", "image/pict");
+		propList.insert("librevenge:mime-type", "image/pict");
 		m_documentInterface->insertBinaryObject(propList, binaryData);
 
 		m_documentInterface->closeFrame();
