@@ -32,7 +32,7 @@
 class WP6StyleGroup_GlobalOnSubGroup : public WP6VariableLengthGroup_SubGroup
 {
 public:
-	WP6StyleGroup_GlobalOnSubGroup(RVNGInputStream *input, WPXEncryption *encryption);
+	WP6StyleGroup_GlobalOnSubGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP6Listener *listener, const uint8_t numPrefixIDs, uint16_t const *prefixIDs) const;
 
 private:
@@ -43,9 +43,9 @@ private:
 class WP6StyleGroup : public WP6VariableLengthGroup
 {
 public:
-	WP6StyleGroup(RVNGInputStream *input, WPXEncryption *encryption);
+	WP6StyleGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	~WP6StyleGroup();
-	void _readContents(RVNGInputStream *input, WPXEncryption *encryption);
+	void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP6Listener *listener);
 
 private:

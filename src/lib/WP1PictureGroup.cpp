@@ -35,7 +35,7 @@ static unsigned pictureId = 0;
 #include <sstream>
 #endif
 
-WP1PictureGroup::WP1PictureGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t group) :
+WP1PictureGroup::WP1PictureGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group) :
 	WP1VariableLengthGroup(group),
 	m_binaryData(),
 	m_width(0),
@@ -48,15 +48,15 @@ WP1PictureGroup::~WP1PictureGroup()
 {
 }
 
-void WP1PictureGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
+void WP1PictureGroup::_readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
 	m_binaryData.clear();
 	uint8_t tmpWhatNot = readU8(input, encryption);
 	if (tmpWhatNot)
-		input->seek(1, RVNG_SEEK_CUR);
+		input->seek(1, librevenge::RVNG_SEEK_CUR);
 	m_width = readU16(input, encryption, true);
 	m_height = readU16(input, encryption, true);
-	input->seek(6, RVNG_SEEK_CUR);
+	input->seek(6, librevenge::RVNG_SEEK_CUR);
 	uint32_t dataSize = readU16(input, encryption, true);
 	WPD_DEBUG_MSG(("WP1PictureGroup: Offset = 0x%.4x, Width = %i, Height = %i, Data Size = 0x%.4x\n", (unsigned)input->tell(), m_width, m_height, dataSize));
 	if (dataSize + 13 > getSize())
@@ -73,7 +73,7 @@ void WP1PictureGroup::_readContents(RVNGInputStream *input, WPXEncryption *encry
 	FILE *f = fopen(filename.str().c_str(), "wb");
 	if (f)
 	{
-		RVNGInputStream *tmpStream = const_cast<RVNGInputStream *>(m_binaryData.getDataStream());
+		librevenge::RVNGInputStream *tmpStream = const_cast<librevenge::RVNGInputStream *>(m_binaryData.getDataStream());
 		while (!tmpStream->isEnd())
 			fprintf(f, "%c", readU8(tmpStream, 0));
 		fclose(f);

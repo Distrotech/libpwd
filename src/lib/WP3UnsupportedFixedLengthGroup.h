@@ -31,11 +31,11 @@
 class WP3UnsupportedFixedLengthGroup : public WP3FixedLengthGroup
 {
 public:
-	WP3UnsupportedFixedLengthGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID);
+	WP3UnsupportedFixedLengthGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID);
 	void parse(WP3Listener * /* listener */) {}
 
 protected:
-	void _readContents(RVNGInputStream * /* input */, WPXEncryption * /* encryption */) {}
+	void _readContents(librevenge::RVNGInputStream * /* input */, WPXEncryption * /* encryption */) {}
 };
 
 #endif /* WP3UNSUPPORTEDFIXEDLENGTHGROUP_H */

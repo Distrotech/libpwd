@@ -36,9 +36,9 @@
 class WP1UnsupportedVariableLengthGroup : public WP1VariableLengthGroup
 {
 public:
-	WP1UnsupportedVariableLengthGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t group);
+	WP1UnsupportedVariableLengthGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group);
 
-	void _readContents(RVNGInputStream *input, WPXEncryption *encryption);
+	void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP1Listener * /* listener */) {}
 };
 

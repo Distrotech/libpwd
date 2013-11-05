@@ -29,7 +29,7 @@
 #include "libwpd_internal.h"
 #include "WP3Listener.h"
 
-WP3SingleByteFunction *WP3SingleByteFunction::constructSingleByteFunction(RVNGInputStream * /* input */, WPXEncryption * /* encryption */, uint8_t groupID)
+WP3SingleByteFunction *WP3SingleByteFunction::constructSingleByteFunction(librevenge::RVNGInputStream * /* input */, WPXEncryption * /* encryption */, uint8_t groupID)
 {
 
 	switch (groupID)

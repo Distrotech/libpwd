@@ -30,7 +30,7 @@
 #include "WP6ExtendedDocumentSummaryPacket.h"
 #include "libwpd_internal.h"
 
-WP6ExtendedDocumentSummaryPacket::WP6ExtendedDocumentSummaryPacket(RVNGInputStream *input, WPXEncryption *encryption, int /* id */, uint32_t dataOffset, uint32_t dataSize) :
+WP6ExtendedDocumentSummaryPacket::WP6ExtendedDocumentSummaryPacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int /* id */, uint32_t dataOffset, uint32_t dataSize) :
 	WP6PrefixDataPacket(input, encryption),
 	m_dataSize(dataSize),
 	m_streamData(0),
@@ -48,7 +48,7 @@ WP6ExtendedDocumentSummaryPacket::~WP6ExtendedDocumentSummaryPacket()
 		delete [] m_streamData;
 }
 
-void WP6ExtendedDocumentSummaryPacket::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
+void WP6ExtendedDocumentSummaryPacket::_readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
 	if (!m_dataSize)
 		return;
@@ -82,10 +82,10 @@ void WP6ExtendedDocumentSummaryPacket::parse(WP6Listener *listener) const
 		uint16_t tagID = readU16(m_stream, 0);
 		if (m_stream->isEnd())
 			return;
-		if (m_stream->seek(2, RVNG_SEEK_CUR))
+		if (m_stream->seek(2, librevenge::RVNG_SEEK_CUR))
 			return;
 
-		RVNGString name;
+		librevenge::RVNGString name;
 		uint16_t wpChar = 0;
 		if (!m_stream->isEnd())
 			wpChar = readU16(m_stream, 0);
@@ -127,7 +127,7 @@ void WP6ExtendedDocumentSummaryPacket::parse(WP6Listener *listener) const
 		}
 		else
 		{
-			RVNGString data;
+			librevenge::RVNGString data;
 			if (!m_stream->isEnd())
 				wpChar = readU16(m_stream, 0);
 			for (; wpChar != 0 && !m_stream->isEnd(); wpChar = readU16(m_stream, 0))
@@ -143,7 +143,7 @@ void WP6ExtendedDocumentSummaryPacket::parse(WP6Listener *listener) const
 			if (data.len())
 				listener->setExtendedInformation(tagID, data);
 		}
-		m_stream->seek((i+groupLength), RVNG_SEEK_SET);
+		m_stream->seek((i+groupLength), librevenge::RVNG_SEEK_SET);
 	}
 }
 /* vim:set shiftwidth=4 softtabstop=4 noexpandtab: */

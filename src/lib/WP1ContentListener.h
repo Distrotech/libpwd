@@ -38,7 +38,7 @@ struct _WP1ContentParsingState
 {
 	_WP1ContentParsingState();
 	~_WP1ContentParsingState();
-	RVNGString m_textBuffer;
+	librevenge::RVNGString m_textBuffer;
 	int m_numDeferredTabs;
 	int m_footNoteNumber, m_endNoteNumber;
 private:
@@ -49,7 +49,7 @@ private:
 class WP1ContentListener : public WP1Listener, protected WPXContentListener
 {
 public:
-	WP1ContentListener(std::list<WPXPageSpan> &pageList, std::vector<WP1SubDocument *> &subDocuments, RVNGTextInterface *documentInterface);
+	WP1ContentListener(std::list<WPXPageSpan> &pageList, std::vector<WP1SubDocument *> &subDocuments, librevenge::RVNGTextInterface *documentInterface);
 	~WP1ContentListener();
 
 	void startDocument()
@@ -98,7 +98,7 @@ public:
 	{
 		WPXContentListener::endSubDocument();
 	}
-	void insertPicture(uint16_t width, uint16_t height, const RVNGBinaryData &binaryData);
+	void insertPicture(uint16_t width, uint16_t height, const librevenge::RVNGBinaryData &binaryData);
 
 protected:
 	using WPXContentListener::lineSpacingChange;

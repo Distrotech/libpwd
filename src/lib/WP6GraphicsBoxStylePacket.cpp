@@ -28,7 +28,7 @@
 #include "WP6GraphicsBoxStylePacket.h"
 #include "WP6Parser.h"
 
-WP6GraphicsBoxStylePacket::WP6GraphicsBoxStylePacket(RVNGInputStream *input, WPXEncryption *encryption, int  /* id */, uint32_t dataOffset, uint32_t dataSize):
+WP6GraphicsBoxStylePacket::WP6GraphicsBoxStylePacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int  /* id */, uint32_t dataOffset, uint32_t dataSize):
 	WP6PrefixDataPacket(input, encryption),
 	m_isLibraryStyle(false),
 	m_boxStyleName(),
@@ -57,11 +57,11 @@ WP6GraphicsBoxStylePacket::~WP6GraphicsBoxStylePacket()
 {
 }
 
-void WP6GraphicsBoxStylePacket::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
+void WP6GraphicsBoxStylePacket::_readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
 	WPD_DEBUG_MSG(("WP6GraphicsBoxStylePacket position: 0x%.8x\n", (unsigned)input->tell()));
 	uint16_t tmpNumChildIDs = readU16(input, encryption);
-	input->seek(tmpNumChildIDs * 2, RVNG_SEEK_CUR);
+	input->seek(tmpNumChildIDs * 2, librevenge::RVNG_SEEK_CUR);
 	uint16_t tmpSizeOfBoxData = readU16(input, encryption);
 	long tmpStartOfBoxData = input->tell();
 
@@ -69,7 +69,7 @@ void WP6GraphicsBoxStylePacket::_readContents(RVNGInputStream *input, WPXEncrypt
 
 	uint16_t tmpSizeOfBoxNameLibraryData = readU16(input, encryption);
 	long tmpBoxNameLibraryDataPosition = input->tell();
-	input->seek(1, RVNG_SEEK_CUR);
+	input->seek(1, librevenge::RVNG_SEEK_CUR);
 	m_isLibraryStyle = ((readU8(input, encryption) & 0x01) != 0x00);
 	int16_t tmpBoxNameLength = (int16_t)readU16(input, encryption);
 
@@ -118,19 +118,19 @@ void WP6GraphicsBoxStylePacket::_readContents(RVNGInputStream *input, WPXEncrypt
 		}
 	}
 	WPD_DEBUG_MSG(("WP6GraphicsBoxStylePacket -- Box Style name: %s\n", m_boxStyleName.cstr()));
-	input->seek(tmpSizeOfBoxNameLibraryData + tmpBoxNameLibraryDataPosition, RVNG_SEEK_SET);
+	input->seek(tmpSizeOfBoxNameLibraryData + tmpBoxNameLibraryDataPosition, librevenge::RVNG_SEEK_SET);
 
 	// Skipping box counter data
 
 	uint16_t tmpSizeOfBoxCounterData = readU16(input, encryption);
 	WPD_DEBUG_MSG(("WP6GraphicsBoxStylePacket -- Box counter data\n"));
-	input->seek(tmpSizeOfBoxCounterData, RVNG_SEEK_CUR);
+	input->seek(tmpSizeOfBoxCounterData, librevenge::RVNG_SEEK_CUR);
 
 	// Reading Box positioning data
 
 	uint16_t tmpSizeOfBoxPositioningData = readU16(input, encryption);
 	long tmpBoxPositioningDataPosition = input->tell();
-	input->seek(1, RVNG_SEEK_CUR);
+	input->seek(1, librevenge::RVNG_SEEK_CUR);
 
 	m_generalPositioningFlags = readU8(input, encryption);
 	WPD_DEBUG_MSG(("WP6GraphicsBoxStylePacket -- Box Positioning data (general positioning flags: 0x%.2x)\n", m_generalPositioningFlags));
@@ -168,13 +168,13 @@ void WP6GraphicsBoxStylePacket::_readContents(RVNGInputStream *input, WPXEncrypt
 	m_height = readU16(input, encryption);
 	WPD_DEBUG_MSG(("WP6GraphicsBoxStylePacket -- Box Height: %i\n", m_height));
 
-	input->seek(tmpSizeOfBoxPositioningData + tmpBoxPositioningDataPosition, RVNG_SEEK_SET);
+	input->seek(tmpSizeOfBoxPositioningData + tmpBoxPositioningDataPosition, librevenge::RVNG_SEEK_SET);
 
 	// Reading box content data
 
 	uint16_t tmpSizeOfBoxContentData = readU16(input, encryption);
 	long tmpBoxContentDataPosition = input->tell();
-	input->seek(1, RVNG_SEEK_CUR);
+	input->seek(1, librevenge::RVNG_SEEK_CUR);
 
 	m_contentType = readU8(input, encryption);
 	uint8_t tmpContentAlignFlags = readU8(input, encryption);
@@ -198,51 +198,51 @@ void WP6GraphicsBoxStylePacket::_readContents(RVNGInputStream *input, WPXEncrypt
 			m_nativeHeight = readU16(input, encryption);
 		}
 		else
-			input->seek(4, RVNG_SEEK_CUR);
+			input->seek(4, librevenge::RVNG_SEEK_CUR);
 
-		input->seek(tmpGraphicsRenderingInfoSize + tmpGraphicsRenderingInfoBegin, RVNG_SEEK_CUR);
+		input->seek(tmpGraphicsRenderingInfoSize + tmpGraphicsRenderingInfoBegin, librevenge::RVNG_SEEK_CUR);
 	}
 	break;
 	default:
 		break;
 	}
 
-	input->seek(tmpSizeOfBoxContentData + tmpBoxContentDataPosition, RVNG_SEEK_SET);
+	input->seek(tmpSizeOfBoxContentData + tmpBoxContentDataPosition, librevenge::RVNG_SEEK_SET);
 
 	// Reading box caption data
 
 	uint16_t tmpSizeOfBoxCaptionData = readU16(input, encryption);
 	long tmpBoxCaptionDataPosition = input->tell();
 
-	input->seek(tmpSizeOfBoxCaptionData + tmpBoxCaptionDataPosition, RVNG_SEEK_SET);
+	input->seek(tmpSizeOfBoxCaptionData + tmpBoxCaptionDataPosition, librevenge::RVNG_SEEK_SET);
 
 	// Reading box border data
 
 	uint16_t tmpSizeOfBoxBorderData = readU16(input, encryption);
 	long tmpBoxBorderDataPosition = input->tell();
 
-	input->seek(tmpSizeOfBoxBorderData + tmpBoxBorderDataPosition, RVNG_SEEK_SET);
+	input->seek(tmpSizeOfBoxBorderData + tmpBoxBorderDataPosition, librevenge::RVNG_SEEK_SET);
 
 	// Reading box fill data
 
 	uint16_t tmpSizeOfBoxFillData = readU16(input, encryption);
 	long tmpBoxFillDataPosition = input->tell();
 
-	input->seek(tmpSizeOfBoxFillData + tmpBoxFillDataPosition, RVNG_SEEK_SET);
+	input->seek(tmpSizeOfBoxFillData + tmpBoxFillDataPosition, librevenge::RVNG_SEEK_SET);
 
 	// Reading box wrapping data
 
 	uint16_t tmpSizeOfBoxWrappingData = readU16(input, encryption);
 	long tmpBoxWrappingDataPosition = input->tell();
 
-	input->seek(tmpSizeOfBoxWrappingData + tmpBoxWrappingDataPosition, RVNG_SEEK_SET);
+	input->seek(tmpSizeOfBoxWrappingData + tmpBoxWrappingDataPosition, librevenge::RVNG_SEEK_SET);
 
 	// Reading box hypertext data
 
 	uint16_t tmpSizeOfBoxHypertextData = readU16(input, encryption);
 	long tmpBoxHypertextDataPosition = input->tell();
 
-	input->seek(tmpSizeOfBoxHypertextData + tmpBoxHypertextDataPosition, RVNG_SEEK_SET);
+	input->seek(tmpSizeOfBoxHypertextData + tmpBoxHypertextDataPosition, librevenge::RVNG_SEEK_SET);
 
 	// Dumping hexadecimally the rest of the packet
 
@@ -258,7 +258,7 @@ void WP6GraphicsBoxStylePacket::_readContents(RVNGInputStream *input, WPXEncrypt
 		WPD_DEBUG_MSG(("%.2x ", readU8(input, encryption)));
 	}
 #else
-	if (input->seek(tmpStartOfBoxData + tmpSizeOfBoxData, RVNG_SEEK_SET))
+	if (input->seek(tmpStartOfBoxData + tmpSizeOfBoxData, librevenge::RVNG_SEEK_SET))
 		throw FileException();
 #endif
 

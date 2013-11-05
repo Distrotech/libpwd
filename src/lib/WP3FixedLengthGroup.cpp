@@ -40,7 +40,7 @@ WP3FixedLengthGroup::WP3FixedLengthGroup(const uint8_t groupID)
 {
 }
 
-WP3FixedLengthGroup *WP3FixedLengthGroup::constructFixedLengthGroup(RVNGInputStream *input, WPXEncryption *encryption, const uint8_t groupID)
+WP3FixedLengthGroup *WP3FixedLengthGroup::constructFixedLengthGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const uint8_t groupID)
 {
 	switch (groupID)
 	{
@@ -68,35 +68,35 @@ WP3FixedLengthGroup *WP3FixedLengthGroup::constructFixedLengthGroup(RVNGInputStr
 	}
 }
 
-bool WP3FixedLengthGroup::isGroupConsistent(RVNGInputStream *input, WPXEncryption *encryption, const uint8_t groupID)
+bool WP3FixedLengthGroup::isGroupConsistent(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const uint8_t groupID)
 {
 	long startPosition = input->tell();
 
 	try
 	{
 		int size = WP3_FIXED_LENGTH_FUNCTION_GROUP_SIZE[groupID-0xC0];
-		if (input->seek((startPosition + size - 2), RVNG_SEEK_SET) || input->isEnd())
+		if (input->seek((startPosition + size - 2), librevenge::RVNG_SEEK_SET) || input->isEnd())
 		{
-			input->seek(startPosition, RVNG_SEEK_SET);
+			input->seek(startPosition, librevenge::RVNG_SEEK_SET);
 			return false;
 		}
 		if (groupID != readU8(input, encryption))
 		{
-			input->seek(startPosition, RVNG_SEEK_SET);
+			input->seek(startPosition, librevenge::RVNG_SEEK_SET);
 			return false;
 		}
 
-		input->seek(startPosition, RVNG_SEEK_SET);
+		input->seek(startPosition, librevenge::RVNG_SEEK_SET);
 		return true;
 	}
 	catch(...)
 	{
-		input->seek(startPosition, RVNG_SEEK_SET);
+		input->seek(startPosition, librevenge::RVNG_SEEK_SET);
 		return false;
 	}
 }
 
-void WP3FixedLengthGroup::_read(RVNGInputStream *input, WPXEncryption *encryption)
+void WP3FixedLengthGroup::_read(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
 	long startPosition = input->tell();
 	_readContents(input, encryption);
@@ -104,7 +104,7 @@ void WP3FixedLengthGroup::_read(RVNGInputStream *input, WPXEncryption *encryptio
 	if (m_group >= 0xC0 && m_group <= 0xCF) // just an extra safety check
 	{
 		int size = WP3_FIXED_LENGTH_FUNCTION_GROUP_SIZE[m_group-0xC0];
-		input->seek((startPosition + size - 2), RVNG_SEEK_SET);
+		input->seek((startPosition + size - 2), librevenge::RVNG_SEEK_SET);
 		if (m_group != readU8(input, encryption))
 		{
 			WPD_DEBUG_MSG(("WordPerfect: Possible corruption detected. Bailing out!\n"));

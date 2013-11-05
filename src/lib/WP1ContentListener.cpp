@@ -45,7 +45,7 @@ _WP1ContentParsingState::~_WP1ContentParsingState()
 }
 
 
-WP1ContentListener::WP1ContentListener(std::list<WPXPageSpan> &pageList, std::vector<WP1SubDocument *> &subDocuments, RVNGTextInterface *documentInterface) :
+WP1ContentListener::WP1ContentListener(std::list<WPXPageSpan> &pageList, std::vector<WP1SubDocument *> &subDocuments, librevenge::RVNGTextInterface *documentInterface) :
 	WP1Listener(),
 	WPXContentListener(pageList, documentInterface),
 	m_parseState(new WP1ContentParsingState),
@@ -144,7 +144,7 @@ void WP1ContentListener::insertNote(const WPXNoteType noteType, WP1SubDocument *
 
 		m_ps->m_isNote = true;
 
-		RVNGPropertyList propList;
+		librevenge::RVNGPropertyList propList;
 
 		if (noteType == FOOTNOTE)
 		{
@@ -534,14 +534,14 @@ void WP1ContentListener::centerOn()
 	}
 }
 
-void WP1ContentListener::insertPicture(uint16_t width, uint16_t height, const RVNGBinaryData &binaryData)
+void WP1ContentListener::insertPicture(uint16_t width, uint16_t height, const librevenge::RVNGBinaryData &binaryData)
 {
 	if (!isUndoOn())
 	{
 		if (!m_ps->m_isSpanOpened)
 			_openSpan();
 
-		RVNGPropertyList propList;
+		librevenge::RVNGPropertyList propList;
 		propList.insert("svg:width", (double)((double)width/72.0));
 		propList.insert("svg:height", (double)((double)height/72.0));
 		propList.insert("text:anchor-type", "as-char");

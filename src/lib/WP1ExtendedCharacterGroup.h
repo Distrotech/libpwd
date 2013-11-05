@@ -31,9 +31,9 @@
 class WP1ExtendedCharacterGroup : public WP1FixedLengthGroup
 {
 public:
-	WP1ExtendedCharacterGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t group);
+	WP1ExtendedCharacterGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group);
 	~WP1ExtendedCharacterGroup();
-	void _readContents(RVNGInputStream *input, WPXEncryption *encryption);
+	void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP1Listener *listener);
 
 private:

@@ -36,11 +36,11 @@ public:
 	WP42MultiByteFunctionGroup(uint8_t group); // WP42MultiByteFunctionGroup should _never_ be constructed, only its inherited classes
 	virtual ~WP42MultiByteFunctionGroup() {}
 
-	static WP42MultiByteFunctionGroup *constructMultiByteFunctionGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t group);
+	static WP42MultiByteFunctionGroup *constructMultiByteFunctionGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group);
 
 protected:
-	void _read(RVNGInputStream *input, WPXEncryption *encryption);
-	virtual void _readContents(RVNGInputStream *input, WPXEncryption *encryption) = 0;
+	void _read(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
+	virtual void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption) = 0;
 
 	uint8_t getGroup() const
 	{

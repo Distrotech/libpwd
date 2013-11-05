@@ -36,13 +36,13 @@ public:
 	WP1VariableLengthGroup(uint8_t group); // WP1VariableLengthGroup should _never_ be constructed, only its inherited classes
 	virtual ~WP1VariableLengthGroup() {}
 
-	static WP1VariableLengthGroup *constructVariableLengthGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t group);
+	static WP1VariableLengthGroup *constructVariableLengthGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group);
 
-	static bool isGroupConsistent(RVNGInputStream *input, WPXEncryption *encryption, const uint8_t group);
+	static bool isGroupConsistent(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const uint8_t group);
 
 protected:
-	void _read(RVNGInputStream *input, WPXEncryption *encryption);
-	virtual void _readContents(RVNGInputStream *input, WPXEncryption *encryption) = 0;
+	void _read(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
+	virtual void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption) = 0;
 
 	uint8_t getGroup() const
 	{

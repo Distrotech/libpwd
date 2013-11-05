@@ -30,7 +30,7 @@
 #include "WP6Listener.h"
 #include "libwpd_internal.h"
 
-WP6SingleByteFunction *WP6SingleByteFunction::constructSingleByteFunction(RVNGInputStream * /* input */, WPXEncryption * /* encryption */, uint8_t groupID)
+WP6SingleByteFunction *WP6SingleByteFunction::constructSingleByteFunction(librevenge::RVNGInputStream * /* input */, WPXEncryption * /* encryption */, uint8_t groupID)
 {
 
 	switch (groupID)

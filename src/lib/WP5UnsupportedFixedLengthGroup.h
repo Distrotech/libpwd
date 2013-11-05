@@ -32,11 +32,11 @@
 class WP5UnsupportedFixedLengthGroup : public WP5FixedLengthGroup
 {
 public:
-	WP5UnsupportedFixedLengthGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID);
+	WP5UnsupportedFixedLengthGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID);
 	void parse(WP5Listener * /* listener */) {}
 
 protected:
-	void _readContents(RVNGInputStream * /* input */, WPXEncryption * /* encryption */) {}
+	void _readContents(librevenge::RVNGInputStream * /* input */, WPXEncryption * /* encryption */) {}
 };
 
 #endif /* WP5UNSUPPORTEDFIXEDLENGTHGROUP_H */

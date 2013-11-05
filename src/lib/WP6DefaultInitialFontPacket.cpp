@@ -28,7 +28,7 @@
 #include "WP6DefaultInitialFontPacket.h"
 #include "libwpd_internal.h"
 
-WP6DefaultInitialFontPacket::WP6DefaultInitialFontPacket(RVNGInputStream *input, WPXEncryption *encryption, int /* id */, uint32_t dataOffset, uint32_t dataSize) :
+WP6DefaultInitialFontPacket::WP6DefaultInitialFontPacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int /* id */, uint32_t dataOffset, uint32_t dataSize) :
 	WP6PrefixDataPacket(input, encryption),
 	m_numPrefixIDs(0),
 	m_initialFontDescriptorPID(0),
@@ -39,10 +39,10 @@ WP6DefaultInitialFontPacket::WP6DefaultInitialFontPacket(RVNGInputStream *input,
 
 void WP6DefaultInitialFontPacket::parse(WP6Listener *listener) const
 {
-	listener->fontChange(getPointSize(), getInitialFontDescriptorPID(), RVNGString());
+	listener->fontChange(getPointSize(), getInitialFontDescriptorPID(), librevenge::RVNGString());
 }
 
-void WP6DefaultInitialFontPacket::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
+void WP6DefaultInitialFontPacket::_readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
 	m_numPrefixIDs = readU16(input, encryption);
 	m_initialFontDescriptorPID = readU16(input, encryption);

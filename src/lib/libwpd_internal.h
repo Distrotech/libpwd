@@ -63,15 +63,15 @@
 
 // add more of these as needed for byteswapping
 // (the 8-bit functions are just there to make things consistent)
-uint8_t readU8(RVNGInputStream *input, WPXEncryption *encryption);
-uint16_t readU16(RVNGInputStream *input, WPXEncryption *encryption, bool bigendian=false);
-int16_t readS16(RVNGInputStream *input, WPXEncryption *encryption, bool bigendian=false);
-uint32_t readU32(RVNGInputStream *input, WPXEncryption *encryption, bool bigendian=false);
+uint8_t readU8(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
+uint16_t readU16(librevenge::RVNGInputStream *input, WPXEncryption *encryption, bool bigendian=false);
+int16_t readS16(librevenge::RVNGInputStream *input, WPXEncryption *encryption, bool bigendian=false);
+uint32_t readU32(librevenge::RVNGInputStream *input, WPXEncryption *encryption, bool bigendian=false);
 
-RVNGString readPascalString(RVNGInputStream *input, WPXEncryption *encryption);
-RVNGString readCString(RVNGInputStream *input, WPXEncryption *encryption);
+librevenge::RVNGString readPascalString(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
+librevenge::RVNGString readCString(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 
-void appendUCS4(RVNGString &str, uint32_t ucs4);
+void appendUCS4(librevenge::RVNGString &str, uint32_t ucs4);
 
 // Various helper structures for the libwpd parser..
 
@@ -237,11 +237,11 @@ class WrongPasswordException
 // Various usefull, but cheesey functions
 
 int _extractNumericValueFromRoman(const char romanChar);
-int _extractDisplayReferenceNumberFromBuf(const RVNGString &buf, const WPXNumberingType listType);
-WPXNumberingType _extractWPXNumberingTypeFromBuf(const RVNGString &buf, const WPXNumberingType putativeWPXNumberingType);
-RVNGString _numberingTypeToString(WPXNumberingType t);
+int _extractDisplayReferenceNumberFromBuf(const librevenge::RVNGString &buf, const WPXNumberingType listType);
+WPXNumberingType _extractWPXNumberingTypeFromBuf(const librevenge::RVNGString &buf, const WPXNumberingType putativeWPXNumberingType);
+librevenge::RVNGString _numberingTypeToString(WPXNumberingType t);
 extern const uint32_t macRomanCharacterMap[];
-RVNGString doubleToString(const double value);
+librevenge::RVNGString doubleToString(const double value);
 
 #endif /* LIBWPD_INTERNAL_H */
 /* vim:set shiftwidth=4 softtabstop=4 noexpandtab: */

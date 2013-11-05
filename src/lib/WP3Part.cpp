@@ -34,7 +34,7 @@
 // returns the part if it successfully creates the part, returns 0 if it can't
 // throws an exception if there is an error
 // precondition: readVal is between 0xC0 and 0xEF
-WP3Part *WP3Part::constructPart(RVNGInputStream *input, WPXEncryption *encryption, const uint8_t readVal)
+WP3Part *WP3Part::constructPart(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const uint8_t readVal)
 {
 	WPD_DEBUG_MSG(("WordPerfect: ConstructPart for group 0x%x\n", readVal));
 

@@ -34,16 +34,16 @@
 class WP6FontDescriptorPacket : public WP6PrefixDataPacket
 {
 public:
-	WP6FontDescriptorPacket(RVNGInputStream *input, WPXEncryption *encryption, int id, uint32_t dataOffset, uint32_t dataSize);
+	WP6FontDescriptorPacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int id, uint32_t dataOffset, uint32_t dataSize);
 	~WP6FontDescriptorPacket();
-	void _readContents(RVNGInputStream *input, WPXEncryption *encryption);
-	const RVNGString &getFontName() const
+	void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
+	const librevenge::RVNGString &getFontName() const
 	{
 		return m_fontName;
 	}
 
 private:
-	void _readFontName(RVNGInputStream *input, WPXEncryption *encryption);
+	void _readFontName(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 
 	WP6FontDescriptorPacket(const WP6FontDescriptorPacket &);
 	WP6FontDescriptorPacket &operator=(const WP6FontDescriptorPacket &);
@@ -68,7 +68,7 @@ private:
 
 	uint16_t m_fontNameLength;
 
-	RVNGString m_fontName;
+	librevenge::RVNGString m_fontName;
 };
 #endif
 /* vim:set shiftwidth=4 softtabstop=4 noexpandtab: */

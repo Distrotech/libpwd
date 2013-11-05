@@ -29,7 +29,7 @@
 #include "WPXEncryption.h"
 #include "libwpd_internal.h"
 
-WPXParser::WPXParser(RVNGInputStream *input, WPXHeader *header, WPXEncryption *encryption) :
+WPXParser::WPXParser(librevenge::RVNGInputStream *input, WPXHeader *header, WPXEncryption *encryption) :
 	m_input(input),
 	m_header(header),
 	m_encryption(encryption)

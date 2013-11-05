@@ -50,7 +50,7 @@ public:
 	             const uint8_t /* hour */, const uint8_t /* minute */,
 	             const uint8_t /* second */, const uint8_t /* dayOfWeek */,
 	             const uint8_t /* timeZone */, const uint8_t /* unused */) {}
-	void setExtendedInformation(const uint16_t /* type */, const RVNGString & /*data*/) {}
+	void setExtendedInformation(const uint16_t /* type */, const librevenge::RVNGString & /*data*/) {}
 	void startDocument() {}
 	void startSubDocument() {}
 	void setAlignmentCharacter(const uint32_t /* character */) {}
@@ -77,7 +77,7 @@ public:
 	void characterColorChange(const uint8_t /* red */, const uint8_t /* green */, const uint8_t /* blue */) {}
 	void characterShadingChange(const uint8_t /* shading */) {}
 	void highlightChange(const bool /* isOn */, const RGBSColor & /* color */) {}
-	void fontChange(const uint16_t /* matchedFontPointSize */, const uint16_t /* fontPID */, const RVNGString & /* fontName */) {}
+	void fontChange(const uint16_t /* matchedFontPointSize */, const uint16_t /* fontPID */, const librevenge::RVNGString & /* fontName */) {}
 	void attributeChange(const bool /* isOn */, const uint8_t /* attribute */) {}
 	void lineSpacingChange(const double /* lineSpacing */) {}
 	void spacingAfterParagraphChange(const double /* spacingRelative */, const double /* spacingAbsolute */) {}

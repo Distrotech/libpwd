@@ -27,7 +27,7 @@
 #define MEMORYSTREAM_H
 #include <librevenge-stream/librevenge-stream.h>
 
-class WPXMemoryInputStream : public RVNGInputStream
+class WPXMemoryInputStream : public librevenge::RVNGInputStream
 {
 public:
 	WPXMemoryInputStream(unsigned char *data, unsigned long size);
@@ -44,16 +44,16 @@ public:
 	{
 		return 0;
 	}
-	virtual RVNGInputStream *getSubStreamByName(const char *)
+	virtual librevenge::RVNGInputStream *getSubStreamByName(const char *)
 	{
 		return 0;
 	}
-	virtual RVNGInputStream *getSubStreamById(unsigned)
+	virtual librevenge::RVNGInputStream *getSubStreamById(unsigned)
 	{
 		return 0;
 	}
 	virtual const unsigned char *read(unsigned long numBytes, unsigned long &numBytesRead);
-	virtual int seek(long offset, RVNG_SEEK_TYPE seekType);
+	virtual int seek(long offset, librevenge::RVNG_SEEK_TYPE seekType);
 	virtual long tell();
 	virtual bool isEnd();
 	virtual unsigned long getSize() const

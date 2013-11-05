@@ -36,16 +36,16 @@ class WP1Listener;
 class WP1Parser : public WPXParser
 {
 public:
-	WP1Parser(RVNGInputStream *input, WPXEncryption *encryption);
+	WP1Parser(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	~WP1Parser();
 
-	void parse(RVNGTextInterface *documentInterface);
-	void parseSubDocument(RVNGTextInterface *documentInterface);
+	void parse(librevenge::RVNGTextInterface *documentInterface);
+	void parseSubDocument(librevenge::RVNGTextInterface *documentInterface);
 
-	static void parseDocument(RVNGInputStream *input, WPXEncryption *encryption, WP1Listener *listener);
+	static void parseDocument(librevenge::RVNGInputStream *input, WPXEncryption *encryption, WP1Listener *listener);
 
 private:
-	void parse(RVNGInputStream *input, WPXEncryption *encryption, WP1Listener *listener);
+	void parse(librevenge::RVNGInputStream *input, WPXEncryption *encryption, WP1Listener *listener);
 };
 
 #endif /* WP1PARSER_H */

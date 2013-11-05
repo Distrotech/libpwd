@@ -33,7 +33,7 @@
 class WP6CharacterGroup_SetAlignmentCharacterSubGroup: public WP6VariableLengthGroup_SubGroup
 {
 public:
-	WP6CharacterGroup_SetAlignmentCharacterSubGroup(RVNGInputStream *input, WPXEncryption *encryption);
+	WP6CharacterGroup_SetAlignmentCharacterSubGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP6Listener *listener, const uint8_t numPrefixIDs, uint16_t const *prefixIDs) const;
 
 private:
@@ -44,7 +44,7 @@ private:
 class WP6CharacterGroup_ColorSubGroup: public WP6VariableLengthGroup_SubGroup
 {
 public:
-	WP6CharacterGroup_ColorSubGroup(RVNGInputStream *input, WPXEncryption *encryption);
+	WP6CharacterGroup_ColorSubGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP6Listener *listener, const uint8_t numPrefixIDs, uint16_t const *prefixIDs) const;
 
 private:
@@ -56,7 +56,7 @@ private:
 class WP6CharacterGroup_CharacterShadingChangeSubGroup: public WP6VariableLengthGroup_SubGroup
 {
 public:
-	WP6CharacterGroup_CharacterShadingChangeSubGroup(RVNGInputStream *input, WPXEncryption *encryption);
+	WP6CharacterGroup_CharacterShadingChangeSubGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP6Listener *listener, const uint8_t numPrefixIDs, uint16_t const *prefixIDs) const;
 
 private:
@@ -66,7 +66,7 @@ private:
 class WP6CharacterGroup_FontFaceChangeSubGroup : public WP6VariableLengthGroup_SubGroup
 {
 public:
-	WP6CharacterGroup_FontFaceChangeSubGroup(RVNGInputStream *input, WPXEncryption *encryption, uint16_t sizeDeletable);
+	WP6CharacterGroup_FontFaceChangeSubGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint16_t sizeDeletable);
 	~WP6CharacterGroup_FontFaceChangeSubGroup();
 	void parse(WP6Listener *listener, const uint8_t numPrefixIDs, uint16_t const *prefixIDs) const;
 
@@ -85,7 +85,7 @@ private:
 class WP6CharacterGroup_FontSizeChangeSubGroup : public WP6VariableLengthGroup_SubGroup
 {
 public:
-	WP6CharacterGroup_FontSizeChangeSubGroup(RVNGInputStream *input, WPXEncryption *encryption);
+	WP6CharacterGroup_FontSizeChangeSubGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP6Listener *listener, const uint8_t numPrefixIDs, uint16_t const *prefixIDs) const;
 
 private:
@@ -95,7 +95,7 @@ private:
 class WP6CharacterGroup_SetDotLeaderCharactersSubGroup: public WP6VariableLengthGroup_SubGroup
 {
 public:
-	WP6CharacterGroup_SetDotLeaderCharactersSubGroup(RVNGInputStream *input, WPXEncryption *encryption);
+	WP6CharacterGroup_SetDotLeaderCharactersSubGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP6Listener *listener, const uint8_t numPrefixIDs, uint16_t const *prefixIDs) const;
 
 private:
@@ -107,7 +107,7 @@ private:
 class WP6CharacterGroup_ParagraphNumberOnSubGroup : public WP6VariableLengthGroup_SubGroup
 {
 public:
-	WP6CharacterGroup_ParagraphNumberOnSubGroup(RVNGInputStream *input, WPXEncryption *encryption);
+	WP6CharacterGroup_ParagraphNumberOnSubGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP6Listener *listener, const uint8_t numPrefixIDs, uint16_t const *prefixIDs) const;
 
 private:
@@ -119,7 +119,7 @@ private:
 class WP6CharacterGroup_TableDefinitionOnSubGroup : public WP6VariableLengthGroup_SubGroup
 {
 public:
-	WP6CharacterGroup_TableDefinitionOnSubGroup(RVNGInputStream *input, WPXEncryption *encryption);
+	WP6CharacterGroup_TableDefinitionOnSubGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP6Listener *listener, const uint8_t numPrefixIDs, uint16_t const *prefixIDs) const;
 
 private:
@@ -131,7 +131,7 @@ private:
 class WP6CharacterGroup_TableDefinitionOffSubGroup : public WP6VariableLengthGroup_SubGroup
 {
 public:
-	WP6CharacterGroup_TableDefinitionOffSubGroup(RVNGInputStream *input, WPXEncryption *encryption);
+	WP6CharacterGroup_TableDefinitionOffSubGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP6Listener *listener, const uint8_t numPrefixIDs, uint16_t const *prefixIDs) const;
 
 private:
@@ -141,7 +141,7 @@ private:
 class WP6CharacterGroup_TableColumnSubGroup : public WP6VariableLengthGroup_SubGroup
 {
 public:
-	WP6CharacterGroup_TableColumnSubGroup(RVNGInputStream *input, WPXEncryption *encryption);
+	WP6CharacterGroup_TableColumnSubGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP6Listener *listener, const uint8_t numPrefixIDs, uint16_t const *prefixIDs) const;
 
 private:
@@ -159,7 +159,7 @@ private:
 class WP6CharacterGroup_CommentSubGroup : public WP6VariableLengthGroup_SubGroup
 {
 public:
-	WP6CharacterGroup_CommentSubGroup(RVNGInputStream *input, WPXEncryption *encryption);
+	WP6CharacterGroup_CommentSubGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP6Listener *listener, const uint8_t numPrefixIDs, uint16_t const *prefixIDs) const;
 
 private:
@@ -169,9 +169,9 @@ private:
 class WP6CharacterGroup : public WP6VariableLengthGroup
 {
 public:
-	WP6CharacterGroup(RVNGInputStream *input, WPXEncryption *encryption);
+	WP6CharacterGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	~WP6CharacterGroup();
-	void _readContents(RVNGInputStream *input, WPXEncryption *encryption);
+	void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP6Listener *listener);
 
 private:

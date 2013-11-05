@@ -28,13 +28,13 @@
 #include "WP42UnsupportedMultiByteFunctionGroup.h"
 #include "libwpd_internal.h"
 
-WP42UnsupportedMultiByteFunctionGroup::WP42UnsupportedMultiByteFunctionGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t group) :
+WP42UnsupportedMultiByteFunctionGroup::WP42UnsupportedMultiByteFunctionGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group) :
 	WP42MultiByteFunctionGroup(group)
 {
 	_read(input, encryption);
 }
 
-void WP42UnsupportedMultiByteFunctionGroup::_readContents(RVNGInputStream * /* input */, WPXEncryption * /* encryption */)
+void WP42UnsupportedMultiByteFunctionGroup::_readContents(librevenge::RVNGInputStream * /* input */, WPXEncryption * /* encryption */)
 {
 	WPD_DEBUG_MSG(("WordPerfect: Handling an unsupported variable length group\n"));
 }

@@ -28,7 +28,7 @@
 #include "WP3FileStructure.h"
 #include "WP3Parser.h"
 
-WP3FootnoteEndnoteGroup::WP3FootnoteEndnoteGroup(RVNGInputStream *input, WPXEncryption *encryption) :
+WP3FootnoteEndnoteGroup::WP3FootnoteEndnoteGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption) :
 	WP3VariableLengthGroup(),
 	m_subDocument(0)
 {
@@ -40,18 +40,18 @@ WP3FootnoteEndnoteGroup::~WP3FootnoteEndnoteGroup()
 	delete m_subDocument;
 }
 
-void WP3FootnoteEndnoteGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
+void WP3FootnoteEndnoteGroup::_readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
 	int tmpSizeOfNote = getSize() - 8;
-	input->seek(25, RVNG_SEEK_CUR);
+	input->seek(25, librevenge::RVNG_SEEK_CUR);
 	tmpSizeOfNote -= 25;
 	unsigned tmpNumOfPages = readU16(input, encryption, true);
 	tmpSizeOfNote -= 2;
-	input->seek(4*tmpNumOfPages, RVNG_SEEK_CUR);
+	input->seek(4*tmpNumOfPages, librevenge::RVNG_SEEK_CUR);
 	tmpSizeOfNote -= 4*tmpNumOfPages;
 	unsigned tmpNumBreakTableEntries = readU16(input, encryption, true);
 	tmpSizeOfNote -= 2;
-	input->seek(6*tmpNumBreakTableEntries, RVNG_SEEK_CUR);
+	input->seek(6*tmpNumBreakTableEntries, librevenge::RVNG_SEEK_CUR);
 	tmpSizeOfNote -= 6*tmpNumBreakTableEntries;
 
 	// here we skipped all the useless junk and we are at the beginning of the

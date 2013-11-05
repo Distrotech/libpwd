@@ -29,10 +29,10 @@
 #include <vector>
 #include <sstream>
 
-WP3ResourceFork::WP3ResourceFork(RVNGInputStream *input, WPXEncryption *encryption) :
+WP3ResourceFork::WP3ResourceFork(librevenge::RVNGInputStream *input, WPXEncryption *encryption) :
 	m_resourcesTypeMultimap(), m_resourcesIDMultimap()
 {
-	input->seek(16, RVNG_SEEK_SET);
+	input->seek(16, librevenge::RVNG_SEEK_SET);
 	uint32_t dataOffset = readU32(input, encryption, true);
 	uint32_t mapOffset = readU32(input, encryption, true);
 	/* uint32_t dataLength = */
@@ -40,12 +40,12 @@ WP3ResourceFork::WP3ResourceFork(RVNGInputStream *input, WPXEncryption *encrypti
 	/* uint32_t mapLength = */
 	readU32(input, encryption, true);
 
-	input->seek(40+mapOffset, RVNG_SEEK_SET);
+	input->seek(40+mapOffset, librevenge::RVNG_SEEK_SET);
 
 	uint32_t typeOffset = readU16(input, encryption, true);
 	uint32_t nameListOffset = readU16(input, encryption, true);
 
-	input->seek(16+typeOffset+mapOffset, RVNG_SEEK_SET);
+	input->seek(16+typeOffset+mapOffset, librevenge::RVNG_SEEK_SET);
 	uint16_t resourceTypesNumber = (uint16_t)(1 + readU16(input, encryption, true));
 
 	for (unsigned i=0; i < resourceTypesNumber; i++)
@@ -54,25 +54,25 @@ WP3ResourceFork::WP3ResourceFork(RVNGInputStream *input, WPXEncryption *encrypti
 		uint32_t resourcesNumber = 1+readU16(input, encryption, true);
 		uint32_t referenceListOffset = 16+typeOffset+mapOffset+readU16(input, encryption, true);
 		long position = input->tell();
-		input->seek(referenceListOffset, RVNG_SEEK_SET);
+		input->seek(referenceListOffset, librevenge::RVNG_SEEK_SET);
 		for (uint32_t j=0; j < resourcesNumber; j++)
 		{
 			uint32_t resourceReferenceID = readU16(input, encryption, true);
 			uint16_t resourceNameOffset = readU16(input, encryption, true);
-			RVNGString resourceName;
+			librevenge::RVNGString resourceName;
 			if (resourceNameOffset != 0xffff)
 			{
 				long position2 = input->tell();
-				input->seek(16+mapOffset+nameListOffset+resourceNameOffset, RVNG_SEEK_SET);
+				input->seek(16+mapOffset+nameListOffset+resourceNameOffset, librevenge::RVNG_SEEK_SET);
 				resourceName = readPascalString(input, encryption);
-				input->seek(position2, RVNG_SEEK_SET);
+				input->seek(position2, librevenge::RVNG_SEEK_SET);
 			}
 			uint8_t resourceAttributes = readU8(input, encryption);
 			uint32_t offsetToData = (uint32_t)((uint32_t)readU8(input, encryption) << 16);
 			offsetToData |= readU16(input, encryption, true);
 			offsetToData += 16+dataOffset;
 			long position3 = input->tell();
-			input->seek(offsetToData, RVNG_SEEK_SET);
+			input->seek(offsetToData, librevenge::RVNG_SEEK_SET);
 			uint32_t resourceDataSize = readU32(input, encryption, true);
 
 			unsigned long oldEncryptionOffset = 0;
@@ -89,7 +89,7 @@ WP3ResourceFork::WP3ResourceFork(RVNGInputStream *input, WPXEncryption *encrypti
 				}
 			}
 
-			RVNGBinaryData resourceData;
+			librevenge::RVNGBinaryData resourceData;
 			for (unsigned long k = 0; k < (unsigned long)resourceDataSize && !input->isEnd(); k++)
 				resourceData.append((unsigned char)readU8(input, encryption));
 
@@ -99,14 +99,14 @@ WP3ResourceFork::WP3ResourceFork(RVNGInputStream *input, WPXEncryption *encrypti
 				encryption->setEncryptionMaskBase(oldEncryptionMaskBase);
 			}
 
-			input->seek(position3, RVNG_SEEK_SET);
+			input->seek(position3, librevenge::RVNG_SEEK_SET);
 			WP3Resource *resource = new WP3Resource(resourceType, resourceReferenceID, resourceName, resourceAttributes, resourceData);
 			m_resourcesTypeMultimap.insert(std::multimap<uint32_t, WP3Resource *>::value_type( resourceType, resource ) );
 			m_resourcesIDMultimap.insert(std::multimap<uint32_t, WP3Resource *>::value_type( resourceReferenceID, resource ) );
 			WPD_DEBUG_MSG(("WP3Resource: Type 0x%.8x, ID %i, name %s, attributes 0x%.2x\n", resourceType, resourceReferenceID, resourceName.cstr(), resourceAttributes));
-			input->seek(4, RVNG_SEEK_CUR);
+			input->seek(4, librevenge::RVNG_SEEK_CUR);
 #if 0
-			RVNGInputStream *tmpBinaryStream = const_cast<RVNGInputStream *>(resourceData.getDataStream());
+			librevenge::RVNGInputStream *tmpBinaryStream = const_cast<librevenge::RVNGInputStream *>(resourceData.getDataStream());
 			int indexNumber = 0;
 			while (!tmpBinaryStream->isEnd())
 			{
@@ -125,20 +125,20 @@ WP3ResourceFork::WP3ResourceFork(RVNGInputStream *input, WPXEncryption *encrypti
 			std::ostringstream filename;
 			filename << "binarydump" << m_resourcesTypeMultimap.size() << ".bin";
 			FILE *f = fopen(filename.str().c_str(), "wb");
-			RVNGBinaryData tmpResData;
+			librevenge::RVNGBinaryData tmpResData;
 			for (int tmpIndex = 0; tmpIndex < 512; tmpIndex++)
 				tmpResData.append((const unsigned char)0);
 			tmpResData.append(resourceData);
 			if (f)
 			{
-				RVNGInputStream *tmpStream = const_cast<RVNGInputStream *>(tmpResData.getDataStream());
+				librevenge::RVNGInputStream *tmpStream = const_cast<librevenge::RVNGInputStream *>(tmpResData.getDataStream());
 				while (!tmpStream->isEnd())
 					fprintf(f, "%c", readU8(tmpStream, 0));
 				fclose(f);
 			}
 #endif
 		}
-		input->seek(position, RVNG_SEEK_SET);
+		input->seek(position, librevenge::RVNG_SEEK_SET);
 	}
 }
 

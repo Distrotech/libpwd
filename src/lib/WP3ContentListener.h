@@ -38,9 +38,9 @@ struct _WP3ContentParsingState
 	~_WP3ContentParsingState();
 	uint16_t m_colSpan;
 	uint16_t m_rowSpan;
-	RVNGString m_textBuffer;
+	librevenge::RVNGString m_textBuffer;
 	RGBSColor *m_cellFillColor;
-	RVNGString m_noteReference;
+	librevenge::RVNGString m_noteReference;
 
 	WPXTableList m_tableList;
 private:
@@ -51,7 +51,7 @@ private:
 class WP3ContentListener : public WP3Listener, protected WPXContentListener
 {
 public:
-	WP3ContentListener(std::list<WPXPageSpan> &pageList, std::vector<WP3SubDocument *> &subDocuments, RVNGTextInterface *documentInterface);
+	WP3ContentListener(std::list<WPXPageSpan> &pageList, std::vector<WP3SubDocument *> &subDocuments, librevenge::RVNGTextInterface *documentInterface);
 	~WP3ContentListener();
 
 	void startDocument()
@@ -105,10 +105,10 @@ public:
 	void undoChange(uint8_t undoType, uint16_t undoLevel);
 	void justificationChange(uint8_t justification);
 	void setTextColor(const RGBSColor *fontColor);
-	void setTextFont(const RVNGString &fontName);
+	void setTextFont(const librevenge::RVNGString &fontName);
 	void setFontSize(uint16_t fontSize);
-	void insertPageNumber(const RVNGString &pageNumber);
-	void insertNoteReference(const RVNGString &noteReference);
+	void insertPageNumber(const librevenge::RVNGString &pageNumber);
+	void insertNoteReference(const librevenge::RVNGString &noteReference);
 	void insertNote(WPXNoteType noteType, const WP3SubDocument *subDocument);
 	void headerFooterGroup(uint8_t headerFooterType, uint8_t occurenceBits, WP3SubDocument *subDocument);
 	void suppressPage(uint16_t /* suppressCode */) {}
@@ -118,7 +118,7 @@ public:
 	void leftRightIndent();
 	void leftRightIndent(double offset);
 	void insertPicture(double height, double width, double verticalOffset, double horizontalOffset, uint8_t leftColumn, uint8_t rightColumn,
-	                   uint16_t figureFlags, const RVNGBinaryData &binaryData);
+	                   uint16_t figureFlags, const librevenge::RVNGBinaryData &binaryData);
 	void insertTextBox(double height, double width, double verticalOffset, double horizontalOffset, uint8_t leftColumn, uint8_t rightColumn,
 	                   uint16_t figureFlags, const WP3SubDocument *subDocument, const WP3SubDocument *caption);
 	void insertWP51Table(double height, double width, double verticalOffset, double horizontalOffset, uint8_t leftColumn, uint8_t rightColumn,
@@ -131,7 +131,7 @@ protected:
 	void _flushText();
 	void _changeList() {}
 
-	void _handleFrameParameters( RVNGPropertyList &propList, double height, double width, double verticalOffset, double horizontalOffset, uint8_t leftColumn, uint8_t rightColumn,
+	void _handleFrameParameters( librevenge::RVNGPropertyList &propList, double height, double width, double verticalOffset, double horizontalOffset, uint8_t leftColumn, uint8_t rightColumn,
 	                             uint16_t figureFlags );
 
 private:

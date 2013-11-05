@@ -40,7 +40,7 @@ WP42MultiByteFunctionGroup::WP42MultiByteFunctionGroup(uint8_t group)
 {
 }
 
-WP42MultiByteFunctionGroup *WP42MultiByteFunctionGroup::constructMultiByteFunctionGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t group)
+WP42MultiByteFunctionGroup *WP42MultiByteFunctionGroup::constructMultiByteFunctionGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group)
 {
 	switch (group)
 	{
@@ -61,7 +61,7 @@ WP42MultiByteFunctionGroup *WP42MultiByteFunctionGroup::constructMultiByteFuncti
 	}
 }
 
-void WP42MultiByteFunctionGroup::_read(RVNGInputStream *input, WPXEncryption *encryption)
+void WP42MultiByteFunctionGroup::_read(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
 	_readContents(input, encryption);
 
@@ -70,6 +70,6 @@ void WP42MultiByteFunctionGroup::_read(RVNGInputStream *input, WPXEncryption *en
 	{
 	}
 	// IMPORTANT: if the class that implements _readContent(input, encryption) already reads the closing gate,
-	// IMPORTANT: it is necessary to make an input->seek(-1, RVNG_SEEK_CUR) for this function to work well.
+	// IMPORTANT: it is necessary to make an input->seek(-1, librevenge::RVNG_SEEK_CUR) for this function to work well.
 }
 /* vim:set shiftwidth=4 softtabstop=4 noexpandtab: */

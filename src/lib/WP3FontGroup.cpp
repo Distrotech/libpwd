@@ -30,7 +30,7 @@
 #include "libwpd_math.h"
 #include "WP3Listener.h"
 
-WP3FontGroup::WP3FontGroup(RVNGInputStream *input, WPXEncryption *encryption) :
+WP3FontGroup::WP3FontGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption) :
 	WP3VariableLengthGroup(),
 	m_fontColor(),
 	m_fontName(),
@@ -43,14 +43,14 @@ WP3FontGroup::~WP3FontGroup()
 {
 }
 
-void WP3FontGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
+void WP3FontGroup::_readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
 	// this group can contain different kinds of data, thus we need to read
 	// the contents accordingly
 	switch (getSubGroup())
 	{
 	case WP3_FONT_GROUP_SET_TEXT_COLOR:
-		input->seek(6, RVNG_SEEK_CUR);
+		input->seek(6, librevenge::RVNG_SEEK_CUR);
 		{
 			uint16_t tmpRed = readU16(input, encryption, true);
 			uint16_t tmpGreen = readU16(input, encryption, true);
@@ -59,11 +59,11 @@ void WP3FontGroup::_readContents(RVNGInputStream *input, WPXEncryption *encrypti
 		}
 		break;
 	case WP3_FONT_GROUP_SET_TEXT_FONT:
-		input->seek(12, RVNG_SEEK_CUR);
+		input->seek(12, librevenge::RVNG_SEEK_CUR);
 		m_fontName = readPascalString(input, encryption);
 		break;
 	case WP3_FONT_GROUP_SET_FONT_SIZE:
-		input->seek(2, RVNG_SEEK_CUR);
+		input->seek(2, librevenge::RVNG_SEEK_CUR);
 		m_fontSize = readU16(input, encryption, true);
 		break;
 	default: /* something else we don't support, since it isn't in the docs */

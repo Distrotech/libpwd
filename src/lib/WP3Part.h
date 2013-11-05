@@ -38,7 +38,7 @@ class WP3Part
 public:
 	virtual ~WP3Part() {}
 
-	static WP3Part *constructPart(RVNGInputStream *input, WPXEncryption *encryption, const uint8_t readVal);
+	static WP3Part *constructPart(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const uint8_t readVal);
 	virtual void parse(WP3Listener *listener) = 0;
 };
 

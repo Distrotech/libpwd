@@ -31,7 +31,7 @@
 #include "WP5Listener.h"
 #include "WPXFileStructure.h"
 
-WP5PageFormatGroup::WP5PageFormatGroup(RVNGInputStream *input, WPXEncryption *encryption) :
+WP5PageFormatGroup::WP5PageFormatGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption) :
 	WP5VariableLengthGroup(),
 	m_leftMargin(0),
 	m_rightMargin(0),
@@ -53,7 +53,7 @@ WP5PageFormatGroup::~WP5PageFormatGroup()
 {
 }
 
-void WP5PageFormatGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
+void WP5PageFormatGroup::_readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
 	// this group can contain different kinds of data, thus we need to read
 	// the contents accordingly
@@ -61,14 +61,14 @@ void WP5PageFormatGroup::_readContents(RVNGInputStream *input, WPXEncryption *en
 	{
 	case WP5_TOP_PAGE_FORMAT_GROUP_LEFT_RIGHT_MARGIN_SET:
 		// skip 4 bytes (old values of no interest for us)
-		input->seek(4, RVNG_SEEK_CUR);
+		input->seek(4, librevenge::RVNG_SEEK_CUR);
 		m_leftMargin = readU16(input, encryption);
 		m_rightMargin = readU16(input, encryption);
 		WPD_DEBUG_MSG(("WordPerfect: Page format group left/right margin set (left margin: %i, right margin: %i)\n", m_leftMargin, m_rightMargin));
 		break;
 	case WP5_TOP_PAGE_FORMAT_GROUP_SPACING_SET:
 		// skip 2 bytes (old spacing of no interest for us)
-		input->seek(2, RVNG_SEEK_CUR);
+		input->seek(2, librevenge::RVNG_SEEK_CUR);
 		{
 			uint16_t lineSpacing = readU16(input, encryption);
 			int8_t lineSpacingIntegerPart = (int8_t)((lineSpacing & 0xFF00) >> 8);
@@ -79,7 +79,7 @@ void WP5PageFormatGroup::_readContents(RVNGInputStream *input, WPXEncryption *en
 		}
 		break;
 	case WP5_TOP_PAGE_FORMAT_GROUP_TAB_SET:
-		input->seek(100, RVNG_SEEK_CUR);
+		input->seek(100, librevenge::RVNG_SEEK_CUR);
 		m_tabStops.reserve(40);
 		{
 
@@ -90,9 +90,9 @@ void WP5PageFormatGroup::_readContents(RVNGInputStream *input, WPXEncryption *en
 				m_tabStops[i].m_position = (double)((double)tmpTabPosition/(double)WPX_NUM_WPUS_PER_INCH);
 			}
 			if ((tmpTabPosition & 0xFFFF) == 0xFFFF)
-				input->seek((39 - (long)m_tabStops.size()) * 2, RVNG_SEEK_CUR);
+				input->seek((39 - (long)m_tabStops.size()) * 2, librevenge::RVNG_SEEK_CUR);
 			else
-				input->seek((40 - (long)m_tabStops.size()) * 2, RVNG_SEEK_CUR);
+				input->seek((40 - (long)m_tabStops.size()) * 2, librevenge::RVNG_SEEK_CUR);
 
 			for (unsigned j=0; (j < (m_tabStops.size() / 2) + (m_tabStops.size() % 2)) && (j < 20); j++)
 			{
@@ -150,11 +150,11 @@ void WP5PageFormatGroup::_readContents(RVNGInputStream *input, WPXEncryption *en
 					}
 				}
 			}
-			input->seek(20 - long(m_tabStops.size() / 2 ) - long(m_tabStops.size() % 2), RVNG_SEEK_CUR);
+			input->seek(20 - long(m_tabStops.size() / 2 ) - long(m_tabStops.size() % 2), librevenge::RVNG_SEEK_CUR);
 
 			if ((getSize() > 4) && (getSize() - 4 == 0x00D0))
 			{
-				input->seek(2, RVNG_SEEK_CUR);
+				input->seek(2, librevenge::RVNG_SEEK_CUR);
 				m_marginOffset = readU16(input, encryption);
 				if (0xFFFF != (m_marginOffset & 0xFFFF))
 				{
@@ -168,14 +168,14 @@ void WP5PageFormatGroup::_readContents(RVNGInputStream *input, WPXEncryption *en
 		break;
 	case WP5_TOP_PAGE_FORMAT_GROUP_TOP_BOTTOM_MARGIN_SET:
 		// skip 4 bytes (old values of no interest for us)
-		input->seek(4, RVNG_SEEK_CUR);
+		input->seek(4, librevenge::RVNG_SEEK_CUR);
 		m_topMargin = readU16(input, encryption);
 		m_bottomMargin = readU16(input, encryption);
 		WPD_DEBUG_MSG(("WordPerfect: Page format group top/bottom margin set (top margin: %i, bottom margin: %i)\n", m_topMargin, m_bottomMargin));
 		break;
 	case WP5_TOP_PAGE_FORMAT_GROUP_JUSTIFICATION:
 		// skip 1 byte (old justification of no interest for us)
-		input->seek(1, RVNG_SEEK_CUR);
+		input->seek(1, librevenge::RVNG_SEEK_CUR);
 		m_justification = readU8(input, encryption);
 		// WP6 and WP3 have one more category of justification
 		// Following hack allows us to use the same function for the three parsers
@@ -185,17 +185,17 @@ void WP5PageFormatGroup::_readContents(RVNGInputStream *input, WPXEncryption *en
 		break;
 	case WP5_TOP_PAGE_FORMAT_GROUP_SUPPRESS_PAGE_CHARACTERISTICS:
 		// skip 1 byte (old suppress code)
-		input->seek(1, RVNG_SEEK_CUR);
+		input->seek(1, librevenge::RVNG_SEEK_CUR);
 		m_suppressCode = readU8(input, encryption);
 		break;
 	case WP5_TOP_PAGE_FORMAT_GROUP_FORM:
 		uint8_t tmpOrientation;
 		// skip to the new DESIRED values (99 - 4)
-		input->seek(95, RVNG_SEEK_CUR);
+		input->seek(95, librevenge::RVNG_SEEK_CUR);
 		m_formLength = readU16(input, encryption); // New DESIRED length
 		m_formWidth = readU16(input, encryption); // New DESIRED width
 		// skipp to the orientation value (193 - 103)
-		input->seek(90, RVNG_SEEK_CUR);
+		input->seek(90, librevenge::RVNG_SEEK_CUR);
 		tmpOrientation = readU8(input, encryption); // New EFFECTIVE orientation
 		switch (tmpOrientation)
 		{

@@ -35,8 +35,8 @@ class WP6Listener;
 class WP6BoxGroup : public WP6VariableLengthGroup
 {
 public:
-	WP6BoxGroup(RVNGInputStream *input, WPXEncryption *encryption);
-	void _readContents(RVNGInputStream *input, WPXEncryption *encryption);
+	WP6BoxGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
+	void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP6Listener *listener);
 
 private:

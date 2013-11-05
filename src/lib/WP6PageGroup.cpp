@@ -30,7 +30,7 @@
 #include "WP6Listener.h"
 #include "libwpd_internal.h"
 
-WP6PageGroup::WP6PageGroup(RVNGInputStream *input, WPXEncryption *encryption) :
+WP6PageGroup::WP6PageGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption) :
 	WP6VariableLengthGroup(),
 	m_margin(0),
 	m_suppressedCode(0),
@@ -58,7 +58,7 @@ WP6PageGroup::~WP6PageGroup()
 {
 }
 
-void WP6PageGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
+void WP6PageGroup::_readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
 	// this group can contain different kinds of data, thus we need to read
 	// the contents accordingly
@@ -93,7 +93,7 @@ void WP6PageGroup::_readContents(RVNGInputStream *input, WPXEncryption *encrypti
 	case WP6_PAGE_GROUP_FORM:
 		uint8_t tmpOrientation;
 		// skip Hash values that we do not use (2+1 bytes)
-		input->seek(3, RVNG_SEEK_CUR);
+		input->seek(3, librevenge::RVNG_SEEK_CUR);
 		m_formLength = readU16(input, encryption);
 		m_formWidth = readU16(input, encryption);
 		m_formType = readU8(input, encryption);

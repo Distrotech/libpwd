@@ -27,7 +27,7 @@
 #include "WP42Parser.h"
 #include "libwpd_internal.h"
 
-WP42SubDocument::WP42SubDocument(RVNGInputStream *input, WPXEncryption *encryption, const unsigned dataSize) :
+WP42SubDocument::WP42SubDocument(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const unsigned dataSize) :
 	WPXSubDocument(input, encryption, dataSize)
 {
 }
@@ -37,7 +37,7 @@ void WP42SubDocument::parse(WP42Listener *listener) const
 	WPXMemoryInputStream *tmpStream = getStream();
 	if (!tmpStream)
 		return;
-	tmpStream->seek(0, RVNG_SEEK_SET);
+	tmpStream->seek(0, librevenge::RVNG_SEEK_SET);
 	listener->marginReset(readU8(tmpStream, 0), readU8(tmpStream, 0));
 	WP42Parser::parseDocument(tmpStream, 0, listener);
 }

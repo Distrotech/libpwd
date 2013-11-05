@@ -34,9 +34,9 @@
 class WP6GraphicsBoxStylePacket : public WP6PrefixDataPacket
 {
 public:
-	WP6GraphicsBoxStylePacket(RVNGInputStream *input, WPXEncryption *encryption, int id, uint32_t dataOffset, uint32_t dataSize);
+	WP6GraphicsBoxStylePacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int id, uint32_t dataOffset, uint32_t dataSize);
 	~WP6GraphicsBoxStylePacket();
-	void _readContents(RVNGInputStream *input, WPXEncryption *encryption);
+	void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP6Listener * /*listener*/) const {}
 
 	uint8_t getGeneralPositioningFlags() const
@@ -100,7 +100,7 @@ private:
 	WP6GraphicsBoxStylePacket(const WP6GraphicsBoxStylePacket &);
 	WP6GraphicsBoxStylePacket &operator=(const WP6GraphicsBoxStylePacket &);
 	bool m_isLibraryStyle;
-	RVNGString m_boxStyleName;
+	librevenge::RVNGString m_boxStyleName;
 	uint8_t m_generalPositioningFlags;
 	uint8_t m_horizontalPositioningFlags;
 	int16_t m_horizontalOffset;

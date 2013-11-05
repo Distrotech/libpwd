@@ -35,7 +35,7 @@
 
 #include <string.h>
 
-WPXHeader::WPXHeader(RVNGInputStream * /* input */, WPXEncryption * /* encryption */, uint32_t documentOffset, uint8_t productType,
+WPXHeader::WPXHeader(librevenge::RVNGInputStream * /* input */, WPXEncryption * /* encryption */, uint32_t documentOffset, uint8_t productType,
                      uint8_t fileType, uint8_t majorVersion, uint8_t minorVersion, uint16_t documentEncryption) :
 	m_documentOffset(documentOffset),
 	m_productType(productType),
@@ -50,13 +50,13 @@ WPXHeader::~WPXHeader()
 {
 }
 
-WPXHeader *WPXHeader::constructHeader(RVNGInputStream *input, WPXEncryption *encryption)
+WPXHeader *WPXHeader::constructHeader(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
 	WPD_DEBUG_MSG(("WPXHeader::constructHeader()\n"));
 
 	char fileMagic[4] = { 0, 0, 0, 0 };
 	/* check the magic */
-	input->seek(WPX_HEADER_MAGIC_OFFSET, RVNG_SEEK_SET);
+	input->seek(WPX_HEADER_MAGIC_OFFSET, librevenge::RVNG_SEEK_SET);
 	for (int i=0; i<3 && !input->isEnd(); i++)
 		fileMagic[i] = (char)readU8(input, encryption);
 
@@ -67,17 +67,17 @@ WPXHeader *WPXHeader::constructHeader(RVNGInputStream *input, WPXEncryption *enc
 	}
 
 	/* get the document pointer */
-	input->seek(WPX_HEADER_DOCUMENT_POINTER_OFFSET, RVNG_SEEK_SET);
+	input->seek(WPX_HEADER_DOCUMENT_POINTER_OFFSET, librevenge::RVNG_SEEK_SET);
 	uint32_t documentOffset = readU32(input, encryption);
 
 	/* get information on product types, file types, versions */
-	input->seek(WPX_HEADER_PRODUCT_TYPE_OFFSET, RVNG_SEEK_SET);
+	input->seek(WPX_HEADER_PRODUCT_TYPE_OFFSET, librevenge::RVNG_SEEK_SET);
 	uint8_t productType = readU8(input, encryption);
 	uint8_t fileType = readU8(input, encryption);
 	uint8_t majorVersion = readU8(input, encryption);
 	uint8_t minorVersion = readU8(input, encryption);
 
-	input->seek(WPX_HEADER_ENCRYPTION_OFFSET, RVNG_SEEK_SET);
+	input->seek(WPX_HEADER_ENCRYPTION_OFFSET, librevenge::RVNG_SEEK_SET);
 	uint16_t documentEncryption = readU16(input, encryption);
 
 	WPD_DEBUG_MSG(("WordPerfect: Document Offset = 0x%x \n",documentOffset));

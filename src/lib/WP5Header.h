@@ -32,7 +32,7 @@
 class WP5Header : public WPXHeader
 {
 public:
-	WP5Header(RVNGInputStream *input, WPXEncryption *encryption, uint32_t documentOffset, uint8_t productType,
+	WP5Header(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint32_t documentOffset, uint8_t productType,
 	          uint8_t fileType, uint8_t majorVersion, uint8_t minorVersion, uint16_t documentEncryption);
 	~WP5Header() {}
 };

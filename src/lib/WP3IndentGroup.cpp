@@ -28,7 +28,7 @@
 #include "WP3Listener.h"
 #include "libwpd_internal.h"
 
-WP3IndentGroup::WP3IndentGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID) :
+WP3IndentGroup::WP3IndentGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID) :
 	WP3FixedLengthGroup(groupID),
 	m_subGroup(0),
 	m_offset(0.0)
@@ -36,7 +36,7 @@ WP3IndentGroup::WP3IndentGroup(RVNGInputStream *input, WPXEncryption *encryption
 	_read(input, encryption);
 }
 
-void WP3IndentGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
+void WP3IndentGroup::_readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
 	m_subGroup = readU8(input, encryption);
 	m_offset = fixedPointToDouble(readU32(input, encryption, true));

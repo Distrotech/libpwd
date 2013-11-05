@@ -37,7 +37,7 @@ public:
 	WPXEncryption(const char *password, const unsigned long encryptionStartOffset = 0);
 	~WPXEncryption();
 
-	const unsigned char *readAndDecrypt(RVNGInputStream *input, unsigned long numBytes, unsigned long &numBytesRead);
+	const unsigned char *readAndDecrypt(librevenge::RVNGInputStream *input, unsigned long numBytes, unsigned long &numBytesRead);
 	uint16_t getCheckSum() const;
 
 	void setEncryptionStartOffset(unsigned long encryptionStartOffset)
@@ -58,14 +58,14 @@ public:
 		return m_encryptionMaskBase;
 	}
 
-	const RVNGString &getEncryptionPassword() const
+	const librevenge::RVNGString &getEncryptionPassword() const
 	{
 		return m_password;
 	}
 
 private:
 	unsigned char *m_buffer;
-	RVNGString m_password;
+	librevenge::RVNGString m_password;
 	unsigned long m_encryptionStartOffset;
 	unsigned char m_encryptionMaskBase;
 	// Unimplemented to prevent compiler from creating crasher ones

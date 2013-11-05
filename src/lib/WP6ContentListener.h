@@ -85,12 +85,12 @@ struct _WP6ContentParsingState
 {
 	_WP6ContentParsingState(WPXTableList tableList, unsigned nextTableIndice = 0);
 	~_WP6ContentParsingState();
-	RVNGString m_bodyText;
-	RVNGString m_textBeforeNumber;
-	RVNGString m_textBeforeDisplayReference;
-	RVNGString m_numberText;
-	RVNGString m_textAfterDisplayReference;
-	RVNGString m_textAfterNumber;
+	librevenge::RVNGString m_bodyText;
+	librevenge::RVNGString m_textBeforeNumber;
+	librevenge::RVNGString m_textBeforeDisplayReference;
+	librevenge::RVNGString m_numberText;
+	librevenge::RVNGString m_textAfterDisplayReference;
+	librevenge::RVNGString m_textAfterNumber;
 
 	double m_paragraphMarginBottomRelative;
 	double m_paragraphMarginBottomAbsolute;
@@ -158,7 +158,7 @@ private:
 class WP6ContentListener : public WP6Listener, protected WPXContentListener
 {
 public:
-	WP6ContentListener(std::list<WPXPageSpan> &pageList, WPXTableList tableList, RVNGTextInterface *documentInterface);
+	WP6ContentListener(std::list<WPXPageSpan> &pageList, WPXTableList tableList, librevenge::RVNGTextInterface *documentInterface);
 	~WP6ContentListener();
 
 	void startDocument()
@@ -174,7 +174,7 @@ public:
 	             const uint8_t hour, const uint8_t minute,
 	             const uint8_t second, const uint8_t dayOfWeek,
 	             const uint8_t timeZone, const uint8_t unused);
-	void setExtendedInformation(const uint16_t type, const RVNGString &data);
+	void setExtendedInformation(const uint16_t type, const librevenge::RVNGString &data);
 	void setAlignmentCharacter(const uint32_t character);
 	void setLeaderCharacter(const uint32_t character, const uint8_t numSpaces);
 	void defineTabStops(const bool isRelative, const std::vector<WPXTabStop> &tabStops,
@@ -198,7 +198,7 @@ public:
 	void characterColorChange(const uint8_t red, const uint8_t green, const uint8_t blue);
 	void characterShadingChange(const uint8_t shading);
 	void highlightChange(const bool isOn, const RGBSColor &color);
-	void fontChange(const uint16_t matchedFontPointSize, const uint16_t fontPID, const RVNGString &fontName);
+	void fontChange(const uint16_t matchedFontPointSize, const uint16_t fontPID, const librevenge::RVNGString &fontName);
 	void attributeChange(const bool isOn, const uint8_t attribute);
 	void spacingAfterParagraphChange(const double spacingRelative, const double spacingAbsolute);
 	void pageNumberingChange(const WPXPageNumberPosition /* page numbering position */, const uint16_t /* matchedFontPointSize */, const uint16_t /* fontPID */) {}

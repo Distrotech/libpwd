@@ -36,7 +36,7 @@ class WP6SubDocument;
 class WP6PrefixDataPacket
 {
 public:
-	WP6PrefixDataPacket(RVNGInputStream *input, WPXEncryption *encryption);
+	WP6PrefixDataPacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	virtual ~WP6PrefixDataPacket() {}
 	virtual void parse(WP6Listener * /* listener */) const {}
 	virtual WP6SubDocument *getSubDocument() const
@@ -48,11 +48,11 @@ public:
 		return m_dataSize;
 	}
 
-	static WP6PrefixDataPacket *constructPrefixDataPacket(RVNGInputStream *input, WPXEncryption *encryption, WP6PrefixIndice *prefixIndice);
+	static WP6PrefixDataPacket *constructPrefixDataPacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, WP6PrefixIndice *prefixIndice);
 
 protected:
-	virtual void _readContents(RVNGInputStream *input, WPXEncryption *encryption) = 0;
-	void _read(RVNGInputStream *input, WPXEncryption *encryption, uint32_t dataOffset, uint32_t dataSize);
+	virtual void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption) = 0;
+	void _read(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint32_t dataOffset, uint32_t dataSize);
 
 private:
 	uint32_t m_dataSize;

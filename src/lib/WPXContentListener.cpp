@@ -31,7 +31,7 @@
 _WPXContentParsingState::_WPXContentParsingState() :
 	m_textAttributeBits(0),
 	m_fontSize(12.0/*WP6_DEFAULT_FONT_SIZE*/), // FIXME ME!!!!!!!!!!!!!!!!!!! HELP WP6_DEFAULT_FONT_SIZE
-	m_fontName(new RVNGString(/*WP6_DEFAULT_FONT_NAME*/"Times New Roman")), // EN PAS DEFAULT FONT AAN VOOR WP5/6/etc
+	m_fontName(new librevenge::RVNGString(/*WP6_DEFAULT_FONT_NAME*/"Times New Roman")), // EN PAS DEFAULT FONT AAN VOOR WP5/6/etc
 	m_fontColor(new RGBSColor(0x00,0x00,0x00,0x64)), //Set default to black. Maybe once it will change, but for the while...
 	m_highlightColor(0),
 
@@ -126,7 +126,7 @@ _WPXContentParsingState::~_WPXContentParsingState()
 	DELETEP(m_highlightColor);
 }
 
-WPXContentListener::WPXContentListener(std::list<WPXPageSpan> &pageList, RVNGTextInterface *documentInterface) :
+WPXContentListener::WPXContentListener(std::list<WPXPageSpan> &pageList, librevenge::RVNGTextInterface *documentInterface) :
 	WPXListener(pageList),
 	m_ps(new WPXContentParsingState),
 	m_documentInterface(documentInterface),
@@ -201,7 +201,7 @@ void WPXContentListener::_openSection()
 		if (!m_ps->m_isPageSpanOpened)
 			_openPageSpan();
 
-		RVNGPropertyList propList;
+		librevenge::RVNGPropertyList propList;
 
 		propList.insert("fo:margin-left", m_ps->m_sectionMarginLeft);
 		propList.insert("fo:margin-right", m_ps->m_sectionMarginRight);
@@ -213,13 +213,13 @@ void WPXContentListener::_openSection()
 		else
 			propList.insert("librevenge:margin-bottom", 0.0);
 
-		RVNGPropertyListVector columns;
+		librevenge::RVNGPropertyListVector columns;
 		typedef std::vector<WPXColumnDefinition>::const_iterator CDVIter;
 		for (CDVIter iter = m_ps->m_textColumns.begin(); iter != m_ps->m_textColumns.end(); ++iter)
 		{
-			RVNGPropertyList column;
+			librevenge::RVNGPropertyList column;
 			// The "style:rel-width" is expressed in twips (1440 twips per inch) and includes the left and right Gutter
-			column.insert("style:rel-width", (*iter).m_width * 1440.0, RVNG_TWIP);
+			column.insert("style:rel-width", (*iter).m_width * 1440.0, librevenge::RVNG_TWIP);
 			column.insert("fo:start-indent", (*iter).m_leftGutter);
 			column.insert("fo:end-indent", (*iter).m_rightGutter);
 			columns.append(column);
@@ -249,9 +249,9 @@ void WPXContentListener::_closeSection()
 	}
 }
 
-void WPXContentListener::_insertPageNumberParagraph(WPXPageNumberPosition position, WPXNumberingType numberingType, RVNGString fontName, double fontSize)
+void WPXContentListener::_insertPageNumberParagraph(WPXPageNumberPosition position, WPXNumberingType numberingType, librevenge::RVNGString fontName, double fontSize)
 {
-	RVNGPropertyList propList;
+	librevenge::RVNGPropertyList propList;
 	switch (position)
 	{
 	case PAGENUMBER_POSITION_TOP_LEFT:
@@ -275,17 +275,17 @@ void WPXContentListener::_insertPageNumberParagraph(WPXPageNumberPosition positi
 		break;
 	}
 
-	m_documentInterface->openParagraph(propList, RVNGPropertyListVector());
+	m_documentInterface->openParagraph(propList, librevenge::RVNGPropertyListVector());
 
 	propList.clear();
 	propList.insert("style:font-name", fontName.cstr());
-	propList.insert("fo:font-size", fontSize, RVNG_POINT);
+	propList.insert("fo:font-size", fontSize, librevenge::RVNG_POINT);
 	m_documentInterface->openSpan(propList);
 
 
 	propList.clear();
 	propList.insert("style:num-format", _numberingTypeToString(numberingType));
-	m_documentInterface->insertField(RVNGString("text:page-number"), propList);
+	m_documentInterface->insertField(librevenge::RVNGString("text:page-number"), propList);
 
 	propList.clear();
 	m_documentInterface->closeSpan();
@@ -325,7 +325,7 @@ void WPXContentListener::_openPageSpan()
 
 	WPXPageSpan currentPage = (*currentPageSpanIter);
 
-	RVNGPropertyList propList;
+	librevenge::RVNGPropertyList propList;
 	propList.insert("librevenge:num-pages", currentPage.getPageSpan());
 
 	propList.insert("librevenge:is-last-page-span", ((m_ps->m_currentPage + 1 == m_pageList.size()) ? true : false));
@@ -510,10 +510,10 @@ void WPXContentListener::_openParagraph()
 				_openSection();
 		}
 
-		RVNGPropertyListVector tabStops;
+		librevenge::RVNGPropertyListVector tabStops;
 		_getTabStops(tabStops);
 
-		RVNGPropertyList propList;
+		librevenge::RVNGPropertyList propList;
 		_appendParagraphProperties(propList);
 
 		if (!m_ps->m_isParagraphOpened)
@@ -552,7 +552,7 @@ void WPXContentListener::_resetParagraphState(const bool isListElement)
 	m_ps->m_listBeginPosition = m_ps->m_paragraphMarginLeft + m_ps->m_paragraphTextIndent;
 }
 
-void WPXContentListener::_appendJustification(RVNGPropertyList &propList, int justification)
+void WPXContentListener::_appendJustification(librevenge::RVNGPropertyList &propList, int justification)
 {
 	switch (justification)
 	{
@@ -578,7 +578,7 @@ void WPXContentListener::_appendJustification(RVNGPropertyList &propList, int ju
 	}
 }
 
-void WPXContentListener::_appendParagraphProperties(RVNGPropertyList &propList, const bool isListElement)
+void WPXContentListener::_appendParagraphProperties(librevenge::RVNGPropertyList &propList, const bool isListElement)
 {
 	int justification;
 	if (m_ps->m_tempParagraphJustification)
@@ -604,7 +604,7 @@ void WPXContentListener::_appendParagraphProperties(RVNGPropertyList &propList, 
 	}
 	propList.insert("fo:margin-top", m_ps->m_paragraphMarginTop);
 	propList.insert("fo:margin-bottom", m_ps->m_paragraphMarginBottom);
-	propList.insert("fo:line-height", m_ps->m_paragraphLineSpacing, RVNG_PERCENT);
+	propList.insert("fo:line-height", m_ps->m_paragraphLineSpacing, librevenge::RVNG_PERCENT);
 
 	if (!m_ps->m_inSubDocument && m_ps->m_firstParagraphInPageSpan)
 	{
@@ -620,16 +620,16 @@ void WPXContentListener::_appendParagraphProperties(RVNGPropertyList &propList, 
 	_insertBreakIfNecessary(propList);
 }
 
-void WPXContentListener::_insertText(const RVNGString &textBuffer)
+void WPXContentListener::_insertText(const librevenge::RVNGString &textBuffer)
 {
 	if (textBuffer.len() <= 0)
 		return;
 
-	RVNGString tmpText;
+	librevenge::RVNGString tmpText;
 	const char ASCII_SPACE = 0x0020;
 
 	int numConsecutiveSpaces = 0;
-	RVNGString::Iter i(textBuffer);
+	librevenge::RVNGString::Iter i(textBuffer);
 	for (i.rewind(); i.next();)
 	{
 		if (*(i()) == ASCII_SPACE)
@@ -656,7 +656,7 @@ void WPXContentListener::_insertText(const RVNGString &textBuffer)
 	m_documentInterface->insertText(tmpText);
 }
 
-void WPXContentListener::_insertBreakIfNecessary(RVNGPropertyList &propList)
+void WPXContentListener::_insertBreakIfNecessary(librevenge::RVNGPropertyList &propList)
 {
 	if (m_ps->m_isParagraphPageBreak && !m_ps->m_inSubDocument) // no hard page-breaks in subdocuments
 		propList.insert("fo:break-before", "page");
@@ -669,11 +669,11 @@ void WPXContentListener::_insertBreakIfNecessary(RVNGPropertyList &propList)
 	}
 }
 
-void WPXContentListener::_getTabStops(RVNGPropertyListVector &tabStops)
+void WPXContentListener::_getTabStops(librevenge::RVNGPropertyListVector &tabStops)
 {
 	for (unsigned i=0; i<m_ps->m_tabStops.size(); i++)
 	{
-		RVNGPropertyList tmpTabStop;
+		librevenge::RVNGPropertyList tmpTabStop;
 
 		// type
 		switch (m_ps->m_tabStops[i].m_alignment)
@@ -697,7 +697,7 @@ void WPXContentListener::_getTabStops(RVNGPropertyListVector &tabStops)
 		// leader character
 		if (m_ps->m_tabStops[i].m_leaderCharacter != 0x0000)
 		{
-			RVNGString sLeader;
+			librevenge::RVNGString sLeader;
 			sLeader.sprintf("%c", m_ps->m_tabStops[i].m_leaderCharacter);
 			tmpTabStop.insert("style:leader-text", sLeader);
 			tmpTabStop.insert("style:leader-style", "solid");
@@ -754,10 +754,10 @@ void WPXContentListener::_openListElement()
 				_openSection();
 		}
 
-		RVNGPropertyList propList;
+		librevenge::RVNGPropertyList propList;
 		_appendParagraphProperties(propList, true);
 
-		RVNGPropertyListVector tabStops;
+		librevenge::RVNGPropertyListVector tabStops;
 		_getTabStops(tabStops);
 
 		if (!m_ps->m_isListElementOpened)
@@ -829,17 +829,17 @@ void WPXContentListener::_openSpan()
 		break;
 	}
 
-	RVNGPropertyList propList;
+	librevenge::RVNGPropertyList propList;
 	if (attributeBits & WPX_SUPERSCRIPT_BIT)
 	{
-		RVNGString sSuperScript("super ");
+		librevenge::RVNGString sSuperScript("super ");
 		sSuperScript.append(doubleToString(WPX_DEFAULT_SUPER_SUB_SCRIPT));
 		sSuperScript.append("%");
 		propList.insert("style:text-position", sSuperScript);
 	}
 	else if (attributeBits & WPX_SUBSCRIPT_BIT)
 	{
-		RVNGString sSubScript("sub ");
+		librevenge::RVNGString sSubScript("sub ");
 		sSubScript.append(doubleToString(WPX_DEFAULT_SUPER_SUB_SCRIPT));
 		sSubScript.append("%");
 		propList.insert("style:text-position", sSubScript);
@@ -866,7 +866,7 @@ void WPXContentListener::_openSpan()
 	if (m_ps->m_fontName)
 		propList.insert("style:font-name", m_ps->m_fontName->cstr());
 
-	propList.insert("fo:font-size", fontSizeChange*m_ps->m_fontSize, RVNG_POINT);
+	propList.insert("fo:font-size", fontSizeChange*m_ps->m_fontSize, librevenge::RVNG_POINT);
 
 	// Here we give the priority to the redline bit over the font color. This is how WordPerfect behaves:
 	// redline overrides font color even if the color is changed when redline was already defined.
@@ -900,7 +900,7 @@ void WPXContentListener::_openTable()
 {
 	_closeTable();
 
-	RVNGPropertyList propList;
+	librevenge::RVNGPropertyList propList;
 	switch (m_ps->m_tableDefinition.m_positionBits)
 	{
 	case WPX_TABLE_POSITION_ALIGN_WITH_LEFT_MARGIN:
@@ -933,11 +933,11 @@ void WPXContentListener::_openTable()
 	m_ps->m_isParagraphPageBreak = false;
 
 	double tableWidth = 0.0;
-	RVNGPropertyListVector columns;
+	librevenge::RVNGPropertyListVector columns;
 	typedef std::vector<WPXColumnDefinition>::const_iterator CDVIter;
 	for (CDVIter iter = m_ps->m_tableDefinition.m_columns.begin(); iter != m_ps->m_tableDefinition.m_columns.end(); ++iter)
 	{
-		RVNGPropertyList column;
+		librevenge::RVNGPropertyList column;
 		// The "style:rel-width" is expressed in twips (1440 twips per inch) and includes the left and right Gutter
 		column.insert("style:column-width", (*iter).m_width);
 		columns.append(column);
@@ -995,7 +995,7 @@ void WPXContentListener::_openTableRow(const double height, const bool isMinimum
 	m_ps->m_currentTableCellNumberInRow = 0;
 
 
-	RVNGPropertyList propList;
+	librevenge::RVNGPropertyList propList;
 	if (isMinimumHeight && height != 0.0) // minimum height kind of stupid if it's not set, right?
 		propList.insert("style:min-row-height", height);
 	else if (height != 0.0) // this indicates that wordperfect didn't set a height
@@ -1044,7 +1044,7 @@ void WPXContentListener::_closeTableRow()
 		if (m_ps->m_isRowWithoutCell)
 		{
 			m_ps->m_isRowWithoutCell = false;
-			RVNGPropertyList tmpBlankList;
+			librevenge::RVNGPropertyList tmpBlankList;
 			m_documentInterface->insertCoveredTableCell(tmpBlankList);
 		}
 		m_documentInterface->closeTableRow();
@@ -1054,7 +1054,7 @@ void WPXContentListener::_closeTableRow()
 
 const double WPX_DEFAULT_TABLE_BORDER_WIDTH = 0.0007f;
 
-static void addBorderProps(const char *border, bool borderOn, const RVNGString &borderColor, RVNGPropertyList &propList)
+static void addBorderProps(const char *border, bool borderOn, const librevenge::RVNGString &borderColor, librevenge::RVNGPropertyList &propList)
 {
 #if 0
 // WLACH: a (not working, obviously) sketch of an alternate way of doing this
@@ -1071,9 +1071,9 @@ static void addBorderProps(const char *border, bool borderOn, const RVNGString &
 		propList.insert("fo:border-left-width", 0.0);
 #endif
 
-	RVNGString borderStyle;
+	librevenge::RVNGString borderStyle;
 	borderStyle.sprintf("fo:border-%s", border);
-	RVNGString props;
+	librevenge::RVNGString props;
 	if (borderOn)
 	{
 		props.append(doubleToString(WPX_DEFAULT_TABLE_BORDER_WIDTH));
@@ -1106,14 +1106,14 @@ void WPXContentListener::_openTableCell(const uint8_t colSpan, const uint8_t row
 		m_ps->m_currentTableCol++;
 	}
 
-	RVNGPropertyList propList;
+	librevenge::RVNGPropertyList propList;
 	propList.insert("librevenge:column", m_ps->m_currentTableCol);
 	propList.insert("librevenge:row", m_ps->m_currentTableRow);
 
 	propList.insert("table:number-columns-spanned", colSpan);
 	propList.insert("table:number-rows-spanned", rowSpan);
 
-	RVNGString borderColor = _colorToString(cellBorderColor);
+	librevenge::RVNGString borderColor = _colorToString(cellBorderColor);
 	addBorderProps("left", !(borderBits & WPX_TABLE_CELL_LEFT_BORDER_OFF), borderColor, propList);
 	addBorderProps("right", !(borderBits & WPX_TABLE_CELL_RIGHT_BORDER_OFF), borderColor, propList);
 	addBorderProps("top", !(borderBits & WPX_TABLE_CELL_TOP_BORDER_OFF), borderColor, propList);
@@ -1365,9 +1365,9 @@ double WPXContentListener::_getPreviousTabStop() const
 	return (std::numeric_limits<double>::max)();
 }
 
-RVNGString WPXContentListener::_colorToString(const RGBSColor *color)
+librevenge::RVNGString WPXContentListener::_colorToString(const RGBSColor *color)
 {
-	RVNGString tmpString;
+	librevenge::RVNGString tmpString;
 
 	if (color)
 	{
@@ -1384,10 +1384,10 @@ RVNGString WPXContentListener::_colorToString(const RGBSColor *color)
 	return tmpString;
 }
 
-RVNGString WPXContentListener::_mergeColorsToString(const RGBSColor *fgColor,
+librevenge::RVNGString WPXContentListener::_mergeColorsToString(const RGBSColor *fgColor,
         const RGBSColor * /* bgColor */)
 {
-	RVNGString tmpColor;
+	librevenge::RVNGString tmpColor;
 	RGBSColor tmpFgColor, tmpBgColor;
 
 	if (fgColor)

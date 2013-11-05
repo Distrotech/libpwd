@@ -49,13 +49,13 @@ const WP6PrefixDataPacket *WP6Listener::getPrefixDataPacket(const int prefixID) 
 		return 0;
 }
 
-RVNGString WP6Listener::getFontNameForPID(const int prefixID) const
+librevenge::RVNGString WP6Listener::getFontNameForPID(const int prefixID) const
 {
 
 	const WP6FontDescriptorPacket *fontDescriptorPacket =
 	    dynamic_cast<const WP6FontDescriptorPacket *>(getPrefixDataPacket(prefixID));
 	if (fontDescriptorPacket)
 		return fontDescriptorPacket->getFontName();
-	return RVNGString();
+	return librevenge::RVNGString();
 }
 /* vim:set shiftwidth=4 softtabstop=4 noexpandtab: */

@@ -53,7 +53,7 @@ struct _WPXContentParsingState
 
 	uint32_t m_textAttributeBits;
 	double m_fontSize;
-	RVNGString *m_fontName;
+	librevenge::RVNGString *m_fontName;
 	RGBSColor *m_fontColor;
 	RGBSColor *m_highlightColor;
 
@@ -147,7 +147,7 @@ private:
 class WPXContentListener : public WPXListener
 {
 protected:
-	WPXContentListener(std::list<WPXPageSpan> &pageList, RVNGTextInterface *documentInterface);
+	WPXContentListener(std::list<WPXPageSpan> &pageList, librevenge::RVNGTextInterface *documentInterface);
 	virtual ~WPXContentListener();
 
 	void startDocument();
@@ -160,8 +160,8 @@ protected:
 	void justificationChange(const uint8_t justification);
 
 	WPXContentParsingState *m_ps; // parse state
-	RVNGTextInterface *m_documentInterface;
-	RVNGPropertyList m_metaData;
+	librevenge::RVNGTextInterface *m_documentInterface;
+	librevenge::RVNGPropertyList m_metaData;
 
 	virtual void _handleSubDocument(const WPXSubDocument *subDocument, WPXSubDocumentType subDocumentType, WPXTableList tableList, unsigned nextTableIndice) = 0;
 	virtual void _flushText() = 0;
@@ -173,9 +173,9 @@ protected:
 	void _openPageSpan();
 	void _closePageSpan();
 
-	void _appendParagraphProperties(RVNGPropertyList &propList, const bool isListElement=false);
-	void _getTabStops(RVNGPropertyListVector &tabStops);
-	void _appendJustification(RVNGPropertyList &propList, int justification);
+	void _appendParagraphProperties(librevenge::RVNGPropertyList &propList, const bool isListElement=false);
+	void _getTabStops(librevenge::RVNGPropertyListVector &tabStops);
+	void _appendJustification(librevenge::RVNGPropertyList &propList, int justification);
 	void _resetParagraphState(const bool isListElement=false);
 	virtual void _openParagraph();
 	void _closeParagraph();
@@ -201,19 +201,19 @@ protected:
 	double _getNextTabStop() const;
 	double _getPreviousTabStop() const;
 
-	void _insertText(const RVNGString &textBuffer);
+	void _insertText(const librevenge::RVNGString &textBuffer);
 
-	void _insertBreakIfNecessary(RVNGPropertyList &propList);
+	void _insertBreakIfNecessary(librevenge::RVNGPropertyList &propList);
 
-	void _insertPageNumberParagraph(WPXPageNumberPosition position, WPXNumberingType type, RVNGString fontName, double fontSize);
+	void _insertPageNumberParagraph(WPXPageNumberPosition position, WPXNumberingType type, librevenge::RVNGString fontName, double fontSize);
 
 	uint32_t _mapNonUnicodeCharacter(uint32_t character);
 
 private:
 	WPXContentListener(const WPXContentListener &);
 	WPXContentListener &operator=(const WPXContentListener &);
-	RVNGString _colorToString(const RGBSColor *color);
-	RVNGString _mergeColorsToString(const RGBSColor *fgColor, const RGBSColor *bgColor);
+	librevenge::RVNGString _colorToString(const RGBSColor *color);
+	librevenge::RVNGString _mergeColorsToString(const RGBSColor *fgColor, const RGBSColor *bgColor);
 	uint32_t _mapSymbolFontCharacter(uint32_t character);
 	uint32_t _mapDingbatsFontCharacter(uint32_t character);
 };

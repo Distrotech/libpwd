@@ -34,7 +34,7 @@ class WPXEncryption;
 class WP5GeneralPacketIndex
 {
 public:
-	WP5GeneralPacketIndex(RVNGInputStream *input, WPXEncryption *encryption, int id);
+	WP5GeneralPacketIndex(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int id);
 	int getID() const
 	{
 		return m_id;
@@ -53,7 +53,7 @@ public:
 	}
 
 protected:
-	void _read(RVNGInputStream *input, WPXEncryption *encryption);
+	void _read(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 
 private:
 	int m_id;

@@ -32,9 +32,9 @@
 class WP5TableEOLGroup : public WP5VariableLengthGroup
 {
 public:
-	WP5TableEOLGroup(RVNGInputStream *input, WPXEncryption *encryption);
+	WP5TableEOLGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	~WP5TableEOLGroup();
-	void _readContents(RVNGInputStream *input, WPXEncryption *encryption);
+	void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP5Listener *listener);
 
 private:

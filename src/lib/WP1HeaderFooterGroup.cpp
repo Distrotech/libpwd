@@ -27,7 +27,7 @@
 #include "libwpd_internal.h"
 #include "WP1SubDocument.h"
 
-WP1HeaderFooterGroup::WP1HeaderFooterGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t group) :
+WP1HeaderFooterGroup::WP1HeaderFooterGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group) :
 	WP1VariableLengthGroup(group),
 	m_definition(0),
 	m_subDocument(0)
@@ -39,12 +39,12 @@ WP1HeaderFooterGroup::~WP1HeaderFooterGroup()
 {
 }
 
-void WP1HeaderFooterGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
+void WP1HeaderFooterGroup::_readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
 	m_definition = readU8(input, encryption);
 
 	unsigned tmpSubDocumentSize = getSize() - 0x13;
-	input->seek(18, RVNG_SEEK_CUR);
+	input->seek(18, librevenge::RVNG_SEEK_CUR);
 	WPD_DEBUG_MSG(("WP1SubDocument subDocumentSize = %u\n", tmpSubDocumentSize));
 	if (tmpSubDocumentSize)
 		m_subDocument = new WP1SubDocument(input, encryption, tmpSubDocumentSize);

@@ -31,7 +31,7 @@
 
 #include "WP6FillStylePacket.h" // for the fill packet
 
-WP6EOLGroup::WP6EOLGroup(RVNGInputStream *input, WPXEncryption *encryption) :
+WP6EOLGroup::WP6EOLGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption) :
 	WP6VariableLengthGroup(),
 	m_colSpan(1),
 	m_rowSpan(1),
@@ -66,7 +66,7 @@ WP6EOLGroup::~WP6EOLGroup()
 	DELETEP(m_cellBorderColor);
 }
 
-void WP6EOLGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
+void WP6EOLGroup::_readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
 	WPD_DEBUG_MSG(("WordPerfect: EOL Group: Reading Embedded Sub-Function Data\n"));
 	long startPosition = input->tell();
@@ -78,7 +78,7 @@ void WP6EOLGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryptio
 		throw FileException();
 	}
 
-	input->seek(sizeDeletableSubFunctionData, RVNG_SEEK_CUR);
+	input->seek(sizeDeletableSubFunctionData, librevenge::RVNG_SEEK_CUR);
 	while ((long)input->tell() < (long)(startPosition + getSizeNonDeletable()))
 	{
 		uint8_t byte;
@@ -239,7 +239,7 @@ void WP6EOLGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryptio
 
 		if (startPosition2 + numBytesToSkip - 1 - input->tell() < 0)
 			throw FileException();
-		input->seek((startPosition2 + numBytesToSkip - 1), RVNG_SEEK_SET);
+		input->seek((startPosition2 + numBytesToSkip - 1), librevenge::RVNG_SEEK_SET);
 	}
 }
 

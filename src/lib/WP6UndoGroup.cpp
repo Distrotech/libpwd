@@ -28,7 +28,7 @@
 #include "WP6Listener.h"
 #include "libwpd_internal.h"
 
-WP6UndoGroup::WP6UndoGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID) :
+WP6UndoGroup::WP6UndoGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID) :
 	WP6FixedLengthGroup(groupID),
 	m_undoType(0),
 	m_undoLevel(0)
@@ -36,7 +36,7 @@ WP6UndoGroup::WP6UndoGroup(RVNGInputStream *input, WPXEncryption *encryption, ui
 	_read(input, encryption);
 }
 
-void WP6UndoGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
+void WP6UndoGroup::_readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
 	m_undoType = readU8(input, encryption);
 	m_undoLevel = readU16(input, encryption);

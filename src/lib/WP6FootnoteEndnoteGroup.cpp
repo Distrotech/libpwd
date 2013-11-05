@@ -29,13 +29,13 @@
 #include "WP6Listener.h"
 #include "libwpd_internal.h"
 
-WP6FootnoteEndnoteGroup::WP6FootnoteEndnoteGroup(RVNGInputStream *input, WPXEncryption *encryption) :
+WP6FootnoteEndnoteGroup::WP6FootnoteEndnoteGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption) :
 	WP6VariableLengthGroup()
 {
 	_read(input, encryption);
 }
 
-void WP6FootnoteEndnoteGroup::_readContents(RVNGInputStream * /* input */, WPXEncryption * /* encryption */)
+void WP6FootnoteEndnoteGroup::_readContents(librevenge::RVNGInputStream * /* input */, WPXEncryption * /* encryption */)
 {
 }
 

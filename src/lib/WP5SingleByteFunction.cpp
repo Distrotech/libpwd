@@ -29,7 +29,7 @@
 #include "WP5Listener.h"
 #include "libwpd_internal.h"
 
-WP5SingleByteFunction *WP5SingleByteFunction::constructSingleByteFunction(RVNGInputStream * /* input */, WPXEncryption * /* encryption */, uint8_t groupID)
+WP5SingleByteFunction *WP5SingleByteFunction::constructSingleByteFunction(librevenge::RVNGInputStream * /* input */, WPXEncryption * /* encryption */, uint8_t groupID)
 {
 
 	switch (groupID)

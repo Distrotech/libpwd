@@ -38,8 +38,8 @@ class WP3SubDocument;
 class WP3Resource
 {
 public:
-	WP3Resource(uint32_t resourceType, uint32_t resourceReferenceID, const RVNGString &resourceName,
-	            uint8_t resourceAttributes, const RVNGBinaryData &resourceData);
+	WP3Resource(uint32_t resourceType, uint32_t resourceReferenceID, const librevenge::RVNGString &resourceName,
+	            uint8_t resourceAttributes, const librevenge::RVNGBinaryData &resourceData);
 	virtual ~WP3Resource() {}
 
 	uint32_t getResourceType() const
@@ -50,7 +50,7 @@ public:
 	{
 		return m_resourceReferenceID;
 	}
-	const RVNGString &getResourceName() const
+	const librevenge::RVNGString &getResourceName() const
 	{
 		return m_resourceName;
 	}
@@ -58,7 +58,7 @@ public:
 	{
 		return m_resourceAttributes;
 	}
-	const RVNGBinaryData &getResourceData() const
+	const librevenge::RVNGBinaryData &getResourceData() const
 	{
 		return m_resourceData;
 	}
@@ -66,9 +66,9 @@ public:
 private:
 	uint32_t m_resourceType;
 	uint32_t m_resourceReferenceID;
-	const RVNGString m_resourceName;
+	const librevenge::RVNGString m_resourceName;
 	uint8_t m_resourceAttributes;
-	RVNGBinaryData m_resourceData;
+	librevenge::RVNGBinaryData m_resourceData;
 };
 
 #endif /* WP3RESOURCE_H */

@@ -33,14 +33,14 @@
 class WP3DisplayGroup : public WP3VariableLengthGroup
 {
 public:
-	WP3DisplayGroup(RVNGInputStream *input, WPXEncryption *encryption);
+	WP3DisplayGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	~WP3DisplayGroup();
-	void _readContents(RVNGInputStream *input, WPXEncryption *encryption);
+	void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP3Listener *listener);
 
 private:
-	RVNGString m_noteReference;
-	RVNGString m_pageNumber;
+	librevenge::RVNGString m_noteReference;
+	librevenge::RVNGString m_pageNumber;
 };
 
 #endif /* WP3DISPLAYGROUP_H */

@@ -32,7 +32,7 @@
 #include "WP5FontNameStringPoolPacket.h"
 #include "WP5Listener.h"
 
-WP5FontGroup::WP5FontGroup(RVNGInputStream *input, WPXEncryption *encryption) :
+WP5FontGroup::WP5FontGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption) :
 	WP5VariableLengthGroup(),
 	m_red(0),
 	m_green(0),
@@ -43,22 +43,22 @@ WP5FontGroup::WP5FontGroup(RVNGInputStream *input, WPXEncryption *encryption) :
 	_read(input, encryption);
 }
 
-void WP5FontGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
+void WP5FontGroup::_readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
 	switch(getSubGroup())
 	{
 	case WP5_TOP_FONT_GROUP_COLOR:
-		input->seek(3, RVNG_SEEK_CUR);
+		input->seek(3, librevenge::RVNG_SEEK_CUR);
 		m_red = readU8(input, encryption);
 		m_green = readU8(input, encryption);
 		m_blue = readU8(input, encryption);
 		break;
 	case WP5_TOP_FONT_GROUP_FONT_CHANGE:
-		input->seek(25, RVNG_SEEK_CUR);
+		input->seek(25, librevenge::RVNG_SEEK_CUR);
 		m_fontNumber = readU8(input, encryption);
 		if (getSize() >= 36)
 		{
-			input->seek(2, RVNG_SEEK_CUR);
+			input->seek(2, librevenge::RVNG_SEEK_CUR);
 			m_fontSize = (double)(readU16(input, encryption) / 50);
 		}
 		break;
@@ -73,7 +73,7 @@ void WP5FontGroup::parse(WP5Listener *listener)
 
 	unsigned tmpFontNameOffset = 0;
 	double tmpFontSize = 12.0;
-	RVNGString tmpFontName("Times New Roman");
+	librevenge::RVNGString tmpFontName("Times New Roman");
 
 	switch(getSubGroup())
 	{

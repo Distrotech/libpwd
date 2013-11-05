@@ -27,7 +27,7 @@
 #include "libwpd_internal.h"
 #include <vector>
 
-WP42HeaderFooterGroup::WP42HeaderFooterGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t group) :
+WP42HeaderFooterGroup::WP42HeaderFooterGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group) :
 	WP42MultiByteFunctionGroup(group),
 	m_definition(0),
 	m_subDocument(0)
@@ -39,21 +39,21 @@ WP42HeaderFooterGroup::~WP42HeaderFooterGroup()
 {
 }
 
-void WP42HeaderFooterGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
+void WP42HeaderFooterGroup::_readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
-	input->seek(4, RVNG_SEEK_CUR);
+	input->seek(4, librevenge::RVNG_SEEK_CUR);
 	long tmpStartPosition = input->tell();
 	while (readU8(input, encryption) != 0xD1)
 	{
 	}
-	input->seek(-3, RVNG_SEEK_CUR);
+	input->seek(-3, librevenge::RVNG_SEEK_CUR);
 	long tmpSubDocumentSize = 0;
 	if (readU8(input, encryption) == 0xFF)
 		tmpSubDocumentSize = input->tell() - tmpStartPosition - 1;
 	WPD_DEBUG_MSG(("WP42SubDocument startPosition = %li; SubDocumentSize = %li\n", tmpStartPosition, tmpSubDocumentSize));
-	input->seek(1, RVNG_SEEK_CUR);
+	input->seek(1, librevenge::RVNG_SEEK_CUR);
 	m_definition = readU8(input, encryption);
-	input->seek(tmpStartPosition, RVNG_SEEK_SET);
+	input->seek(tmpStartPosition, librevenge::RVNG_SEEK_SET);
 	if (tmpSubDocumentSize > 2)
 		m_subDocument = new WP42SubDocument(input, encryption, (unsigned)tmpSubDocumentSize);
 }

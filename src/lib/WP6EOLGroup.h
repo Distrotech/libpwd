@@ -32,9 +32,9 @@
 class WP6EOLGroup : public WP6VariableLengthGroup
 {
 public:
-	WP6EOLGroup(RVNGInputStream *input, WPXEncryption *encryption);
+	WP6EOLGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	~WP6EOLGroup();
-	void _readContents(RVNGInputStream *input, WPXEncryption *encryption);
+	void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP6Listener *listener);
 
 private:

@@ -43,7 +43,7 @@ This document contains both the libwpd API specification and the normal libwpd
 documentation.
 \section api_docs libwpd API documentation
 The external libwpd API is provided by the WPDocument class. This class, combined
-with the RVNGTextInterface class, are the only two classes that will be of interest
+with the librevenge::RVNGTextInterface class, are the only two classes that will be of interest
 for the application programmer using libwpd.
 \section lib_docs libwpd documentation
 If you are interrested in the structure of libwpd itself, this whole document
@@ -58,13 +58,13 @@ Analyzes the content of an input stream to see if it can be parsed
 \return A confidence value which represents the likelyhood that the content from
 the input stream can be parsed
 */
-WPDConfidence WPDocument::isFileFormatSupported(RVNGInputStream *input)
+WPDConfidence WPDocument::isFileFormatSupported(librevenge::RVNGInputStream *input)
 {
 	WPD_DEBUG_MSG(("WPDocument::isFileFormatSupported()\n"));
 
 	// by-pass the OLE stream (if it exists) and returns the (sub) stream with the
 	// WordPerfect document.
-	RVNGInputStream *document = 0;
+	librevenge::RVNGInputStream *document = 0;
 	bool isStructuredDocument = false;
 
 	if (input->isStructured())
@@ -167,14 +167,14 @@ Checks whether the given password was used to encrypt the document
 \param password The password used to protect the document or NULL if the document is not protected
 \return A value which indicates between the given password and the password that was used to protect the document
 */
-WPDPasswordMatch WPDocument::verifyPassword(RVNGInputStream *input, const char *password)
+WPDPasswordMatch WPDocument::verifyPassword(librevenge::RVNGInputStream *input, const char *password)
 {
 	if (!password)
 		return WPD_PASSWORD_MATCH_DONTKNOW;
 	if (!input)
 		return WPD_PASSWORD_MATCH_DONTKNOW;
 
-	input->seek(0, RVNG_SEEK_SET);
+	input->seek(0, librevenge::RVNG_SEEK_SET);
 
 	WPDPasswordMatch passwordMatch = WPD_PASSWORD_MATCH_NONE;
 	WPXEncryption encryption(password);
@@ -185,7 +185,7 @@ WPDPasswordMatch WPDocument::verifyPassword(RVNGInputStream *input, const char *
 
 	// by-pass the OLE stream (if it exists) and returns the (sub) stream with the
 	// WordPerfect document.
-	RVNGInputStream *document = 0;
+	librevenge::RVNGInputStream *document = 0;
 	bool isStructuredDocument = false;
 
 	if (input->isStructured())
@@ -249,16 +249,16 @@ WPDPasswordMatch WPDocument::verifyPassword(RVNGInputStream *input, const char *
 
 /**
 Parses the input stream content. It will make callbacks to the functions provided by a
-RVNGTextInterface class implementation when needed. This is often commonly called the
+librevenge::RVNGTextInterface class implementation when needed. This is often commonly called the
 'main parsing routine'.
 \param input The input stream
-\param textInterface A RVNGTextInterface implementation
+\param textInterface A librevenge::RVNGTextInterface implementation
 \param password The password used to protect the document or NULL if the document
 is not protected
 \return A value that indicates whether the conversion was successful and in case it
 was not, it indicates the reason of the error
 */
-WPDResult WPDocument::parse(RVNGInputStream *input, RVNGTextInterface *textInterface, const char *password)
+WPDResult WPDocument::parse(librevenge::RVNGInputStream *input, librevenge::RVNGTextInterface *textInterface, const char *password)
 {
 	if (!input)
 		return WPD_FILE_ACCESS_ERROR;
@@ -266,14 +266,14 @@ WPDResult WPDocument::parse(RVNGInputStream *input, RVNGTextInterface *textInter
 	if (password && verifyPassword(input, password) != WPD_PASSWORD_MATCH_OK)
 		return WPD_PASSWORD_MISSMATCH_ERROR;
 
-	input->seek(0, RVNG_SEEK_SET);
+	input->seek(0, librevenge::RVNG_SEEK_SET);
 
 	WPXParser *parser = 0;
 
 	// by-pass the OLE stream (if it exists) and returns the (sub) stream with the
 	// WordPerfect document.
 
-	RVNGInputStream *document = 0;
+	librevenge::RVNGInputStream *document = 0;
 	bool isStructuredDocument = false;
 
 	WPD_DEBUG_MSG(("WPDocument::parse()\n"));
@@ -374,7 +374,7 @@ WPDResult WPDocument::parse(RVNGInputStream *input, RVNGTextInterface *textInter
 				if (password)
 				{
 					encryption = new WPXEncryption(password, 6);
-					input->seek(6, RVNG_SEEK_SET);
+					input->seek(6, librevenge::RVNG_SEEK_SET);
 				}
 				parser = new WP42Parser(document, encryption);
 				parser->parse(textInterface);
@@ -414,7 +414,7 @@ WPDResult WPDocument::parse(RVNGInputStream *input, RVNGTextInterface *textInter
 	return error;
 }
 
-WPDResult WPDocument::parseSubDocument(RVNGInputStream *input, RVNGTextInterface *textInterface, WPDFileFormat fileFormat)
+WPDResult WPDocument::parseSubDocument(librevenge::RVNGInputStream *input, librevenge::RVNGTextInterface *textInterface, WPDFileFormat fileFormat)
 {
 	WPXParser *parser = 0;
 

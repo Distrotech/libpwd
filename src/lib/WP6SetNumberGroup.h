@@ -26,9 +26,9 @@
 class WP6SetNumberGroup : public WP6VariableLengthGroup
 {
 public:
-	WP6SetNumberGroup(RVNGInputStream *input, WPXEncryption *encryption);
+	WP6SetNumberGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	~WP6SetNumberGroup();
-	void _readContents(RVNGInputStream *input, WPXEncryption *encryption);
+	void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP6Listener *listener);
 private:
 	uint8_t m_countOfLevelNumbersSetting;

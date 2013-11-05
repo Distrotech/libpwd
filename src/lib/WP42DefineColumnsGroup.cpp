@@ -27,7 +27,7 @@
 #include "WP42FileStructure.h"
 #include "libwpd_internal.h"
 
-WP42DefineColumnsGroup::WP42DefineColumnsGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t group) :
+WP42DefineColumnsGroup::WP42DefineColumnsGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group) :
 	WP42MultiByteFunctionGroup(group),
 	m_groupId(group),
 	m_numColumns(0),
@@ -41,17 +41,17 @@ WP42DefineColumnsGroup::~WP42DefineColumnsGroup()
 {
 }
 
-void WP42DefineColumnsGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
+void WP42DefineColumnsGroup::_readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
 	uint8_t maxNumColumns = 0;
 	switch (m_groupId)
 	{
 	case WP42_DEFINE_COLUMNS_OLD_GROUP:
-		input->seek(11, RVNG_SEEK_CUR);
+		input->seek(11, librevenge::RVNG_SEEK_CUR);
 		maxNumColumns = 5;
 		break;
 	case WP42_DEFINE_COLUMNS_NEW_GROUP:
-		input->seek(49, RVNG_SEEK_CUR);
+		input->seek(49, librevenge::RVNG_SEEK_CUR);
 		maxNumColumns = 24;
 		break;
 	default:

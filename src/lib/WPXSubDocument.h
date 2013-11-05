@@ -35,7 +35,7 @@ class WPXEncryption;
 class WPXSubDocument
 {
 public:
-	WPXSubDocument(RVNGInputStream *input, WPXEncryption *encryption, const unsigned dataSize);
+	WPXSubDocument(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const unsigned dataSize);
 	WPXSubDocument(uint8_t *streamData, const unsigned dataSize);
 	virtual ~WPXSubDocument();
 	WPXMemoryInputStream *getStream() const

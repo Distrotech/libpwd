@@ -33,9 +33,9 @@
 class WP3TablesGroup : public WP3VariableLengthGroup
 {
 public:
-	WP3TablesGroup(RVNGInputStream *input, WPXEncryption *encryption);
+	WP3TablesGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	~WP3TablesGroup();
-	void _readContents(RVNGInputStream *input, WPXEncryption *encryption);
+	void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP3Listener *listener);
 
 private:

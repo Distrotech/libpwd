@@ -28,7 +28,7 @@
 #include "WP5Parser.h"
 #include "libwpd_internal.h"
 
-WP5GraphicsInformationPacket::WP5GraphicsInformationPacket(RVNGInputStream *input, WPXEncryption *encryption, int /* id */, uint32_t dataOffset, uint32_t dataSize) :
+WP5GraphicsInformationPacket::WP5GraphicsInformationPacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int /* id */, uint32_t dataOffset, uint32_t dataSize) :
 	WP5GeneralPacketData(),
 	m_images(),
 	m_data()
@@ -44,7 +44,7 @@ WP5GraphicsInformationPacket::~WP5GraphicsInformationPacket()
 			delete [] (*iter1);
 		(*iter1) = 0;
 	}
-	for (std::vector<RVNGBinaryData *>::iterator iter2 = m_images.begin(); iter2 != m_images.end(); ++iter2)
+	for (std::vector<librevenge::RVNGBinaryData *>::iterator iter2 = m_images.begin(); iter2 != m_images.end(); ++iter2)
 	{
 		if ((*iter2))
 			delete (*iter2);
@@ -52,7 +52,7 @@ WP5GraphicsInformationPacket::~WP5GraphicsInformationPacket()
 	}
 }
 
-void WP5GraphicsInformationPacket::_readContents(RVNGInputStream *input, WPXEncryption *encryption, uint32_t /* dataSize */)
+void WP5GraphicsInformationPacket::_readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint32_t /* dataSize */)
 {
 	uint16_t tmpImagesCount = readU16(input, encryption);
 	std::vector<uint32_t> tmpImagesSizes;
@@ -66,7 +66,7 @@ void WP5GraphicsInformationPacket::_readContents(RVNGInputStream *input, WPXEncr
 		for (uint32_t k = 0; k < tmpImagesSizes[j]; k++)
 			tmpData[k] = readU8(input, encryption);
 #if 0
-		RVNGString filename;
+		librevenge::RVNGString filename;
 		filename.sprintf("binarydump%.4x.wpg", j);
 		FILE *f = fopen(filename.cstr(), "wb");
 		if (f)
@@ -85,7 +85,7 @@ void WP5GraphicsInformationPacket::_readContents(RVNGInputStream *input, WPXEncr
 			fclose(f);
 		}
 #endif
-		m_images.push_back( new RVNGBinaryData(tmpData, tmpImagesSizes[j]) );
+		m_images.push_back( new librevenge::RVNGBinaryData(tmpData, tmpImagesSizes[j]) );
 		m_data.push_back(tmpData);
 	}
 }

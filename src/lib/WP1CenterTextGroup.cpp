@@ -26,7 +26,7 @@
 #include "libwpd_internal.h"
 #include "WP1CenterTextGroup.h"
 
-WP1CenterTextGroup::WP1CenterTextGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t group) :
+WP1CenterTextGroup::WP1CenterTextGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group) :
 	WP1FixedLengthGroup(group)
 {
 	_read(input, encryption);

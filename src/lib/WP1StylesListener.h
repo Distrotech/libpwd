@@ -87,7 +87,7 @@ public:
 	void centerOff() {}
 	void endDocument();
 	void endSubDocument();
-	void insertPicture(uint16_t /* width */, uint16_t /* height */, const RVNGBinaryData & /* binaryData */) {}
+	void insertPicture(uint16_t /* width */, uint16_t /* height */, const librevenge::RVNGBinaryData & /* binaryData */) {}
 
 protected:
 	void _handleSubDocument(const WPXSubDocument *subDocument, WPXSubDocumentType subDocumentType, WPXTableList tableList, int nextTableIndice = 0);

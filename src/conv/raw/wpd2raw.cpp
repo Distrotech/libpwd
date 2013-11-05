@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
 	if (!file)
 		return printUsage();
 
-	RVNGFileStream input(file);
+	librevenge::RVNGFileStream input(file);
 
 	WPDConfidence confidence = WPDocument::isFileFormatSupported(&input);
 	if (confidence != WPD_CONFIDENCE_EXCELLENT && confidence != WPD_CONFIDENCE_SUPPORTED_ENCRYPTION)

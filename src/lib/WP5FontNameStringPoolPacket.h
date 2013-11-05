@@ -35,13 +35,13 @@
 class WP5FontNameStringPoolPacket : public WP5GeneralPacketData
 {
 public:
-	WP5FontNameStringPoolPacket(RVNGInputStream *input, WPXEncryption *encryption, int id, uint32_t dataOffset, uint32_t dataSize);
+	WP5FontNameStringPoolPacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int id, uint32_t dataOffset, uint32_t dataSize);
 	~WP5FontNameStringPoolPacket();
-	void _readContents(RVNGInputStream *input, WPXEncryption *encryption, uint32_t dataSize);
-	RVNGString getFontName(const unsigned int offset) const;
+	void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint32_t dataSize);
+	librevenge::RVNGString getFontName(const unsigned int offset) const;
 
 private:
-	std::map<unsigned int, RVNGString> m_fontNameString;
+	std::map<unsigned int, librevenge::RVNGString> m_fontNameString;
 };
 #endif /* WP5FONTNAMESTRINGPACKET_H */
 /* vim:set shiftwidth=4 softtabstop=4 noexpandtab: */

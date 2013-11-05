@@ -26,7 +26,7 @@
 #include "WP1MarginReleaseGroup.h"
 #include "libwpd_internal.h"
 
-WP1MarginReleaseGroup::WP1MarginReleaseGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t group) :
+WP1MarginReleaseGroup::WP1MarginReleaseGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group) :
 	WP1FixedLengthGroup(group),
 	m_release(0)
 {
@@ -37,7 +37,7 @@ WP1MarginReleaseGroup::~WP1MarginReleaseGroup()
 {
 }
 
-void WP1MarginReleaseGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
+void WP1MarginReleaseGroup::_readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
 	m_release = readU16(input, encryption, true);
 }

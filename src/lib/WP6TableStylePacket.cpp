@@ -28,7 +28,7 @@
 #include "WP6TableStylePacket.h"
 #include "WP6Parser.h"
 
-WP6TableStylePacket::WP6TableStylePacket(RVNGInputStream *input, WPXEncryption *encryption, int  /* id */, uint32_t dataOffset, uint32_t dataSize):
+WP6TableStylePacket::WP6TableStylePacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int  /* id */, uint32_t dataOffset, uint32_t dataSize):
 	WP6PrefixDataPacket(input, encryption)
 {
 	_read(input, encryption, dataOffset, dataSize);
@@ -38,7 +38,7 @@ WP6TableStylePacket::~WP6TableStylePacket()
 {
 }
 
-void WP6TableStylePacket::_readContents(RVNGInputStream * /* input */, WPXEncryption * /* encryption */)
+void WP6TableStylePacket::_readContents(librevenge::RVNGInputStream * /* input */, WPXEncryption * /* encryption */)
 {
 }
 /* vim:set shiftwidth=4 softtabstop=4 noexpandtab: */

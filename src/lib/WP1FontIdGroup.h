@@ -31,9 +31,9 @@
 class WP1FontIdGroup : public WP1FixedLengthGroup
 {
 public:
-	WP1FontIdGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t group);
+	WP1FontIdGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group);
 	~WP1FontIdGroup();
-	void _readContents(RVNGInputStream *input, WPXEncryption *encryption);
+	void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP1Listener *listener);
 
 private:

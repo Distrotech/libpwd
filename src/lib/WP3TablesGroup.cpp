@@ -31,7 +31,7 @@
 #include "libwpd_internal.h"
 #include "libwpd_math.h"
 
-WP3TablesGroup::WP3TablesGroup(RVNGInputStream *input, WPXEncryption *encryption) :
+WP3TablesGroup::WP3TablesGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption) :
 	m_tableMode(0),
 	m_offsetFromLeftEdge(0),
 	m_topGutterSpacing(0),
@@ -54,7 +54,7 @@ WP3TablesGroup::~WP3TablesGroup()
 {
 }
 
-void WP3TablesGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
+void WP3TablesGroup::_readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
 	// this group can contain different kinds of data, thus we need to read
 	// the contents accordingly
@@ -64,14 +64,14 @@ void WP3TablesGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryp
 	{
 	case WP3_TABLES_GROUP_TABLE_FUNCTION:
 		startPosition = input->tell();
-		input->seek(71, RVNG_SEEK_CUR);
+		input->seek(71, librevenge::RVNG_SEEK_CUR);
 		m_tableMode = readU8(input, encryption);
 		m_offsetFromLeftEdge = readU32(input, encryption, true);
 		m_topGutterSpacing = readU32(input, encryption, true);
 		m_leftGutterSpacing = readU32(input, encryption, true);
 		m_bottomGutterSpacing = readU32(input, encryption, true);
 		m_rightGutterSpacing = readU32(input, encryption, true);
-		input->seek(3, RVNG_SEEK_CUR);
+		input->seek(3, librevenge::RVNG_SEEK_CUR);
 		m_numColumns = readU8(input, encryption);
 		if ((m_numColumns > 32) || ((input->tell() - startPosition + m_numColumns*10) > (getSize() - 4)))
 			throw FileException();

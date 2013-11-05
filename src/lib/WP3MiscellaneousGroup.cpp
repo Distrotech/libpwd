@@ -31,7 +31,7 @@
 #include "WPXFileStructure.h"
 #include "WP3Listener.h"
 
-WP3MiscellaneousGroup::WP3MiscellaneousGroup(RVNGInputStream *input, WPXEncryption *encryption) :
+WP3MiscellaneousGroup::WP3MiscellaneousGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption) :
 	WP3VariableLengthGroup(),
 	m_pageWidth(0),
 	m_pageHeight(0),
@@ -44,7 +44,7 @@ WP3MiscellaneousGroup::~WP3MiscellaneousGroup()
 {
 }
 
-void WP3MiscellaneousGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
+void WP3MiscellaneousGroup::_readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
 	// this group can contain different kinds of data, thus we need to read
 	// the contents accordingly
@@ -54,7 +54,7 @@ void WP3MiscellaneousGroup::_readContents(RVNGInputStream *input, WPXEncryption 
 		uint16_t tmpPageOrientation;
 
 		// skip 20 bytes of old values
-		input->seek(20, RVNG_SEEK_CUR);
+		input->seek(20, librevenge::RVNG_SEEK_CUR);
 
 		// read the new values
 		tmpPageOrientation = readU16(input, encryption, true);

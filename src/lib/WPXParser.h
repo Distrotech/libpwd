@@ -34,18 +34,18 @@
 class WPXParser
 {
 public:
-	WPXParser(RVNGInputStream *input, WPXHeader *header, WPXEncryption *encryption);
+	WPXParser(librevenge::RVNGInputStream *input, WPXHeader *header, WPXEncryption *encryption);
 	virtual ~WPXParser() {}
 
-	virtual void parse(RVNGTextInterface *documentInterface) = 0;
-	virtual void parseSubDocument(RVNGTextInterface *documentInterface) = 0;
+	virtual void parse(librevenge::RVNGTextInterface *documentInterface) = 0;
+	virtual void parseSubDocument(librevenge::RVNGTextInterface *documentInterface) = 0;
 
 protected:
 	WPXHeader *getHeader()
 	{
 		return m_header;
 	}
-	RVNGInputStream *getInput()
+	librevenge::RVNGInputStream *getInput()
 	{
 		return m_input;
 	}
@@ -57,7 +57,7 @@ protected:
 private:
 	WPXParser(const WPXParser &);
 	WPXParser &operator=(const WPXParser &);
-	RVNGInputStream *m_input;
+	librevenge::RVNGInputStream *m_input;
 	WPXHeader *m_header;
 	WPXEncryption *m_encryption;
 };

@@ -27,7 +27,7 @@
 #include "WP5Parser.h"
 #include "libwpd_internal.h"
 
-WP5SubDocument::WP5SubDocument(RVNGInputStream *input, WPXEncryption *encryption, const unsigned dataSize) :
+WP5SubDocument::WP5SubDocument(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const unsigned dataSize) :
 	WPXSubDocument(input, encryption, dataSize)
 {
 }
@@ -37,7 +37,7 @@ void WP5SubDocument::parse(WP5Listener *listener) const
 	WPXMemoryInputStream *tmpStream = getStream();
 	if (!tmpStream)
 		return;
-	tmpStream->seek(0, RVNG_SEEK_SET);
+	tmpStream->seek(0, librevenge::RVNG_SEEK_SET);
 	WP5Parser::parseDocument(tmpStream, 0, listener);
 }
 /* vim:set shiftwidth=4 softtabstop=4 noexpandtab: */

@@ -28,7 +28,7 @@
 #include "WP6OutlineStylePacket.h"
 #include "libwpd_internal.h"
 
-WP6OutlineStylePacket::WP6OutlineStylePacket(RVNGInputStream *input, WPXEncryption *encryption, int /* id */, uint32_t dataOffset, uint32_t dataSize) :
+WP6OutlineStylePacket::WP6OutlineStylePacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int /* id */, uint32_t dataOffset, uint32_t dataSize) :
 	WP6PrefixDataPacket(input, encryption),
 	m_numPIDs(0),
 	m_outlineHash(0),
@@ -44,10 +44,10 @@ WP6OutlineStylePacket::~WP6OutlineStylePacket()
 {
 }
 
-void WP6OutlineStylePacket::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
+void WP6OutlineStylePacket::_readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
 	m_numPIDs = readU16(input, encryption);
-	input->seek(2 * WP6_NUM_LIST_LEVELS, RVNG_SEEK_CUR);
+	input->seek(2 * WP6_NUM_LIST_LEVELS, librevenge::RVNG_SEEK_CUR);
 #if 0
 	for (i=0; i<WP6_NUM_LIST_LEVELS; i++)
 		m_paragraphStylePIDs[i] = readU16(input, encryption); // seemingly useless

@@ -36,11 +36,11 @@ public:
 	WP1FixedLengthGroup(uint8_t group); // WP1FixedLengthGroup should _never_ be constructed, only its inherited classes
 	virtual ~WP1FixedLengthGroup() {}
 
-	static WP1FixedLengthGroup *constructFixedLengthGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t group);
+	static WP1FixedLengthGroup *constructFixedLengthGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group);
 
 protected:
-	void _read(RVNGInputStream *input, WPXEncryption *encryption);
-	virtual void _readContents(RVNGInputStream * /* input */, WPXEncryption * /* encryption */) {}
+	void _read(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
+	virtual void _readContents(librevenge::RVNGInputStream * /* input */, WPXEncryption * /* encryption */) {}
 
 	uint8_t getGroup() const
 	{

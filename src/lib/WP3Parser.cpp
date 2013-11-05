@@ -33,7 +33,7 @@
 #include "libwpd_internal.h"
 #include "WPXTable.h"
 
-WP3Parser::WP3Parser(RVNGInputStream *input, WPXHeader *header, WPXEncryption *encryption) :
+WP3Parser::WP3Parser(librevenge::RVNGInputStream *input, WPXHeader *header, WPXEncryption *encryption) :
 	WPXParser(input, header, encryption)
 {
 }
@@ -42,7 +42,7 @@ WP3Parser::~WP3Parser()
 {
 }
 
-WP3ResourceFork *WP3Parser::getResourceFork(RVNGInputStream *input, WPXEncryption *encryption)
+WP3ResourceFork *WP3Parser::getResourceFork(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
 	WP3ResourceFork *resourceFork = 0;
 
@@ -65,11 +65,11 @@ WP3ResourceFork *WP3Parser::getResourceFork(RVNGInputStream *input, WPXEncryptio
 	}
 }
 
-void WP3Parser::parse(RVNGInputStream *input, WPXEncryption *encryption, WP3Listener *listener)
+void WP3Parser::parse(librevenge::RVNGInputStream *input, WPXEncryption *encryption, WP3Listener *listener)
 {
 	listener->startDocument();
 
-	input->seek(getHeader()->getDocumentOffset(), RVNG_SEEK_SET);
+	input->seek(getHeader()->getDocumentOffset(), librevenge::RVNG_SEEK_SET);
 
 	WPD_DEBUG_MSG(("WordPerfect: Starting document body parse (position = %ld)\n",(long)input->tell()));
 
@@ -79,7 +79,7 @@ void WP3Parser::parse(RVNGInputStream *input, WPXEncryption *encryption, WP3List
 }
 
 // parseDocument: parses a document body (may call itself recursively, on other streams, or itself)
-void WP3Parser::parseDocument(RVNGInputStream *input, WPXEncryption *encryption, WP3Listener *listener)
+void WP3Parser::parseDocument(librevenge::RVNGInputStream *input, WPXEncryption *encryption, WP3Listener *listener)
 {
 	while (!input->isEnd())
 	{
@@ -111,9 +111,9 @@ void WP3Parser::parseDocument(RVNGInputStream *input, WPXEncryption *encryption,
 	}
 }
 
-void WP3Parser::parse(RVNGTextInterface *textInterface)
+void WP3Parser::parse(librevenge::RVNGTextInterface *textInterface)
 {
-	RVNGInputStream *input = getInput();
+	librevenge::RVNGInputStream *input = getInput();
 	WPXEncryption *encryption = getEncryption();
 	std::list<WPXPageSpan> pageList;
 	WPXTableList tableList;
@@ -177,13 +177,13 @@ void WP3Parser::parse(RVNGTextInterface *textInterface)
 	}
 }
 
-void WP3Parser::parseSubDocument(RVNGTextInterface *textInterface)
+void WP3Parser::parseSubDocument(librevenge::RVNGTextInterface *textInterface)
 {
 	std::list<WPXPageSpan> pageList;
 	WPXTableList tableList;
 	std::vector<WP3SubDocument *> subDocuments;
 
-	RVNGInputStream *input = getInput();
+	librevenge::RVNGInputStream *input = getInput();
 
 	try
 	{
@@ -192,7 +192,7 @@ void WP3Parser::parseSubDocument(RVNGTextInterface *textInterface)
 		parseDocument(input, 0, &stylesListener);
 		stylesListener.endSubDocument();
 
-		input->seek(0, RVNG_SEEK_SET);
+		input->seek(0, librevenge::RVNG_SEEK_SET);
 
 		WP3ContentListener listener(pageList, subDocuments, textInterface);
 		listener.startSubDocument();

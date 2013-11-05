@@ -35,7 +35,7 @@ class WPXEncryption;
 class WP6PrefixIndice
 {
 public:
-	WP6PrefixIndice(RVNGInputStream *input, WPXEncryption *encryption, int id);
+	WP6PrefixIndice(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int id);
 	int getID() const
 	{
 		return m_id;
@@ -58,7 +58,7 @@ public:
 	}
 
 protected:
-	void _read(RVNGInputStream *input, WPXEncryption *encryption);
+	void _read(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 
 private:
 	int m_id;

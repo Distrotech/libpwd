@@ -35,7 +35,7 @@ class WPXEncryption;
 class WP3ResourceFork
 {
 public:
-	WP3ResourceFork(RVNGInputStream *input, WPXEncryption *encryption);
+	WP3ResourceFork(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	virtual ~WP3ResourceFork();
 
 	const WP3Resource *getResource(uint32_t type, uint32_t ID) const;

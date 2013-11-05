@@ -33,8 +33,8 @@
 class WP42Heuristics
 {
 public:
-	static WPDConfidence isWP42FileFormat(RVNGInputStream *input, const char *password = 0);
-	static WPDPasswordMatch verifyPassword(RVNGInputStream *input, const char *password);
+	static WPDConfidence isWP42FileFormat(librevenge::RVNGInputStream *input, const char *password = 0);
+	static WPDPasswordMatch verifyPassword(librevenge::RVNGInputStream *input, const char *password);
 };
 
 #endif /* WP42HEURISTICS_H */

@@ -33,7 +33,7 @@
 class WP5SpecialHeaderIndex
 {
 public:
-	WP5SpecialHeaderIndex(RVNGInputStream *input, WPXEncryption *encryption);
+	WP5SpecialHeaderIndex(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	uint16_t getType() const
 	{
 		return m_type;
@@ -52,7 +52,7 @@ public:
 	}
 
 protected:
-	void _read(RVNGInputStream *input, WPXEncryption *encryption);
+	void _read(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 
 private:
 	uint16_t m_type;

@@ -43,10 +43,10 @@ WordPerfect documents.
 class WPDocument
 {
 public:
-	static WPDConfidence isFileFormatSupported(RVNGInputStream *input);
-	static WPDPasswordMatch verifyPassword(RVNGInputStream *input, const char *password);
-	static WPDResult parse(RVNGInputStream *input, RVNGTextInterface *documentInterface, const char *password);
-	static WPDResult parseSubDocument(RVNGInputStream *input, RVNGTextInterface *documentInterface, WPDFileFormat fileFormat);
+	static WPDConfidence isFileFormatSupported(librevenge::RVNGInputStream *input);
+	static WPDPasswordMatch verifyPassword(librevenge::RVNGInputStream *input, const char *password);
+	static WPDResult parse(librevenge::RVNGInputStream *input, librevenge::RVNGTextInterface *documentInterface, const char *password);
+	static WPDResult parseSubDocument(librevenge::RVNGInputStream *input, librevenge::RVNGTextInterface *documentInterface, WPDFileFormat fileFormat);
 };
 
 #endif /* WPDOCUMENT_H */

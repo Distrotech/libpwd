@@ -29,7 +29,7 @@
 #include "WPXListener.h"
 #include <string.h>
 
-WPXSubDocument::WPXSubDocument(RVNGInputStream *input, WPXEncryption *encryption, const unsigned dataSize) :
+WPXSubDocument::WPXSubDocument(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const unsigned dataSize) :
 	m_stream(0),
 	m_streamData(new uint8_t[dataSize])
 {

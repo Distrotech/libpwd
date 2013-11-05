@@ -32,11 +32,11 @@
 class WP5TabGroup : public WP5FixedLengthGroup
 {
 public:
-	WP5TabGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID);
+	WP5TabGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID);
 	void parse(WP5Listener *listener);
 
 protected:
-	void _readContents(RVNGInputStream *input, WPXEncryption *encryption);
+	void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 
 private:
 	uint8_t m_tabType;

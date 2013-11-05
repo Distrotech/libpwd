@@ -26,7 +26,7 @@
 #include "WP42ExtendedCharacterGroup.h"
 #include "libwpd_internal.h"
 
-WP42ExtendedCharacterGroup::WP42ExtendedCharacterGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t group) :
+WP42ExtendedCharacterGroup::WP42ExtendedCharacterGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group) :
 	WP42MultiByteFunctionGroup(group),
 	m_extendedCharacter(0)
 {
@@ -37,7 +37,7 @@ WP42ExtendedCharacterGroup::~WP42ExtendedCharacterGroup()
 {
 }
 
-void WP42ExtendedCharacterGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
+void WP42ExtendedCharacterGroup::_readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
 	m_extendedCharacter = readU8(input, encryption);
 }

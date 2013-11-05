@@ -34,7 +34,7 @@
 #include "WP42StylesListener.h"
 #include "WP42ContentListener.h"
 
-WP42Parser::WP42Parser(RVNGInputStream *input, WPXEncryption *encryption) :
+WP42Parser::WP42Parser(librevenge::RVNGInputStream *input, WPXEncryption *encryption) :
 	WPXParser(input, 0, encryption)
 {
 }
@@ -43,11 +43,11 @@ WP42Parser::~WP42Parser()
 {
 }
 
-void WP42Parser::parse(RVNGInputStream *input, WPXEncryption *encryption, WP42Listener *listener)
+void WP42Parser::parse(librevenge::RVNGInputStream *input, WPXEncryption *encryption, WP42Listener *listener)
 {
 	listener->startDocument();
 
-	input->seek(0, RVNG_SEEK_SET);
+	input->seek(0, librevenge::RVNG_SEEK_SET);
 
 	WPD_DEBUG_MSG(("WordPerfect: Starting document body parse (position = %ld)\n",(long)input->tell()));
 
@@ -57,7 +57,7 @@ void WP42Parser::parse(RVNGInputStream *input, WPXEncryption *encryption, WP42Li
 }
 
 // parseDocument: parses a document body (may call itself recursively, on other streams, or itself)
-void WP42Parser::parseDocument(RVNGInputStream *input, WPXEncryption *encryption, WP42Listener *listener)
+void WP42Parser::parseDocument(librevenge::RVNGInputStream *input, WPXEncryption *encryption, WP42Listener *listener)
 {
 	while (!input->isEnd())
 	{
@@ -163,9 +163,9 @@ void WP42Parser::parseDocument(RVNGInputStream *input, WPXEncryption *encryption
 	}
 }
 
-void WP42Parser::parse(RVNGTextInterface *documentInterface)
+void WP42Parser::parse(librevenge::RVNGTextInterface *documentInterface)
 {
-	RVNGInputStream *input = getInput();
+	librevenge::RVNGInputStream *input = getInput();
 	WPXEncryption *encryption = getEncryption();
 	std::list<WPXPageSpan> pageList;
 	std::vector<WP42SubDocument *> subDocuments;
@@ -220,12 +220,12 @@ void WP42Parser::parse(RVNGTextInterface *documentInterface)
 
 }
 
-void WP42Parser::parseSubDocument(RVNGTextInterface *documentInterface)
+void WP42Parser::parseSubDocument(librevenge::RVNGTextInterface *documentInterface)
 {
 	std::list<WPXPageSpan> pageList;
 	std::vector<WP42SubDocument *> subDocuments;
 
-	RVNGInputStream *input = getInput();
+	librevenge::RVNGInputStream *input = getInput();
 
 	try
 	{

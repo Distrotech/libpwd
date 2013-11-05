@@ -32,9 +32,9 @@
 class WP42HeaderFooterGroup : public WP42MultiByteFunctionGroup
 {
 public:
-	WP42HeaderFooterGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t group);
+	WP42HeaderFooterGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group);
 	~WP42HeaderFooterGroup();
-	void _readContents(RVNGInputStream *input, WPXEncryption *encryption);
+	void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP42Listener *listener);
 
 private:

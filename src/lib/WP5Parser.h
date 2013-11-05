@@ -27,7 +27,6 @@
 #ifndef WP5PARSER_H
 #define WP5PARSER_H
 
-#include <librevenge/librevenge.h>
 #include "WPXParser.h"
 
 class WP5Listener;
@@ -36,18 +35,18 @@ class WP5PrefixData;
 class WP5Parser : public WPXParser
 {
 public:
-	WP5Parser(RVNGInputStream *input, WPXHeader *header, WPXEncryption *encryption);
+	WP5Parser(librevenge::RVNGInputStream *input, WPXHeader *header, WPXEncryption *encryption);
 	~WP5Parser();
 
-	void parse(RVNGTextInterface *documentInterface);
-	void parseSubDocument(RVNGTextInterface *documentInterface);
+	void parse(librevenge::RVNGTextInterface *documentInterface);
+	void parseSubDocument(librevenge::RVNGTextInterface *documentInterface);
 
-	static void parseDocument(RVNGInputStream *input, WPXEncryption *encryption, WP5Listener *listener);
+	static void parseDocument(librevenge::RVNGInputStream *input, WPXEncryption *encryption, WP5Listener *listener);
 
 private:
-	WP5PrefixData *getPrefixData(RVNGInputStream *input, WPXEncryption *encryption);
+	WP5PrefixData *getPrefixData(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 
-	void parse(RVNGInputStream *input, WPXEncryption *encryption, WP5Listener *listener);
+	void parse(librevenge::RVNGInputStream *input, WPXEncryption *encryption, WP5Listener *listener);
 };
 
 #endif /* WP5PARSER_H */

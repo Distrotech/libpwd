@@ -27,7 +27,7 @@
 #include "libwpd_internal.h"
 #include "WP1SubDocument.h"
 
-WP1FootnoteEndnoteGroup::WP1FootnoteEndnoteGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t group) :
+WP1FootnoteEndnoteGroup::WP1FootnoteEndnoteGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group) :
 	WP1VariableLengthGroup(group),
 	m_noteType(FOOTNOTE),
 	m_noteNumber(0),
@@ -42,7 +42,7 @@ WP1FootnoteEndnoteGroup::~WP1FootnoteEndnoteGroup()
 		delete m_subDocument;
 }
 
-void WP1FootnoteEndnoteGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
+void WP1FootnoteEndnoteGroup::_readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
 	unsigned tmpSubDocumentSize = getSize() - 29;
 	uint8_t tmpNoteDefinition = readU8(input, encryption);
@@ -53,7 +53,7 @@ void WP1FootnoteEndnoteGroup::_readContents(RVNGInputStream *input, WPXEncryptio
 	}
 
 	m_noteNumber = readU16(input, encryption, true);
-	input->seek(getSize() - tmpSubDocumentSize - 3, RVNG_SEEK_CUR);
+	input->seek(getSize() - tmpSubDocumentSize - 3, librevenge::RVNG_SEEK_CUR);
 
 	WPD_DEBUG_MSG(("WP1SubDocument subDocumentSize = %u\n", tmpSubDocumentSize));
 	if (tmpSubDocumentSize)

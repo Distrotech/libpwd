@@ -55,7 +55,7 @@ uint16_t WPXEncryption::getCheckSum() const
 {
 	if (m_password.len() <= 0)
 		return 0;
-	RVNGString::Iter i(m_password);
+	librevenge::RVNGString::Iter i(m_password);
 	uint16_t checkSum = 0;
 	for (i.rewind(); i.next();)
 		checkSum = (uint16_t)(((checkSum >> 1) | (checkSum << 15)) ^ (((uint16_t)*(i())) << 8 ));
@@ -63,7 +63,7 @@ uint16_t WPXEncryption::getCheckSum() const
 	return checkSum;
 }
 
-const unsigned char *WPXEncryption::readAndDecrypt(RVNGInputStream *input, unsigned long numBytes, unsigned long &numBytesRead)
+const unsigned char *WPXEncryption::readAndDecrypt(librevenge::RVNGInputStream *input, unsigned long numBytes, unsigned long &numBytesRead)
 {
 	if ((m_password.len() <= 0) || (m_encryptionStartOffset > input->tell() + numBytes))
 		return input->read(numBytes, numBytesRead);

@@ -108,7 +108,7 @@ void WP6StylesListener::pageNumberingChange(const WPXPageNumberPosition pageNumb
 
 		if (pageNumberFontPID)
 		{
-			RVNGString pidFontName = WP6Listener::getFontNameForPID(pageNumberFontPID);
+			librevenge::RVNGString pidFontName = WP6Listener::getFontNameForPID(pageNumberFontPID);
 			if (!!pidFontName)
 				m_currentPage.setPageNumberingFontName(pidFontName);
 		}

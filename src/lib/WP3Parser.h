@@ -26,6 +26,7 @@
 #ifndef WP3PARSER_H
 #define WP3PARSER_H
 
+#include <librevenge/librevenge.h>
 #include "WPXParser.h"
 
 class WP3Listener;
@@ -34,18 +35,18 @@ class WP3ResourceFork;
 class WP3Parser : public WPXParser
 {
 public:
-	WP3Parser(RVNGInputStream *input, WPXHeader *header, WPXEncryption *encryption);
+	WP3Parser(librevenge::RVNGInputStream *input, WPXHeader *header, WPXEncryption *encryption);
 	~WP3Parser();
 
-	void parse(RVNGTextInterface *documentInterface);
-	void parseSubDocument(RVNGTextInterface *documentInterface);
+	void parse(librevenge::RVNGTextInterface *documentInterface);
+	void parseSubDocument(librevenge::RVNGTextInterface *documentInterface);
 
-	static void parseDocument(RVNGInputStream *input, WPXEncryption *encryption, WP3Listener *listener);
+	static void parseDocument(librevenge::RVNGInputStream *input, WPXEncryption *encryption, WP3Listener *listener);
 
 private:
-	WP3ResourceFork *getResourceFork(RVNGInputStream *input, WPXEncryption *encryption);
+	WP3ResourceFork *getResourceFork(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 
-	void parse(RVNGInputStream *input, WPXEncryption *encryption, WP3Listener *listener);
+	void parse(librevenge::RVNGInputStream *input, WPXEncryption *encryption, WP3Listener *listener);
 };
 
 #endif /* WP3PARSER_H */

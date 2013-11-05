@@ -34,9 +34,9 @@
 class WP3MiscellaneousGroup : public WP3VariableLengthGroup
 {
 public:
-	WP3MiscellaneousGroup(RVNGInputStream *input, WPXEncryption *encryption);
+	WP3MiscellaneousGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	~WP3MiscellaneousGroup();
-	void _readContents(RVNGInputStream *input, WPXEncryption *encryption);
+	void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP3Listener *listener);
 
 private:

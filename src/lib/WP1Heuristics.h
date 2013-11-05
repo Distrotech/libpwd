@@ -34,8 +34,8 @@
 class WP1Heuristics
 {
 public:
-	static WPDConfidence isWP1FileFormat(RVNGInputStream *input, const char *password = 0);
-	static WPDPasswordMatch verifyPassword(RVNGInputStream *input, const char *password);
+	static WPDConfidence isWP1FileFormat(librevenge::RVNGInputStream *input, const char *password = 0);
+	static WPDPasswordMatch verifyPassword(librevenge::RVNGInputStream *input, const char *password);
 };
 
 #endif /* WP1HEURISTICS_H */

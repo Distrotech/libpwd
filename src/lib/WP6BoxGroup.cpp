@@ -33,7 +33,7 @@
 #include "WP6GeneralTextPacket.h"
 #include "WP6GraphicsBoxStylePacket.h"
 
-WP6BoxGroup::WP6BoxGroup(RVNGInputStream *input, WPXEncryption *encryption) :
+WP6BoxGroup::WP6BoxGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption) :
 	WP6VariableLengthGroup(),
 	m_generalPositioningFlagsMask(0x00),
 	m_generalPositioningFlagsData(0x00),
@@ -61,7 +61,7 @@ WP6BoxGroup::WP6BoxGroup(RVNGInputStream *input, WPXEncryption *encryption) :
 	_read(input, encryption);
 }
 
-void WP6BoxGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
+void WP6BoxGroup::_readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
 	switch (getSubGroup())
 	{
@@ -69,9 +69,9 @@ void WP6BoxGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryptio
 	case WP6_BOX_GROUP_PARAGRAPH_ANCHORED_BOX:
 	case WP6_BOX_GROUP_PAGE_ANCHORED_BOX:
 	{
-		input->seek(14, RVNG_SEEK_CUR); // reserved for future use
-		input->seek(2, RVNG_SEEK_CUR); // total size of override and wrap rectangle data for box
-		input->seek(2, RVNG_SEEK_CUR); // total size of override data
+		input->seek(14, librevenge::RVNG_SEEK_CUR); // reserved for future use
+		input->seek(2, librevenge::RVNG_SEEK_CUR); // total size of override and wrap rectangle data for box
+		input->seek(2, librevenge::RVNG_SEEK_CUR); // total size of override data
 		uint16_t tmpOverrideFlags = readU16(input, encryption);
 		if (tmpOverrideFlags & WP6_BOX_GROUP_BOX_COUNTER_DATA_BIT)
 		{
@@ -82,7 +82,7 @@ void WP6BoxGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryptio
 			readU16(input, encryption);
 #endif
 			WPD_DEBUG_MSG(("WP6BoxGroup: parsing Box counter data -- override flags: 0x%x\n", tmpOverrideFlags));
-			input->seek(tmpEndOfData, RVNG_SEEK_SET);
+			input->seek(tmpEndOfData, librevenge::RVNG_SEEK_SET);
 		}
 		if (tmpOverrideFlags & WP6_BOX_GROUP_BOX_POSITIONING_DATA_BIT)
 		{
@@ -91,7 +91,7 @@ void WP6BoxGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryptio
 			tmpOverrideFlags = readU16(input, encryption);
 
 			if (tmpOverrideFlags & 0x8000)
-				input->seek(2, RVNG_SEEK_CUR);
+				input->seek(2, librevenge::RVNG_SEEK_CUR);
 			if (tmpOverrideFlags & 0x4000)
 			{
 				m_generalPositioningFlagsMask = readU8(input, encryption);
@@ -141,7 +141,7 @@ void WP6BoxGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryptio
 				WPD_DEBUG_MSG(("Box z-order flags: 0x%.2x\n", m_zOrderFlags));
 			}
 			WPD_DEBUG_MSG(("WP6BoxGroup: parsing Box positioning data -- override flags: 0x%x\n", tmpOverrideFlags));
-			input->seek(tmpEndOfData, RVNG_SEEK_SET);
+			input->seek(tmpEndOfData, librevenge::RVNG_SEEK_SET);
 		}
 		if (tmpOverrideFlags & WP6_BOX_GROUP_BOX_CONTENT_DATA_BIT)
 		{
@@ -150,7 +150,7 @@ void WP6BoxGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryptio
 			tmpOverrideFlags = readU16(input, encryption);
 
 			if (tmpOverrideFlags & 0x8000)
-				input->seek(2, RVNG_SEEK_CUR);
+				input->seek(2, librevenge::RVNG_SEEK_CUR);
 
 			if (tmpOverrideFlags & 0x4000)
 			{
@@ -167,13 +167,13 @@ void WP6BoxGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryptio
 					uint16_t tmpImageContentOverrideFlags = readU16(input, encryption);
 
 					if (tmpImageContentOverrideFlags & 0x8000)
-						input->seek(2, RVNG_SEEK_CUR);
+						input->seek(2, librevenge::RVNG_SEEK_CUR);
 					if (tmpImageContentOverrideFlags & 0x4000)
 					{
 						m_nativeWidth = readU16(input, encryption);
 						m_nativeHeight = readU16(input, encryption);
 					}
-					input->seek(tmpImageContentOverrideStart + tmpImageContentOverrideSize, RVNG_SEEK_SET);
+					input->seek(tmpImageContentOverrideStart + tmpImageContentOverrideSize, librevenge::RVNG_SEEK_SET);
 				}
 			}
 #ifdef DEBUG
@@ -182,7 +182,7 @@ void WP6BoxGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryptio
 			if (m_hasBoxContentType)
 				WPD_DEBUG_MSG(("WP6BoxGroup: parsing Box content data -- content type: 0x%.2x\n", m_boxContentType));
 #endif
-			input->seek(tmpEndOfData, RVNG_SEEK_SET);
+			input->seek(tmpEndOfData, librevenge::RVNG_SEEK_SET);
 		}
 		if (tmpOverrideFlags & WP6_BOX_GROUP_BOX_CAPTION_DATA_BIT)
 		{
@@ -193,7 +193,7 @@ void WP6BoxGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryptio
 			readU16(input, encryption);
 #endif
 			WPD_DEBUG_MSG(("WP6BoxGroup: parsing Box caption data -- override flags: 0x%x\n", tmpOverrideFlags));
-			input->seek(tmpEndOfData, RVNG_SEEK_SET);
+			input->seek(tmpEndOfData, librevenge::RVNG_SEEK_SET);
 		}
 		if (tmpOverrideFlags & WP6_BOX_GROUP_BOX_BORDER_DATA_BIT)
 		{
@@ -204,7 +204,7 @@ void WP6BoxGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryptio
 			readU16(input, encryption);
 #endif
 			WPD_DEBUG_MSG(("WP6BoxGroup: parsing Box border data -- override flags: 0x%x\n", tmpOverrideFlags));
-			input->seek(tmpEndOfData, RVNG_SEEK_SET);
+			input->seek(tmpEndOfData, librevenge::RVNG_SEEK_SET);
 		}
 		if (tmpOverrideFlags & WP6_BOX_GROUP_BOX_FILL_DATA_BIT)
 		{
@@ -215,7 +215,7 @@ void WP6BoxGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryptio
 			readU16(input, encryption);
 #endif
 			WPD_DEBUG_MSG(("WP6BoxGroup: parsing Box fill data -- override flags: 0x%x\n", tmpOverrideFlags));
-			input->seek(tmpEndOfData, RVNG_SEEK_SET);
+			input->seek(tmpEndOfData, librevenge::RVNG_SEEK_SET);
 		}
 		if (tmpOverrideFlags & WP6_BOX_GROUP_BOX_BOX_WRAPPING_DATA_BIT)
 		{
@@ -226,7 +226,7 @@ void WP6BoxGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryptio
 			readU16(input, encryption);
 #endif
 			WPD_DEBUG_MSG(("WP6BoxGroup: parsing Box wrapping data -- override flags: 0x%x\n", tmpOverrideFlags));
-			input->seek(tmpEndOfData, RVNG_SEEK_SET);
+			input->seek(tmpEndOfData, librevenge::RVNG_SEEK_SET);
 		}
 		if (tmpOverrideFlags & WP6_BOX_GROUP_BOX_BOX_HYPERTEXT_WRAPPING_DATA_BIT)
 		{
@@ -237,7 +237,7 @@ void WP6BoxGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryptio
 			readU16(input, encryption);
 #endif
 			WPD_DEBUG_MSG(("WP6BoxGroup: parsing Box hypertext wrapping data -- override flags: 0x%x\n", tmpOverrideFlags));
-			input->seek(tmpEndOfData, RVNG_SEEK_SET);
+			input->seek(tmpEndOfData, librevenge::RVNG_SEEK_SET);
 		}
 		if (tmpOverrideFlags & WP6_BOX_GROUP_BOX_HTML_BIT)
 		{
@@ -252,7 +252,7 @@ void WP6BoxGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryptio
 			readU16(input, encryption);
 #endif
 			WPD_DEBUG_MSG(("WP6BoxGroup: parsing Box grouping data -- override flags: 0x%x\n", tmpOverrideFlags));
-			input->seek(tmpEndOfData, RVNG_SEEK_SET);
+			input->seek(tmpEndOfData, librevenge::RVNG_SEEK_SET);
 		}
 		if (tmpOverrideFlags & WP6_BOX_GROUP_BOX_DRAW_OBJECT_DATA_BIT)
 		{
@@ -263,7 +263,7 @@ void WP6BoxGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryptio
 			readU16(input, encryption);
 #endif
 			WPD_DEBUG_MSG(("WP6BoxGroup: parsing Box draw object data -- override flags: 0x%x\n", tmpOverrideFlags));
-			input->seek(tmpEndOfData, RVNG_SEEK_SET);
+			input->seek(tmpEndOfData, librevenge::RVNG_SEEK_SET);
 		}
 	}
 	break;

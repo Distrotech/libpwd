@@ -38,13 +38,13 @@ struct _WP42ContentParsingState
 {
 	_WP42ContentParsingState();
 	~_WP42ContentParsingState();
-	RVNGString m_textBuffer;
+	librevenge::RVNGString m_textBuffer;
 };
 
 class WP42ContentListener : public WP42Listener, protected WPXContentListener
 {
 public:
-	WP42ContentListener(std::list<WPXPageSpan> &pageList, std::vector<WP42SubDocument *> &subDocuments, RVNGTextInterface *documentInterface);
+	WP42ContentListener(std::list<WPXPageSpan> &pageList, std::vector<WP42SubDocument *> &subDocuments, librevenge::RVNGTextInterface *documentInterface);
 	~WP42ContentListener();
 
 	void startDocument()

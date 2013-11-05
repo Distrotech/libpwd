@@ -31,7 +31,7 @@
 #include "libwpd_internal.h"
 #include "WP5Listener.h"
 
-WP5ExtendedCharacterGroup::WP5ExtendedCharacterGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID) :
+WP5ExtendedCharacterGroup::WP5ExtendedCharacterGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID) :
 	WP5FixedLengthGroup(groupID),
 	m_character(0),
 	m_characterSet(0)
@@ -39,7 +39,7 @@ WP5ExtendedCharacterGroup::WP5ExtendedCharacterGroup(RVNGInputStream *input, WPX
 	_read(input, encryption);
 }
 
-void WP5ExtendedCharacterGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
+void WP5ExtendedCharacterGroup::_readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
 	m_character = readU8(input, encryption);
 	m_characterSet = readU8(input, encryption);

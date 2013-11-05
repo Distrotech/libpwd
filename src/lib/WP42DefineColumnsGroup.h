@@ -32,9 +32,9 @@
 class WP42DefineColumnsGroup : public WP42MultiByteFunctionGroup
 {
 public:
-	WP42DefineColumnsGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t group);
+	WP42DefineColumnsGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group);
 	~WP42DefineColumnsGroup();
-	void _readContents(RVNGInputStream *input, WPXEncryption *encryption);
+	void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP42Listener *listener);
 
 private:

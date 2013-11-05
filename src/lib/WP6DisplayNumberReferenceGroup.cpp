@@ -28,14 +28,14 @@
 #include "WP6Listener.h"
 #include "libwpd_internal.h"
 
-WP6DisplayNumberReferenceGroup::WP6DisplayNumberReferenceGroup(RVNGInputStream *input, WPXEncryption *encryption) :
+WP6DisplayNumberReferenceGroup::WP6DisplayNumberReferenceGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption) :
 	WP6VariableLengthGroup(),
 	m_levelNumberToDisplay(0)
 {
 	_read(input, encryption);
 }
 
-void WP6DisplayNumberReferenceGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
+void WP6DisplayNumberReferenceGroup::_readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
 	if (!(getSubGroup() % 2) || getSubGroup() == 0)
 		m_levelNumberToDisplay = readU8(input, encryption);

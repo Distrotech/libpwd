@@ -37,7 +37,7 @@
 #include "WP6DefaultInitialFontPacket.h"
 #include "WPXTable.h"
 
-WP6Parser::WP6Parser(RVNGInputStream *input, WPXHeader *header, WPXEncryption *encryption) :
+WP6Parser::WP6Parser(librevenge::RVNGInputStream *input, WPXHeader *header, WPXEncryption *encryption) :
 	WPXParser(input, header, encryption)
 {
 }
@@ -46,7 +46,7 @@ WP6Parser::~WP6Parser()
 {
 }
 
-WP6PrefixData *WP6Parser::getPrefixData(RVNGInputStream *input, WPXEncryption *encryption)
+WP6PrefixData *WP6Parser::getPrefixData(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
 	WP6PrefixData *prefixData = 0;
 	try
@@ -72,11 +72,11 @@ WP6PrefixData *WP6Parser::getPrefixData(RVNGInputStream *input, WPXEncryption *e
 	}
 }
 
-void WP6Parser::parse(RVNGInputStream *input, WPXEncryption *encryption, WP6Listener *listener)
+void WP6Parser::parse(librevenge::RVNGInputStream *input, WPXEncryption *encryption, WP6Listener *listener)
 {
 	listener->startDocument();
 
-	input->seek(getHeader()->getDocumentOffset(), RVNG_SEEK_SET);
+	input->seek(getHeader()->getDocumentOffset(), librevenge::RVNG_SEEK_SET);
 
 	WPD_DEBUG_MSG(("WordPerfect: Starting document body parse (position = %ld)\n",(long)input->tell()));
 
@@ -122,7 +122,7 @@ static const uint16_t extendedInternationalCharacterMap[] =
 };
 
 // parseDocument: parses a document body (may call itself recursively, on other streams, or itself)
-void WP6Parser::parseDocument(RVNGInputStream *input, WPXEncryption *encryption, WP6Listener *listener)
+void WP6Parser::parseDocument(librevenge::RVNGInputStream *input, WPXEncryption *encryption, WP6Listener *listener)
 {
 	while (!input->isEnd())
 	{
@@ -182,13 +182,13 @@ void WP6Parser::parsePackets(WP6PrefixData *prefixData, int type, WP6Listener *l
 
 // WP6Parser::parse() reads AND parses a wordperfect document, passing any retrieved low-level
 // information to a low-level listener
-void WP6Parser::parse(RVNGTextInterface *documentInterface)
+void WP6Parser::parse(librevenge::RVNGTextInterface *documentInterface)
 {
 	WP6PrefixData *prefixData = 0;
 	std::list<WPXPageSpan> pageList;
 	WPXTableList tableList;
 
-	RVNGInputStream *input = getInput();
+	librevenge::RVNGInputStream *input = getInput();
 	WPXEncryption *encryption = getEncryption();
 
 	try
@@ -243,12 +243,12 @@ void WP6Parser::parse(RVNGTextInterface *documentInterface)
 	}
 }
 
-void WP6Parser::parseSubDocument(RVNGTextInterface *documentInterface)
+void WP6Parser::parseSubDocument(librevenge::RVNGTextInterface *documentInterface)
 {
 	std::list<WPXPageSpan> pageList;
 	WPXTableList tableList;
 
-	RVNGInputStream *input = getInput();
+	librevenge::RVNGInputStream *input = getInput();
 
 	try
 	{
@@ -257,7 +257,7 @@ void WP6Parser::parseSubDocument(RVNGTextInterface *documentInterface)
 		parseDocument(input, 0, &stylesListener);
 		stylesListener.endSubDocument();
 
-		input->seek(0, RVNG_SEEK_SET);
+		input->seek(0, librevenge::RVNG_SEEK_SET);
 
 		WP6ContentListener listener(pageList, tableList, documentInterface);
 		listener.startSubDocument();

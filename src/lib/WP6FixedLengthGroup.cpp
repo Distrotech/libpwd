@@ -39,7 +39,7 @@ WP6FixedLengthGroup::WP6FixedLengthGroup(uint8_t groupID)
 {
 }
 
-WP6FixedLengthGroup *WP6FixedLengthGroup::constructFixedLengthGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID)
+WP6FixedLengthGroup *WP6FixedLengthGroup::constructFixedLengthGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID)
 {
 	switch (groupID)
 	{
@@ -67,7 +67,7 @@ WP6FixedLengthGroup *WP6FixedLengthGroup::constructFixedLengthGroup(RVNGInputStr
 	}
 }
 
-bool WP6FixedLengthGroup::isGroupConsistent(RVNGInputStream *input, WPXEncryption *encryption, const uint8_t groupID)
+bool WP6FixedLengthGroup::isGroupConsistent(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const uint8_t groupID)
 {
 	if (groupID == (uint8_t)0xFF)
 		return false;
@@ -77,28 +77,28 @@ bool WP6FixedLengthGroup::isGroupConsistent(RVNGInputStream *input, WPXEncryptio
 	try
 	{
 		uint32_t size = WP6_FIXED_LENGTH_FUNCTION_GROUP_SIZE[(uint8_t)groupID-0xF0];
-		if (input->seek((startPosition + size - 2), RVNG_SEEK_SET) || input->isEnd())
+		if (input->seek((startPosition + size - 2), librevenge::RVNG_SEEK_SET) || input->isEnd())
 		{
-			input->seek(startPosition, RVNG_SEEK_SET);
+			input->seek(startPosition, librevenge::RVNG_SEEK_SET);
 			return false;
 		}
 		if (input->isEnd() || groupID != readU8(input, encryption))
 		{
-			input->seek(startPosition, RVNG_SEEK_SET);
+			input->seek(startPosition, librevenge::RVNG_SEEK_SET);
 			return false;
 		}
 
-		input->seek(startPosition, RVNG_SEEK_SET);
+		input->seek(startPosition, librevenge::RVNG_SEEK_SET);
 		return true;
 	}
 	catch(...)
 	{
-		input->seek(startPosition, RVNG_SEEK_SET);
+		input->seek(startPosition, librevenge::RVNG_SEEK_SET);
 		return false;
 	}
 }
 
-void WP6FixedLengthGroup::_read(RVNGInputStream *input, WPXEncryption *encryption)
+void WP6FixedLengthGroup::_read(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
 	long startPosition = input->tell();
 	_readContents(input, encryption);
@@ -106,7 +106,7 @@ void WP6FixedLengthGroup::_read(RVNGInputStream *input, WPXEncryption *encryptio
 	if (m_group >= 0xF0 && m_group < 0xFF) // just an extra safety check
 	{
 		int size = WP6_FIXED_LENGTH_FUNCTION_GROUP_SIZE[m_group-0xF0];
-		input->seek((startPosition + size - 2), RVNG_SEEK_SET);
+		input->seek((startPosition + size - 2), librevenge::RVNG_SEEK_SET);
 		if (m_group != readU8(input, encryption))
 		{
 			WPD_DEBUG_MSG(("WordPerfect: Possible corruption detected: bailing out!\n"));

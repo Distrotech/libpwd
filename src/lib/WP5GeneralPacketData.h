@@ -36,11 +36,11 @@ public:
 	WP5GeneralPacketData();
 	virtual ~WP5GeneralPacketData() {}
 
-	static WP5GeneralPacketData *constructGeneralPacketData(RVNGInputStream *input, WPXEncryption *encryption, WP5GeneralPacketIndex *packetIndex);
+	static WP5GeneralPacketData *constructGeneralPacketData(librevenge::RVNGInputStream *input, WPXEncryption *encryption, WP5GeneralPacketIndex *packetIndex);
 
 protected:
-	virtual void _readContents(RVNGInputStream *input, WPXEncryption *encryption, uint32_t dataSize) = 0;
-	virtual void _read(RVNGInputStream *input, WPXEncryption *encryption, uint32_t dataOffset, uint32_t dataSize);
+	virtual void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint32_t dataSize) = 0;
+	virtual void _read(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint32_t dataOffset, uint32_t dataSize);
 };
 
 #endif /* WP5GENERALPACKETDATA_H */

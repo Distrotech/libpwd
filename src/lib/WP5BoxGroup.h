@@ -32,11 +32,11 @@
 class WP5BoxGroup : public WP5VariableLengthGroup
 {
 public:
-	WP5BoxGroup(RVNGInputStream *input, WPXEncryption *encryption);
+	WP5BoxGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP5Listener *listener);
 
 protected:
-	void _readContents(RVNGInputStream *input, WPXEncryption *encryption);
+	void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 
 private:
 	uint16_t m_boxNumber;
@@ -44,7 +44,7 @@ private:
 	uint16_t m_width, m_height, m_x, m_y;
 	uint8_t m_boxType;
 	uint16_t m_graphicsOffset;
-	const RVNGBinaryData *m_data;
+	const librevenge::RVNGBinaryData *m_data;
 	// Unimplemented to prevent compiler from creating crasher ones
 	WP5BoxGroup(const WP5BoxGroup &);
 	WP5BoxGroup &operator=(const WP5BoxGroup &);

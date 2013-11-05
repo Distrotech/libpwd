@@ -30,7 +30,7 @@
 #include "WP6FileStructure.h"
 #include "WPXFileStructure.h"
 
-WP6ColumnGroup::WP6ColumnGroup(RVNGInputStream *input, WPXEncryption *encryption) :
+WP6ColumnGroup::WP6ColumnGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption) :
 	WP6VariableLengthGroup(),
 	m_margin(0),
 	m_colType(0),
@@ -42,7 +42,7 @@ WP6ColumnGroup::WP6ColumnGroup(RVNGInputStream *input, WPXEncryption *encryption
 	_read(input, encryption);
 }
 
-void WP6ColumnGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
+void WP6ColumnGroup::_readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
 	// this group can contain different kinds of data, thus we need to read
 	// the contents accordingly

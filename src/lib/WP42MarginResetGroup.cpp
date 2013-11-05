@@ -27,7 +27,7 @@
 #include "libwpd_internal.h"
 #include <string>
 
-WP42MarginResetGroup::WP42MarginResetGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t group) :
+WP42MarginResetGroup::WP42MarginResetGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group) :
 	WP42MultiByteFunctionGroup(group),
 	m_leftMargin(0),
 	m_rightMargin(0)
@@ -39,9 +39,9 @@ WP42MarginResetGroup::~WP42MarginResetGroup()
 {
 }
 
-void WP42MarginResetGroup::_readContents(RVNGInputStream *input, WPXEncryption *encryption)
+void WP42MarginResetGroup::_readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
-	input->seek(2, RVNG_SEEK_CUR);
+	input->seek(2, librevenge::RVNG_SEEK_CUR);
 	m_leftMargin = readU8(input, encryption);
 	m_rightMargin = readU8(input, encryption);
 }

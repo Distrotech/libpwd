@@ -44,7 +44,7 @@ public:
 
 	virtual void startDocument() = 0;
 	virtual void startSubDocument() = 0;
-	virtual void setFont(const RVNGString &fontName, double fontSize) = 0;
+	virtual void setFont(const librevenge::RVNGString &fontName, double fontSize) = 0;
 	virtual void setTabs(const std::vector<WPXTabStop> &tabStops, uint16_t tabOffset) = 0;
 	virtual void insertCharacter(uint32_t character) = 0;
 	virtual void insertTab(uint8_t tabType, double tabPosition) = 0;
@@ -72,14 +72,14 @@ public:
 	                        bool useCellAttributes, uint32_t cellAttributes) = 0;
 	virtual void endTable() = 0;
 
-	virtual void insertNoteReference(const RVNGString &noteReference) = 0;
+	virtual void insertNoteReference(const librevenge::RVNGString &noteReference) = 0;
 	virtual void insertNote(WPXNoteType noteType, const WP5SubDocument *subDocument) = 0;
 	virtual void headerFooterGroup(uint8_t headerFooterType, uint8_t occurenceBits, WP5SubDocument *subDocument) = 0;
 	virtual void suppressPageCharacteristics(uint8_t suppressCode) = 0;
 
 	virtual void boxOn(uint8_t positionAndType, uint8_t alignment, uint16_t width, uint16_t height, uint16_t x, uint16_t y) = 0;
 	virtual void boxOff() = 0;
-	virtual void insertGraphicsData(const RVNGBinaryData *data) = 0;
+	virtual void insertGraphicsData(const librevenge::RVNGBinaryData *data) = 0;
 
 	void setPrefixData(WP5PrefixData *prefixData)
 	{

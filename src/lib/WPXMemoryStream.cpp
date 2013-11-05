@@ -29,7 +29,7 @@
 
 
 WPXMemoryInputStream::WPXMemoryInputStream(unsigned char *data, unsigned long size) :
-	RVNGInputStream(),
+	librevenge::RVNGInputStream(),
 	m_offset(0),
 	m_size(size),
 	m_data(data)
@@ -65,13 +65,13 @@ const unsigned char *WPXMemoryInputStream::read(unsigned long numBytes, unsigned
 	return &m_data[oldOffset];
 }
 
-int WPXMemoryInputStream::seek(long offset, RVNG_SEEK_TYPE seekType)
+int WPXMemoryInputStream::seek(long offset, librevenge::RVNG_SEEK_TYPE seekType)
 {
-	if (seekType == RVNG_SEEK_CUR)
+	if (seekType == librevenge::RVNG_SEEK_CUR)
 		m_offset += offset;
-	else if (seekType == RVNG_SEEK_SET)
+	else if (seekType == librevenge::RVNG_SEEK_SET)
 		m_offset = offset;
-	else if (seekType == RVNG_SEEK_END)
+	else if (seekType == librevenge::RVNG_SEEK_END)
 		m_offset = m_size+offset;
 
 	if (m_offset < 0)

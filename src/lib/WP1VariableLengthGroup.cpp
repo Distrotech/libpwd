@@ -41,7 +41,7 @@ WP1VariableLengthGroup::WP1VariableLengthGroup(uint8_t group) :
 {
 }
 
-WP1VariableLengthGroup *WP1VariableLengthGroup::constructVariableLengthGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t group)
+WP1VariableLengthGroup *WP1VariableLengthGroup::constructVariableLengthGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group)
 {
 	switch (group)
 	{
@@ -59,7 +59,7 @@ WP1VariableLengthGroup *WP1VariableLengthGroup::constructVariableLengthGroup(RVN
 	}
 }
 
-bool WP1VariableLengthGroup::isGroupConsistent(RVNGInputStream *input, WPXEncryption *encryption, const uint8_t group)
+bool WP1VariableLengthGroup::isGroupConsistent(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const uint8_t group)
 {
 	long startPosition = input->tell();
 	if (startPosition < 0)
@@ -71,33 +71,33 @@ bool WP1VariableLengthGroup::isGroupConsistent(RVNGInputStream *input, WPXEncryp
 		if (size > ((std::numeric_limits<uint32_t>::max)() / 2))
 			return false;
 
-		if (input->seek(size, RVNG_SEEK_CUR) || input->isEnd())
+		if (input->seek(size, librevenge::RVNG_SEEK_CUR) || input->isEnd())
 		{
-			input->seek(startPosition, RVNG_SEEK_SET);
+			input->seek(startPosition, librevenge::RVNG_SEEK_SET);
 			return false;
 		}
 		if (size != readU32(input, encryption, true))
 		{
-			input->seek(startPosition, RVNG_SEEK_SET);
+			input->seek(startPosition, librevenge::RVNG_SEEK_SET);
 			return false;
 		}
 		if (group != readU8(input, encryption))
 		{
-			input->seek(startPosition, RVNG_SEEK_SET);
+			input->seek(startPosition, librevenge::RVNG_SEEK_SET);
 			return false;
 		}
 
-		input->seek(startPosition, RVNG_SEEK_SET);
+		input->seek(startPosition, librevenge::RVNG_SEEK_SET);
 		return true;
 	}
 	catch(...)
 	{
-		input->seek(startPosition, RVNG_SEEK_SET);
+		input->seek(startPosition, librevenge::RVNG_SEEK_SET);
 		return false;
 	}
 }
 
-void WP1VariableLengthGroup::_read(RVNGInputStream *input, WPXEncryption *encryption)
+void WP1VariableLengthGroup::_read(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
 	long startPosition = input->tell();
 	if (startPosition < 0)
@@ -118,7 +118,7 @@ void WP1VariableLengthGroup::_read(RVNGInputStream *input, WPXEncryption *encryp
 	        (m_size + (unsigned long)startPosition + 4) > ((std::numeric_limits<uint32_t>::max)() / 2))
 		throw FileException();
 
-	input->seek(startPosition + m_size + 4, RVNG_SEEK_SET);
+	input->seek(startPosition + m_size + 4, librevenge::RVNG_SEEK_SET);
 
 	if (m_size != readU32(input, encryption, true))
 	{
@@ -134,7 +134,7 @@ void WP1VariableLengthGroup::_read(RVNGInputStream *input, WPXEncryption *encryp
 	if ((m_size + (unsigned long)startPosition + 9 < m_size + (unsigned long)startPosition) ||
 	        (m_size + (unsigned long)startPosition + 9) > ((std::numeric_limits<uint32_t>::max)() / 2))
 		throw FileException();
-	input->seek(startPosition + m_size + 9, RVNG_SEEK_SET);
+	input->seek(startPosition + m_size + 9, librevenge::RVNG_SEEK_SET);
 
 }
 /* vim:set shiftwidth=4 softtabstop=4 noexpandtab: */

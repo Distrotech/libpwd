@@ -37,7 +37,7 @@ void WP6SubDocument::parse(WP6Listener *listener) const
 	WPXMemoryInputStream *tmpStream = getStream();
 	if (!tmpStream)
 		return;
-	tmpStream->seek(0, RVNG_SEEK_SET);
+	tmpStream->seek(0, librevenge::RVNG_SEEK_SET);
 	WP6Parser::parseDocument(tmpStream, 0, listener);
 }
 /* vim:set shiftwidth=4 softtabstop=4 noexpandtab: */

@@ -33,7 +33,7 @@
 class WP5SubDocument : public WPXSubDocument
 {
 public:
-	WP5SubDocument(RVNGInputStream *input, WPXEncryption *encryption, const unsigned dataSize);
+	WP5SubDocument(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const unsigned dataSize);
 	void parse(WP5Listener *listener) const;
 
 };

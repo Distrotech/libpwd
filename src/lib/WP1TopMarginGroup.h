@@ -31,9 +31,9 @@
 class WP1TopMarginGroup : public WP1FixedLengthGroup
 {
 public:
-	WP1TopMarginGroup(RVNGInputStream *input, WPXEncryption *encryption, uint8_t group);
+	WP1TopMarginGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group);
 	~WP1TopMarginGroup();
-	void _readContents(RVNGInputStream *input, WPXEncryption *encryption);
+	void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP1Listener *listener);
 
 private:

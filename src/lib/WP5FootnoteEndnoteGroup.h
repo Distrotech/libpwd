@@ -34,16 +34,16 @@
 class WP5FootnoteEndnoteGroup : public WP5VariableLengthGroup
 {
 public:
-	WP5FootnoteEndnoteGroup(RVNGInputStream *input, WPXEncryption *encryption);
+	WP5FootnoteEndnoteGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	~WP5FootnoteEndnoteGroup();
-	void _readContents(RVNGInputStream *input, WPXEncryption *encryption);
+	void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP5Listener *listener);
 
 private:
 	WP5FootnoteEndnoteGroup(const WP5FootnoteEndnoteGroup &);
 	WP5FootnoteEndnoteGroup &operator=(const WP5FootnoteEndnoteGroup &);
 	WP5SubDocument *m_subDocument;
-	RVNGString m_noteReference;
+	librevenge::RVNGString m_noteReference;
 
 };
 

@@ -68,7 +68,7 @@ public:
 	virtual void centerOff() = 0;
 	virtual void endDocument() = 0;
 	virtual void endSubDocument() = 0;
-	virtual void insertPicture(uint16_t width, uint16_t height, const RVNGBinaryData &binaryData) = 0;
+	virtual void insertPicture(uint16_t width, uint16_t height, const librevenge::RVNGBinaryData &binaryData) = 0;
 
 };
 

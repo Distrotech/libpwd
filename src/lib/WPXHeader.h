@@ -36,11 +36,11 @@ class WPXEncryption;
 class WPXHeader
 {
 public:
-	WPXHeader(RVNGInputStream *input, WPXEncryption *encryption, uint32_t documentOffset, uint8_t productType,
+	WPXHeader(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint32_t documentOffset, uint8_t productType,
 	          uint8_t fileType, uint8_t majorVersion, uint8_t minorVersion, uint16_t documentEncryption);
 	virtual ~WPXHeader();
 
-	static WPXHeader *constructHeader(RVNGInputStream *input, WPXEncryption *encryption);
+	static WPXHeader *constructHeader(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 
 	uint32_t getDocumentOffset() const
 	{

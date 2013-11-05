@@ -30,7 +30,7 @@
 #include "WP5Listener.h"
 #include "libwpd_internal.h"
 
-WP5TableEOPGroup::WP5TableEOPGroup(RVNGInputStream *input, WPXEncryption *encryption) :
+WP5TableEOPGroup::WP5TableEOPGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption) :
 	WP5VariableLengthGroup()
 {
 	_read(input, encryption);
@@ -40,7 +40,7 @@ WP5TableEOPGroup::~WP5TableEOPGroup()
 {
 }
 
-void WP5TableEOPGroup::_readContents(RVNGInputStream * /* input */, WPXEncryption * /* encryption */)
+void WP5TableEOPGroup::_readContents(librevenge::RVNGInputStream * /* input */, WPXEncryption * /* encryption */)
 {
 	switch (getSubGroup())
 	{
