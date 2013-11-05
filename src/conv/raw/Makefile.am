@@ -1,14 +1,19 @@
+if BUILD_TOOLS
+
 bin_PROGRAMS = wpd2raw
 
-AM_CXXFLAGS = -I$(top_srcdir)/inc $(REVENGE_CFLAGS) $(DEBUG_CXXFLAGS)
+AM_CXXFLAGS = -I$(top_srcdir)/inc $(REVENGE_CFLAGS) $(REVENGE_GENERATORS_CFLAGS) $(DEBUG_CXXFLAGS)
 
 wpd2raw_DEPENDENCIES = @WPD2RAW_WIN32_RESOURCE@
 
-wpd2raw_LDADD = ../../lib/libwpd-@WPD_MAJOR_VERSION@.@WPD_MINOR_VERSION@.la $(REVENGE_LIBS) @WPD2RAW_WIN32_RESOURCE@
+wpd2raw_LDADD = \
+	../../lib/libwpd-@WPD_MAJOR_VERSION@.@WPD_MINOR_VERSION@.la \
+	$(REVENGE_LIBS) \
+	$(REVENGE_GENERATORS_LIBS) \
+	$(REVENGE_STREAM_LIBS) \
+	@WPD2RAW_WIN32_RESOURCE@
 
 wpd2raw_SOURCES = \
-	RawDocumentGenerator.cpp	 \
-	RawDocumentGenerator.h	 \
 	wpd2raw.cpp
 
 if OS_WIN32
@@ -27,3 +32,4 @@ EXTRA_DIST = \
 BUILD_EXTRA_DIST = \
 	wpd2raw.rc	 
  
+endif

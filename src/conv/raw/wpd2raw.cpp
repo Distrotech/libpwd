@@ -25,9 +25,9 @@
  */
 
 #include <stdio.h>
-#include <libwpd/libwpd.h>
 #include <librevenge-stream/librevenge-stream.h>
-#include "RawDocumentGenerator.h"
+#include <librevenge-generators/librevenge-generators.h>
+#include <libwpd/libwpd.h>
 #include <string.h>
 
 #ifdef HAVE_CONFIG_H
@@ -113,7 +113,7 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	RawDocumentGenerator documentGenerator(printIndentLevel);
+	librevenge::RVNGRawTextGenerator documentGenerator(printIndentLevel);
 	WPDResult error = WPDocument::parse(&input, &documentGenerator, password);
 
 	if (error == WPD_FILE_ACCESS_ERROR)

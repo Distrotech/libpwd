@@ -26,9 +26,9 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <libwpd/libwpd.h>
 #include <librevenge-stream/librevenge-stream.h>
-#include "TextDocumentGenerator.h"
+#include <librevenge-generators/librevenge-generators.h>
+#include <libwpd/libwpd.h>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -113,7 +113,7 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	TextDocumentGenerator documentGenerator(isInfo);
+	librevenge::RVNGTextTextGenerator documentGenerator(isInfo);
 	WPDResult error = WPDocument::parse(&input, &documentGenerator, password);
 
 	if (error == WPD_FILE_ACCESS_ERROR)
