@@ -75,8 +75,6 @@ public:
 	void addTableColumnDefinition(uint32_t /* width */, uint32_t /* leftGutter */, uint32_t /* rightGutter */,
 	                              uint32_t /* attributes */, uint8_t /* alignment */) {}
 	void startTable();
-	void insertRow();
-	void insertCell();
 	void closeCell() {}
 	void closeRow() {}
 	void setTableCellSpan(uint16_t /* colSpan */, uint16_t /* rowSpan */) {}

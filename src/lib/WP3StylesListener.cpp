@@ -255,26 +255,6 @@ void WP3StylesListener::startTable()
 	}
 }
 
-void WP3StylesListener::insertRow()
-{
-	if (!isUndoOn())
-	{
-		m_currentPageHasContent = true;
-		m_currentTable->insertRow();
-	}
-}
-
-void WP3StylesListener::insertCell()
-{
-	if (!isUndoOn())
-	{
-		m_currentPageHasContent = true;
-#if 0
-		m_currentTable->insertCell(colSpan, rowSpan, borderBits);
-#endif
-	}
-}
-
 void WP3StylesListener::_handleSubDocument(const WPXSubDocument *subDocument, WPXSubDocumentType subDocumentType,
         WPXTableList tableList, int /* nextTableIndice */)
 {
