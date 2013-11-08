@@ -113,7 +113,8 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	librevenge::RVNGTextTextGenerator documentGenerator(isInfo);
+	librevenge::RVNGString document;
+	librevenge::RVNGTextTextGenerator documentGenerator(document, isInfo);
 	WPDResult error = WPDocument::parse(&input, &documentGenerator, password);
 
 	if (error == WPD_FILE_ACCESS_ERROR)
@@ -129,6 +130,8 @@ int main(int argc, char *argv[])
 
 	if (error != WPD_OK)
 		return 1;
+
+	printf("%s", document.cstr());
 
 	return 0;
 }
