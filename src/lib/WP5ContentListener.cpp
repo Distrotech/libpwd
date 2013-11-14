@@ -815,7 +815,8 @@ void WP5ContentListener::insertGraphicsData(const librevenge::RVNGBinaryData *da
 	{
 		librevenge::RVNGPropertyList propList;
 		propList.insert("librevenge:mime-type", "image/x-wpg");
-		m_documentInterface->insertBinaryObject(propList, *data);
+		propList.insert("office:binary-data", *data);
+		m_documentInterface->insertBinaryObject(propList);
 	}
 }
 

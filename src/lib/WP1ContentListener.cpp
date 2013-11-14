@@ -549,7 +549,8 @@ void WP1ContentListener::insertPicture(uint16_t width, uint16_t height, const li
 
 		propList.clear();
 		propList.insert("librevenge:mime-type", "image/pict");
-		m_documentInterface->insertBinaryObject(propList, binaryData);
+		propList.insert("office:binary-data", binaryData);
+		m_documentInterface->insertBinaryObject(propList);
 
 		m_documentInterface->closeFrame();
 	}

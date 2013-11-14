@@ -1705,7 +1705,10 @@ void WP6ContentListener::insertGraphicsData(const uint16_t packetId)
 		librevenge::RVNGPropertyList propList;
 		propList.insert("librevenge:mime-type", "image/x-wpg");
 		if (gcfdPacket->getBinaryObject())
-			m_documentInterface->insertBinaryObject(propList, *(gcfdPacket->getBinaryObject()));
+		{
+			propList.insert("office:binary-data", *(gcfdPacket->getBinaryObject()));
+			m_documentInterface->insertBinaryObject(propList);
+		}
 	}
 }
 

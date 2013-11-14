@@ -802,7 +802,8 @@ void WP3ContentListener::insertPicture(double height, double width, double verti
 
 		propList.clear();
 		propList.insert("librevenge:mime-type", "image/pict");
-		m_documentInterface->insertBinaryObject(propList, binaryData);
+		propList.insert("office:binary-data", binaryData);
+		m_documentInterface->insertBinaryObject(propList);
 
 		m_documentInterface->closeFrame();
 	}
