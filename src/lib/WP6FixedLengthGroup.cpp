@@ -61,7 +61,7 @@ WP6FixedLengthGroup *WP6FixedLengthGroup::constructFixedLengthGroup(librevenge::
 	case WP6_TOP_HIGHLIGHT_OFF:
 		return new WP6HighlightOffGroup(input, encryption, groupID);
 
-		// Add the remaining cases here
+	// Add the remaining cases here
 	default:
 		return new WP6UnsupportedFixedLengthGroup(input, encryption, groupID);
 	}

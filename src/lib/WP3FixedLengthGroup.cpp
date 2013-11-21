@@ -62,7 +62,7 @@ WP3FixedLengthGroup *WP3FixedLengthGroup::constructFixedLengthGroup(librevenge::
 	case WP3_DOUBLE_BYTE_SCRIPT_CHARACTER_GROUP:
 		return new WP3DoubleByteScriptCharacterGroup(input, encryption, groupID);
 
-		// Add the remaining cases here
+	// Add the remaining cases here
 	default:
 		return new WP3UnsupportedFixedLengthGroup(input, encryption, groupID);
 	}

@@ -105,15 +105,15 @@ void WP42ContentListener::attributeChange(bool isOn, uint8_t attribute)
 	// FIXME: handle all the possible attribute bits
 	switch (attribute)
 	{
-		/*case WP42_ATTRIBUTE_SUBSCRIPT:
-			textAttributeBit = WPX_SUBSCRIPT_BIT;
-			break;
-		case WP42_ATTRIBUTE_SUPERSCRIPT:
-			textAttributeBit = WPX_SUPERSCRIPT_BIT;
-			break;
-		case WP42_ATTRIBUTE_OUTLINE:
-			textAttributeBit = WPX_OUTLINE_BIT;
-			break;*/
+	/*case WP42_ATTRIBUTE_SUBSCRIPT:
+		textAttributeBit = WPX_SUBSCRIPT_BIT;
+		break;
+	case WP42_ATTRIBUTE_SUPERSCRIPT:
+		textAttributeBit = WPX_SUPERSCRIPT_BIT;
+		break;
+	case WP42_ATTRIBUTE_OUTLINE:
+		textAttributeBit = WPX_OUTLINE_BIT;
+		break;*/
 	case WP42_ATTRIBUTE_ITALICS:
 		textAttributeBit = WPX_ITALICS_BIT;
 		break;
@@ -123,9 +123,9 @@ void WP42ContentListener::attributeChange(bool isOn, uint8_t attribute)
 	case WP42_ATTRIBUTE_REDLINE:
 		textAttributeBit = WPX_REDLINE_BIT;
 		break;
-		/*case WP42_ATTRIBUTE_DOUBLE_UNDERLINE:
-			textAttributeBit = WPX_DOUBLE_UNDERLINE_BIT;
-			break;			*/
+	/*case WP42_ATTRIBUTE_DOUBLE_UNDERLINE:
+		textAttributeBit = WPX_DOUBLE_UNDERLINE_BIT;
+		break;			*/
 	case WP42_ATTRIBUTE_BOLD:
 		textAttributeBit = WPX_BOLD_BIT;
 		break;

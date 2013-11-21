@@ -90,8 +90,8 @@ void WP6OutlineDefinition::_updateNumberingMethods(const WP6OutlineLocation /* o
 		case WP6_INDEX_HEADER_OUTLINE_STYLE_UPPERCASE_ROMAN_NUMBERING:
 			m_listTypes[i] = UPPERCASE_ROMAN;
 			break;
-			//case WP6_INDEX_HEADER_OUTLINE_STYLE_LEADING_ZERO_ARABIC_NUMBERING:
-			//break;
+		//case WP6_INDEX_HEADER_OUTLINE_STYLE_LEADING_ZERO_ARABIC_NUMBERING:
+		//break;
 		default:
 			m_listTypes[i] = ARABIC;
 		}
@@ -224,13 +224,13 @@ void WP6ContentListener::setDate(const uint16_t type, const uint16_t year,
 	case (WP6_INDEX_HEADER_EXTENDED_DOCUMENT_SUMMARY_RECORDED_DATE):
 		m_metaData.insert("librevenge:recorded-date", dateStr);
 		break;
-		// NOTE: Revision Date is not set in WP Document Summary
-		// and sometimes contains non-zero data, so it's confusing.
-		// WordPerfect actually uses the file modification time
-		// to display Revision Date in Properties.
-		//case (WP6_INDEX_HEADER_EXTENDED_DOCUMENT_SUMMARY_REVISION_DATE):
-		//	m_metaData.insert("librevenge:revision-date", dateStr);
-		//	break;
+	// NOTE: Revision Date is not set in WP Document Summary
+	// and sometimes contains non-zero data, so it's confusing.
+	// WordPerfect actually uses the file modification time
+	// to display Revision Date in Properties.
+	//case (WP6_INDEX_HEADER_EXTENDED_DOCUMENT_SUMMARY_REVISION_DATE):
+	//	m_metaData.insert("librevenge:revision-date", dateStr);
+	//	break;
 	case (WP6_INDEX_HEADER_EXTENDED_DOCUMENT_SUMMARY_VERSION_DATE):
 		m_metaData.insert("dcterms:issued", dateStr);
 		break;
@@ -494,11 +494,11 @@ void WP6ContentListener::insertTab(const uint8_t tabType, double tabPosition)
 			{
 			case WP6_TAB_GROUP_TABLE_TAB:
 			case WP6_TAB_GROUP_BAR_TAB:
-				// Uncomment when the TabGroup is properly implemented
-				//case WP6_TAB_GROUP_CENTER_ON_MARGINS:
-				//case WP6_TAB_GROUP_CENTER_ON_CURRENT_POSITION:
+			// Uncomment when the TabGroup is properly implemented
+			//case WP6_TAB_GROUP_CENTER_ON_MARGINS:
+			//case WP6_TAB_GROUP_CENTER_ON_CURRENT_POSITION:
 			case WP6_TAB_GROUP_CENTER_TAB:
-				//case WP6_TAB_GROUP_FLUSH_RIGHT:
+			//case WP6_TAB_GROUP_FLUSH_RIGHT:
 			case WP6_TAB_GROUP_RIGHT_TAB:
 			case WP6_TAB_GROUP_DECIMAL_TAB:
 				if (!m_ps->m_isParagraphOpened && !m_ps->m_isListElementOpened)
@@ -520,7 +520,7 @@ void WP6ContentListener::insertTab(const uint8_t tabType, double tabPosition)
 		{
 			switch ((tabType & 0xF8) >> 3)
 			{
-				// Begin of code to be removed when the TabGroup is properly implemented
+			// Begin of code to be removed when the TabGroup is properly implemented
 			case WP6_TAB_GROUP_CENTER_ON_MARGINS:
 			case WP6_TAB_GROUP_CENTER_ON_CURRENT_POSITION:
 				m_ps->m_tempParagraphJustification = WPX_PARAGRAPH_JUSTIFICATION_CENTER;
@@ -529,7 +529,7 @@ void WP6ContentListener::insertTab(const uint8_t tabType, double tabPosition)
 			case WP6_TAB_GROUP_FLUSH_RIGHT:
 				m_ps->m_tempParagraphJustification = WPX_PARAGRAPH_JUSTIFICATION_RIGHT;
 				break;
-				// End of code to be removed when the TabGroup is properly implemented
+			// End of code to be removed when the TabGroup is properly implemented
 
 			case WP6_TAB_GROUP_LEFT_TAB: // converted as first line indent
 #if 0

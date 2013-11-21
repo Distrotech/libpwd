@@ -58,7 +58,7 @@ WP5FixedLengthGroup *WP5FixedLengthGroup::constructFixedLengthGroup(librevenge::
 	case WP5_TOP_ATTRIBUTE_OFF:
 		return new WP5AttributeOffGroup(input, encryption, groupID);
 
-		// Add the remaining cases here
+	// Add the remaining cases here
 	default:
 		return new WP5UnsupportedFixedLengthGroup(input, encryption, groupID);
 	}

@@ -94,7 +94,7 @@ WP6SingleByteFunction *WP6SingleByteFunction::constructSingleByteFunction(librev
 	case WP6_TOP_DELETABLE_HARD_EOP:
 		return new WP6EOPFunction();
 
-		// Add the remaining cases here
+	// Add the remaining cases here
 	default:
 		// should not happen
 		return 0;
