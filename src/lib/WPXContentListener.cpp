@@ -275,7 +275,7 @@ void WPXContentListener::_insertPageNumberParagraph(WPXPageNumberPosition positi
 		break;
 	}
 
-	m_documentInterface->openParagraph(propList, librevenge::RVNGPropertyListVector());
+	m_documentInterface->openParagraph(propList);
 
 	propList.clear();
 	propList.insert("style:font-name", fontName.cstr());
@@ -515,9 +515,11 @@ void WPXContentListener::_openParagraph()
 
 		librevenge::RVNGPropertyList propList;
 		_appendParagraphProperties(propList);
+		if (tabStops.count())
+			propList.insert("style:tab-stops", tabStops);
 
 		if (!m_ps->m_isParagraphOpened)
-			m_documentInterface->openParagraph(propList, tabStops);
+			m_documentInterface->openParagraph(propList);
 
 		_resetParagraphState();
 		m_ps->m_firstParagraphInPageSpan = false;
@@ -759,9 +761,11 @@ void WPXContentListener::_openListElement()
 
 		librevenge::RVNGPropertyListVector tabStops;
 		_getTabStops(tabStops);
+		if (tabStops.count())
+			propList.insert("style:tab-stops", tabStops);
 
 		if (!m_ps->m_isListElementOpened)
-			m_documentInterface->openListElement(propList, tabStops);
+			m_documentInterface->openListElement(propList);
 		_resetParagraphState(true);
 	}
 }
@@ -1252,7 +1256,7 @@ void WPXContentListener::insertBreak(const uint8_t breakType)
 				_closeListElement();
 			m_ps->m_isParagraphPageBreak = true;
 			break;
-			// TODO: (.. line break?)
+		// TODO: (.. line break?)
 		default:
 			break;
 		}
