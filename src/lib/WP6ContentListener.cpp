@@ -1120,11 +1120,13 @@ void WP6ContentListener::displayNumberReferenceGroupOff(const uint8_t subGroup)
 
 				if (subGroup == WP6_DISPLAY_NUMBER_REFERENCE_GROUP_PAGE_NUMBER_DISPLAY_OFF)
 				{
-					m_documentInterface->insertField(librevenge::RVNGString("text:page-number"), propList);
+					propList.insert("librevenge:field-type", "text:page-number");
+					m_documentInterface->insertField(propList);
 				}
 				else // WP6_DISPLAY_NUMBER_REFERENCE_GROUP_TOTAL_NUMBER_OF_PAGES_DISPLAY_OFF
 				{
-					m_documentInterface->insertField(librevenge::RVNGString("text:page-count"), propList);
+					propList.insert("librevenge:field-type", "text:page-count");
+					m_documentInterface->insertField(propList);
 				}
 			}
 			m_parseState->m_styleStateSequence.setCurrentState(m_parseState->m_styleStateSequence.getPreviousState());
