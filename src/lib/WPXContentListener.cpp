@@ -952,8 +952,9 @@ void WPXContentListener::_openTable()
 		tableWidth += (*iter).m_width;
 	}
 	propList.insert("style:width", tableWidth);
+	propList.insert("librevenge:table-columns", columns);
 
-	m_documentInterface->openTable(propList, columns);
+	m_documentInterface->openTable(propList);
 	m_ps->m_isTableOpened = true;
 
 	m_ps->m_currentTableRow = (-1);
