@@ -266,7 +266,7 @@ void WP6EOLGroup::parse(WP6Listener *listener)
 	}
 
 	// main search + dispatch for messages
-	switch(getSubGroup())
+	switch (getSubGroup())
 	{
 	case 0: // 0x00 (beginning of file)
 		break; // ignore
@@ -337,7 +337,7 @@ void WP6EOLGroup::parse(WP6Listener *listener)
 	}
 
 	// search for soft page breaks and dispatch messages to that effect
-	switch(getSubGroup())
+	switch (getSubGroup())
 	{
 	case WP6_EOL_GROUP_HARD_EOL_AT_EOP:
 	case WP6_EOL_GROUP_TABLE_ROW_AT_EOP:

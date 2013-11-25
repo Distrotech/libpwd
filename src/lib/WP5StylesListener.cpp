@@ -85,7 +85,7 @@ void WP5StylesListener::insertBreak(uint8_t breakType)
 		m_currentPage = WPXPageSpan(m_pageList.back(), 0.0, 0.0);
 		m_currentPage.setPageSpan(1);
 
-		for(std::vector<WPXHeaderFooter>::const_iterator HFiter = (m_nextPage.getHeaderFooterList()).begin();
+		for (std::vector<WPXHeaderFooter>::const_iterator HFiter = (m_nextPage.getHeaderFooterList()).begin();
 		        HFiter != (m_nextPage.getHeaderFooterList()).end(); ++HFiter)
 		{
 			if ((*HFiter).getOccurence() != NEVER)
@@ -119,7 +119,7 @@ void WP5StylesListener::pageMarginChange(uint8_t side, uint16_t margin)
 	//if (!isUndoOn())
 	//{
 	double marginInch = (double)((double)margin / (double)WPX_NUM_WPUS_PER_INCH);
-	switch(side)
+	switch (side)
 	{
 	case WPX_TOP:
 		m_currentPage.setMarginTop(marginInch);
@@ -158,7 +158,7 @@ void WP5StylesListener::marginChange(uint8_t side, uint16_t margin)
 
 		std::list<WPXPageSpan>::iterator Iter;
 		double marginInch = (double)((double)margin / (double)WPX_NUM_WPUS_PER_INCH);
-		switch(side)
+		switch (side)
 		{
 		case WPX_LEFT:
 			if (!m_currentPageHasContent && (m_pageListHardPageMark == m_pageList.end()))

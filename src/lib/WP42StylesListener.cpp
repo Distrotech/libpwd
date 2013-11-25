@@ -84,7 +84,7 @@ void WP42StylesListener::insertBreak(uint8_t breakType)
 			m_currentPage = WPXPageSpan(m_pageList.back(), 0.0, 0.0);
 			m_currentPage.setPageSpan(1);
 
-			for(std::vector<WPXHeaderFooter>::const_iterator HFiter = (m_nextPage.getHeaderFooterList()).begin();
+			for (std::vector<WPXHeaderFooter>::const_iterator HFiter = (m_nextPage.getHeaderFooterList()).begin();
 			        HFiter != (m_nextPage.getHeaderFooterList()).end(); ++HFiter)
 			{
 				if ((*HFiter).getOccurence() != NEVER)

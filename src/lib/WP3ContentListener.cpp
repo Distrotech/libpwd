@@ -181,7 +181,7 @@ void WP3ContentListener::defineTable(const uint8_t position, const uint16_t left
 			break;
 		}
 		// Note: WordPerfect has an offset from the left edge of the page. We translate it to the offset from the left margin
-		m_ps->m_tableDefinition.m_leftOffset = _movePositionToFirstColumn( (double)((double)leftOffset / (double)WPX_NUM_WPUS_PER_INCH) ) - m_ps->m_paragraphMarginLeft;
+		m_ps->m_tableDefinition.m_leftOffset = _movePositionToFirstColumn((double)((double)leftOffset / (double)WPX_NUM_WPUS_PER_INCH)) - m_ps->m_paragraphMarginLeft;
 
 		// remove all the old column information
 		m_ps->m_tableDefinition.m_columns.clear();
@@ -400,7 +400,7 @@ void WP3ContentListener::marginChange(const uint8_t side, const uint16_t margin)
 	{
 		double marginInch = (double)((double)margin/ (double)WPX_NUM_WPUS_PER_INCH);
 
-		switch(side)
+		switch (side)
 		{
 		case WPX_LEFT:
 			if (m_ps->m_numColumns > 1)
@@ -797,7 +797,7 @@ void WP3ContentListener::insertPicture(double height, double width, double verti
 			_openSpan();
 
 		librevenge::RVNGPropertyList propList;
-		_handleFrameParameters( propList, height, width, verticalOffset, horizontalOffset, leftColumn, rightColumn, figureFlags );
+		_handleFrameParameters(propList, height, width, verticalOffset, horizontalOffset, leftColumn, rightColumn, figureFlags);
 		m_documentInterface->openFrame(propList);
 
 		propList.clear();
@@ -818,7 +818,7 @@ void WP3ContentListener::insertTextBox(double height, double width, double verti
 			_openSpan();
 
 		librevenge::RVNGPropertyList propList;
-		_handleFrameParameters( propList, height, width, verticalOffset, horizontalOffset, leftColumn, rightColumn, figureFlags );
+		_handleFrameParameters(propList, height, width, verticalOffset, horizontalOffset, leftColumn, rightColumn, figureFlags);
 		m_documentInterface->openFrame(propList);
 
 		propList.clear();
@@ -850,7 +850,7 @@ void WP3ContentListener::insertWP51Table(double height, double width, double ver
 			_openSpan();
 
 		librevenge::RVNGPropertyList propList;
-		_handleFrameParameters( propList, height, width, verticalOffset, horizontalOffset, leftColumn, rightColumn, figureFlags );
+		_handleFrameParameters(propList, height, width, verticalOffset, horizontalOffset, leftColumn, rightColumn, figureFlags);
 		m_documentInterface->openFrame(propList);
 
 		propList.clear();
@@ -874,33 +874,33 @@ void WP3ContentListener::insertWP51Table(double height, double width, double ver
 	}
 }
 
-void WP3ContentListener::_handleFrameParameters( librevenge::RVNGPropertyList &propList, double height, double width, double verticalOffset, double horizontalOffset,
-        uint8_t /* leftColumn */, uint8_t /* rightColumn */, uint16_t figureFlags  )
+void WP3ContentListener::_handleFrameParameters(librevenge::RVNGPropertyList &propList, double height, double width, double verticalOffset, double horizontalOffset,
+        uint8_t /* leftColumn */, uint8_t /* rightColumn */, uint16_t figureFlags)
 {
 	propList.insert("svg:width", (double)((double)width/72.0));
 	propList.insert("svg:height", (double)((double)height/72.0));
 
-	if ( figureFlags & 0x0080 )
-		propList.insert( "style:wrap", "dynamic" );
+	if (figureFlags & 0x0080)
+		propList.insert("style:wrap", "dynamic");
 	else
-		propList.insert( "style:wrap", "none" );
+		propList.insert("style:wrap", "none");
 
-	if ( ( figureFlags & 0x0300 ) == 0x0000 ) // paragraph
+	if ((figureFlags & 0x0300) == 0x0000)     // paragraph
 	{
 		propList.insert("text:anchor-type", "paragraph");
-		propList.insert("style:vertical-rel", "paragraph" );
+		propList.insert("style:vertical-rel", "paragraph");
 		propList.insert("style:horizontal-rel", "paragraph");
-		switch ( figureFlags & 0x0003 )
+		switch (figureFlags & 0x0003)
 		{
 		case 0x01:
 			if (horizontalOffset == 0.0)
 				propList.insert("style:horizontal-pos", "right");
 			else
 			{
-				propList.insert( "style:horizontal-pos", "from-left");
-				propList.insert( "svg:x", (double)((double)horizontalOffset/72.0 - (double)width/72.0 +
-				                                   (double)(m_ps->m_pageFormWidth - m_ps->m_pageMarginLeft - m_ps->m_pageMarginRight - m_ps->m_sectionMarginLeft
-				                                           - m_ps->m_sectionMarginRight - m_ps->m_paragraphMarginLeft - m_ps->m_paragraphMarginRight)));
+				propList.insert("style:horizontal-pos", "from-left");
+				propList.insert("svg:x", (double)((double)horizontalOffset/72.0 - (double)width/72.0 +
+				                                  (double)(m_ps->m_pageFormWidth - m_ps->m_pageMarginLeft - m_ps->m_pageMarginRight - m_ps->m_sectionMarginLeft
+				                                          - m_ps->m_sectionMarginRight - m_ps->m_paragraphMarginLeft - m_ps->m_paragraphMarginRight)));
 			}
 			break;
 		case 0x02:
@@ -908,15 +908,15 @@ void WP3ContentListener::_handleFrameParameters( librevenge::RVNGPropertyList &p
 				propList.insert("style:horizontal-pos", "center");
 			else
 			{
-				propList.insert( "style:horizontal-pos", "from-left");
-				propList.insert( "svg:x", (double)((double)horizontalOffset/72.0 - (double)width/(2.0*72.0) +
-				                                   (double)(m_ps->m_pageFormWidth - m_ps->m_pageMarginLeft - m_ps->m_pageMarginRight - m_ps->m_sectionMarginLeft
-				                                           - m_ps->m_sectionMarginRight - m_ps->m_paragraphMarginLeft - m_ps->m_paragraphMarginRight)/2.0));
+				propList.insert("style:horizontal-pos", "from-left");
+				propList.insert("svg:x", (double)((double)horizontalOffset/72.0 - (double)width/(2.0*72.0) +
+				                                  (double)(m_ps->m_pageFormWidth - m_ps->m_pageMarginLeft - m_ps->m_pageMarginRight - m_ps->m_sectionMarginLeft
+				                                          - m_ps->m_sectionMarginRight - m_ps->m_paragraphMarginLeft - m_ps->m_paragraphMarginRight)/2.0));
 			}
 			break;
 		case 0x03:
 			propList.insert("svg:width", (double)(m_ps->m_pageFormWidth - m_ps->m_pageMarginLeft - m_ps->m_pageMarginRight - m_ps->m_sectionMarginLeft
-			                                      - m_ps->m_sectionMarginRight - m_ps->m_paragraphMarginLeft - m_ps->m_paragraphMarginRight) );
+			                                      - m_ps->m_sectionMarginRight - m_ps->m_paragraphMarginLeft - m_ps->m_paragraphMarginRight));
 			propList.insert("style:horizontal-pos", "center");
 			break;
 		case 0x00:
@@ -925,63 +925,63 @@ void WP3ContentListener::_handleFrameParameters( librevenge::RVNGPropertyList &p
 				propList.insert("style:horizontal-pos", "left");
 			else
 			{
-				propList.insert( "style:horizontal-pos", "from-left");
-				propList.insert( "svg:x", (double)((double)horizontalOffset/72.0));
+				propList.insert("style:horizontal-pos", "from-left");
+				propList.insert("svg:x", (double)((double)horizontalOffset/72.0));
 			}
 			break;
 		}
 
 		if (verticalOffset == 0.0)
-			propList.insert( "style:vertical-pos", "top" );
+			propList.insert("style:vertical-pos", "top");
 		else
 		{
-			propList.insert( "style:vertical-pos", "from-top" );
-			propList.insert( "svg:y", (double)((double)verticalOffset/72.0));
+			propList.insert("style:vertical-pos", "from-top");
+			propList.insert("svg:y", (double)((double)verticalOffset/72.0));
 		}
 
 	}
-	else if ( ( figureFlags & 0x0300 ) == 0x0100 ) // page
+	else if ((figureFlags & 0x0300) == 0x0100)     // page
 	{
 		propList.insert("text:anchor-type", "char");
 
-		if ( ( figureFlags & 0x1f08 ) == 0x0100 ) // full page
+		if ((figureFlags & 0x1f08) == 0x0100)     // full page
 		{
-			propList.insert("svg:width", (double)(m_ps->m_pageFormWidth - m_ps->m_pageMarginLeft - m_ps->m_pageMarginRight ) );
-			propList.insert("svg:height", (double)(m_ps->m_pageFormLength - m_ps->m_pageMarginTop - m_ps->m_pageMarginBottom ) );
-			propList.insert("style:vertical-rel", "page-content" );
-			propList.insert("style:vertical-pos", "middle" );
-			propList.insert("style:horizontal-rel", "page-content" );
-			propList.insert("style:horizontal-pos", "center" );
+			propList.insert("svg:width", (double)(m_ps->m_pageFormWidth - m_ps->m_pageMarginLeft - m_ps->m_pageMarginRight));
+			propList.insert("svg:height", (double)(m_ps->m_pageFormLength - m_ps->m_pageMarginTop - m_ps->m_pageMarginBottom));
+			propList.insert("style:vertical-rel", "page-content");
+			propList.insert("style:vertical-pos", "middle");
+			propList.insert("style:horizontal-rel", "page-content");
+			propList.insert("style:horizontal-pos", "center");
 		}
-		else if ( ( figureFlags & 0x1f08 ) == 0x1108 ) // abs. page
+		else if ((figureFlags & 0x1f08) == 0x1108)     // abs. page
 		{
-			propList.insert("style:vertical-rel", "page" );
-			propList.insert("style:vertical-pos", "from-top" );
+			propList.insert("style:vertical-rel", "page");
+			propList.insert("style:vertical-pos", "from-top");
 			propList.insert("svg:y", (double)((double)verticalOffset/72.0));
-			propList.insert("style:horizontal-rel", "page-start-margin" );
-			propList.insert("style:horizontal-pos", "from-left" );
+			propList.insert("style:horizontal-rel", "page-start-margin");
+			propList.insert("style:horizontal-pos", "from-left");
 			propList.insert("svg:x", (double)((double)horizontalOffset/72.0));
 		}
 		else
 		{
-			propList.insert("style:vertical-rel", "page-content" );
-			propList.insert("style:horizontal-rel", "page-content" );
-			switch ( ( figureFlags & 0x1c00 ) >> 10 )
+			propList.insert("style:vertical-rel", "page-content");
+			propList.insert("style:horizontal-rel", "page-content");
+			switch ((figureFlags & 0x1c00) >> 10)
 			{
 			case 0x00:
-				propList.insert("svg:height", (double)(m_ps->m_pageFormLength - m_ps->m_pageMarginTop - m_ps->m_pageMarginBottom ) );
-				propList.insert("style:vertical-rel", "page-content" );
-				propList.insert("style:vertical-pos", "middle" );
+				propList.insert("svg:height", (double)(m_ps->m_pageFormLength - m_ps->m_pageMarginTop - m_ps->m_pageMarginBottom));
+				propList.insert("style:vertical-rel", "page-content");
+				propList.insert("style:vertical-pos", "middle");
 				break;
 			case 0x01:
-				if ( verticalOffset == 0.0)
-					propList.insert("style:vertical-pos", "top" );
+				if (verticalOffset == 0.0)
+					propList.insert("style:vertical-pos", "top");
 				else
 				{
-					propList.insert("style:vertical-pos", "from-top" );
+					propList.insert("style:vertical-pos", "from-top");
 					double newPosition = (double)((double)verticalOffset/72.0);
 					if (newPosition > (double)(m_ps->m_pageFormLength - m_ps->m_pageMarginTop - m_ps->m_pageMarginBottom
-					                           - (double)height/72.0) )
+					                           - (double)height/72.0))
 						newPosition = (double)(m_ps->m_pageFormLength - m_ps->m_pageMarginTop - m_ps->m_pageMarginBottom
 						                       - (double)height/72.0);
 					propList.insert("svg:y", newPosition);
@@ -989,14 +989,14 @@ void WP3ContentListener::_handleFrameParameters( librevenge::RVNGPropertyList &p
 				break;
 			case 0x02:
 				if (verticalOffset == 0.0)
-					propList.insert("style:vertical-pos", "middle" );
+					propList.insert("style:vertical-pos", "middle");
 				else
 				{
-					propList.insert("style:vertical-pos", "from-top" );
+					propList.insert("style:vertical-pos", "from-top");
 					double newPosition = (double)((m_ps->m_pageFormLength - m_ps->m_pageMarginTop - m_ps->m_pageMarginBottom
 					                               - (double)height/72.0)/2.0);
 					if (newPosition > (double)(m_ps->m_pageFormLength - m_ps->m_pageMarginTop - m_ps->m_pageMarginBottom
-					                           - (double)height/72.0) )
+					                           - (double)height/72.0))
 						newPosition = (double)(m_ps->m_pageFormLength - m_ps->m_pageMarginTop - m_ps->m_pageMarginBottom
 						                       - (double)height/72.0);
 					propList.insert("svg:y", newPosition);
@@ -1004,104 +1004,104 @@ void WP3ContentListener::_handleFrameParameters( librevenge::RVNGPropertyList &p
 				break;
 			case 0x03:
 				if (verticalOffset == 0.0)
-					propList.insert("style:vertical-pos", "bottom" );
+					propList.insert("style:vertical-pos", "bottom");
 				else
 				{
-					propList.insert("style:vertical-pos", "from-top" );
+					propList.insert("style:vertical-pos", "from-top");
 					double newPosition = (double)(m_ps->m_pageFormLength - m_ps->m_pageMarginTop - m_ps->m_pageMarginBottom
 					                              - (double)height/72.0 + (double)verticalOffset/72.0);
 					if (newPosition > (double)(m_ps->m_pageFormLength - m_ps->m_pageMarginTop - m_ps->m_pageMarginBottom
-					                           - (double)height/72.0) )
+					                           - (double)height/72.0))
 						newPosition = (double)(m_ps->m_pageFormLength - m_ps->m_pageMarginTop - m_ps->m_pageMarginBottom
 						                       - (double)height/72.0);
 					propList.insert("svg:y", newPosition);
 				}
 				break;
 			case 0x04:
-				propList.insert("style:vertical-rel", "page" );
-				propList.insert("style:vertical-pos", "from-top" );
+				propList.insert("style:vertical-rel", "page");
+				propList.insert("style:vertical-pos", "from-top");
 				propList.insert("svg:y", (double)((double)verticalOffset/72.0));
 				break;
 			default:
 				break;
 			}
 
-			switch ( figureFlags & 0x0003 )
+			switch (figureFlags & 0x0003)
 			{
 			case 0x00:
-				if ( horizontalOffset == 0.0 )
-					propList.insert( "style:horizontal-pos", "left");
+				if (horizontalOffset == 0.0)
+					propList.insert("style:horizontal-pos", "left");
 				else
 				{
-					propList.insert( "style:horizontal-pos", "from-left");
-					propList.insert( "svg:x", (double)((double)horizontalOffset/72.0));
+					propList.insert("style:horizontal-pos", "from-left");
+					propList.insert("svg:x", (double)((double)horizontalOffset/72.0));
 				}
 				break;
 			case 0x01:
-				if ( horizontalOffset == 0.0 )
-					propList.insert( "style:horizontal-pos", "right");
+				if (horizontalOffset == 0.0)
+					propList.insert("style:horizontal-pos", "right");
 				else
 				{
-					propList.insert( "style:horizontal-pos", "from-left");
-					propList.insert( "svg:x", (double)(m_ps->m_pageFormWidth - m_ps->m_pageMarginLeft - m_ps->m_pageMarginRight
-					                                   - (double)width/72.0 + (double)horizontalOffset/72.0));
+					propList.insert("style:horizontal-pos", "from-left");
+					propList.insert("svg:x", (double)(m_ps->m_pageFormWidth - m_ps->m_pageMarginLeft - m_ps->m_pageMarginRight
+					                                  - (double)width/72.0 + (double)horizontalOffset/72.0));
 				}
 				break;
 			case 0x02:
-				if ( horizontalOffset == 0.0 )
-					propList.insert( "style:horizontal-pos", "center" );
+				if (horizontalOffset == 0.0)
+					propList.insert("style:horizontal-pos", "center");
 				else
 				{
-					propList.insert( "style:horizontal-pos", "from-left");
-					propList.insert( "svg:x", (double)((m_ps->m_pageFormWidth - m_ps->m_pageMarginLeft - m_ps->m_pageMarginRight
-					                                    - (double)width/72.0)/2.0 + (double)horizontalOffset/72.0));
+					propList.insert("style:horizontal-pos", "from-left");
+					propList.insert("svg:x", (double)((m_ps->m_pageFormWidth - m_ps->m_pageMarginLeft - m_ps->m_pageMarginRight
+					                                   - (double)width/72.0)/2.0 + (double)horizontalOffset/72.0));
 				}
 				break;
 			case 0x03:
-				propList.insert("svg:width", (double)(m_ps->m_pageFormWidth - m_ps->m_pageMarginLeft - m_ps->m_pageMarginRight ) );
-				propList.insert("style:horizontal-rel", "page-content" );
-				propList.insert("style:horizontal-pos", "center" );
+				propList.insert("svg:width", (double)(m_ps->m_pageFormWidth - m_ps->m_pageMarginLeft - m_ps->m_pageMarginRight));
+				propList.insert("style:horizontal-rel", "page-content");
+				propList.insert("style:horizontal-pos", "center");
 				break;
 			default:
 				break;
 			}
 		}
 	}
-	else if ( ( figureFlags & 0x0300 ) == 0x0200 ) // character
+	else if ((figureFlags & 0x0300) == 0x0200)     // character
 	{
 		propList.insert("text:anchor-type", "as-char");
-		if ( ( figureFlags & 0x1c00 ) == 0x0000 )
-			propList.insert( "style:vertical-rel", "baseline" );
+		if ((figureFlags & 0x1c00) == 0x0000)
+			propList.insert("style:vertical-rel", "baseline");
 		else
-			propList.insert( "style:vertical-rel", "line" );
-		switch ( ( figureFlags & 0x1c00 ) >> 10 )
+			propList.insert("style:vertical-rel", "line");
+		switch ((figureFlags & 0x1c00) >> 10)
 		{
 		case 0x01:
-			if ( verticalOffset == 0.0 )
-				propList.insert( "style:vertical-pos", "top" );
+			if (verticalOffset == 0.0)
+				propList.insert("style:vertical-pos", "top");
 			else
 			{
-				propList.insert( "style:vertical-pos", "from-top" );
-				propList.insert( "svg:y", (double)((double)verticalOffset/72.0));
+				propList.insert("style:vertical-pos", "from-top");
+				propList.insert("svg:y", (double)((double)verticalOffset/72.0));
 			}
 			break;
 		case 0x02:
-			if ( verticalOffset == 0.0 )
-				propList.insert( "style:vertical-pos", "middle" );
+			if (verticalOffset == 0.0)
+				propList.insert("style:vertical-pos", "middle");
 			else
 			{
-				propList.insert( "style:vertical-pos", "from-top" );
-				propList.insert( "svg:y", (double)((double)verticalOffset/72.0 - (double)height/(2.0*72.0)));
+				propList.insert("style:vertical-pos", "from-top");
+				propList.insert("svg:y", (double)((double)verticalOffset/72.0 - (double)height/(2.0*72.0)));
 			}
 			break;
 		case 0x00:
 		case 0x03:
-			if ( verticalOffset == 0.0 )
-				propList.insert( "style:vertical-pos", "bottom" );
+			if (verticalOffset == 0.0)
+				propList.insert("style:vertical-pos", "bottom");
 			else
 			{
-				propList.insert( "style:vertical-pos", "from-top" );
-				propList.insert( "svg:y", (double)((double)verticalOffset/72.0 - (double)height/72.0));
+				propList.insert("style:vertical-pos", "from-top");
+				propList.insert("svg:y", (double)((double)verticalOffset/72.0 - (double)height/72.0));
 			}
 			break;
 		case 0x04:

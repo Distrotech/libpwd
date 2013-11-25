@@ -639,7 +639,7 @@ void WP6ContentListener::insertTab(const uint8_t tabType, double tabPosition)
 
 void WP6ContentListener::handleLineBreak()
 {
-	if(!isUndoOn())
+	if (!isUndoOn())
 	{
 		if (m_parseState->m_styleStateSequence.getCurrentState() == STYLE_BODY ||
 		        m_parseState->m_styleStateSequence.getCurrentState() == NORMAL)
@@ -822,7 +822,7 @@ void WP6ContentListener::marginChange(uint8_t side, uint16_t margin)
 	{
 		double marginInch = (double)((double)margin/ (double)WPX_NUM_WPUS_PER_INCH);
 
-		switch(side)
+		switch (side)
 		{
 		case WPX_LEFT:
 			if (m_ps->m_numColumns > 1)
@@ -878,7 +878,7 @@ void WP6ContentListener::paragraphMarginChange(uint8_t side, int16_t margin)
 		m_ps->m_currentListLevel = 0;
 
 		double marginInch = (double)((double)margin / (double)WPX_NUM_WPUS_PER_INCH);
-		switch(side)
+		switch (side)
 		{
 		case WPX_LEFT:
 			// This is necessary in case we have Margin Set and Left or LeftRight indentation
@@ -1661,7 +1661,7 @@ void WP6ContentListener::boxOn(const uint8_t /* anchoringType */, const uint8_t 
 			propList.insert("style:vertical-rel", "paragraph");
 		else if ((generalPositioningFlags & 0x03) == 0x02)
 			propList.insert("style:vertical-rel", "baseline");
-		switch((verticalPositioningFlags & 0x1C) >> 2)
+		switch ((verticalPositioningFlags & 0x1C) >> 2)
 		{
 		case 0x00:
 		case 0x03:

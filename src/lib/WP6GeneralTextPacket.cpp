@@ -62,7 +62,7 @@ void WP6GeneralTextPacket::_readContents(librevenge::RVNGInputStream *input, WPX
 	unsigned totalSize = 0;
 	unsigned i;
 
-	for(i=0; i<numTextBlocks; i++)
+	for (i=0; i<numTextBlocks; i++)
 	{
 		if ((input->tell() - startPosition + 4) < 0)
 			throw FileException();
@@ -82,7 +82,7 @@ void WP6GeneralTextPacket::_readContents(librevenge::RVNGInputStream *input, WPX
 	}
 	m_streamData = new uint8_t[totalSize];
 	unsigned streamPos = 0;
-	for(i=0; i<numTextBlocks; i++)
+	for (i=0; i<numTextBlocks; i++)
 	{
 		if ((input->tell() - startPosition + blockSizes[i]) > getDataSize() || input->isEnd())
 			throw FileException();

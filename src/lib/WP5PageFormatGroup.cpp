@@ -150,7 +150,7 @@ void WP5PageFormatGroup::_readContents(librevenge::RVNGInputStream *input, WPXEn
 					}
 				}
 			}
-			input->seek(20 - long(m_tabStops.size() / 2 ) - long(m_tabStops.size() % 2), librevenge::RVNG_SEEK_CUR);
+			input->seek(20 - long(m_tabStops.size() / 2) - long(m_tabStops.size() % 2), librevenge::RVNG_SEEK_CUR);
 
 			if ((getSize() > 4) && (getSize() - 4 == 0x00D0))
 			{

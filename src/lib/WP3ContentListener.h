@@ -131,8 +131,8 @@ protected:
 	void _flushText();
 	void _changeList() {}
 
-	void _handleFrameParameters( librevenge::RVNGPropertyList &propList, double height, double width, double verticalOffset, double horizontalOffset, uint8_t leftColumn, uint8_t rightColumn,
-	                             uint16_t figureFlags );
+	void _handleFrameParameters(librevenge::RVNGPropertyList &propList, double height, double width, double verticalOffset, double horizontalOffset, uint8_t leftColumn, uint8_t rightColumn,
+	                            uint16_t figureFlags);
 
 private:
 	WP3ContentListener(const WP3ContentListener &);

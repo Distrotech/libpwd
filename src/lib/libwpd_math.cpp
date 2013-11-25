@@ -33,7 +33,7 @@ double rint(double x)
 	double y, z;
 	int n;
 
-	if(x >= 0)
+	if (x >= 0)
 	{
 		y = x + 0.5;
 		z = floor(y);
@@ -45,7 +45,7 @@ double rint(double x)
 		y = x - 0.5;
 		z = ceil(y);
 		n = static_cast<int>(z);
-		if(y == z && n % 2) ++z;
+		if (y == z && n % 2) ++z;
 	}
 	return z;
 }

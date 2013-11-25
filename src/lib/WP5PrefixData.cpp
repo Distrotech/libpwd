@@ -86,7 +86,7 @@ WP5PrefixData::~WP5PrefixData()
 {
 	std::map<int, WP5GeneralPacketData *>::const_iterator Iter;
 	for (Iter = m_generalPacketData.begin(); Iter != m_generalPacketData.end(); ++Iter)
-		delete (Iter->second);
+		delete(Iter->second);
 }
 
 const WP5GeneralPacketData *WP5PrefixData::getGeneralPacketData(const int type) const

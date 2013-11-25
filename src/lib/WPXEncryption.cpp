@@ -58,7 +58,7 @@ uint16_t WPXEncryption::getCheckSum() const
 	librevenge::RVNGString::Iter i(m_password);
 	uint16_t checkSum = 0;
 	for (i.rewind(); i.next();)
-		checkSum = (uint16_t)(((checkSum >> 1) | (checkSum << 15)) ^ (((uint16_t)*(i())) << 8 ));
+		checkSum = (uint16_t)(((checkSum >> 1) | (checkSum << 15)) ^ (((uint16_t)*(i())) << 8));
 	WPD_DEBUG_MSG(("CheckSum: 0x%.4x\n", checkSum));
 	return checkSum;
 }
@@ -83,7 +83,7 @@ const unsigned char *WPXEncryption::readAndDecrypt(librevenge::RVNGInputStream *
 		{
 			unsigned long passwordOffset = (readStartPosition + i - m_encryptionStartOffset) % m_password.len();
 			unsigned char encryptionMask = (unsigned char)(m_encryptionMaskBase + readStartPosition + i - m_encryptionStartOffset);
-			m_buffer[i] = (uint8_t)(encryptedBuffer[i] ^ ( m_password.cstr()[passwordOffset] ^ encryptionMask));
+			m_buffer[i] = (uint8_t)(encryptedBuffer[i] ^ (m_password.cstr()[passwordOffset] ^ encryptionMask));
 		}
 	}
 	return m_buffer;

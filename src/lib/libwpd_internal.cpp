@@ -32,7 +32,7 @@
 namespace
 {
 
-static int libwpd_unichar_to_utf8 (uint32_t c, char *outbuf)
+static int libwpd_unichar_to_utf8(uint32_t c, char *outbuf)
 {
 	uint8_t len = 1;
 	uint8_t first = 0;

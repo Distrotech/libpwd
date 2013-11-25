@@ -316,14 +316,14 @@ void WPXContentListener::_openPageSpan()
 	m_ps->m_listReferencePosition += m_ps->m_pageMarginLeft;
 	m_ps->m_listBeginPosition += m_ps->m_pageMarginLeft;
 
-	if ( m_pageList.empty() || (m_ps->m_currentPage >= m_pageList.size()) )
+	if (m_pageList.empty() || (m_ps->m_currentPage >= m_pageList.size()))
 	{
 		WPD_DEBUG_MSG(("m_pageList.empty() || (m_ps->m_currentPage >= m_pageList.size())\n"));
 		throw ParseException();
 	}
 
 	std::list<WPXPageSpan>::iterator currentPageSpanIter = m_pageList.begin();
-	for ( unsigned i = 0; i < m_ps->m_currentPage; i++ )
+	for (unsigned i = 0; i < m_ps->m_currentPage; i++)
 		++currentPageSpanIter;
 
 	WPXPageSpan currentPage = (*currentPageSpanIter);
@@ -614,7 +614,7 @@ void WPXContentListener::_appendParagraphProperties(librevenge::RVNGPropertyList
 	if (!m_ps->m_inSubDocument && m_ps->m_firstParagraphInPageSpan)
 	{
 		std::list<WPXPageSpan>::iterator currentPageSpanIter = m_pageList.begin();
-		for ( unsigned i = 0; i < (unsigned)(m_ps->m_currentPage - 1); i+=(unsigned)(*currentPageSpanIter).getPageSpan())
+		for (unsigned i = 0; i < (unsigned)(m_ps->m_currentPage - 1); i+=(unsigned)(*currentPageSpanIter).getPageSpan())
 			++currentPageSpanIter;
 
 		WPXPageSpan currentPage = (*currentPageSpanIter);

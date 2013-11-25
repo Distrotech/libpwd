@@ -101,8 +101,8 @@ WP3ResourceFork::WP3ResourceFork(librevenge::RVNGInputStream *input, WPXEncrypti
 
 			input->seek(position3, librevenge::RVNG_SEEK_SET);
 			WP3Resource *resource = new WP3Resource(resourceType, resourceReferenceID, resourceName, resourceAttributes, resourceData);
-			m_resourcesTypeMultimap.insert(std::multimap<uint32_t, WP3Resource *>::value_type( resourceType, resource ) );
-			m_resourcesIDMultimap.insert(std::multimap<uint32_t, WP3Resource *>::value_type( resourceReferenceID, resource ) );
+			m_resourcesTypeMultimap.insert(std::multimap<uint32_t, WP3Resource *>::value_type(resourceType, resource));
+			m_resourcesIDMultimap.insert(std::multimap<uint32_t, WP3Resource *>::value_type(resourceReferenceID, resource));
 			WPD_DEBUG_MSG(("WP3Resource: Type 0x%.8x, ID %i, name %s, attributes 0x%.2x\n", resourceType, resourceReferenceID, resourceName.cstr(), resourceAttributes));
 			input->seek(4, librevenge::RVNG_SEEK_CUR);
 #if 0
@@ -158,7 +158,7 @@ const WP3Resource *WP3ResourceFork::getResource(uint32_t type, uint32_t ID) cons
 		return NULL;
 
 	for (std::multimap<uint32_t, WP3Resource *>::const_iterator iter = tempPair.first; iter != tempPair.second; ++iter)
-		if (iter->second->getResourceReferenceID() == ID )
+		if (iter->second->getResourceReferenceID() == ID)
 			return iter->second;
 
 	return NULL;

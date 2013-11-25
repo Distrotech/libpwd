@@ -66,7 +66,7 @@ void WPXTable::insertCell(uint8_t colSpan, uint8_t rowSpan, uint8_t borderBits)
 void WPXTable::makeBordersConsistent()
 {
 	// make the top/bottom table borders consistent
-	for(unsigned i=0; i<m_tableRows.size(); i++)
+	for (unsigned i=0; i<m_tableRows.size(); i++)
 	{
 		for (unsigned j=0; j<m_tableRows[i].size(); j++)
 		{
@@ -139,7 +139,7 @@ std::vector<WPXTableCell *> WPXTable::_getCellsRightAdjacent(int i, int j)
 	if ((long)rightAdjacentCol >= (long)m_tableRows[i].size()) // num cols is uniform across table: this comparison is valid
 		return cellsRightAdjacent;
 
-	for(int i1=0; i1<(int)m_tableRows.size(); i1++)
+	for (int i1=0; i1<(int)m_tableRows.size(); i1++)
 	{
 		if ((long)(m_tableRows[i1]).size() > (long)rightAdjacentCol) // ignore cases where the right adjacent column
 		{
@@ -196,7 +196,7 @@ void WPXTableList::release()
 		if (--(*m_refCount) == 0)
 		{
 			for (std::vector<WPXTable *>::iterator iter = (*m_tableList).begin(); iter != (*m_tableList).end(); ++iter)
-				delete (*iter);
+				delete(*iter);
 			delete m_tableList;
 			delete m_refCount;
 		}

@@ -95,7 +95,7 @@ void WP42Parser::parseDocument(librevenge::RVNGInputStream *input, WPXEncryption
 			WPD_DEBUG_MSG(("Offset: %i, Handling Ascii Character 0x%2x\n", (unsigned int)input->tell(), readVal));
 
 			// normal ASCII characters
-			listener->insertCharacter( readVal );
+			listener->insertCharacter(readVal);
 		}
 		else if (readVal >= (uint8_t)0x80 && readVal <= (uint8_t)0xBF)
 		{
@@ -202,17 +202,17 @@ void WP42Parser::parse(librevenge::RVNGTextInterface *documentInterface)
 		for (std::vector<WP42SubDocument *>::iterator iterSubDoc = subDocuments.begin(); iterSubDoc != subDocuments.end(); ++iterSubDoc)
 		{
 			if (*iterSubDoc)
-				delete (*iterSubDoc);
+				delete(*iterSubDoc);
 		}
 	}
-	catch(FileException)
+	catch (FileException)
 	{
 		WPD_DEBUG_MSG(("WordPerfect: File Exception. Parse terminated prematurely."));
 
 		for (std::vector<WP42SubDocument *>::iterator iterSubDoc = subDocuments.begin(); iterSubDoc != subDocuments.end(); ++iterSubDoc)
 		{
 			if (*iterSubDoc)
-				delete (*iterSubDoc);
+				delete(*iterSubDoc);
 		}
 
 		throw FileException();
@@ -240,14 +240,14 @@ void WP42Parser::parseSubDocument(librevenge::RVNGTextInterface *documentInterfa
 		listener.endSubDocument();
 		for (std::vector<WP42SubDocument *>::iterator iterSubDoc = subDocuments.begin(); iterSubDoc != subDocuments.end(); ++iterSubDoc)
 			if (*iterSubDoc)
-				delete (*iterSubDoc);
+				delete(*iterSubDoc);
 	}
-	catch(FileException)
+	catch (FileException)
 	{
 		WPD_DEBUG_MSG(("WordPerfect: File Exception. Parse terminated prematurely."));
 		for (std::vector<WP42SubDocument *>::iterator iterSubDoc = subDocuments.begin(); iterSubDoc != subDocuments.end(); ++iterSubDoc)
 			if (*iterSubDoc)
-				delete (*iterSubDoc);
+				delete(*iterSubDoc);
 		throw FileException();
 	}
 }

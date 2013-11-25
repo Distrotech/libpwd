@@ -445,7 +445,7 @@ void WP5ContentListener::marginChange(uint8_t side, uint16_t margin)
 	{
 		double marginInch = (double)((double)margin/ (double)WPX_NUM_WPUS_PER_INCH);
 
-		switch(side)
+		switch (side)
 		{
 		case WPX_LEFT:
 			if (m_ps->m_numColumns > 1)
@@ -664,10 +664,10 @@ void WP5ContentListener::boxOn(uint8_t positionAndType, uint8_t alignment, uint1
 	propList.insert("svg:height", (double)((double)height/(double)WPX_NUM_WPUS_PER_INCH));
 	propList.insert("svg:width", (double)((double)width/(double)WPX_NUM_WPUS_PER_INCH));
 
-	if ( alignment & 0x80 )
-		propList.insert( "style:wrap", "dynamic" );
+	if (alignment & 0x80)
+		propList.insert("style:wrap", "dynamic");
 	else
-		propList.insert( "style:wrap", "none" );
+		propList.insert("style:wrap", "none");
 
 
 	switch (positionAndType & 0x03)
@@ -686,22 +686,22 @@ void WP5ContentListener::boxOn(uint8_t positionAndType, uint8_t alignment, uint1
 	}
 
 	propList.insert("style:vertical-rel", "page-content");
-	switch ( (positionAndType &  0x1c) >> 2 )
+	switch ((positionAndType &  0x1c) >> 2)
 	{
 	case 0x00:
-		propList.insert("svg:height", (double)(m_ps->m_pageFormLength - m_ps->m_pageMarginTop - m_ps->m_pageMarginBottom ) );
-		propList.insert("style:vertical-rel", "page-content" );
-		propList.insert("style:vertical-pos", "middle" );
+		propList.insert("svg:height", (double)(m_ps->m_pageFormLength - m_ps->m_pageMarginTop - m_ps->m_pageMarginBottom));
+		propList.insert("style:vertical-rel", "page-content");
+		propList.insert("style:vertical-pos", "middle");
 		break;
 	case 0x01:
-		if ( y == 0.0)
-			propList.insert("style:vertical-pos", "top" );
+		if (y == 0.0)
+			propList.insert("style:vertical-pos", "top");
 		else
 		{
-			propList.insert("style:vertical-pos", "from-top" );
+			propList.insert("style:vertical-pos", "from-top");
 			double newPosition = (double)((double)y/(double)WPX_NUM_WPUS_PER_INCH);
 			if (newPosition > (double)(m_ps->m_pageFormLength - m_ps->m_pageMarginTop - m_ps->m_pageMarginBottom
-			                           - (double)height/(double)WPX_NUM_WPUS_PER_INCH) )
+			                           - (double)height/(double)WPX_NUM_WPUS_PER_INCH))
 			{
 				newPosition = (double)(m_ps->m_pageFormLength - m_ps->m_pageMarginTop - m_ps->m_pageMarginBottom
 				                       - (double)height/(double)WPX_NUM_WPUS_PER_INCH);
@@ -711,14 +711,14 @@ void WP5ContentListener::boxOn(uint8_t positionAndType, uint8_t alignment, uint1
 		break;
 	case 0x02:
 		if (y == 0.0)
-			propList.insert("style:vertical-pos", "middle" );
+			propList.insert("style:vertical-pos", "middle");
 		else
 		{
-			propList.insert("style:vertical-pos", "from-top" );
+			propList.insert("style:vertical-pos", "from-top");
 			double newPosition = (double)((m_ps->m_pageFormLength - m_ps->m_pageMarginTop - m_ps->m_pageMarginBottom
 			                               - (double)height/(double)WPX_NUM_WPUS_PER_INCH)/2.0);
 			if (newPosition > (double)(m_ps->m_pageFormLength - m_ps->m_pageMarginTop - m_ps->m_pageMarginBottom
-			                           - (double)height/(double)WPX_NUM_WPUS_PER_INCH) )
+			                           - (double)height/(double)WPX_NUM_WPUS_PER_INCH))
 			{
 				newPosition = (double)(m_ps->m_pageFormLength - m_ps->m_pageMarginTop - m_ps->m_pageMarginBottom
 				                       - (double)height/(double)WPX_NUM_WPUS_PER_INCH);
@@ -728,14 +728,14 @@ void WP5ContentListener::boxOn(uint8_t positionAndType, uint8_t alignment, uint1
 		break;
 	case 0x03:
 		if (y == 0.0)
-			propList.insert("style:vertical-pos", "bottom" );
+			propList.insert("style:vertical-pos", "bottom");
 		else
 		{
-			propList.insert("style:vertical-pos", "from-top" );
+			propList.insert("style:vertical-pos", "from-top");
 			double newPosition = (double)(m_ps->m_pageFormLength - m_ps->m_pageMarginTop - m_ps->m_pageMarginBottom
 			                              - (double)height/(double)WPX_NUM_WPUS_PER_INCH + (double)y/(double)WPX_NUM_WPUS_PER_INCH);
 			if (newPosition > (double)(m_ps->m_pageFormLength - m_ps->m_pageMarginTop - m_ps->m_pageMarginBottom
-			                           - (double)height/(double)WPX_NUM_WPUS_PER_INCH) )
+			                           - (double)height/(double)WPX_NUM_WPUS_PER_INCH))
 			{
 				newPosition = (double)(m_ps->m_pageFormLength - m_ps->m_pageMarginTop - m_ps->m_pageMarginBottom
 				                       - (double)height/(double)WPX_NUM_WPUS_PER_INCH);
@@ -744,50 +744,50 @@ void WP5ContentListener::boxOn(uint8_t positionAndType, uint8_t alignment, uint1
 		}
 		break;
 	case 0x04:
-		propList.insert("style:vertical-rel", "page" );
-		propList.insert("style:vertical-pos", "from-top" );
+		propList.insert("style:vertical-rel", "page");
+		propList.insert("style:vertical-pos", "from-top");
 		propList.insert("svg:y", (double)((double)y/(double)WPX_NUM_WPUS_PER_INCH));
 		break;
 	default:
 		break;
 	}
 
-	propList.insert("style:horizontal-rel", "page-content" );
-	switch ( alignment & 0x03 )
+	propList.insert("style:horizontal-rel", "page-content");
+	switch (alignment & 0x03)
 	{
 	case 0x00:
-		if ( x == 0.0 )
-			propList.insert( "style:horizontal-pos", "left");
+		if (x == 0.0)
+			propList.insert("style:horizontal-pos", "left");
 		else
 		{
-			propList.insert( "style:horizontal-pos", "from-left");
-			propList.insert( "svg:x", (double)((double)x/(double)WPX_NUM_WPUS_PER_INCH));
+			propList.insert("style:horizontal-pos", "from-left");
+			propList.insert("svg:x", (double)((double)x/(double)WPX_NUM_WPUS_PER_INCH));
 		}
 		break;
 	case 0x01:
-		if ( x == 0.0 )
-			propList.insert( "style:horizontal-pos", "right");
+		if (x == 0.0)
+			propList.insert("style:horizontal-pos", "right");
 		else
 		{
-			propList.insert( "style:horizontal-pos", "from-left");
-			propList.insert( "svg:x", (double)(m_ps->m_pageFormWidth - m_ps->m_pageMarginLeft - m_ps->m_pageMarginRight
-			                                   - (double)width/(double)WPX_NUM_WPUS_PER_INCH + (double)x/(double)WPX_NUM_WPUS_PER_INCH));
+			propList.insert("style:horizontal-pos", "from-left");
+			propList.insert("svg:x", (double)(m_ps->m_pageFormWidth - m_ps->m_pageMarginLeft - m_ps->m_pageMarginRight
+			                                  - (double)width/(double)WPX_NUM_WPUS_PER_INCH + (double)x/(double)WPX_NUM_WPUS_PER_INCH));
 		}
 		break;
 	case 0x02:
-		if ( x == 0.0 )
-			propList.insert( "style:horizontal-pos", "center" );
+		if (x == 0.0)
+			propList.insert("style:horizontal-pos", "center");
 		else
 		{
-			propList.insert( "style:horizontal-pos", "from-left");
-			propList.insert( "svg:x", (double)((m_ps->m_pageFormWidth - m_ps->m_pageMarginLeft - m_ps->m_pageMarginRight
-			                                    - (double)width/(double)WPX_NUM_WPUS_PER_INCH)/2.0 + (double)x/(double)WPX_NUM_WPUS_PER_INCH));
+			propList.insert("style:horizontal-pos", "from-left");
+			propList.insert("svg:x", (double)((m_ps->m_pageFormWidth - m_ps->m_pageMarginLeft - m_ps->m_pageMarginRight
+			                                   - (double)width/(double)WPX_NUM_WPUS_PER_INCH)/2.0 + (double)x/(double)WPX_NUM_WPUS_PER_INCH));
 		}
 		break;
 	case 0x03:
-		propList.insert("svg:width", (double)(m_ps->m_pageFormWidth - m_ps->m_pageMarginLeft - m_ps->m_pageMarginRight ) );
-		propList.insert("style:horizontal-rel", "page-content" );
-		propList.insert("style:horizontal-pos", "center" );
+		propList.insert("svg:width", (double)(m_ps->m_pageFormWidth - m_ps->m_pageMarginLeft - m_ps->m_pageMarginRight));
+		propList.insert("style:horizontal-rel", "page-content");
+		propList.insert("style:horizontal-pos", "center");
 		break;
 	default:
 		break;

@@ -55,7 +55,7 @@ void WP6ExtendedDocumentSummaryPacket::_readContents(librevenge::RVNGInputStream
 	if (m_dataSize > ((std::numeric_limits<uint32_t>::max)() / 2))
 		m_dataSize = ((std::numeric_limits<uint32_t>::max)() / 2);
 	m_streamData = new uint8_t[m_dataSize];
-	for(unsigned i=0; i<(unsigned)m_dataSize; i++)
+	for (unsigned i=0; i<(unsigned)m_dataSize; i++)
 		m_streamData[i] = readU8(input, encryption);
 
 	m_stream = new WPXMemoryInputStream(m_streamData, (unsigned long)m_dataSize);

@@ -42,7 +42,7 @@ void WP3EndOfLinePageGroup::parse(WP3Listener *listener)
 	// good reason.
 
 	// TODO: handle the values > 0x02
-	switch(getSubGroup())
+	switch (getSubGroup())
 	{
 	case 0x00: // Soft End of Line
 		listener->insertCharacter((uint32_t) ' ');

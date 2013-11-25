@@ -89,7 +89,7 @@ bool WP3FixedLengthGroup::isGroupConsistent(librevenge::RVNGInputStream *input, 
 		input->seek(startPosition, librevenge::RVNG_SEEK_SET);
 		return true;
 	}
-	catch(...)
+	catch (...)
 	{
 		input->seek(startPosition, librevenge::RVNG_SEEK_SET);
 		return false;

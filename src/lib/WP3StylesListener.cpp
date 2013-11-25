@@ -115,7 +115,7 @@ void WP3StylesListener::pageMarginChange(const uint8_t side, const uint16_t marg
 	if (!isUndoOn())
 	{
 		double marginInch = (double)((double)margin / (double)WPX_NUM_WPUS_PER_INCH);
-		switch(side)
+		switch (side)
 		{
 		case WPX_TOP:
 			m_currentPage.setMarginTop(marginInch);
@@ -138,7 +138,7 @@ void WP3StylesListener::marginChange(const uint8_t side, const uint16_t margin)
 
 		std::list<WPXPageSpan>::iterator Iter;
 		double marginInch = (double)((double)margin / (double)WPX_NUM_WPUS_PER_INCH);
-		switch(side)
+		switch (side)
 		{
 		case WPX_LEFT:
 			if (!m_currentPageHasContent && (m_pageListHardPageMark == m_pageList.end()))

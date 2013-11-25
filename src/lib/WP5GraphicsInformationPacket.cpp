@@ -41,13 +41,13 @@ WP5GraphicsInformationPacket::~WP5GraphicsInformationPacket()
 	for (std::vector<uint8_t *>::iterator iter1 = m_data.begin(); iter1 != m_data.end(); ++iter1)
 	{
 		if ((*iter1))
-			delete [] (*iter1);
+			delete [](*iter1);
 		(*iter1) = 0;
 	}
 	for (std::vector<librevenge::RVNGBinaryData *>::iterator iter2 = m_images.begin(); iter2 != m_images.end(); ++iter2)
 	{
 		if ((*iter2))
-			delete (*iter2);
+			delete(*iter2);
 		(*iter2) = 0;
 	}
 }
@@ -85,7 +85,7 @@ void WP5GraphicsInformationPacket::_readContents(librevenge::RVNGInputStream *in
 			fclose(f);
 		}
 #endif
-		m_images.push_back( new librevenge::RVNGBinaryData(tmpData, tmpImagesSizes[j]) );
+		m_images.push_back(new librevenge::RVNGBinaryData(tmpData, tmpImagesSizes[j]));
 		m_data.push_back(tmpData);
 	}
 }

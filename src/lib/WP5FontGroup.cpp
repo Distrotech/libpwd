@@ -45,7 +45,7 @@ WP5FontGroup::WP5FontGroup(librevenge::RVNGInputStream *input, WPXEncryption *en
 
 void WP5FontGroup::_readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
-	switch(getSubGroup())
+	switch (getSubGroup())
 	{
 	case WP5_TOP_FONT_GROUP_COLOR:
 		input->seek(3, librevenge::RVNG_SEEK_CUR);
@@ -75,7 +75,7 @@ void WP5FontGroup::parse(WP5Listener *listener)
 	double tmpFontSize = 12.0;
 	librevenge::RVNGString tmpFontName("Times New Roman");
 
-	switch(getSubGroup())
+	switch (getSubGroup())
 	{
 	case WP5_TOP_FONT_GROUP_COLOR:
 		listener->characterColorChange(m_red, m_green, m_blue);

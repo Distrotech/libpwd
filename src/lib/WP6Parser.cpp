@@ -54,7 +54,7 @@ WP6PrefixData *WP6Parser::getPrefixData(librevenge::RVNGInputStream *input, WPXE
 		prefixData = new WP6PrefixData(input, encryption, (static_cast<WP6Header *>(getHeader())->getNumPrefixIndices()));
 		return prefixData;
 	}
-	catch(FileException)
+	catch (FileException)
 	{
 		WPD_DEBUG_MSG(("WordPerfect: Prefix Data most likely corrupted.\n"));
 		// TODO: Try to check packet after packet so that we try to recover at least the begining if the corruption is not at
@@ -62,7 +62,7 @@ WP6PrefixData *WP6Parser::getPrefixData(librevenge::RVNGInputStream *input, WPXE
 		DELETEP(prefixData);
 		throw FileException();
 	}
-	catch(...)
+	catch (...)
 	{
 		WPD_DEBUG_MSG(("WordPerfect: Prefix Data most likely corrupted. Trying to ignore.\n"));
 		// TODO: Try to check packet after packet so that we try to recover at least the begining if the corruption is not at
@@ -135,12 +135,12 @@ void WP6Parser::parseDocument(librevenge::RVNGInputStream *input, WPXEncryption 
 		}
 		else if (readVal <= (uint8_t)0x20)
 		{
-			listener->insertCharacter( extendedInternationalCharacterMap[(readVal-1)] );
+			listener->insertCharacter(extendedInternationalCharacterMap[(readVal-1)]);
 		}
 		else if (readVal >= (uint8_t)0x21 && readVal <= (uint8_t)0x7F)
 		{
 			// normal ASCII characters
-			listener->insertCharacter( (uint32_t)readVal );
+			listener->insertCharacter((uint32_t)readVal);
 		}
 		else
 		{
@@ -233,7 +233,7 @@ void WP6Parser::parse(librevenge::RVNGTextInterface *documentInterface)
 		// cleanup section: free the used resources
 		delete prefixData;
 	}
-	catch(FileException)
+	catch (FileException)
 	{
 		WPD_DEBUG_MSG(("WordPerfect: File Exception. Parse terminated prematurely."));
 
@@ -264,7 +264,7 @@ void WP6Parser::parseSubDocument(librevenge::RVNGTextInterface *documentInterfac
 		parseDocument(input, 0, &listener);
 		listener.endSubDocument();
 	}
-	catch(FileException)
+	catch (FileException)
 	{
 		WPD_DEBUG_MSG(("WordPerfect: File Exception. Parse terminated prematurely."));
 		throw FileException();

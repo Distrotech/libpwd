@@ -49,7 +49,7 @@ WP5BoxGroup::WP5BoxGroup(librevenge::RVNGInputStream *input, WPXEncryption *encr
 
 void WP5BoxGroup::_readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
-	switch(getSubGroup())
+	switch (getSubGroup())
 	{
 	case WP5_TOP_BOX_GROUP_FIGURE:
 		m_boxNumber = readU16(input, encryption);
@@ -85,7 +85,7 @@ void WP5BoxGroup::parse(WP5Listener *listener)
 {
 	WPD_DEBUG_MSG(("WordPerfect: handling a Box group\n"));
 
-	switch(getSubGroup())
+	switch (getSubGroup())
 	{
 	case WP5_TOP_BOX_GROUP_FIGURE:
 		if (m_boxType != 0x80)

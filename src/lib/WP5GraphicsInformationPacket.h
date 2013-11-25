@@ -42,7 +42,7 @@ public:
 	{
 		return m_images;
 	}
-	const librevenge::RVNGBinaryData *getImage( unsigned long imageIndex ) const
+	const librevenge::RVNGBinaryData *getImage(unsigned long imageIndex) const
 	{
 		if (imageIndex < m_images.size()) return m_images[imageIndex];
 		return 0;

@@ -281,7 +281,7 @@ void WP6BoxGroup::parse(WP6Listener *listener)
 	if (getFlags() & 0x40)  // Ignore function flag
 		return;
 
-	if ((getSubGroup() != WP6_BOX_GROUP_CHARACTER_ANCHORED_BOX ) && (getSubGroup() != WP6_BOX_GROUP_PARAGRAPH_ANCHORED_BOX) &&
+	if ((getSubGroup() != WP6_BOX_GROUP_CHARACTER_ANCHORED_BOX) && (getSubGroup() != WP6_BOX_GROUP_PARAGRAPH_ANCHORED_BOX) &&
 	        (getSubGroup() != WP6_BOX_GROUP_PAGE_ANCHORED_BOX))  // Don't handle Graphics Rule for the while
 		return;
 

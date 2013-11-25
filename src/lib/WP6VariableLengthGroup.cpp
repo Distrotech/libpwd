@@ -125,7 +125,7 @@ bool WP6VariableLengthGroup::isGroupConsistent(librevenge::RVNGInputStream *inpu
 		input->seek(startPosition, librevenge::RVNG_SEEK_SET);
 		return true;
 	}
-	catch(...)
+	catch (...)
 	{
 		input->seek(startPosition, librevenge::RVNG_SEEK_SET);
 		return false;

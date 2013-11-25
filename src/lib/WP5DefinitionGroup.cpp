@@ -101,7 +101,7 @@ WP5DefinitionGroup::~WP5DefinitionGroup()
 
 void WP5DefinitionGroup::_readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
-	switch(getSubGroup())
+	switch (getSubGroup())
 	{
 	case WP5_TOP_DEFINITION_GROUP_DEFINE_TABLES:
 		m_subGroupData = new WP5DefinitionGroup_DefineTablesSubGroup(input, encryption, getSize());
@@ -115,7 +115,7 @@ void WP5DefinitionGroup::parse(WP5Listener *listener)
 {
 	WPD_DEBUG_MSG(("WordPerfect: handling a Definition group\n"));
 
-	switch(getSubGroup())
+	switch (getSubGroup())
 	{
 	case WP5_TOP_DEFINITION_GROUP_DEFINE_TABLES:
 		m_subGroupData->parse(listener);

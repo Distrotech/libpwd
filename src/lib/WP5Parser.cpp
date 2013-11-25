@@ -53,7 +53,7 @@ WP5PrefixData *WP5Parser::getPrefixData(librevenge::RVNGInputStream *input, WPXE
 		prefixData = new WP5PrefixData(input, encryption);
 		return prefixData;
 	}
-	catch(FileException)
+	catch (FileException)
 	{
 		DELETEP(prefixData);
 		throw FileException();
@@ -111,7 +111,7 @@ void WP5Parser::parseDocument(librevenge::RVNGInputStream *input, WPXEncryption 
 		}
 		else if (readVal >= (uint8_t)0x20 && readVal <= (uint8_t)0x7E)
 		{
-			listener->insertCharacter( readVal );
+			listener->insertCharacter(readVal);
 		}
 		else
 		{
@@ -201,10 +201,10 @@ void WP5Parser::parse(librevenge::RVNGTextInterface *documentInterface)
 		for (std::vector<WP5SubDocument *>::iterator iterSubDoc = subDocuments.begin(); iterSubDoc != subDocuments.end(); ++iterSubDoc)
 		{
 			if (*iterSubDoc)
-				delete (*iterSubDoc);
+				delete(*iterSubDoc);
 		}
 	}
-	catch(FileException)
+	catch (FileException)
 	{
 		WPD_DEBUG_MSG(("WordPerfect: File Exception. Parse terminated prematurely."));
 
@@ -212,7 +212,7 @@ void WP5Parser::parse(librevenge::RVNGTextInterface *documentInterface)
 		for (std::vector<WP5SubDocument *>::iterator iterSubDoc = subDocuments.begin(); iterSubDoc != subDocuments.end(); ++iterSubDoc)
 		{
 			if (*iterSubDoc)
-				delete (*iterSubDoc);
+				delete(*iterSubDoc);
 		}
 
 		throw FileException();
@@ -243,14 +243,14 @@ void WP5Parser::parseSubDocument(librevenge::RVNGTextInterface *documentInterfac
 
 		for (std::vector<WP5SubDocument *>::iterator iterSubDoc = subDocuments.begin(); iterSubDoc != subDocuments.end(); ++iterSubDoc)
 			if (*iterSubDoc)
-				delete (*iterSubDoc);
+				delete(*iterSubDoc);
 	}
-	catch(FileException)
+	catch (FileException)
 	{
 		WPD_DEBUG_MSG(("WordPerfect: File Exception. Parse terminated prematurely."));
 		for (std::vector<WP5SubDocument *>::iterator iterSubDoc = subDocuments.begin(); iterSubDoc != subDocuments.end(); ++iterSubDoc)
 			if (*iterSubDoc)
-				delete (*iterSubDoc);
+				delete(*iterSubDoc);
 		throw FileException();
 	}
 }

@@ -65,7 +65,7 @@ void WP1PictureGroup::_readContents(librevenge::RVNGInputStream *input, WPXEncry
 		m_binaryData.append((unsigned char)0);
 	m_binaryData.append((uint8_t)((dataSize + 512)>>8));
 	m_binaryData.append((uint8_t)(dataSize + 512));
-	for (unsigned long j = 2; j < dataSize && !input->isEnd(); j++ )
+	for (unsigned long j = 2; j < dataSize && !input->isEnd(); j++)
 		m_binaryData.append(readU8(input, encryption));
 #if DUMP_PICTURE
 	std::ostringstream filename;

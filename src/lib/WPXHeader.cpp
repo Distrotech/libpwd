@@ -60,7 +60,7 @@ WPXHeader *WPXHeader::constructHeader(librevenge::RVNGInputStream *input, WPXEnc
 	for (int i=0; i<3 && !input->isEnd(); i++)
 		fileMagic[i] = (char)readU8(input, encryption);
 
-	if ( strcmp(fileMagic, "WPC") )
+	if (strcmp(fileMagic, "WPC"))
 	{
 		WPD_DEBUG_MSG(("WordPerfect: File magic is not equal to \"WPC\"!\n"));
 		return 0;

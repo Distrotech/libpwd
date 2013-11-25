@@ -58,7 +58,7 @@ WP3ResourceFork *WP3Parser::getResourceFork(librevenge::RVNGInputStream *input, 
 		resourceFork = new WP3ResourceFork(input, encryption);
 		return resourceFork;
 	}
-	catch(FileException)
+	catch (FileException)
 	{
 		DELETEP(resourceFork);
 		throw FileException();
@@ -97,7 +97,7 @@ void WP3Parser::parseDocument(librevenge::RVNGInputStream *input, WPXEncryption 
 		}
 		else if (readVal >= (uint8_t)0x20 && readVal <= (uint8_t)0x7E)
 		{
-			listener->insertCharacter( readVal );
+			listener->insertCharacter(readVal);
 		}
 		else
 		{
@@ -161,7 +161,7 @@ void WP3Parser::parse(librevenge::RVNGTextInterface *textInterface)
 
 		delete resourceFork;
 	}
-	catch(FileException)
+	catch (FileException)
 	{
 		WPD_DEBUG_MSG(("WordPerfect: File Exception. Parse terminated prematurely."));
 
@@ -203,7 +203,7 @@ void WP3Parser::parseSubDocument(librevenge::RVNGTextInterface *textInterface)
 			if (*iterSubDoc)
 				delete *iterSubDoc;
 	}
-	catch(FileException)
+	catch (FileException)
 	{
 		WPD_DEBUG_MSG(("WordPerfect: File Exception. Parse terminated prematurely."));
 		for (std::vector<WP3SubDocument *>::iterator iterSubDoc = subDocuments.begin(); iterSubDoc != subDocuments.end(); ++iterSubDoc)
