@@ -36,6 +36,7 @@ David Hislop <david.hislop.1@gmail.com>			Build fixed on MSVC++ and project
 							with MSVC++ compilers.
 Edward Mendelson <em36@columbia.edu>		Miscellaneous character conversion fixes.
 Tomas 'scarabeus' Chvatal <tomas.chvatal@gmail.com>		Build system rewrite
+David Tardon <dtardon@redhat.com>
 
 Thanks
 ------
