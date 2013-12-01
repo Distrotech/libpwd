@@ -29,6 +29,9 @@
 
 #include <librevenge/librevenge.h>
 
+namespace libwpd
+{
+
 /* The "WPD_CONFIDENCE_NONE=0" must not be removed for the type detection to work well */
 enum WPDConfidence { WPD_CONFIDENCE_NONE=0, WPD_CONFIDENCE_UNSUPPORTED_ENCRYPTION, WPD_CONFIDENCE_SUPPORTED_ENCRYPTION, WPD_CONFIDENCE_EXCELLENT };
 enum WPDResult { WPD_OK, WPD_FILE_ACCESS_ERROR, WPD_PARSE_ERROR, WPD_UNSUPPORTED_ENCRYPTION_ERROR, WPD_PASSWORD_MISSMATCH_ERROR, WPD_OLE_ERROR, WPD_UNKNOWN_ERROR };
@@ -48,6 +51,8 @@ public:
 	static WPDResult parse(librevenge::RVNGInputStream *input, librevenge::RVNGTextInterface *documentInterface, const char *password);
 	static WPDResult parseSubDocument(librevenge::RVNGInputStream *input, librevenge::RVNGTextInterface *documentInterface, WPDFileFormat fileFormat);
 };
+
+} // namespace libwpd
 
 #endif /* WPDOCUMENT_H */
 /* vim:set shiftwidth=4 softtabstop=4 noexpandtab: */

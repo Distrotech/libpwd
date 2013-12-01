@@ -38,6 +38,8 @@
 #define VERSION "UNKNOWN VERSION"
 #endif
 
+using namespace libwpd;
+
 namespace
 {
 
@@ -60,6 +62,7 @@ int printVersion()
 }
 
 } // anonymous namespace
+
 
 int main(int argc, char *argv[])
 {

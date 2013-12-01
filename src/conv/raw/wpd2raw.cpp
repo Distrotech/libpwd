@@ -38,6 +38,8 @@
 #define VERSION "UNKNOWN VERSION"
 #endif
 
+using namespace libwpd;
+
 namespace
 {
 

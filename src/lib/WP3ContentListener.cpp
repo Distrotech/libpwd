@@ -32,6 +32,8 @@
 #include <algorithm>
 #include <limits>
 
+using namespace libwpd;
+
 _WP3ContentParsingState::_WP3ContentParsingState():
 	m_colSpan(1),
 	m_rowSpan(1),

@@ -37,6 +37,8 @@
 #include "WPXEncryption.h"
 #include "libwpd_internal.h"
 
+using namespace libwpd;
+
 /**
 \mainpage libwpd documentation
 This document contains both the libwpd API specification and the normal libwpd

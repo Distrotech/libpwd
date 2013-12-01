@@ -29,6 +29,8 @@
 #include "WP42FileStructure.h"
 #include "libwpd_internal.h"
 
+using namespace libwpd;
+
 WPDPasswordMatch WP42Heuristics::verifyPassword(librevenge::RVNGInputStream *input, const char *password)
 {
 	if (!password)

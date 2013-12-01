@@ -30,6 +30,8 @@
 #include "libwpd_internal.h"
 #include <limits>
 
+using namespace libwpd;
+
 WPDPasswordMatch WP1Heuristics::verifyPassword(librevenge::RVNGInputStream *input, const char *password)
 {
 	if (!password)
