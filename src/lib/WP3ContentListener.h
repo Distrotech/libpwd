@@ -110,7 +110,7 @@ public:
 	void insertPageNumber(const librevenge::RVNGString &pageNumber);
 	void insertNoteReference(const librevenge::RVNGString &noteReference);
 	void insertNote(WPXNoteType noteType, const WP3SubDocument *subDocument);
-	void headerFooterGroup(uint8_t headerFooterType, uint8_t occurenceBits, WP3SubDocument *subDocument);
+	void headerFooterGroup(uint8_t headerFooterType, uint8_t occurrenceBits, WP3SubDocument *subDocument);
 	void suppressPage(uint16_t /* suppressCode */) {}
 	void backTab();
 	void leftIndent();

@@ -74,7 +74,7 @@ public:
 
 	virtual void insertNoteReference(const librevenge::RVNGString &noteReference) = 0;
 	virtual void insertNote(WPXNoteType noteType, const WP5SubDocument *subDocument) = 0;
-	virtual void headerFooterGroup(uint8_t headerFooterType, uint8_t occurenceBits, WP5SubDocument *subDocument) = 0;
+	virtual void headerFooterGroup(uint8_t headerFooterType, uint8_t occurrenceBits, WP5SubDocument *subDocument) = 0;
 	virtual void suppressPageCharacteristics(uint8_t suppressCode) = 0;
 
 	virtual void boxOn(uint8_t positionAndType, uint8_t alignment, uint16_t width, uint16_t height, uint16_t x, uint16_t y) = 0;

@@ -107,7 +107,7 @@ public:
 
 	void insertNoteReference(const librevenge::RVNGString &noteReference);
 	void insertNote(WPXNoteType noteType, const WP5SubDocument *subDocument);
-	void headerFooterGroup(uint8_t headerFooterType, uint8_t occurenceBits, WP5SubDocument *subDocument);
+	void headerFooterGroup(uint8_t headerFooterType, uint8_t occurrenceBits, WP5SubDocument *subDocument);
 	void suppressPageCharacteristics(uint8_t /* suppressCode */) {}
 
 	void setDefaultFont(const librevenge::RVNGString &fontName, double fontSize);

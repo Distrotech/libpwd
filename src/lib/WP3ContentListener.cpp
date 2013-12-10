@@ -1160,7 +1160,7 @@ void WP3ContentListener::_handleSubDocument(const WPXSubDocument *subDocument, W
 	setUndoOn(oldIsUndoOn);
 }
 
-void WP3ContentListener::headerFooterGroup(const uint8_t /* headerFooterType */, const uint8_t /* occurenceBits */, WP3SubDocument *subDocument)
+void WP3ContentListener::headerFooterGroup(const uint8_t /* headerFooterType */, const uint8_t /* occurrenceBits */, WP3SubDocument *subDocument)
 {
 	if (subDocument)
 		m_subDocuments.push_back(subDocument);

@@ -38,9 +38,9 @@
 class WPXHeaderFooter
 {
 public:
-	WPXHeaderFooter(const WPXHeaderFooterType headerFooterType, const WPXHeaderFooterOccurence occurence,
+	WPXHeaderFooter(const WPXHeaderFooterType headerFooterType, const WPXHeaderFooterOccurrence occurrence,
 	                const uint8_t internalType, const WPXSubDocument *subDocument, WPXTableList tableList);
-	WPXHeaderFooter(const WPXHeaderFooterType headerFooterType, const WPXHeaderFooterOccurence occurence,
+	WPXHeaderFooter(const WPXHeaderFooterType headerFooterType, const WPXHeaderFooterOccurrence occurrence,
 	                const uint8_t internalType, const WPXSubDocument *subDocument);
 	WPXHeaderFooter(const WPXHeaderFooter &headerFooter);
 	~WPXHeaderFooter();
@@ -49,9 +49,9 @@ public:
 	{
 		return m_type;
 	}
-	WPXHeaderFooterOccurence getOccurence() const
+	WPXHeaderFooterOccurrence getOccurrence() const
 	{
-		return m_occurence;
+		return m_occurrence;
 	}
 	uint8_t getInternalType() const
 	{
@@ -68,7 +68,7 @@ public:
 
 private:
 	WPXHeaderFooterType m_type;
-	WPXHeaderFooterOccurence m_occurence;
+	WPXHeaderFooterOccurrence m_occurrence;
 	uint8_t m_internalType; // for suppression
 	const WPXSubDocument *m_subDocument;  // for the actual text
 	WPXTableList m_tableList;
@@ -151,7 +151,7 @@ public:
 		return m_headerFooterList;
 	}
 
-	void setHeaderFooter(const WPXHeaderFooterType type, const uint8_t headerFooterType, const WPXHeaderFooterOccurence occurence,
+	void setHeaderFooter(const WPXHeaderFooterType type, const uint8_t headerFooterType, const WPXHeaderFooterOccurrence occurrence,
 	                     const WPXSubDocument *subDocument, WPXTableList tableList);
 	void setPageNumberSuppression(const bool suppress)
 	{
@@ -216,8 +216,8 @@ public:
 	}
 
 protected:
-	void _removeHeaderFooter(WPXHeaderFooterType type, WPXHeaderFooterOccurence occurence);
-	bool _containsHeaderFooter(WPXHeaderFooterType type, WPXHeaderFooterOccurence occurence);
+	void _removeHeaderFooter(WPXHeaderFooterType type, WPXHeaderFooterOccurrence occurrence);
+	bool _containsHeaderFooter(WPXHeaderFooterType type, WPXHeaderFooterOccurrence occurrence);
 
 private:
 	bool m_isHeaderFooterSuppressed[WPX_NUM_HEADER_FOOTER_TYPES];

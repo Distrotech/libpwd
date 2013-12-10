@@ -594,7 +594,7 @@ void WP5ContentListener::_handleSubDocument(const WPXSubDocument *subDocument, W
 	m_parseState = oldParseState;
 }
 
-void WP5ContentListener::headerFooterGroup(uint8_t /* headerFooterType */, uint8_t /* occurenceBits */,
+void WP5ContentListener::headerFooterGroup(uint8_t /* headerFooterType */, uint8_t /* occurrenceBits */,
         WP5SubDocument *subDocument)
 {
 	if (subDocument)

@@ -198,27 +198,27 @@ void WP6StylesListener::marginChange(const uint8_t side, const uint16_t margin)
 
 }
 
-void WP6StylesListener::headerFooterGroup(const uint8_t headerFooterType, const uint8_t occurenceBits, const uint16_t textPID)
+void WP6StylesListener::headerFooterGroup(const uint8_t headerFooterType, const uint8_t occurrenceBits, const uint16_t textPID)
 {
 	if (!isUndoOn())
 	{
-		WPD_DEBUG_MSG(("WordPerfect: headerFooterGroup (headerFooterType: %i, occurenceBits: %i, textPID: %i)\n",
-		               headerFooterType, occurenceBits, textPID));
+		WPD_DEBUG_MSG(("WordPerfect: headerFooterGroup (headerFooterType: %i, occurrenceBits: %i, textPID: %i)\n",
+		               headerFooterType, occurrenceBits, textPID));
 		bool tempCurrentPageHasContent = m_currentPageHasContent;
 		if (headerFooterType <= WP6_HEADER_FOOTER_GROUP_FOOTER_B) // ignore watermarks for now
 		{
 			WPXHeaderFooterType wpxType = ((headerFooterType <= WP6_HEADER_FOOTER_GROUP_HEADER_B) ? HEADER : FOOTER);
 
-			WPXHeaderFooterOccurence wpxOccurence;
-			if (occurenceBits & WP6_HEADER_FOOTER_GROUP_EVEN_BIT && occurenceBits & WP6_HEADER_FOOTER_GROUP_ODD_BIT)
-				wpxOccurence = ALL;
-			else if (occurenceBits & WP6_HEADER_FOOTER_GROUP_EVEN_BIT)
-				wpxOccurence = EVEN;
+			WPXHeaderFooterOccurrence wpxOccurrence;
+			if (occurrenceBits & WP6_HEADER_FOOTER_GROUP_EVEN_BIT && occurrenceBits & WP6_HEADER_FOOTER_GROUP_ODD_BIT)
+				wpxOccurrence = ALL;
+			else if (occurrenceBits & WP6_HEADER_FOOTER_GROUP_EVEN_BIT)
+				wpxOccurrence = EVEN;
 			else
-				wpxOccurence = ODD;
+				wpxOccurrence = ODD;
 
 			WPXTableList tableList;
-			m_currentPage.setHeaderFooter(wpxType, headerFooterType, wpxOccurence,
+			m_currentPage.setHeaderFooter(wpxType, headerFooterType, wpxOccurrence,
 			                              ((textPID && WP6Listener::getPrefixDataPacket(textPID)) ? WP6Listener::getPrefixDataPacket(textPID)->getSubDocument() : 0), tableList);
 			_handleSubDocument(((textPID && WP6Listener::getPrefixDataPacket(textPID)) ? WP6Listener::getPrefixDataPacket(textPID)->getSubDocument() : 0), WPX_SUBDOCUMENT_HEADER_FOOTER, tableList);
 		}

@@ -76,7 +76,7 @@ public:
 	virtual void insertPageNumber(const librevenge::RVNGString &pageNumber) = 0;
 	virtual void insertNoteReference(const librevenge::RVNGString &noteReference) = 0;
 	virtual void insertNote(WPXNoteType noteType, const WP3SubDocument *subDocument) = 0;
-	virtual void headerFooterGroup(uint8_t headerFooterType, uint8_t occurenceBits, WP3SubDocument *subDocument) = 0;
+	virtual void headerFooterGroup(uint8_t headerFooterType, uint8_t occurrenceBits, WP3SubDocument *subDocument) = 0;
 	virtual void suppressPage(uint16_t suppressCode) = 0;
 	virtual void backTab() = 0;
 	virtual void leftIndent() = 0;

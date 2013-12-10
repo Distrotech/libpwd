@@ -88,15 +88,15 @@ void WP5StylesListener::insertBreak(uint8_t breakType)
 		for (std::vector<WPXHeaderFooter>::const_iterator HFiter = (m_nextPage.getHeaderFooterList()).begin();
 		        HFiter != (m_nextPage.getHeaderFooterList()).end(); ++HFiter)
 		{
-			if ((*HFiter).getOccurence() != NEVER)
+			if ((*HFiter).getOccurrence() != NEVER)
 			{
 				m_currentPage.setHeaderFooter((*HFiter).getType(), (*HFiter).getInternalType(),
-				                              (*HFiter).getOccurence(), (*HFiter).getSubDocument(), (*HFiter).getTableList());
+				                              (*HFiter).getOccurrence(), (*HFiter).getSubDocument(), (*HFiter).getTableList());
 				_handleSubDocument((*HFiter).getSubDocument(), WPX_SUBDOCUMENT_HEADER_FOOTER, (*HFiter).getTableList());
 			}
 			else
 				m_currentPage.setHeaderFooter((*HFiter).getType(), (*HFiter).getInternalType(),
-				                              (*HFiter).getOccurence(), 0, (*HFiter).getTableList());
+				                              (*HFiter).getOccurrence(), 0, (*HFiter).getTableList());
 		}
 		m_nextPage = WPXPageSpan();
 		m_currentPageHasContent = false;
@@ -196,47 +196,47 @@ void WP5StylesListener::marginChange(uint8_t side, uint16_t margin)
 
 }
 
-void WP5StylesListener::headerFooterGroup(uint8_t headerFooterType, uint8_t occurenceBits, WP5SubDocument *subDocument)
+void WP5StylesListener::headerFooterGroup(uint8_t headerFooterType, uint8_t occurrenceBits, WP5SubDocument *subDocument)
 {
 	if (subDocument)
 		m_subDocuments.push_back(subDocument);
 
 	if (!isUndoOn())
 	{
-		WPD_DEBUG_MSG(("WordPerfect: headerFooterGroup (headerFooterType: %i, occurenceBits: %i)\n",
-		               headerFooterType, occurenceBits));
+		WPD_DEBUG_MSG(("WordPerfect: headerFooterGroup (headerFooterType: %i, occurrenceBits: %i)\n",
+		               headerFooterType, occurrenceBits));
 		bool tempCurrentPageHasContent = m_currentPageHasContent;
 		if (headerFooterType <= WP5_HEADER_FOOTER_GROUP_FOOTER_B)
 		{
 			WPXHeaderFooterType wpxType = ((headerFooterType <= WP5_HEADER_FOOTER_GROUP_HEADER_B) ? HEADER : FOOTER);
 
-			WPXHeaderFooterOccurence wpxOccurence;
-			if (occurenceBits & WP5_HEADER_FOOTER_GROUP_ALL_BIT)
-				wpxOccurence = ALL;
-			else if (occurenceBits & WP5_HEADER_FOOTER_GROUP_EVEN_BIT)
-				wpxOccurence = EVEN;
-			else if (occurenceBits & WP5_HEADER_FOOTER_GROUP_ODD_BIT)
-				wpxOccurence = ODD;
+			WPXHeaderFooterOccurrence wpxOccurrence;
+			if (occurrenceBits & WP5_HEADER_FOOTER_GROUP_ALL_BIT)
+				wpxOccurrence = ALL;
+			else if (occurrenceBits & WP5_HEADER_FOOTER_GROUP_EVEN_BIT)
+				wpxOccurrence = EVEN;
+			else if (occurrenceBits & WP5_HEADER_FOOTER_GROUP_ODD_BIT)
+				wpxOccurrence = ODD;
 			else
-				wpxOccurence = NEVER;
+				wpxOccurrence = NEVER;
 			WPXTableList tableList;
 
 			if ((wpxType == HEADER) && tempCurrentPageHasContent)
 			{
-				if (wpxOccurence != NEVER)
-					m_nextPage.setHeaderFooter(wpxType, headerFooterType, wpxOccurence, subDocument, tableList);
+				if (wpxOccurrence != NEVER)
+					m_nextPage.setHeaderFooter(wpxType, headerFooterType, wpxOccurrence, subDocument, tableList);
 				else
-					m_nextPage.setHeaderFooter(wpxType, headerFooterType, wpxOccurence, 0, tableList);
+					m_nextPage.setHeaderFooter(wpxType, headerFooterType, wpxOccurrence, 0, tableList);
 			}
 			else /* FOOTER || !tempCurrentPageHasContent */
 			{
-				if (wpxOccurence != NEVER)
+				if (wpxOccurrence != NEVER)
 				{
-					m_currentPage.setHeaderFooter(wpxType, headerFooterType, wpxOccurence, subDocument, tableList);
+					m_currentPage.setHeaderFooter(wpxType, headerFooterType, wpxOccurrence, subDocument, tableList);
 					_handleSubDocument(subDocument, WPX_SUBDOCUMENT_HEADER_FOOTER, tableList);
 				}
 				else
-					m_currentPage.setHeaderFooter(wpxType, headerFooterType, wpxOccurence, 0, tableList);
+					m_currentPage.setHeaderFooter(wpxType, headerFooterType, wpxOccurrence, 0, tableList);
 			}
 		}
 		m_currentPageHasContent = tempCurrentPageHasContent;

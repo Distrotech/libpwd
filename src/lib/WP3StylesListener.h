@@ -90,7 +90,7 @@ public:
 	{
 		if (!isUndoOn()) m_currentPageHasContent = true;
 	}
-	void headerFooterGroup(uint8_t headerFooterType, uint8_t occurenceBits, WP3SubDocument *subDocument);
+	void headerFooterGroup(uint8_t headerFooterType, uint8_t occurrenceBits, WP3SubDocument *subDocument);
 	void suppressPage(uint16_t suppressCode);
 	void backTab()
 	{

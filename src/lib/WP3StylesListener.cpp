@@ -190,39 +190,39 @@ void WP3StylesListener::pageFormChange(const uint16_t length, const uint16_t wid
 	}
 }
 
-void WP3StylesListener::headerFooterGroup(const uint8_t headerFooterType, const uint8_t occurenceBits, WP3SubDocument *subDocument)
+void WP3StylesListener::headerFooterGroup(const uint8_t headerFooterType, const uint8_t occurrenceBits, WP3SubDocument *subDocument)
 {
 	if (!isUndoOn())
 	{
 		if (subDocument)
 			m_subDocuments.push_back(subDocument);
 
-		WPD_DEBUG_MSG(("WordPerfect: headerFooterGroup (headerFooterType: %i, occurenceBits: %i)\n",
-		               headerFooterType, occurenceBits));
+		WPD_DEBUG_MSG(("WordPerfect: headerFooterGroup (headerFooterType: %i, occurrenceBits: %i)\n",
+		               headerFooterType, occurrenceBits));
 		bool tempCurrentPageHasContent = m_currentPageHasContent;
 		if (headerFooterType <= WP3_HEADER_FOOTER_GROUP_FOOTER_B) // ignore watermarks for now
 		{
 			WPXHeaderFooterType wpxType = ((headerFooterType <= WP3_HEADER_FOOTER_GROUP_HEADER_B) ? HEADER : FOOTER);
 
-			WPXHeaderFooterOccurence wpxOccurence;
-			if ((occurenceBits & WP3_HEADER_FOOTER_GROUP_EVEN_BIT) && (occurenceBits & WP3_HEADER_FOOTER_GROUP_ODD_BIT))
-				wpxOccurence = ALL;
-			else if (occurenceBits & WP3_HEADER_FOOTER_GROUP_EVEN_BIT)
-				wpxOccurence = EVEN;
-			else if (occurenceBits & WP3_HEADER_FOOTER_GROUP_ODD_BIT)
-				wpxOccurence = ODD;
+			WPXHeaderFooterOccurrence wpxOccurrence;
+			if ((occurrenceBits & WP3_HEADER_FOOTER_GROUP_EVEN_BIT) && (occurrenceBits & WP3_HEADER_FOOTER_GROUP_ODD_BIT))
+				wpxOccurrence = ALL;
+			else if (occurrenceBits & WP3_HEADER_FOOTER_GROUP_EVEN_BIT)
+				wpxOccurrence = EVEN;
+			else if (occurrenceBits & WP3_HEADER_FOOTER_GROUP_ODD_BIT)
+				wpxOccurrence = ODD;
 			else
-				wpxOccurence = NEVER;
+				wpxOccurrence = NEVER;
 
 			WPXTableList tableList;
 
-			if (wpxOccurence != NEVER)
+			if (wpxOccurrence != NEVER)
 			{
-				m_currentPage.setHeaderFooter(wpxType, headerFooterType, wpxOccurence, subDocument, tableList);
+				m_currentPage.setHeaderFooter(wpxType, headerFooterType, wpxOccurrence, subDocument, tableList);
 				_handleSubDocument(subDocument, WPX_SUBDOCUMENT_HEADER_FOOTER, tableList);
 			}
 			else
-				m_currentPage.setHeaderFooter(wpxType, headerFooterType, wpxOccurence, 0, tableList);
+				m_currentPage.setHeaderFooter(wpxType, headerFooterType, wpxOccurrence, 0, tableList);
 		}
 		m_currentPageHasContent = tempCurrentPageHasContent;
 	}

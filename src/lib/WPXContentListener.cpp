@@ -380,19 +380,19 @@ void WPXContentListener::_openPageSpan()
 	std::vector<WPXHeaderFooter> headerFooterList = currentPage.getHeaderFooterList();
 	for (std::vector<WPXHeaderFooter>::iterator iter = headerFooterList.begin(); iter != headerFooterList.end(); ++iter)
 	{
-		if (((*iter).getOccurence() != NEVER) && !currentPage.getHeaderFooterSuppression((*iter).getInternalType()))
+		if (((*iter).getOccurrence() != NEVER) && !currentPage.getHeaderFooterSuppression((*iter).getInternalType()))
 		{
 			propList.clear();
-			switch ((*iter).getOccurence())
+			switch ((*iter).getOccurrence())
 			{
 			case ODD:
-				propList.insert("librevenge:occurence", "odd");
+				propList.insert("librevenge:occurrence", "odd");
 				break;
 			case EVEN:
-				propList.insert("librevenge:occurence", "even");
+				propList.insert("librevenge:occurrence", "even");
 				break;
 			case ALL:
-				propList.insert("librevenge:occurence", "all");
+				propList.insert("librevenge:occurrence", "all");
 				break;
 			case NEVER:
 			default:
@@ -433,8 +433,8 @@ void WPXContentListener::_openPageSpan()
 				m_documentInterface->closeFooter();
 			}
 
-			WPD_DEBUG_MSG(("Header Footer Element: type: %i occurence: %i\n",
-			               (*iter).getType(), (*iter).getOccurence()));
+			WPD_DEBUG_MSG(("Header Footer Element: type: %i occurrence: %i\n",
+			               (*iter).getType(), (*iter).getOccurrence()));
 		}
 	}
 
@@ -444,7 +444,7 @@ void WPXContentListener::_openPageSpan()
 		        currentPage.getPageNumberPosition() != PAGENUMBER_POSITION_TOP_INSIDE_LEFT_AND_RIGHT)
 		{
 			propList.clear();
-			propList.insert("librevenge:occurence", "all");
+			propList.insert("librevenge:occurrence", "all");
 			m_documentInterface->openFooter(propList);
 			_insertPageNumberParagraph(currentPage.getPageNumberPosition(), currentPage.getPageNumberingType(),
 			                           currentPage.getPageNumberingFontName(), currentPage.getPageNumberingFontSize());
@@ -453,7 +453,7 @@ void WPXContentListener::_openPageSpan()
 		else
 		{
 			propList.clear();
-			propList.insert("librevenge:occurence", "all");
+			propList.insert("librevenge:occurrence", "all");
 			m_documentInterface->openHeader(propList);
 			_insertPageNumberParagraph(currentPage.getPageNumberPosition(), currentPage.getPageNumberingType(),
 			                           currentPage.getPageNumberingFontName(), currentPage.getPageNumberingFontSize());

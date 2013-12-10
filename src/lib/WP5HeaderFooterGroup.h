@@ -40,7 +40,7 @@ public:
 private:
 	WP5HeaderFooterGroup(const WP5HeaderFooterGroup &);
 	WP5HeaderFooterGroup &operator=(const WP5HeaderFooterGroup &);
-	uint8_t m_occurenceBits;
+	uint8_t m_occurrenceBits;
 	WP5SubDocument *m_subDocument;
 };
 
