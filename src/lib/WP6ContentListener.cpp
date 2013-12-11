@@ -46,7 +46,7 @@
 #define WP6_DEFAULT_FONT_NAME "Times New Roman"
 
 WP6OutlineDefinition::WP6OutlineDefinition(const WP6OutlineLocation outlineLocation, const uint8_t *numberingMethods,
-        const uint8_t /* tabBehaviourFlag */)
+                                           const uint8_t /* tabBehaviourFlag */)
 {
 	_updateNumberingMethods(outlineLocation, numberingMethods);
 }
@@ -1001,7 +1001,7 @@ void WP6ContentListener::columnChange(const WPXTextColumnType /* columnType */, 
 }
 
 void WP6ContentListener::updateOutlineDefinition(const WP6OutlineLocation outlineLocation, const uint16_t outlineHash,
-        const uint8_t *numberingMethods, const uint8_t tabBehaviourFlag)
+                                                 const uint8_t *numberingMethods, const uint8_t tabBehaviourFlag)
 {
 	WPD_DEBUG_MSG(("WordPerfect: Updating OutlineHash %i\n", outlineHash));
 
@@ -1335,7 +1335,7 @@ void WP6ContentListener::defineTable(const uint8_t position, const uint16_t left
 }
 
 void WP6ContentListener::addTableColumnDefinition(const uint32_t width, const uint32_t /* leftGutter */,
-        const uint32_t /* rightGutter */, const uint32_t attributes, const uint8_t alignment)
+                                                  const uint32_t /* rightGutter */, const uint32_t attributes, const uint8_t alignment)
 {
 	if (!isUndoOn())
 	{
@@ -1430,7 +1430,7 @@ void WP6ContentListener::insertCell(const uint8_t colSpan, const uint8_t rowSpan
 		_flushText();
 
 		_openTableCell(colSpan, rowSpan, m_parseState->m_currentTable->getCell((unsigned)m_ps->m_currentTableRow,
-		               (unsigned)m_ps->m_currentTableCellNumberInRow)->m_borderBits, cellFgColor, cellBgColor,
+		                                                                       (unsigned)m_ps->m_currentTableCellNumberInRow)->m_borderBits, cellFgColor, cellBgColor,
 		               cellBorderColor, cellVerticalAlignment);
 
 		m_ps->m_cellAttributeBits = 0;
@@ -1757,7 +1757,7 @@ void WP6ContentListener::commentAnnotation(const uint16_t textPID)
 }
 
 void WP6ContentListener::_handleSubDocument(const WPXSubDocument *subDocument, WPXSubDocumentType subDocumentType,
-        WPXTableList tableList, unsigned nextTableIndice)
+                                            WPXTableList tableList, unsigned nextTableIndice)
 {
 	// save our old parsing state on our "stack"
 	WP6ContentParsingState *oldParseState = m_parseState;
@@ -1908,7 +1908,7 @@ void WP6ContentListener::_handleListChange(const uint16_t outlineHash)
 		if (m_parseState->m_putativeListElementHasDisplayReferenceNumber)
 		{
 			WPXNumberingType listType = _extractWPXNumberingTypeFromBuf(m_parseState->m_numberText,
-			                            outlineDefinition->getListType((m_ps->m_currentListLevel-1)));
+			                                                            outlineDefinition->getListType((m_ps->m_currentListLevel-1)));
 			int number = _extractDisplayReferenceNumberFromBuf(m_parseState->m_numberText, listType);
 
 			propList.insert("style:num-prefix", m_parseState->m_textBeforeDisplayReference);

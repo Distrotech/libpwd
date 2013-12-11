@@ -46,7 +46,7 @@ WP6CharacterGroup_SetAlignmentCharacterSubGroup::WP6CharacterGroup_SetAlignmentC
 }
 
 void WP6CharacterGroup_SetAlignmentCharacterSubGroup::parse(WP6Listener *listener, const uint8_t /* numPrefixIDs */,
-        uint16_t const * /* prefixIDs */) const
+                                                            uint16_t const * /* prefixIDs */) const
 {
 	const uint32_t *chars;
 	extendedCharacterWP6ToUCS4(m_character, m_characterSet, &chars);
@@ -84,7 +84,7 @@ WP6CharacterGroup_CharacterShadingChangeSubGroup::WP6CharacterGroup_CharacterSha
 }
 
 void WP6CharacterGroup_CharacterShadingChangeSubGroup::parse(WP6Listener *listener, const uint8_t /* numPrefixIDs */,
-        uint16_t const * /* prefixIDs */) const
+                                                             uint16_t const * /* prefixIDs */) const
 {
 	listener->characterShadingChange(m_shading);
 }
@@ -160,7 +160,7 @@ WP6CharacterGroup_SetDotLeaderCharactersSubGroup::WP6CharacterGroup_SetDotLeader
 }
 
 void WP6CharacterGroup_SetDotLeaderCharactersSubGroup::parse(WP6Listener *listener, const uint8_t /* numPrefixIDs */,
-        uint16_t const * /* prefixIDs */) const
+                                                             uint16_t const * /* prefixIDs */) const
 {
 	const uint32_t *chars;
 	extendedCharacterWP6ToUCS4(m_character, m_characterSet, &chars);
@@ -182,7 +182,7 @@ WP6CharacterGroup_ParagraphNumberOnSubGroup::WP6CharacterGroup_ParagraphNumberOn
 }
 
 void WP6CharacterGroup_ParagraphNumberOnSubGroup::parse(WP6Listener *listener, const uint8_t /* numPrefixIDs */,
-        uint16_t const * /* prefixIDs */) const
+                                                        uint16_t const * /* prefixIDs */) const
 {
 	listener->paragraphNumberOn(m_outlineHash, m_level, m_flag);
 }
@@ -201,7 +201,7 @@ WP6CharacterGroup_TableDefinitionOnSubGroup::WP6CharacterGroup_TableDefinitionOn
 }
 
 void WP6CharacterGroup_TableDefinitionOnSubGroup::parse(WP6Listener *listener, const uint8_t /* numPrefixIDs */,
-        uint16_t const * /* prefixIDs */) const
+                                                        uint16_t const * /* prefixIDs */) const
 {
 	listener->defineTable(m_position, m_leftOffset);
 }
@@ -215,7 +215,7 @@ WP6CharacterGroup_TableDefinitionOffSubGroup::WP6CharacterGroup_TableDefinitionO
 }
 
 void WP6CharacterGroup_TableDefinitionOffSubGroup::parse(WP6Listener *listener, const uint8_t /* numPrefixIDs */,
-        uint16_t const * /* prefixIDs */) const
+                                                         uint16_t const * /* prefixIDs */) const
 {
 	// the table is degined now; start the table
 	listener->startTable();
@@ -256,7 +256,7 @@ WP6CharacterGroup_CommentSubGroup::WP6CharacterGroup_CommentSubGroup(librevenge:
 }
 
 void WP6CharacterGroup_CommentSubGroup::parse(WP6Listener *listener, const uint8_t numPrefixIDs,
-        uint16_t const *prefixIDs) const
+                                              uint16_t const *prefixIDs) const
 {
 	uint16_t textPID = 0;
 	for (uint8_t i=0; i<numPrefixIDs; i++)

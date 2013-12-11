@@ -32,7 +32,7 @@
 
 
 WP6NumberingMethodGroup::WP6NumberingMethodGroup(librevenge::RVNGInputStream *input,
-        WPXEncryption *encryption) :
+                                                 WPXEncryption *encryption) :
 	WP6VariableLengthGroup(),
 	m_levelNumber(0x00),
 	m_numberingMethod(0x00)

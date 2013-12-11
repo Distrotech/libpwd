@@ -343,7 +343,7 @@ void WP6StylesListener::commentAnnotation(const uint16_t textPID)
 }
 
 void WP6StylesListener::_handleSubDocument(const WPXSubDocument *subDocument, WPXSubDocumentType subDocumentType, WPXTableList tableList,
-        int /* nextTableIndice */)
+                                           int /* nextTableIndice */)
 {
 	// We don't want to actual insert anything in the case of a sub-document, but we
 	// do want to capture whatever table-related information is within it..

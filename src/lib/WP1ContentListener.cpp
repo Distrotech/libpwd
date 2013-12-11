@@ -557,7 +557,7 @@ void WP1ContentListener::insertPicture(uint16_t width, uint16_t height, const li
 }
 
 void WP1ContentListener::_handleSubDocument(const WPXSubDocument *subDocument, WPXSubDocumentType /* subDocumentType */,
-        WPXTableList /* tableList */, unsigned /* nextTableIndice */)
+                                            WPXTableList /* tableList */, unsigned /* nextTableIndice */)
 {
 	// save our old parsing state on our "stack"
 	WP1ContentParsingState *oldParseState = m_parseState;

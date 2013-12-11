@@ -296,7 +296,7 @@ void WP5StylesListener::insertCell(uint8_t colSpan, uint8_t rowSpan, uint8_t bor
 }
 
 void WP5StylesListener::_handleSubDocument(const WPXSubDocument *subDocument, WPXSubDocumentType subDocumentType,
-        WPXTableList tableList, int /* nextTableIndice */)
+                                           WPXTableList tableList, int /* nextTableIndice */)
 {
 	// We don't want to actual insert anything in the case of a sub-document, but we
 	// do want to capture whatever table-related information is within it..

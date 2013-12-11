@@ -256,7 +256,7 @@ void WP3StylesListener::startTable()
 }
 
 void WP3StylesListener::_handleSubDocument(const WPXSubDocument *subDocument, WPXSubDocumentType subDocumentType,
-        WPXTableList tableList, int /* nextTableIndice */)
+                                           WPXTableList tableList, int /* nextTableIndice */)
 {
 	bool oldIsSubDocument = m_isSubDocument;
 	m_isSubDocument = true;

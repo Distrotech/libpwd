@@ -193,7 +193,7 @@ void WP3ContentListener::defineTable(const uint8_t position, const uint16_t left
 }
 
 void WP3ContentListener::addTableColumnDefinition(const uint32_t width, const uint32_t /* leftGutter */,
-        const uint32_t /* rightGutter */, const uint32_t attributes, const uint8_t alignment)
+                                                  const uint32_t /* rightGutter */, const uint32_t attributes, const uint8_t alignment)
 {
 	if (!isUndoOn())
 	{
@@ -844,7 +844,7 @@ void WP3ContentListener::insertTextBox(double height, double width, double verti
 }
 
 void WP3ContentListener::insertWP51Table(double height, double width, double verticalOffset, double horizontalOffset, uint8_t leftColumn, uint8_t rightColumn,
-        uint16_t figureFlags, const WP3SubDocument *subDocument, const WP3SubDocument *caption)
+                                         uint16_t figureFlags, const WP3SubDocument *subDocument, const WP3SubDocument *caption)
 {
 	if (!isUndoOn())
 	{
@@ -877,7 +877,7 @@ void WP3ContentListener::insertWP51Table(double height, double width, double ver
 }
 
 void WP3ContentListener::_handleFrameParameters(librevenge::RVNGPropertyList &propList, double height, double width, double verticalOffset, double horizontalOffset,
-        uint8_t /* leftColumn */, uint8_t /* rightColumn */, uint16_t figureFlags)
+                                                uint8_t /* leftColumn */, uint8_t /* rightColumn */, uint16_t figureFlags)
 {
 	propList.insert("svg:width", (double)((double)width/72.0));
 	propList.insert("svg:height", (double)((double)height/72.0));
@@ -902,7 +902,7 @@ void WP3ContentListener::_handleFrameParameters(librevenge::RVNGPropertyList &pr
 				propList.insert("style:horizontal-pos", "from-left");
 				propList.insert("svg:x", (double)((double)horizontalOffset/72.0 - (double)width/72.0 +
 				                                  (double)(m_ps->m_pageFormWidth - m_ps->m_pageMarginLeft - m_ps->m_pageMarginRight - m_ps->m_sectionMarginLeft
-				                                          - m_ps->m_sectionMarginRight - m_ps->m_paragraphMarginLeft - m_ps->m_paragraphMarginRight)));
+				                                           - m_ps->m_sectionMarginRight - m_ps->m_paragraphMarginLeft - m_ps->m_paragraphMarginRight)));
 			}
 			break;
 		case 0x02:
@@ -913,7 +913,7 @@ void WP3ContentListener::_handleFrameParameters(librevenge::RVNGPropertyList &pr
 				propList.insert("style:horizontal-pos", "from-left");
 				propList.insert("svg:x", (double)((double)horizontalOffset/72.0 - (double)width/(2.0*72.0) +
 				                                  (double)(m_ps->m_pageFormWidth - m_ps->m_pageMarginLeft - m_ps->m_pageMarginRight - m_ps->m_sectionMarginLeft
-				                                          - m_ps->m_sectionMarginRight - m_ps->m_paragraphMarginLeft - m_ps->m_paragraphMarginRight)/2.0));
+				                                           - m_ps->m_sectionMarginRight - m_ps->m_paragraphMarginLeft - m_ps->m_paragraphMarginRight)/2.0));
 			}
 			break;
 		case 0x03:
@@ -1115,7 +1115,7 @@ void WP3ContentListener::_handleFrameParameters(librevenge::RVNGPropertyList &pr
 }
 
 void WP3ContentListener::_handleSubDocument(const WPXSubDocument *subDocument, WPXSubDocumentType subDocumentType,
-        WPXTableList /* tableList */, unsigned /* nextTableIndice */)
+                                            WPXTableList /* tableList */, unsigned /* nextTableIndice */)
 {
 	// save our old parsing state on our "stack"
 	WP3ContentParsingState *oldParseState = m_parseState;

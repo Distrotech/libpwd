@@ -273,7 +273,7 @@ void WP5ContentListener::defineTable(uint8_t position, uint16_t leftOffset)
 }
 
 void WP5ContentListener::addTableColumnDefinition(uint32_t width, uint32_t /* leftGutter */,
-        uint32_t /* rightGutter */, uint32_t attributes, uint8_t alignment)
+                                                  uint32_t /* rightGutter */, uint32_t attributes, uint8_t alignment)
 {
 	if (!isUndoOn())
 	{
@@ -558,7 +558,7 @@ void WP5ContentListener::insertNote(WPXNoteType noteType, const WP5SubDocument *
 }
 
 void WP5ContentListener::_handleSubDocument(const WPXSubDocument *subDocument, WPXSubDocumentType subDocumentType,
-        WPXTableList /* tableList */, unsigned /* nextTableIndice */)
+                                            WPXTableList /* tableList */, unsigned /* nextTableIndice */)
 {
 	// save our old parsing state on our "stack"
 	WP5ContentParsingState *oldParseState = m_parseState;
@@ -595,7 +595,7 @@ void WP5ContentListener::_handleSubDocument(const WPXSubDocument *subDocument, W
 }
 
 void WP5ContentListener::headerFooterGroup(uint8_t /* headerFooterType */, uint8_t /* occurrenceBits */,
-        WP5SubDocument *subDocument)
+                                           WP5SubDocument *subDocument)
 {
 	if (subDocument)
 		m_subDocuments.push_back(subDocument);

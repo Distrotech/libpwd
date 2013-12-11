@@ -87,7 +87,7 @@ void WPXTable::makeBordersConsistent()
 }
 
 void WPXTable::_makeCellBordersConsistent(WPXTableCell *cell, std::vector<WPXTableCell *> &adjacentCells,
-        int adjacencyBitCell, int adjacencyBitBoundCells)
+                                          int adjacencyBitCell, int adjacencyBitBoundCells)
 {
 	typedef std::vector<WPXTableCell *>::iterator VTCIter;
 	if (!adjacentCells.empty())

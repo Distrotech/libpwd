@@ -1188,7 +1188,7 @@ void WPXContentListener::_closeTableCell()
 Creates an new document state. Saves the old state on a "stack".
 */
 void WPXContentListener::handleSubDocument(const WPXSubDocument *subDocument, WPXSubDocumentType subDocumentType,
-        WPXTableList tableList, unsigned nextTableIndice)
+                                           WPXTableList tableList, unsigned nextTableIndice)
 {
 	// save our old parsing state on our "stack"
 	WPXContentParsingState *oldPS = m_ps;
@@ -1393,7 +1393,7 @@ librevenge::RVNGString WPXContentListener::_colorToString(const RGBSColor *color
 }
 
 librevenge::RVNGString WPXContentListener::_mergeColorsToString(const RGBSColor *fgColor,
-        const RGBSColor * /* bgColor */)
+                                                                const RGBSColor * /* bgColor */)
 {
 	librevenge::RVNGString tmpColor;
 	RGBSColor tmpFgColor, tmpBgColor;

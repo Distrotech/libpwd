@@ -190,7 +190,7 @@ void WP42StylesListener::suppressPageCharacteristics(uint8_t suppressCode)
 }
 
 void WP42StylesListener::_handleSubDocument(const WPXSubDocument *subDocument, WPXSubDocumentType subDocumentType,
-        WPXTableList /* tableList */, int /* nextTableIndice */)
+                                            WPXTableList /* tableList */, int /* nextTableIndice */)
 {
 	if (!isUndoOn())
 	{
