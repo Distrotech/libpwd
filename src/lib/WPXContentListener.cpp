@@ -856,11 +856,20 @@ void WPXContentListener::_openSpan()
 	if (attributeBits & WPX_BOLD_BIT)
 		propList.insert("fo:font-weight", "bold");
 	if (attributeBits & WPX_STRIKEOUT_BIT)
+	{
 		propList.insert("style:text-line-through-type", "single");
+		propList.insert("style:text-line-through-style", "solid");
+	}
 	if (attributeBits & WPX_DOUBLE_UNDERLINE_BIT)
+	{
 		propList.insert("style:text-underline-type", "double");
+		propList.insert("style:text-underline-style", "solid");
+	}
 	else if (attributeBits & WPX_UNDERLINE_BIT)
+	{
 		propList.insert("style:text-underline-type", "single");
+		propList.insert("style:text-underline-style", "solid");
+	}
 	if (attributeBits & WPX_OUTLINE_BIT)
 		propList.insert("style:text-outline", "true");
 	if (attributeBits & WPX_SMALL_CAPS_BIT)
