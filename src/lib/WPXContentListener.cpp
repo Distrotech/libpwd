@@ -143,12 +143,12 @@ void WPXContentListener::startDocument()
 {
 	if (!m_ps->m_isDocumentStarted)
 	{
+		m_documentInterface->startDocument(librevenge::RVNGPropertyList());
+
 		// FIXME: this is stupid, we should store a property list filled with the relevant metadata
 		// and then pass that directly..
-
 		m_documentInterface->setDocumentMetaData(m_metaData);
 
-		m_documentInterface->startDocument();
 	}
 
 	m_ps->m_isDocumentStarted = true;
