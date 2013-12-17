@@ -1902,7 +1902,7 @@ void WP6ContentListener::_handleListChange(const uint16_t outlineHash)
 	if (m_ps->m_currentListLevel > oldListLevel)
 	{
 		librevenge::RVNGPropertyList propList;
-		propList.insert("librevenge:id", m_parseState->m_currentOutlineHash);
+		propList.insert("librevenge:list-id", m_parseState->m_currentOutlineHash);
 		propList.insert("librevenge:level", m_ps->m_currentListLevel);
 
 		if (m_parseState->m_putativeListElementHasDisplayReferenceNumber)
@@ -1935,7 +1935,7 @@ void WP6ContentListener::_handleListChange(const uint16_t outlineHash)
 			WPD_DEBUG_MSG(("Pushed level %u onto the list level stack\n", i));
 
 			librevenge::RVNGPropertyList propList2;
-			propList2.insert("librevenge:id", m_parseState->m_currentOutlineHash);
+			propList2.insert("librevenge:list-id", m_parseState->m_currentOutlineHash);
 
 			if (m_parseState->m_putativeListElementHasDisplayReferenceNumber)
 			{
