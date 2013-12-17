@@ -156,7 +156,7 @@ WP6ContentListener::WP6ContentListener(std::list<WPXPageSpan> &pageList, WPXTabl
 	WP6Listener(),
 	WPXContentListener(pageList, documentInterface),
 	m_parseState(new WP6ContentParsingState(tableList)),
-	m_outlineDefineHash()
+	m_outlineDefineHash(), m_listDefinitions()
 {
 }
 
@@ -1879,6 +1879,8 @@ void WP6ContentListener::_handleListChange(const uint16_t outlineHash)
 		librevenge::RVNGPropertyList propList;
 		propList.insert("librevenge:list-id", m_parseState->m_currentOutlineHash);
 		propList.insert("librevenge:level", m_ps->m_currentListLevel);
+		propList.insert("text:min-label-width", m_ps->m_paragraphMarginLeft + m_ps->m_paragraphTextIndent - m_ps->m_listReferencePosition);
+		propList.insert("text:space-before", m_ps->m_listReferencePosition - m_ps->m_listBeginPosition);
 
 		if (m_parseState->m_putativeListElementHasDisplayReferenceNumber)
 		{
@@ -1890,26 +1892,18 @@ void WP6ContentListener::_handleListChange(const uint16_t outlineHash)
 			propList.insert("style:num-format", _numberingTypeToString(listType));
 			propList.insert("style:num-suffix", m_parseState->m_textAfterDisplayReference);
 			propList.insert("text:start-value", number);
-			propList.insert("text:min-label-width", m_ps->m_paragraphMarginLeft + m_ps->m_paragraphTextIndent - m_ps->m_listReferencePosition);
-			propList.insert("text:space-before", m_ps->m_listReferencePosition - m_ps->m_listBeginPosition);
-
-			m_documentInterface->defineOrderedListLevel(propList);
 		}
 		else
-		{
 			propList.insert("text:bullet-char", m_parseState->m_textBeforeDisplayReference);
-			propList.insert("text:min-label-width", m_ps->m_paragraphMarginLeft + m_ps->m_paragraphTextIndent - m_ps->m_listReferencePosition);
-			propList.insert("text:space-before", m_ps->m_listReferencePosition - m_ps->m_listBeginPosition);
+		m_listDefinitions[m_ps->m_currentListLevel] = propList;
 
-			m_documentInterface->defineUnorderedListLevel(propList);
-		}
 		for (unsigned i=(oldListLevel+1); i<=m_ps->m_currentListLevel; i++)
 		{
 			m_parseState->m_listLevelStack.push(i);
 
 			WPD_DEBUG_MSG(("Pushed level %u onto the list level stack\n", i));
 
-			librevenge::RVNGPropertyList propList2;
+			librevenge::RVNGPropertyList propList2(m_listDefinitions[m_ps->m_currentListLevel]);
 			propList2.insert("librevenge:list-id", m_parseState->m_currentOutlineHash);
 
 			if (m_parseState->m_putativeListElementHasDisplayReferenceNumber)

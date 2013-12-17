@@ -271,6 +271,7 @@ private:
 	WP6ContentParsingState *m_parseState;
 
 	std::map<uint16_t,WP6OutlineDefinition> m_outlineDefineHash;
+	std::map<unsigned, librevenge::RVNGPropertyList> m_listDefinitions;
 };
 
 #endif /* WP6CONTENTLISTENER_H */
