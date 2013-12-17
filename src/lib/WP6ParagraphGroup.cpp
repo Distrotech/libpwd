@@ -334,6 +334,6 @@ WP6ParagraphGroup_OutlineDefineSubGroup::WP6ParagraphGroup_OutlineDefineSubGroup
 void WP6ParagraphGroup_OutlineDefineSubGroup::parse(WP6Listener *listener, const uint8_t /* numPrefixIDs */,
                                                     const uint16_t * /* prefixIDs */) const
 {
-	listener->updateOutlineDefinition(paragraphGroup, m_outlineHash, m_numberingMethods, m_tabBehaviourFlag);
+	listener->updateOutlineDefinition(m_outlineHash, m_numberingMethods, m_tabBehaviourFlag);
 }
 /* vim:set shiftwidth=4 softtabstop=4 noexpandtab: */

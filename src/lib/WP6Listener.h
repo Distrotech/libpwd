@@ -37,8 +37,6 @@ class WP6PrefixData;
 class WP6PrefixDataPacket;
 class WP6SubDocument;
 
-enum WP6OutlineLocation { paragraphGroup, indexHeader };
-
 class WP6Listener
 {
 public:
@@ -78,8 +76,7 @@ public:
 	virtual void indentFirstLineChange(const int16_t offset) = 0;
 	virtual void columnChange(const WPXTextColumnType columnType, const uint8_t numColumns,
 	                          const std::vector<double> &columnWidth, const std::vector<bool> &isFixedWidth) = 0;
-	virtual void updateOutlineDefinition(const WP6OutlineLocation outlineLocation, const uint16_t outlineHash,
-	                                     const uint8_t *numberingMethods, const uint8_t tabBehaviourFlag) = 0;
+	virtual void updateOutlineDefinition(const uint16_t outlineHash, const uint8_t *numberingMethods, const uint8_t tabBehaviourFlag) = 0;
 	virtual void paragraphNumberOn(const uint16_t outlineHash, const uint8_t level, const uint8_t flag) = 0;
 	virtual void paragraphNumberOff() = 0;
 	virtual void displayNumberReferenceGroupOn(const uint8_t subGroup, const uint8_t level) = 0;

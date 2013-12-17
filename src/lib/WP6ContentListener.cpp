@@ -45,10 +45,10 @@
 #define WP6_DEFAULT_FONT_SIZE 12.0
 #define WP6_DEFAULT_FONT_NAME "Times New Roman"
 
-WP6OutlineDefinition::WP6OutlineDefinition(const WP6OutlineLocation outlineLocation, const uint8_t *numberingMethods,
+WP6OutlineDefinition::WP6OutlineDefinition(const uint8_t *numberingMethods,
                                            const uint8_t /* tabBehaviourFlag */)
 {
-	_updateNumberingMethods(outlineLocation, numberingMethods);
+	_updateNumberingMethods(numberingMethods);
 }
 
 WP6OutlineDefinition::WP6OutlineDefinition()
@@ -57,7 +57,7 @@ WP6OutlineDefinition::WP6OutlineDefinition()
 	for (int i=0; i<WP6_NUM_LIST_LEVELS; i++)
 		numberingMethods[i] = WP6_INDEX_HEADER_OUTLINE_STYLE_ARABIC_NUMBERING;
 
-	_updateNumberingMethods(paragraphGroup, numberingMethods);
+	_updateNumberingMethods(numberingMethods);
 }
 
 // update: updates a partially made list definition (usual case where this is used: an
@@ -66,10 +66,10 @@ WP6OutlineDefinition::WP6OutlineDefinition()
 // FIXME: make sure this is in the right place
 void WP6OutlineDefinition::update(const uint8_t *numberingMethods, const uint8_t /* tabBehaviourFlag */)
 {
-	_updateNumberingMethods(paragraphGroup, numberingMethods);
+	_updateNumberingMethods(numberingMethods);
 }
 
-void WP6OutlineDefinition::_updateNumberingMethods(const WP6OutlineLocation /* outlineLocation */, const uint8_t *numberingMethods)
+void WP6OutlineDefinition::_updateNumberingMethods(const uint8_t *numberingMethods)
 {
 	for (int i=0; i<WP6_NUM_LIST_LEVELS; i++)
 	{
@@ -162,11 +162,6 @@ WP6ContentListener::WP6ContentListener(std::list<WPXPageSpan> &pageList, WPXTabl
 
 WP6ContentListener::~WP6ContentListener()
 {
-	typedef std::map<uint16_t, WP6OutlineDefinition *>::iterator Iter;
-	for (Iter outline = m_outlineDefineHash.begin(); outline != m_outlineDefineHash.end(); ++outline)
-	{
-		delete(outline->second);
-	}
 	delete m_parseState;
 }
 
@@ -1000,22 +995,12 @@ void WP6ContentListener::columnChange(const WPXTextColumnType /* columnType */, 
 	}
 }
 
-void WP6ContentListener::updateOutlineDefinition(const WP6OutlineLocation outlineLocation, const uint16_t outlineHash,
-                                                 const uint8_t *numberingMethods, const uint8_t tabBehaviourFlag)
+void WP6ContentListener::updateOutlineDefinition(const uint16_t outlineHash, const uint8_t *numberingMethods, const uint8_t tabBehaviourFlag)
 {
 	WPD_DEBUG_MSG(("WordPerfect: Updating OutlineHash %i\n", outlineHash));
 
-	WP6OutlineDefinition *tempOutlineDefinition;
-	if (m_outlineDefineHash.find(outlineHash) != m_outlineDefineHash.end())
-	{
-		tempOutlineDefinition = (m_outlineDefineHash.find(outlineHash))->second;
-		tempOutlineDefinition->update(numberingMethods, tabBehaviourFlag);
-	}
-	else
-	{
-		tempOutlineDefinition = new WP6OutlineDefinition(outlineLocation, numberingMethods, tabBehaviourFlag);
-		m_outlineDefineHash[outlineHash] = tempOutlineDefinition;
-	}
+	WP6OutlineDefinition *tempOutlineDefinition = &m_outlineDefineHash[outlineHash];
+	tempOutlineDefinition->update(numberingMethods, tabBehaviourFlag);
 }
 
 void WP6ContentListener::paragraphNumberOn(const uint16_t outlineHash, const uint8_t level, const uint8_t /* flag */)
@@ -1881,17 +1866,7 @@ void WP6ContentListener::_handleListChange(const uint16_t outlineHash)
 {
 	if (!m_ps->m_isSectionOpened && !m_ps->m_inSubDocument && !m_ps->m_isTableOpened)
 		_openSection();
-	WP6OutlineDefinition *outlineDefinition;
-
-	if (m_outlineDefineHash.empty() || (m_outlineDefineHash.find(outlineHash) == m_outlineDefineHash.end()))
-	{
-		// handle odd case where an outline define hash is not defined prior to being referenced by
-		// a list
-		outlineDefinition = new WP6OutlineDefinition();
-		m_outlineDefineHash[outlineHash] = outlineDefinition;
-	}
-	else
-		outlineDefinition = m_outlineDefineHash.find(outlineHash)->second;
+	WP6OutlineDefinition *outlineDefinition = &m_outlineDefineHash[outlineHash];
 
 	unsigned oldListLevel;
 	if (m_parseState->m_listLevelStack.empty())

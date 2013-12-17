@@ -139,8 +139,7 @@ class WP6OutlineDefinition
 {
 public:
 	WP6OutlineDefinition();
-	WP6OutlineDefinition(const WP6OutlineLocation outlineLocation, const uint8_t *numberingMethods,
-	                     const uint8_t tabBehaviourFlag);
+	WP6OutlineDefinition(const uint8_t *numberingMethods, const uint8_t tabBehaviourFlag);
 	void update(const uint8_t *numberingMethods, const uint8_t tabBehaviourFlag);
 
 	WPXNumberingType getListType(int level)
@@ -149,7 +148,7 @@ public:
 	}
 
 protected:
-	void _updateNumberingMethods(const WP6OutlineLocation outlineLocation, const uint8_t *numberingMethods);
+	void _updateNumberingMethods(const uint8_t *numberingMethods);
 
 private:
 	WPXNumberingType m_listTypes[WP6_NUM_LIST_LEVELS];
@@ -209,8 +208,7 @@ public:
 	void indentFirstLineChange(const int16_t offset);
 	void columnChange(const WPXTextColumnType columnType, const uint8_t numColumns, const std::vector<double> &columnWidth,
 	                  const std::vector<bool> &isFixedWidth);
-	void updateOutlineDefinition(const WP6OutlineLocation outlineLocation, const uint16_t outlineHash,
-	                             const uint8_t *numberingMethods, const uint8_t tabBehaviourFlag);
+	void updateOutlineDefinition(const uint16_t outlineHash, const uint8_t *numberingMethods, const uint8_t tabBehaviourFlag);
 
 	void paragraphNumberOn(const uint16_t outlineHash, const uint8_t level, const uint8_t flag);
 	void paragraphNumberOff();
@@ -272,7 +270,7 @@ private:
 	WP6ContentListener &operator=(const WP6ContentListener &);
 	WP6ContentParsingState *m_parseState;
 
-	std::map<uint16_t,WP6OutlineDefinition *> m_outlineDefineHash;
+	std::map<uint16_t,WP6OutlineDefinition> m_outlineDefineHash;
 };
 
 #endif /* WP6CONTENTLISTENER_H */

@@ -67,6 +67,6 @@ void WP6OutlineStylePacket::_readContents(librevenge::RVNGInputStream *input, WP
 
 void WP6OutlineStylePacket::parse(WP6Listener *listener) const
 {
-	listener->updateOutlineDefinition(indexHeader, m_outlineHash, m_numberingMethods, m_tabBehaviourFlag);
+	listener->updateOutlineDefinition(m_outlineHash, m_numberingMethods, m_tabBehaviourFlag);
 }
 /* vim:set shiftwidth=4 softtabstop=4 noexpandtab: */

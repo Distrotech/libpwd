@@ -90,8 +90,7 @@ public:
 	void indentFirstLineChange(const int16_t /* offset */) {}
 	void columnChange(const WPXTextColumnType /* columnType */, const uint8_t /* numColumns */,
 	                  const std::vector<double> & /* columnWidth */, const std::vector<bool> & /* isFixedWidth */) {}
-	void updateOutlineDefinition(const WP6OutlineLocation /* outlineLocation */, const uint16_t /* outlineHash */,
-	                             const uint8_t * /* numberingMethods */, const uint8_t /* tabBehaviourFlag */) {}
+	void updateOutlineDefinition(const uint16_t /* outlineHash */, const uint8_t * /* numberingMethods */, const uint8_t /* tabBehaviourFlag */) {}
 
 	void paragraphNumberOn(const uint16_t /* outlineHash */, const uint8_t /* level */, const uint8_t /* flag */) {}
 	void paragraphNumberOff()
