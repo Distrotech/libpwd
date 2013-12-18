@@ -27,6 +27,16 @@
 #ifndef WPDOCUMENT_H
 #define WPDOCUMENT_H
 
+#ifdef DLL_EXPORT
+#ifdef LIBWPD_BUILD
+#define WPDAPI __declspec(dllexport)
+#else
+#define WPDAPI __declspec(dllimport)
+#endif
+#else
+#define WPDAPI
+#endif
+
 #include <librevenge/librevenge.h>
 
 namespace libwpd
@@ -46,10 +56,10 @@ WordPerfect documents.
 class WPDocument
 {
 public:
-	static WPDConfidence isFileFormatSupported(librevenge::RVNGInputStream *input);
-	static WPDPasswordMatch verifyPassword(librevenge::RVNGInputStream *input, const char *password);
-	static WPDResult parse(librevenge::RVNGInputStream *input, librevenge::RVNGTextInterface *documentInterface, const char *password);
-	static WPDResult parseSubDocument(librevenge::RVNGInputStream *input, librevenge::RVNGTextInterface *documentInterface, WPDFileFormat fileFormat);
+	static WPDAPI WPDConfidence isFileFormatSupported(librevenge::RVNGInputStream *input);
+	static WPDAPI WPDPasswordMatch verifyPassword(librevenge::RVNGInputStream *input, const char *password);
+	static WPDAPI WPDResult parse(librevenge::RVNGInputStream *input, librevenge::RVNGTextInterface *documentInterface, const char *password);
+	static WPDAPI WPDResult parseSubDocument(librevenge::RVNGInputStream *input, librevenge::RVNGTextInterface *documentInterface, WPDFileFormat fileFormat);
 };
 
 } // namespace libwpd

@@ -60,7 +60,7 @@ Analyzes the content of an input stream to see if it can be parsed
 \return A confidence value which represents the likelyhood that the content from
 the input stream can be parsed
 */
-WPDConfidence WPDocument::isFileFormatSupported(librevenge::RVNGInputStream *input)
+WPDAPI WPDConfidence WPDocument::isFileFormatSupported(librevenge::RVNGInputStream *input)
 {
 	WPD_DEBUG_MSG(("WPDocument::isFileFormatSupported()\n"));
 
@@ -169,7 +169,7 @@ Checks whether the given password was used to encrypt the document
 \param password The password used to protect the document or NULL if the document is not protected
 \return A value which indicates between the given password and the password that was used to protect the document
 */
-WPDPasswordMatch WPDocument::verifyPassword(librevenge::RVNGInputStream *input, const char *password)
+WPDAPI WPDPasswordMatch WPDocument::verifyPassword(librevenge::RVNGInputStream *input, const char *password)
 {
 	if (!password)
 		return WPD_PASSWORD_MATCH_DONTKNOW;
@@ -260,7 +260,7 @@ is not protected
 \return A value that indicates whether the conversion was successful and in case it
 was not, it indicates the reason of the error
 */
-WPDResult WPDocument::parse(librevenge::RVNGInputStream *input, librevenge::RVNGTextInterface *textInterface, const char *password)
+WPDAPI WPDResult WPDocument::parse(librevenge::RVNGInputStream *input, librevenge::RVNGTextInterface *textInterface, const char *password)
 {
 	if (!input)
 		return WPD_FILE_ACCESS_ERROR;
@@ -416,7 +416,7 @@ WPDResult WPDocument::parse(librevenge::RVNGInputStream *input, librevenge::RVNG
 	return error;
 }
 
-WPDResult WPDocument::parseSubDocument(librevenge::RVNGInputStream *input, librevenge::RVNGTextInterface *textInterface, WPDFileFormat fileFormat)
+WPDAPI WPDResult WPDocument::parseSubDocument(librevenge::RVNGInputStream *input, librevenge::RVNGTextInterface *textInterface, WPDFileFormat fileFormat)
 {
 	WPXParser *parser = 0;
 
