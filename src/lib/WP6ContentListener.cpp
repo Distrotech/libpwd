@@ -714,10 +714,10 @@ void WP6ContentListener::fontChange(const uint16_t matchedFontPointSize, const u
 		if (fontPID)
 		{
 			librevenge::RVNGString pidFontName = WP6Listener::getFontNameForPID(fontPID);
-			if (!!pidFontName)
+			if (!pidFontName.empty())
 				*(m_ps->m_fontName) = pidFontName;
 		}
-		else if (fontName.len())
+		else if (!fontName.empty())
 			*(m_ps->m_fontName) = fontName;
 	}
 }
