@@ -31,32 +31,36 @@ class WPXMemoryInputStream : public librevenge::RVNGInputStream
 {
 public:
 	WPXMemoryInputStream(unsigned char *data, unsigned long size);
-	virtual ~WPXMemoryInputStream();
-	virtual bool isStructured()
+	~WPXMemoryInputStream();
+	bool isStructured()
 	{
 		return false;
 	}
-	virtual unsigned subStreamCount()
+	unsigned subStreamCount()
 	{
 		return 0;
 	}
-	virtual const char *subStreamName(unsigned)
+	const char *subStreamName(unsigned)
 	{
 		return 0;
 	}
-	virtual librevenge::RVNGInputStream *getSubStreamByName(const char *)
+	bool existsSubStream(const char *)
+	{
+		return false;
+	}
+	librevenge::RVNGInputStream *getSubStreamByName(const char *)
 	{
 		return 0;
 	}
-	virtual librevenge::RVNGInputStream *getSubStreamById(unsigned)
+	librevenge::RVNGInputStream *getSubStreamById(unsigned)
 	{
 		return 0;
 	}
-	virtual const unsigned char *read(unsigned long numBytes, unsigned long &numBytesRead);
-	virtual int seek(long offset, librevenge::RVNG_SEEK_TYPE seekType);
-	virtual long tell();
-	virtual bool isEnd();
-	virtual unsigned long getSize() const
+	const unsigned char *read(unsigned long numBytes, unsigned long &numBytesRead);
+	int seek(long offset, librevenge::RVNG_SEEK_TYPE seekType);
+	long tell();
+	bool isEnd();
+	unsigned long getSize() const
 	{
 		return m_size;
 	}
