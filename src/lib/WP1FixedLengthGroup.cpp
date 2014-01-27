@@ -44,12 +44,12 @@
 #include "WP1FileStructure.h"
 #include "libwpd_internal.h"
 
-WP1FixedLengthGroup::WP1FixedLengthGroup(uint8_t group)
+WP1FixedLengthGroup::WP1FixedLengthGroup(unsigned char group)
 	: m_group(group)
 {
 }
 
-WP1FixedLengthGroup *WP1FixedLengthGroup::constructFixedLengthGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group)
+WP1FixedLengthGroup *WP1FixedLengthGroup::constructFixedLengthGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char group)
 {
 	switch (group)
 	{

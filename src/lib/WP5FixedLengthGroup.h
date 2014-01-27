@@ -33,12 +33,12 @@
 class WP5FixedLengthGroup : public WP5Part
 {
 public:
-	WP5FixedLengthGroup(const uint8_t groupID);
-	static WP5FixedLengthGroup *constructFixedLengthGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const uint8_t groupID);
+	WP5FixedLengthGroup(const unsigned char groupID);
+	static WP5FixedLengthGroup *constructFixedLengthGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const unsigned char groupID);
 
-	static bool isGroupConsistent(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const uint8_t groupID);
+	static bool isGroupConsistent(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const unsigned char groupID);
 
-	uint8_t getGroup() const
+	unsigned char getGroup() const
 	{
 		return m_group;
 	}
@@ -48,7 +48,7 @@ protected:
 	virtual void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption) = 0; // we always read the contents in the case of a fixed length group
 
 private:
-	uint8_t m_group;
+	unsigned char m_group;
 };
 
 #endif /* WP5FIXEDLENGTHGROUP_H */

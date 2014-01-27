@@ -31,9 +31,9 @@ public:
 	void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP6Listener *listener);
 private:
-	uint8_t m_countOfLevelNumbersSetting;
-	uint8_t m_startingLevelNumber;
-	uint16_t m_countNumbers;
+	unsigned char m_countOfLevelNumbersSetting;
+	unsigned char m_startingLevelNumber;
+	unsigned short m_countNumbers;
 };
 
 #endif /* WP6SETNUMBERGROUP_H */

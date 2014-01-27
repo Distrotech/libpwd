@@ -40,7 +40,7 @@ WP6TabGroup::WP6TabGroup(librevenge::RVNGInputStream *input, WPXEncryption *encr
 
 void WP6TabGroup::_readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
-	uint16_t tempPosition = 0xFFFF;
+	unsigned short tempPosition = 0xFFFF;
 	if ((getFlags() & 0x40) == 0x40) // 0x40 is "ignore function" flag
 	{
 		m_ignoreFunction = true;
@@ -50,7 +50,7 @@ void WP6TabGroup::_readContents(librevenge::RVNGInputStream *input, WPXEncryptio
 	 * Tab Group. It is result of adjustment by trials and errors and can be wrong in certain cases */
 
 	if ((getSubGroup() & 0xC0) == 0x00)
-		/* Left aligned tabs contain  the position of the tab as a word (uint16_t) in WPUs
+		/* Left aligned tabs contain  the position of the tab as a word (unsigned short) in WPUs
 		 * from left edge of the paper just after the size of "non-deletable" */
 	{
 		tempPosition = readU16(input, encryption);

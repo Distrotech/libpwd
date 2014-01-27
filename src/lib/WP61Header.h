@@ -31,17 +31,17 @@
 class WP61Header : public WP6Header
 {
 public:
-	WP61Header(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint32_t documentOffset, uint8_t productType,
-	           uint8_t fileType, uint8_t majorVersion, uint8_t minorVersion, uint16_t documentEncryption);
+	WP61Header(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned documentOffset, unsigned char productType,
+	           unsigned char fileType, unsigned char majorVersion, unsigned char minorVersion, unsigned short documentEncryption);
 	~WP61Header();
 
-	uint32_t getDocumentSize() const
+	unsigned getDocumentSize() const
 	{
 		return m_documentSize;
 	}
 
 private:
-	uint32_t m_documentSize;
+	unsigned m_documentSize;
 };
 #endif /* _WP61HEADER_H  */
 /* vim:set shiftwidth=4 softtabstop=4 noexpandtab: */

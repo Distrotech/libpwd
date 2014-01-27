@@ -31,22 +31,22 @@
 class WP6DefaultInitialFontPacket : public WP6PrefixDataPacket
 {
 public:
-	WP6DefaultInitialFontPacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int id, uint32_t dataOffset, uint32_t dataSize);
+	WP6DefaultInitialFontPacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int id, unsigned dataOffset, unsigned dataSize);
 	void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
-	uint16_t getInitialFontDescriptorPID() const
+	unsigned short getInitialFontDescriptorPID() const
 	{
 		return m_initialFontDescriptorPID;
 	}
-	uint16_t getPointSize() const
+	unsigned short getPointSize() const
 	{
 		return m_pointSize;
 	}
 	void parse(WP6Listener *listener) const;
 
 private:
-	uint16_t m_numPrefixIDs;
-	uint16_t m_initialFontDescriptorPID;
-	uint16_t m_pointSize;
+	unsigned short m_numPrefixIDs;
+	unsigned short m_initialFontDescriptorPID;
+	unsigned short m_pointSize;
 };
 #endif
 /* vim:set shiftwidth=4 softtabstop=4 noexpandtab: */

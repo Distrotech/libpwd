@@ -61,11 +61,11 @@ WP1ContentListener::~WP1ContentListener()
 }
 
 
-void WP1ContentListener::insertCharacter(uint32_t character)
+void WP1ContentListener::insertCharacter(unsigned character)
 {
 	if (!isUndoOn())
 	{
-		uint32_t tmpCharacter = _mapNonUnicodeCharacter(character);
+		unsigned tmpCharacter = _mapNonUnicodeCharacter(character);
 
 		if (!m_ps->m_isSpanOpened)
 			_openSpan();
@@ -77,7 +77,7 @@ void WP1ContentListener::insertCharacter(uint32_t character)
 	}
 }
 
-void WP1ContentListener::insertExtendedCharacter(uint8_t extendedCharacter)
+void WP1ContentListener::insertExtendedCharacter(unsigned char extendedCharacter)
 {
 	if (!isUndoOn())
 	{
@@ -88,9 +88,9 @@ void WP1ContentListener::insertExtendedCharacter(uint8_t extendedCharacter)
 			m_documentInterface->insertTab();
 		}
 		if (extendedCharacter <= 0x20)
-			appendUCS4(m_parseState->m_textBuffer, (uint32_t)0x20);
+			appendUCS4(m_parseState->m_textBuffer, (unsigned)0x20);
 		else
-			appendUCS4(m_parseState->m_textBuffer, (uint32_t)(_mapNonUnicodeCharacter(macRomanCharacterMap[extendedCharacter - 0x20])));
+			appendUCS4(m_parseState->m_textBuffer, (unsigned)(_mapNonUnicodeCharacter(macRomanCharacterMap[extendedCharacter - 0x20])));
 	}
 }
 
@@ -169,11 +169,11 @@ void WP1ContentListener::insertNote(const WPXNoteType noteType, WP1SubDocument *
 }
 
 
-void WP1ContentListener::attributeChange(bool isOn, uint8_t attribute)
+void WP1ContentListener::attributeChange(bool isOn, unsigned char attribute)
 {
 	_closeSpan();
 
-	uint32_t textAttributeBit = 0;
+	unsigned textAttributeBit = 0;
 
 	switch (attribute)
 	{
@@ -214,7 +214,7 @@ void WP1ContentListener::attributeChange(bool isOn, uint8_t attribute)
 		m_ps->m_textAttributeBits &= ~textAttributeBit;
 }
 
-void WP1ContentListener::fontPointSize(uint8_t pointSize)
+void WP1ContentListener::fontPointSize(unsigned char pointSize)
 {
 	if (!isUndoOn())
 	{
@@ -224,7 +224,7 @@ void WP1ContentListener::fontPointSize(uint8_t pointSize)
 	}
 }
 
-void WP1ContentListener::fontId(uint16_t id)
+void WP1ContentListener::fontId(unsigned short id)
 {
 	if (!isUndoOn())
 	{
@@ -385,7 +385,7 @@ void WP1ContentListener::fontId(uint16_t id)
 	}
 }
 
-void WP1ContentListener::marginReset(uint16_t leftMargin, uint16_t rightMargin)
+void WP1ContentListener::marginReset(unsigned short leftMargin, unsigned short rightMargin)
 {
 	if (!isUndoOn())
 	{
@@ -410,7 +410,7 @@ void WP1ContentListener::marginReset(uint16_t leftMargin, uint16_t rightMargin)
 	}
 }
 
-void WP1ContentListener::leftIndent(uint16_t leftMarginOffset)
+void WP1ContentListener::leftIndent(unsigned short leftMarginOffset)
 {
 	if (!isUndoOn())
 	{
@@ -428,7 +428,7 @@ void WP1ContentListener::leftIndent(uint16_t leftMarginOffset)
 	}
 }
 
-void WP1ContentListener::leftRightIndent(uint16_t leftRightMarginOffset)
+void WP1ContentListener::leftRightIndent(unsigned short leftRightMarginOffset)
 {
 	if (!isUndoOn())
 	{
@@ -450,7 +450,7 @@ void WP1ContentListener::leftRightIndent(uint16_t leftRightMarginOffset)
 	}
 }
 
-void WP1ContentListener::leftMarginRelease(uint16_t release)
+void WP1ContentListener::leftMarginRelease(unsigned short release)
 {
 	if (!isUndoOn())
 	{
@@ -469,7 +469,7 @@ void WP1ContentListener::leftMarginRelease(uint16_t release)
 	}
 }
 
-void WP1ContentListener::justificationChange(uint8_t justification)
+void WP1ContentListener::justificationChange(unsigned char justification)
 {
 	if (!isUndoOn())
 	{
@@ -491,7 +491,7 @@ void WP1ContentListener::justificationChange(uint8_t justification)
 	}
 }
 
-void WP1ContentListener::headerFooterGroup(uint8_t /* headerFooterDefinition */, WP1SubDocument *subDocument)
+void WP1ContentListener::headerFooterGroup(unsigned char /* headerFooterDefinition */, WP1SubDocument *subDocument)
 {
 	if (subDocument)
 		m_subDocuments.push_back(subDocument);
@@ -534,7 +534,7 @@ void WP1ContentListener::centerOn()
 	}
 }
 
-void WP1ContentListener::insertPicture(uint16_t width, uint16_t height, const librevenge::RVNGBinaryData &binaryData)
+void WP1ContentListener::insertPicture(unsigned short width, unsigned short height, const librevenge::RVNGBinaryData &binaryData)
 {
 	if (!isUndoOn())
 	{

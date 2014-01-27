@@ -72,7 +72,7 @@ void WP6BoxGroup::_readContents(librevenge::RVNGInputStream *input, WPXEncryptio
 		input->seek(14, librevenge::RVNG_SEEK_CUR); // reserved for future use
 		input->seek(2, librevenge::RVNG_SEEK_CUR); // total size of override and wrap rectangle data for box
 		input->seek(2, librevenge::RVNG_SEEK_CUR); // total size of override data
-		uint16_t tmpOverrideFlags = readU16(input, encryption);
+		unsigned short tmpOverrideFlags = readU16(input, encryption);
 		if (tmpOverrideFlags & WP6_BOX_GROUP_BOX_COUNTER_DATA_BIT)
 		{
 			long tmpEndOfData = readU16(input, encryption) + input->tell();
@@ -103,7 +103,7 @@ void WP6BoxGroup::_readContents(librevenge::RVNGInputStream *input, WPXEncryptio
 			{
 				m_hasHorizontalPositioning = true;
 				m_horizontalPositioningFlags = readU8(input, encryption);
-				m_horizontalOffset = (int16_t)readU16(input, encryption);
+				m_horizontalOffset = (signed short)readU16(input, encryption);
 				m_leftColumn = readU8(input, encryption);
 				m_rightColumn = readU8(input, encryption);
 				WPD_DEBUG_MSG(("Box horizontal positioning flags: 0x%.2x\n", m_horizontalPositioningFlags));
@@ -114,7 +114,7 @@ void WP6BoxGroup::_readContents(librevenge::RVNGInputStream *input, WPXEncryptio
 			{
 				m_hasVerticalPositioning = true;
 				m_verticalPositioningFlags = readU8(input, encryption);
-				m_verticalOffset = (int16_t)readU16(input, encryption);
+				m_verticalOffset = (signed short)readU16(input, encryption);
 				WPD_DEBUG_MSG(("Box vertical positioning flags: 0x%.2x\n", m_verticalPositioningFlags));
 				WPD_DEBUG_MSG(("Box vertical offset: %i\n", m_verticalOffset));
 			}
@@ -162,9 +162,9 @@ void WP6BoxGroup::_readContents(librevenge::RVNGInputStream *input, WPXEncryptio
 			{
 				if (m_hasBoxContentType && (m_boxContentType == 0x03)) // Image
 				{
-					uint16_t tmpImageContentOverrideSize = readU16(input, encryption);
+					unsigned short tmpImageContentOverrideSize = readU16(input, encryption);
 					long tmpImageContentOverrideStart = input->tell();
-					uint16_t tmpImageContentOverrideFlags = readU16(input, encryption);
+					unsigned short tmpImageContentOverrideFlags = readU16(input, encryption);
 
 					if (tmpImageContentOverrideFlags & 0x8000)
 						input->seek(2, librevenge::RVNG_SEEK_CUR);
@@ -290,7 +290,7 @@ void WP6BoxGroup::parse(WP6Listener *listener)
 		if ((gbsPacket = dynamic_cast<const WP6GraphicsBoxStylePacket *>(listener->getPrefixDataPacket(getPrefixIDs()[j]))))
 			break;
 
-	uint8_t tmpContentType = 0;
+	unsigned char tmpContentType = 0;
 	if (gbsPacket)
 		tmpContentType = gbsPacket->getContentType();
 	if (m_hasBoxContentType)
@@ -326,7 +326,7 @@ void WP6BoxGroup::parse(WP6Listener *listener)
 	}
 
 	// Get the box anchoring
-	uint8_t tmpAnchoringType = 0;
+	unsigned char tmpAnchoringType = 0;
 	switch (getSubGroup())
 	{
 	case WP6_BOX_GROUP_CHARACTER_ANCHORED_BOX:
@@ -344,10 +344,10 @@ void WP6BoxGroup::parse(WP6Listener *listener)
 	}
 
 	// Get the box general positioning
-	uint8_t tmpGeneralPositioningFlags = 0;
+	unsigned char tmpGeneralPositioningFlags = 0;
 	if (gbsPacket)
-		tmpGeneralPositioningFlags = (uint8_t)((gbsPacket->getGeneralPositioningFlags() & (~ m_generalPositioningFlagsMask)) |
-		                                       (m_generalPositioningFlagsData & m_generalPositioningFlagsMask));
+		tmpGeneralPositioningFlags = (unsigned char)((gbsPacket->getGeneralPositioningFlags() & (~ m_generalPositioningFlagsMask)) |
+		                                             (m_generalPositioningFlagsData & m_generalPositioningFlagsMask));
 	else  // here we did not manage to get the packet. Let's try to go with the override information
 		tmpGeneralPositioningFlags = (m_generalPositioningFlagsData & m_generalPositioningFlagsMask);
 
@@ -389,7 +389,7 @@ void WP6BoxGroup::parse(WP6Listener *listener)
 	if (tmpContentType == 0x03)
 	{
 		for (gdiIter = graphicsDataIds.begin(); gdiIter != graphicsDataIds.end(); ++gdiIter)
-			listener->insertGraphicsData(((uint16_t)*gdiIter));
+			listener->insertGraphicsData(((unsigned short)*gdiIter));
 	}
 	if ((tmpContentType == 0x01) && (subDocument))
 	{

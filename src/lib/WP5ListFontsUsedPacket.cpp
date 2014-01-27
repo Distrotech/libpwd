@@ -29,7 +29,7 @@
 #include "WP5Parser.h"
 #include "libwpd_internal.h"
 
-WP5ListFontsUsedPacket::WP5ListFontsUsedPacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int /* id */, uint32_t dataOffset, uint32_t dataSize, uint16_t packetType) :
+WP5ListFontsUsedPacket::WP5ListFontsUsedPacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int /* id */, unsigned dataOffset, unsigned dataSize, unsigned short packetType) :
 	WP5GeneralPacketData(),
 	m_packetType(packetType),
 	m_fontNameOffset(),
@@ -42,7 +42,7 @@ WP5ListFontsUsedPacket::~WP5ListFontsUsedPacket()
 {
 }
 
-void WP5ListFontsUsedPacket::_readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint32_t dataSize)
+void WP5ListFontsUsedPacket::_readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned dataSize)
 {
 	unsigned numFonts = dataSize / 86; // 86 == size of the structure describing the font
 	WPD_DEBUG_MSG(("WP5 List Fonts Used Packet, data size: %u, number fonts: %u\n", dataSize, numFonts));

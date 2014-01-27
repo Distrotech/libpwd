@@ -32,7 +32,7 @@
 class WP6UnsupportedFixedLengthGroup : public WP6FixedLengthGroup
 {
 public:
-	WP6UnsupportedFixedLengthGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID);
+	WP6UnsupportedFixedLengthGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char groupID);
 	void parse(WP6Listener * /* listener */) {}
 
 protected:

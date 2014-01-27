@@ -43,7 +43,7 @@ WP5VariableLengthGroup::WP5VariableLengthGroup() :
 {
 }
 
-WP5VariableLengthGroup *WP5VariableLengthGroup::constructVariableLengthGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const uint8_t group)
+WP5VariableLengthGroup *WP5VariableLengthGroup::constructVariableLengthGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const unsigned char group)
 {
 	WPD_DEBUG_MSG(("WordPerfect: handling a variable length group Ox%x\n", group));
 	switch (group)
@@ -70,14 +70,14 @@ WP5VariableLengthGroup *WP5VariableLengthGroup::constructVariableLengthGroup(lib
 	}
 }
 
-bool WP5VariableLengthGroup::isGroupConsistent(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const uint8_t group)
+bool WP5VariableLengthGroup::isGroupConsistent(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const unsigned char group)
 {
 	long startPosition = input->tell();
 
 	try
 	{
-		uint8_t subGroup = readU8(input, encryption);
-		uint16_t size = readU16(input, encryption);
+		unsigned char subGroup = readU8(input, encryption);
+		unsigned short size = readU16(input, encryption);
 
 		if (input->seek((startPosition + size - 1), librevenge::RVNG_SEEK_SET) || input->isEnd())
 		{
@@ -115,7 +115,7 @@ void WP5VariableLengthGroup::_read(librevenge::RVNGInputStream *input, WPXEncryp
 	long startPosition = input->tell();
 
 	m_subGroup = readU8(input, encryption);
-	m_size = (uint16_t)(readU16(input, encryption) + 4); // the length is the number of data bytes minus 4 (ie. the function codes)
+	m_size = (unsigned short)(readU16(input, encryption) + 4); // the length is the number of data bytes minus 4 (ie. the function codes)
 
 	WPD_DEBUG_MSG(("WordPerfect: Read variable group header (start_position: %li, sub_group: 0x%2x, size: %u)\n", startPosition, m_subGroup, m_size));
 

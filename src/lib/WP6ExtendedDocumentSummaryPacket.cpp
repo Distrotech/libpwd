@@ -30,7 +30,7 @@
 #include "WP6ExtendedDocumentSummaryPacket.h"
 #include "libwpd_internal.h"
 
-WP6ExtendedDocumentSummaryPacket::WP6ExtendedDocumentSummaryPacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int /* id */, uint32_t dataOffset, uint32_t dataSize) :
+WP6ExtendedDocumentSummaryPacket::WP6ExtendedDocumentSummaryPacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int /* id */, unsigned dataOffset, unsigned dataSize) :
 	WP6PrefixDataPacket(input, encryption),
 	m_dataSize(dataSize),
 	m_streamData(0),
@@ -52,9 +52,9 @@ void WP6ExtendedDocumentSummaryPacket::_readContents(librevenge::RVNGInputStream
 {
 	if (!m_dataSize)
 		return;
-	if (m_dataSize > ((std::numeric_limits<uint32_t>::max)() / 2))
-		m_dataSize = ((std::numeric_limits<uint32_t>::max)() / 2);
-	m_streamData = new uint8_t[m_dataSize];
+	if (m_dataSize > ((std::numeric_limits<unsigned>::max)() / 2))
+		m_dataSize = ((std::numeric_limits<unsigned>::max)() / 2);
+	m_streamData = new unsigned char[m_dataSize];
 	for (unsigned i=0; i<(unsigned)m_dataSize; i++)
 		m_streamData[i] = readU8(input, encryption);
 
@@ -65,7 +65,7 @@ void WP6ExtendedDocumentSummaryPacket::parse(WP6Listener *listener) const
 {
 	if (!m_stream)
 		return;
-	uint16_t groupLength = 0;
+	unsigned short groupLength = 0;
 
 	for (unsigned i=0; i < (unsigned)m_dataSize && !m_stream->isEnd(); i+=groupLength)
 	{
@@ -79,21 +79,21 @@ void WP6ExtendedDocumentSummaryPacket::parse(WP6Listener *listener) const
 		}
 		if ((groupLength == 0) || m_stream->isEnd())
 			return;
-		uint16_t tagID = readU16(m_stream, 0);
+		unsigned short tagID = readU16(m_stream, 0);
 		if (m_stream->isEnd())
 			return;
 		if (m_stream->seek(2, librevenge::RVNG_SEEK_CUR))
 			return;
 
 		librevenge::RVNGString name;
-		uint16_t wpChar = 0;
+		unsigned short wpChar = 0;
 		if (!m_stream->isEnd())
 			wpChar = readU16(m_stream, 0);
 		for (; wpChar != 0 && !m_stream->isEnd(); wpChar = readU16(m_stream, 0))
 		{
-			uint8_t character = (uint8_t)(wpChar & 0x00FF);
-			uint8_t characterSet = (uint8_t)((wpChar >> 8) & 0x00FF);
-			const uint32_t *chars;
+			unsigned char character = (unsigned char)(wpChar & 0x00FF);
+			unsigned char characterSet = (unsigned char)((wpChar >> 8) & 0x00FF);
+			const unsigned *chars;
 			int len = extendedCharacterWP6ToUCS4(character,
 			                                     characterSet, &chars);
 			for (int j = 0; j < len; j++)
@@ -108,15 +108,15 @@ void WP6ExtendedDocumentSummaryPacket::parse(WP6Listener *listener) const
 		{
 			try
 			{
-				uint16_t year = readU16(m_stream, 0);
-				uint8_t month = readU8(m_stream, 0);
-				uint8_t day = readU8(m_stream, 0);
-				uint8_t hour = readU8(m_stream, 0);
-				uint8_t minute = readU8(m_stream, 0);
-				uint8_t second = readU8(m_stream, 0);
-				uint8_t dayOfWeek = readU8(m_stream, 0);
-				uint8_t timeZone = readU8(m_stream, 0);
-				uint8_t unused = readU8(m_stream, 0);
+				unsigned short year = readU16(m_stream, 0);
+				unsigned char month = readU8(m_stream, 0);
+				unsigned char day = readU8(m_stream, 0);
+				unsigned char hour = readU8(m_stream, 0);
+				unsigned char minute = readU8(m_stream, 0);
+				unsigned char second = readU8(m_stream, 0);
+				unsigned char dayOfWeek = readU8(m_stream, 0);
+				unsigned char timeZone = readU8(m_stream, 0);
+				unsigned char unused = readU8(m_stream, 0);
 				if (month > 0 && day > 0 && year >= 1900)
 					listener->setDate(tagID, year, month, day, hour, minute, second, dayOfWeek, timeZone, unused);
 			}
@@ -132,9 +132,9 @@ void WP6ExtendedDocumentSummaryPacket::parse(WP6Listener *listener) const
 				wpChar = readU16(m_stream, 0);
 			for (; wpChar != 0 && !m_stream->isEnd(); wpChar = readU16(m_stream, 0))
 			{
-				uint8_t character = (uint8_t)(wpChar & 0x00FF);
-				uint8_t characterSet = (uint8_t)((wpChar >> 8) & 0x00FF);
-				const uint32_t *chars;
+				unsigned char character = (unsigned char)(wpChar & 0x00FF);
+				unsigned char characterSet = (unsigned char)((wpChar >> 8) & 0x00FF);
+				const unsigned *chars;
 				int len = extendedCharacterWP6ToUCS4(character,
 				                                     characterSet, &chars);
 				for (int j = 0; j < len; j++)

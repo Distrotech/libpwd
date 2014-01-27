@@ -806,14 +806,14 @@ void WPXContentListener::_openSpan()
 
 	// The behaviour of WP6+ is following: if an attribute bit is set in the cell attributes, we cannot
 	// unset it; if it is set, we can set or unset it
-	uint32_t attributeBits = (m_ps->m_textAttributeBits | m_ps->m_cellAttributeBits);
-	uint8_t fontSizeAttributes;
+	unsigned attributeBits = (m_ps->m_textAttributeBits | m_ps->m_cellAttributeBits);
+	unsigned char fontSizeAttributes;
 	double fontSizeChange;
 	// the font size attribute bits are mutually exclusive and the cell attributes prevail
 	if ((m_ps->m_cellAttributeBits & 0x0000001f) != 0x00000000)
-		fontSizeAttributes = (uint8_t)(m_ps->m_cellAttributeBits & 0x0000001f);
+		fontSizeAttributes = (unsigned char)(m_ps->m_cellAttributeBits & 0x0000001f);
 	else
-		fontSizeAttributes = (uint8_t)(m_ps->m_textAttributeBits & 0x0000001f);
+		fontSizeAttributes = (unsigned char)(m_ps->m_textAttributeBits & 0x0000001f);
 	switch (fontSizeAttributes)
 	{
 	case 0x01:  // Extra large
@@ -1102,14 +1102,14 @@ static void addBorderProps(const char *border, bool borderOn, const librevenge::
 	propList.insert(borderStyle.cstr(), props);
 }
 
-void WPXContentListener::_openTableCell(const uint8_t colSpan, const uint8_t rowSpan, const uint8_t borderBits,
+void WPXContentListener::_openTableCell(const unsigned char colSpan, const unsigned char rowSpan, const unsigned char borderBits,
                                         const RGBSColor *cellFgColor, const RGBSColor *cellBgColor,
                                         const RGBSColor *cellBorderColor, const WPXVerticalAlignment cellVerticalAlignment)
 {
 	if (!m_ps->m_isTableOpened || !m_ps->m_isTableRowOpened)
 		throw ParseException();
 
-	uint8_t tmpColSpan = colSpan;
+	unsigned char tmpColSpan = colSpan;
 	if (m_ps->m_isTableCellOpened)
 		_closeTableCell();
 
@@ -1244,7 +1244,7 @@ void WPXContentListener::handleSubDocument(const WPXSubDocument *subDocument, WP
 	m_ps = oldPS;
 }
 
-void WPXContentListener::insertBreak(const uint8_t breakType)
+void WPXContentListener::insertBreak(const unsigned char breakType)
 {
 	if (!isUndoOn())
 	{
@@ -1306,7 +1306,7 @@ void WPXContentListener::lineSpacingChange(const double lineSpacing)
 	}
 }
 
-void WPXContentListener::justificationChange(const uint8_t justification)
+void WPXContentListener::justificationChange(const unsigned char justification)
 {
 	if (!isUndoOn())
 	{
@@ -1452,7 +1452,7 @@ double WPXContentListener::_movePositionToFirstColumn(double position)
 	return position;
 }
 
-uint32_t WPXContentListener::_mapNonUnicodeCharacter(uint32_t character)
+unsigned WPXContentListener::_mapNonUnicodeCharacter(unsigned character)
 {
 	if (*(m_ps->m_fontName) == "Symbol")
 		return _mapSymbolFontCharacter(character);
@@ -1463,11 +1463,11 @@ uint32_t WPXContentListener::_mapNonUnicodeCharacter(uint32_t character)
 	return character;
 }
 
-uint32_t WPXContentListener::_mapSymbolFontCharacter(uint32_t character)
+unsigned WPXContentListener::_mapSymbolFontCharacter(unsigned character)
 {
 	if (character >= 0x0020 && character <= 0x7E)
 	{
-		static const uint32_t _symbolFontMap1 [] =
+		static const unsigned _symbolFontMap1 [] =
 		{
 			0x0020, 0x0021, 0x2200, 0x0023, 0x2203, 0x0025, 0x0026, 0x220D, // 0x20 ..
 			0x0028, 0x0029, 0x2217, 0x002B, 0x002C, 0x2212, 0x002E, 0x002F,
@@ -1487,7 +1487,7 @@ uint32_t WPXContentListener::_mapSymbolFontCharacter(uint32_t character)
 	}
 	if (character >= 0x00A0 && character <= 0xFE)
 	{
-		static const uint32_t _symbolFontMap2 [] =
+		static const unsigned _symbolFontMap2 [] =
 		{
 			0x20AC, 0x03D2, 0x2032, 0x2264, 0x2044, 0x221E, 0x0192, 0x2663, // 0xA0 ..
 			0x2666, 0x2665, 0x2660, 0x2194, 0x2190, 0x2191, 0x2192, 0x2193,
@@ -1508,11 +1508,11 @@ uint32_t WPXContentListener::_mapSymbolFontCharacter(uint32_t character)
 	return character;
 }
 
-uint32_t WPXContentListener::_mapDingbatsFontCharacter(uint32_t character)
+unsigned WPXContentListener::_mapDingbatsFontCharacter(unsigned character)
 {
 	if (character >= 0x20 && character <= 0x7E)
 	{
-		static const uint32_t _dingbatsFontMap1 [] =
+		static const unsigned _dingbatsFontMap1 [] =
 		{
 			0x0020, 0x2701, 0x2702, 0x2703, 0x2704, 0x260E, 0x2706, 0x2707, // 0x20 ..
 			0x2708, 0x2709, 0x261B, 0x261E, 0x270C, 0x270D, 0x270E, 0x270F,
@@ -1532,7 +1532,7 @@ uint32_t WPXContentListener::_mapDingbatsFontCharacter(uint32_t character)
 	}
 	if (character >= 0x80 && character <= 0x8D)
 	{
-		static const uint32_t _dingbatsFontMap2 [] =
+		static const unsigned _dingbatsFontMap2 [] =
 		{
 			0x2768, 0x2769, 0x276A, 0x276B, 0x276C, 0x276D, 0x276E, 0x276F, // 0x80 ..
 			0x2770, 0x2771, 0x2772, 0x2773, 0x2774, 0x2775                  // .. 0x8D
@@ -1542,7 +1542,7 @@ uint32_t WPXContentListener::_mapDingbatsFontCharacter(uint32_t character)
 	}
 	if (character >= 0xA1 && character <= 0xEF)
 	{
-		static const uint32_t _dingbatsFontMap3 [] =
+		static const unsigned _dingbatsFontMap3 [] =
 		{
 			0x2761, 0x2762, 0x2763, 0x2764, 0x2765, 0x2766, 0x2767, 0x2663, // 0xA1 ..
 			0x2666, 0x2665, 0x2660, 0x2460, 0x2461, 0x2462, 0x2463, 0x2464,
@@ -1560,7 +1560,7 @@ uint32_t WPXContentListener::_mapDingbatsFontCharacter(uint32_t character)
 	}
 	if (character >= 0xF1 && character <=0xFE)
 	{
-		static const uint32_t _dingbatsFontMap4 [] =
+		static const unsigned _dingbatsFontMap4 [] =
 		{
 			0x27B1, 0x27B2, 0x27B3, 0x27B4, 0x27B5, 0x27B6, 0x27B7, 0x27B8, // 0xF1 ..
 			0x27B9, 0x27BA, 0x27BB, 0x27BC, 0x27BD, 0x27BE                  // .. OxFE

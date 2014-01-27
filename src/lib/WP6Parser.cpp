@@ -85,7 +85,7 @@ void WP6Parser::parse(librevenge::RVNGInputStream *input, WPXEncryption *encrypt
 	listener->endDocument();
 }
 
-static const uint16_t extendedInternationalCharacterMap[] =
+static const unsigned short extendedInternationalCharacterMap[] =
 {
 	229, // lower case 'a' with a small circle
 	197, // upper case 'a' with a small circle
@@ -126,21 +126,21 @@ void WP6Parser::parseDocument(librevenge::RVNGInputStream *input, WPXEncryption 
 {
 	while (!input->isEnd())
 	{
-		uint8_t readVal;
+		unsigned char readVal;
 		readVal = readU8(input, encryption);
 
-		if (readVal == (uint8_t)0x00)
+		if (readVal == (unsigned char)0x00)
 		{
 			// do nothing: this token is meaningless and is likely just corruption
 		}
-		else if (readVal <= (uint8_t)0x20)
+		else if (readVal <= (unsigned char)0x20)
 		{
 			listener->insertCharacter(extendedInternationalCharacterMap[(readVal-1)]);
 		}
-		else if (readVal >= (uint8_t)0x21 && readVal <= (uint8_t)0x7F)
+		else if (readVal >= (unsigned char)0x21 && readVal <= (unsigned char)0x7F)
 		{
 			// normal ASCII characters
-			listener->insertCharacter((uint32_t)readVal);
+			listener->insertCharacter((unsigned)readVal);
 		}
 		else
 		{

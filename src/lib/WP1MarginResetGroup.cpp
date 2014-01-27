@@ -26,7 +26,7 @@
 #include "WP1MarginResetGroup.h"
 #include "libwpd_internal.h"
 
-WP1MarginResetGroup::WP1MarginResetGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group) :
+WP1MarginResetGroup::WP1MarginResetGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char group) :
 	WP1FixedLengthGroup(group),
 	m_leftMargin(0),
 	m_rightMargin(0)

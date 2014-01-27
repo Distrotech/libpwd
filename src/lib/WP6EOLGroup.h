@@ -40,13 +40,13 @@ public:
 private:
 	WP6EOLGroup(const WP6EOLGroup &);
 	WP6EOLGroup &operator=(const WP6EOLGroup &);
-	uint8_t m_colSpan, m_rowSpan;
+	unsigned char m_colSpan, m_rowSpan;
 	bool m_boundFromAbove;
 
 	bool m_useCellAttributes, m_useCellJustification;
 	bool m_ignoreInCalculations, m_cellIsLocked;
-	uint32_t m_cellAttributes;
-	uint8_t m_cellJustification;
+	unsigned m_cellAttributes;
+	unsigned char m_cellJustification;
 	WPXVerticalAlignment m_cellVerticalAlign;
 
 	// cell forground and background color
@@ -54,10 +54,10 @@ private:
 	RGBSColor *m_cellBgColor;
 	RGBSColor *m_cellBorderColor;
 
-	uint8_t m_cellBorders;
+	unsigned char m_cellBorders;
 	bool m_isHeaderRow;
 	bool m_isMinimumHeight;
-	uint16_t m_rowHeight;
+	unsigned short m_rowHeight;
 
 	bool m_isDontEndAParagraphStyleForThisHardReturn;
 };

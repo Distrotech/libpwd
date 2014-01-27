@@ -110,7 +110,7 @@ WP6PrefixDataPacket *WP6PrefixDataPacket::constructPrefixDataPacket(librevenge::
 	return tmpPacket;
 }
 
-void WP6PrefixDataPacket::_read(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint32_t dataOffset, uint32_t dataSize)
+void WP6PrefixDataPacket::_read(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned dataOffset, unsigned dataSize)
 {
 	m_dataSize = dataSize;
 

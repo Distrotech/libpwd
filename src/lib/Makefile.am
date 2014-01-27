@@ -195,7 +195,6 @@ libwpd_@WPD_MAJOR_VERSION@_@WPD_MINOR_VERSION@_la_SOURCES = \
 	WPXTable.cpp \
 	libwpd_internal.h \
 	libwpd_math.h \
-	libwpd_types.h \
 	WP1BottomMarginGroup.h \
 	WP1CenterTextGroup.h \
 	WP1ContentListener.h \

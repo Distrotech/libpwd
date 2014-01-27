@@ -31,8 +31,8 @@ public:
 	void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP6Listener *listener);
 private:
-	uint8_t m_levelNumber;
-	uint8_t m_numberingMethod;
+	unsigned char m_levelNumber;
+	unsigned char m_numberingMethod;
 };
 
 #endif /* WP6NUMBERINGMETHODGROUP_H */

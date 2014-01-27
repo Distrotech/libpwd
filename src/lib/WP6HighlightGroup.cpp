@@ -29,7 +29,7 @@
 #include "WP6Listener.h"
 #include "libwpd_internal.h"
 
-WP6HighlightGroup::WP6HighlightGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID) :
+WP6HighlightGroup::WP6HighlightGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char groupID) :
 	WP6FixedLengthGroup(groupID),
 	m_color()
 {
@@ -44,7 +44,7 @@ void WP6HighlightGroup::_readContents(librevenge::RVNGInputStream *input, WPXEnc
 	m_color.m_s = readU8(input, encryption);
 }
 
-WP6HighlightOnGroup::WP6HighlightOnGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID) :
+WP6HighlightOnGroup::WP6HighlightOnGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char groupID) :
 	WP6HighlightGroup(input, encryption, groupID)
 {
 }
@@ -54,7 +54,7 @@ void WP6HighlightOnGroup::parse(WP6Listener *listener)
 	listener->highlightChange(true, getColor());
 }
 
-WP6HighlightOffGroup::WP6HighlightOffGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID) :
+WP6HighlightOffGroup::WP6HighlightOffGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char groupID) :
 	WP6HighlightGroup(input, encryption, groupID)
 {
 }

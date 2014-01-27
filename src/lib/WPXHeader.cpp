@@ -35,8 +35,8 @@
 
 #include <string.h>
 
-WPXHeader::WPXHeader(librevenge::RVNGInputStream * /* input */, WPXEncryption * /* encryption */, uint32_t documentOffset, uint8_t productType,
-                     uint8_t fileType, uint8_t majorVersion, uint8_t minorVersion, uint16_t documentEncryption) :
+WPXHeader::WPXHeader(librevenge::RVNGInputStream * /* input */, WPXEncryption * /* encryption */, unsigned documentOffset, unsigned char productType,
+                     unsigned char fileType, unsigned char majorVersion, unsigned char minorVersion, unsigned short documentEncryption) :
 	m_documentOffset(documentOffset),
 	m_productType(productType),
 	m_fileType(fileType),
@@ -68,17 +68,17 @@ WPXHeader *WPXHeader::constructHeader(librevenge::RVNGInputStream *input, WPXEnc
 
 	/* get the document pointer */
 	input->seek(WPX_HEADER_DOCUMENT_POINTER_OFFSET, librevenge::RVNG_SEEK_SET);
-	uint32_t documentOffset = readU32(input, encryption);
+	unsigned documentOffset = readU32(input, encryption);
 
 	/* get information on product types, file types, versions */
 	input->seek(WPX_HEADER_PRODUCT_TYPE_OFFSET, librevenge::RVNG_SEEK_SET);
-	uint8_t productType = readU8(input, encryption);
-	uint8_t fileType = readU8(input, encryption);
-	uint8_t majorVersion = readU8(input, encryption);
-	uint8_t minorVersion = readU8(input, encryption);
+	unsigned char productType = readU8(input, encryption);
+	unsigned char fileType = readU8(input, encryption);
+	unsigned char majorVersion = readU8(input, encryption);
+	unsigned char minorVersion = readU8(input, encryption);
 
 	input->seek(WPX_HEADER_ENCRYPTION_OFFSET, librevenge::RVNG_SEEK_SET);
-	uint16_t documentEncryption = readU16(input, encryption);
+	unsigned short documentEncryption = readU16(input, encryption);
 
 	WPD_DEBUG_MSG(("WordPerfect: Document Offset = 0x%x \n",documentOffset));
 	WPD_DEBUG_MSG(("WordPerfect: Product Type: %i File Type: %i Major Version: %i Minor Version: %i\n",
@@ -94,7 +94,7 @@ WPXHeader *WPXHeader::constructHeader(librevenge::RVNGInputStream *input, WPXEnc
 		switch (majorVersion)
 		{
 		case 0x00: // WP5
-			documentEncryption = (uint16_t)(((documentEncryption & 0xff00) >> 8) | ((documentEncryption & 0x00ff) << 8));
+			documentEncryption = (unsigned short)(((documentEncryption & 0xff00) >> 8) | ((documentEncryption & 0x00ff) << 8));
 			return new WP5Header(input, encryption, documentOffset, productType, fileType,
 			                     majorVersion, minorVersion, documentEncryption);
 		case 0x02: // WP6

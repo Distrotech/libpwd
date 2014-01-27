@@ -39,27 +39,27 @@ public:
 
 private:
 	// variables needed for subgroup 0 and 1 (Left/Right Margin Set)
-	uint16_t m_margin;
+	unsigned short m_margin;
 	// variables needed for subgroup 2 (suppress page characteristics)
-	uint8_t m_suppressedCode;
+	unsigned char m_suppressedCode;
 	// variables needed for subgroup 3 (page number position)
-	uint16_t m_pageNumberTypefaceDesc;
-	uint8_t m_pageNumberUseFlag;
-	uint16_t m_pageNumberingFontPIDCopy;
-	uint16_t m_pageNumberPointSize;
-	uint8_t m_pageNumberPosition;
-	uint16_t m_pageNumberMatchedFontIndex;
-	uint16_t m_pageNumberMatchedFontPointSize;
-	uint16_t m_pageNumberAttributes1;
-	uint16_t m_pageNumberAttributes2;
+	unsigned short m_pageNumberTypefaceDesc;
+	unsigned char m_pageNumberUseFlag;
+	unsigned short m_pageNumberingFontPIDCopy;
+	unsigned short m_pageNumberPointSize;
+	unsigned char m_pageNumberPosition;
+	unsigned short m_pageNumberMatchedFontIndex;
+	unsigned short m_pageNumberMatchedFontPointSize;
+	unsigned short m_pageNumberAttributes1;
+	unsigned short m_pageNumberAttributes2;
 	RGBSColor m_pageNumberColor;
-	uint16_t m_pageNumberHeight;
-	uint8_t m_pageNumberNewPagePosition;
+	unsigned short m_pageNumberHeight;
+	unsigned char m_pageNumberNewPagePosition;
 
 	// variables needed for subgroup 0x11 (Form)
-	uint16_t m_formLength;
-	uint16_t m_formWidth;
-	uint8_t m_formType;
+	unsigned short m_formLength;
+	unsigned short m_formWidth;
+	unsigned char m_formType;
 	WPXFormOrientation m_formOrientation;
 
 };

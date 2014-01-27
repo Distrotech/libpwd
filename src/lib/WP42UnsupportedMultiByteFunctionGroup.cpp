@@ -28,7 +28,7 @@
 #include "WP42UnsupportedMultiByteFunctionGroup.h"
 #include "libwpd_internal.h"
 
-WP42UnsupportedMultiByteFunctionGroup::WP42UnsupportedMultiByteFunctionGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group) :
+WP42UnsupportedMultiByteFunctionGroup::WP42UnsupportedMultiByteFunctionGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char group) :
 	WP42MultiByteFunctionGroup(group)
 {
 	_read(input, encryption);

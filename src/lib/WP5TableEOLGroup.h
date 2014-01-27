@@ -39,15 +39,15 @@ public:
 
 private:
 	// Beginning column sub-function
-	uint8_t m_cellVerticalAlignment;
+	unsigned char m_cellVerticalAlignment;
 	bool m_useCellAttributes;
 	bool m_useCellJustification;
-	uint8_t m_columnNumber;
-	uint8_t m_colSpan;
-	uint8_t m_rowSpan;
+	unsigned char m_columnNumber;
+	unsigned char m_colSpan;
+	unsigned char m_rowSpan;
 	bool m_spannedFromAbove;
-	uint16_t m_cellAttributes;
-	uint8_t m_cellJustification;
+	unsigned short m_cellAttributes;
+	unsigned char m_cellJustification;
 };
 
 #endif /* WP5TABLEEOLGROUP_H */

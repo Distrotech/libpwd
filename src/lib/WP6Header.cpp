@@ -28,8 +28,8 @@
 #include "WP6FileStructure.h"
 #include "libwpd_internal.h"
 
-WP6Header::WP6Header(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint32_t documentOffset, uint8_t productType,
-                     uint8_t fileType, uint8_t majorVersion, uint8_t minorVersion, uint16_t documentEncryption) :
+WP6Header::WP6Header(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned documentOffset, unsigned char productType,
+                     unsigned char fileType, unsigned char majorVersion, unsigned char minorVersion, unsigned short documentEncryption) :
 	WPXHeader(input, encryption, documentOffset, productType, fileType, majorVersion, minorVersion, documentEncryption),
 	m_indexHeaderOffset(0),
 	m_numPrefixIndices(0)

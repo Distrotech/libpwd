@@ -29,7 +29,6 @@
 
 #include <librevenge/librevenge.h>
 #include <libwpd/libwpd.h>
-#include "libwpd_types.h"
 
 class WPXEncryption
 {
@@ -38,7 +37,7 @@ public:
 	~WPXEncryption();
 
 	const unsigned char *readAndDecrypt(librevenge::RVNGInputStream *input, unsigned long numBytes, unsigned long &numBytesRead);
-	uint16_t getCheckSum() const;
+	unsigned short getCheckSum() const;
 
 	void setEncryptionStartOffset(unsigned long encryptionStartOffset)
 	{

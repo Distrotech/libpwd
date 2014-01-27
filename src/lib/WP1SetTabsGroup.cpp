@@ -27,7 +27,7 @@
 #include "libwpd_internal.h"
 #include <vector>
 
-WP1SetTabsGroup::WP1SetTabsGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group) :
+WP1SetTabsGroup::WP1SetTabsGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char group) :
 	WP1VariableLengthGroup(group),
 	m_tabStops(std::vector<WPXTabStop>())
 {
@@ -45,11 +45,11 @@ void WP1SetTabsGroup::_readContents(librevenge::RVNGInputStream *input, WPXEncry
 		input->seek(2, librevenge::RVNG_SEEK_CUR);
 
 	// Now read the new condensed tab table
-	int8_t tmpTabType = 0;
+	signed char tmpTabType = 0;
 	double tmpTabPosition = 0.0;
 	WPXTabStop tmpTabStop = WPXTabStop();
 
-	while (((tmpTabType = (int8_t)readU8(input, encryption)) & 0xff) != 0xff)
+	while (((tmpTabType = (signed char)readU8(input, encryption)) & 0xff) != 0xff)
 	{
 		if (input->isEnd())
 			throw FileException();
@@ -57,7 +57,7 @@ void WP1SetTabsGroup::_readContents(librevenge::RVNGInputStream *input, WPXEncry
 
 		if (tmpTabType < 0)
 		{
-			for (int8_t i = tmpTabType; i < 0; i++)
+			for (signed char i = tmpTabType; i < 0; i++)
 			{
 				tmpTabStop.m_position += tmpTabPosition;
 				m_tabStops.push_back(tmpTabStop);

@@ -43,11 +43,11 @@ public:
 
 	void startDocument() {}
 	void startSubDocument() {}
-	void insertCharacter(uint32_t /* character */)
+	void insertCharacter(unsigned /* character */)
 	{
 		if (!isUndoOn()) m_currentPageHasContent = true;
 	}
-	void insertExtendedCharacter(uint8_t /* extendedCharacter */)
+	void insertExtendedCharacter(unsigned char /* extendedCharacter */)
 	{
 		if (!isUndoOn()) m_currentPageHasContent = true;
 	}
@@ -59,35 +59,35 @@ public:
 	{
 		if (!isUndoOn()) m_currentPageHasContent = true;
 	}
-	void insertBreak(uint8_t breakType);
+	void insertBreak(unsigned char breakType);
 	void insertNote(WPXNoteType /* noteType */, WP1SubDocument * /* subDocument */) {}
-	void attributeChange(bool /* isOn */, uint8_t /* attribute */) {}
-	void fontPointSize(uint8_t /* pointSize */) {}
-	void fontId(uint16_t /* id */) {}
-	void marginReset(uint16_t leftMargin, uint16_t rightMargin);
-	void topMarginSet(uint16_t topMargin);
-	void bottomMarginSet(uint16_t bottomMargin);
-	void leftIndent(uint16_t /* leftMarginOffset */)
+	void attributeChange(bool /* isOn */, unsigned char /* attribute */) {}
+	void fontPointSize(unsigned char /* pointSize */) {}
+	void fontId(unsigned short /* id */) {}
+	void marginReset(unsigned short leftMargin, unsigned short rightMargin);
+	void topMarginSet(unsigned short topMargin);
+	void bottomMarginSet(unsigned short bottomMargin);
+	void leftIndent(unsigned short /* leftMarginOffset */)
 	{
 		if (!isUndoOn()) m_currentPageHasContent = true;
 	}
-	void leftRightIndent(uint16_t /* leftRightMarginOffset */)
+	void leftRightIndent(unsigned short /* leftRightMarginOffset */)
 	{
 		if (!isUndoOn()) m_currentPageHasContent = true;
 	}
-	void leftMarginRelease(uint16_t /* release */) {}
+	void leftMarginRelease(unsigned short /* release */) {}
 	void setTabs(const std::vector<WPXTabStop> & /* tabStops */) {}
-	void headerFooterGroup(uint8_t headerFooterDefinition, WP1SubDocument *subDocument);
-	void suppressPageCharacteristics(uint8_t suppressCode);
-	void justificationChange(uint8_t /* justification */) {}
-	void lineSpacingChange(uint8_t /* spacing */) {}
+	void headerFooterGroup(unsigned char headerFooterDefinition, WP1SubDocument *subDocument);
+	void suppressPageCharacteristics(unsigned char suppressCode);
+	void justificationChange(unsigned char /* justification */) {}
+	void lineSpacingChange(unsigned char /* spacing */) {}
 	void flushRightOn() {}
 	void flushRightOff() {}
 	void centerOn() {}
 	void centerOff() {}
 	void endDocument();
 	void endSubDocument();
-	void insertPicture(uint16_t /* width */, uint16_t /* height */, const librevenge::RVNGBinaryData & /* binaryData */) {}
+	void insertPicture(unsigned short /* width */, unsigned short /* height */, const librevenge::RVNGBinaryData & /* binaryData */) {}
 
 protected:
 	void _handleSubDocument(const WPXSubDocument *subDocument, WPXSubDocumentType subDocumentType, WPXTableList tableList, int nextTableIndice = 0);

@@ -33,11 +33,11 @@
 class WP6FixedLengthGroup : public WP6Part
 {
 public:
-	WP6FixedLengthGroup(uint8_t groupID);
-	static WP6FixedLengthGroup *constructFixedLengthGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID);
-	static bool isGroupConsistent(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const uint8_t groupID);
+	WP6FixedLengthGroup(unsigned char groupID);
+	static WP6FixedLengthGroup *constructFixedLengthGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char groupID);
+	static bool isGroupConsistent(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const unsigned char groupID);
 
-	uint8_t getGroup() const
+	unsigned char getGroup() const
 	{
 		return m_group;
 	}
@@ -47,7 +47,7 @@ protected:
 	virtual void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption) = 0; // we always read the contents in the case of a fixed length group
 
 private:
-	uint8_t m_group;
+	unsigned char m_group;
 };
 
 #endif /* WP6FIXEDLENGTHGROUP_H */

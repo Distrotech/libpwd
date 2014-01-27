@@ -39,9 +39,9 @@ class WPXHeaderFooter
 {
 public:
 	WPXHeaderFooter(const WPXHeaderFooterType headerFooterType, const WPXHeaderFooterOccurrence occurrence,
-	                const uint8_t internalType, const WPXSubDocument *subDocument, WPXTableList tableList);
+	                const unsigned char internalType, const WPXSubDocument *subDocument, WPXTableList tableList);
 	WPXHeaderFooter(const WPXHeaderFooterType headerFooterType, const WPXHeaderFooterOccurrence occurrence,
-	                const uint8_t internalType, const WPXSubDocument *subDocument);
+	                const unsigned char internalType, const WPXSubDocument *subDocument);
 	WPXHeaderFooter(const WPXHeaderFooter &headerFooter);
 	~WPXHeaderFooter();
 	WPXHeaderFooter &operator=(const WPXHeaderFooter &headerFooter);
@@ -53,7 +53,7 @@ public:
 	{
 		return m_occurrence;
 	}
-	uint8_t getInternalType() const
+	unsigned char getInternalType() const
 	{
 		return m_internalType;
 	}
@@ -69,7 +69,7 @@ public:
 private:
 	WPXHeaderFooterType m_type;
 	WPXHeaderFooterOccurrence m_occurrence;
-	uint8_t m_internalType; // for suppression
+	unsigned char m_internalType; // for suppression
 	const WPXSubDocument *m_subDocument;  // for the actual text
 	WPXTableList m_tableList;
 };
@@ -85,7 +85,7 @@ public:
 	{
 		return m_isPageNumberSuppressed;
 	}
-	bool getHeaderFooterSuppression(const uint8_t headerFooterType) const
+	bool getHeaderFooterSuppression(const unsigned char headerFooterType) const
 	{
 		if (headerFooterType <= WPX_FOOTER_B) return m_isHeaderFooterSuppressed[headerFooterType];
 		return false;
@@ -151,13 +151,13 @@ public:
 		return m_headerFooterList;
 	}
 
-	void setHeaderFooter(const WPXHeaderFooterType type, const uint8_t headerFooterType, const WPXHeaderFooterOccurrence occurrence,
+	void setHeaderFooter(const WPXHeaderFooterType type, const unsigned char headerFooterType, const WPXHeaderFooterOccurrence occurrence,
 	                     const WPXSubDocument *subDocument, WPXTableList tableList);
 	void setPageNumberSuppression(const bool suppress)
 	{
 		m_isPageNumberSuppressed = suppress;
 	}
-	void setHeadFooterSuppression(const uint8_t headerFooterType, const bool suppress)
+	void setHeadFooterSuppression(const unsigned char headerFooterType, const bool suppress)
 	{
 		m_isHeaderFooterSuppressed[headerFooterType] = suppress;
 	}

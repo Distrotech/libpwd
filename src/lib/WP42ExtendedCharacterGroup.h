@@ -31,13 +31,13 @@
 class WP42ExtendedCharacterGroup : public WP42MultiByteFunctionGroup
 {
 public:
-	WP42ExtendedCharacterGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group);
+	WP42ExtendedCharacterGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char group);
 	~WP42ExtendedCharacterGroup();
 	void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP42Listener *listener);
 
 private:
-	uint8_t m_extendedCharacter;
+	unsigned char m_extendedCharacter;
 };
 
 #endif /* WP42EXTENDEDCHARACTERGROUP_H */

@@ -58,7 +58,7 @@ void WP3TablesGroup::_readContents(librevenge::RVNGInputStream *input, WPXEncryp
 {
 	// this group can contain different kinds of data, thus we need to read
 	// the contents accordingly
-	uint8_t i;
+	unsigned char i;
 	long startPosition = 0;
 	switch (getSubGroup())
 	{
@@ -109,9 +109,9 @@ void WP3TablesGroup::_readContents(librevenge::RVNGInputStream *input, WPXEncryp
 		break;
 	case WP3_TABLES_GROUP_SET_TABLE_CELL_FILL_COLOR_PATTERN:
 	{
-		uint16_t tmpRed = readU16(input, encryption, true);
-		uint16_t tmpGreen = readU16(input, encryption, true);
-		uint16_t tmpBlue = readU16(input, encryption, true);
+		unsigned short tmpRed = readU16(input, encryption, true);
+		unsigned short tmpGreen = readU16(input, encryption, true);
+		unsigned short tmpBlue = readU16(input, encryption, true);
 		m_cellFillColor = RGBSColor(tmpRed, tmpGreen, tmpBlue);
 	}
 	break;
@@ -130,7 +130,7 @@ void WP3TablesGroup::parse(WP3Listener *listener)
 {
 	WPD_DEBUG_MSG(("WordPerfect: handling a Tables group\n"));
 
-	uint8_t i;
+	unsigned char i;
 	switch (getSubGroup())
 	{
 	case WP3_TABLES_GROUP_TABLE_FUNCTION:

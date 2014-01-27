@@ -63,15 +63,15 @@ WP5ContentListener::~WP5ContentListener()
  public 'HLListenerImpl' functions
 *****************************************/
 
-void WP5ContentListener::insertCharacter(uint32_t character)
+void WP5ContentListener::insertCharacter(unsigned character)
 {
-	uint32_t tmpCharacter = _mapNonUnicodeCharacter(character);
+	unsigned tmpCharacter = _mapNonUnicodeCharacter(character);
 	if (!m_ps->m_isSpanOpened)
 		_openSpan();
 	appendUCS4(m_parseState->m_textBuffer, tmpCharacter);
 }
 
-void WP5ContentListener::insertTab(uint8_t tabType, double tabPosition)
+void WP5ContentListener::insertTab(unsigned char tabType, double tabPosition)
 {
 	bool tmpHasTabPositionInformation = true;
 	if (tabPosition >= (double)((double)0xFFFE/(double)WPX_NUM_WPUS_PER_INCH) || tabPosition == 0.0)
@@ -166,7 +166,7 @@ void WP5ContentListener::insertTab(uint8_t tabType, double tabPosition)
 	}
 }
 
-void WP5ContentListener::insertIndent(uint8_t indentType, double indentPosition)
+void WP5ContentListener::insertIndent(unsigned char indentType, double indentPosition)
 {
 	bool tmpHasIndentPositionInformation = true;
 	if (indentPosition >= (double)((double)0xFFFE/(double)WPX_NUM_WPUS_PER_INCH) || indentPosition == 0.0)
@@ -237,7 +237,7 @@ void WP5ContentListener::insertEOL()
 	}
 }
 
-void WP5ContentListener::defineTable(uint8_t position, uint16_t leftOffset)
+void WP5ContentListener::defineTable(unsigned char position, unsigned short leftOffset)
 {
 	if (!isUndoOn())
 	{
@@ -272,8 +272,8 @@ void WP5ContentListener::defineTable(uint8_t position, uint16_t leftOffset)
 	}
 }
 
-void WP5ContentListener::addTableColumnDefinition(uint32_t width, uint32_t /* leftGutter */,
-                                                  uint32_t /* rightGutter */, uint32_t attributes, uint8_t alignment)
+void WP5ContentListener::addTableColumnDefinition(unsigned width, unsigned /* leftGutter */,
+                                                  unsigned /* rightGutter */, unsigned attributes, unsigned char alignment)
 {
 	if (!isUndoOn())
 	{
@@ -318,7 +318,7 @@ void WP5ContentListener::startTable()
 	}
 }
 
-void WP5ContentListener::insertRow(uint16_t rowHeight, bool isMinimumHeight, bool isHeaderRow)
+void WP5ContentListener::insertRow(unsigned short rowHeight, bool isMinimumHeight, bool isHeaderRow)
 {
 	if (!isUndoOn())
 	{
@@ -328,10 +328,10 @@ void WP5ContentListener::insertRow(uint16_t rowHeight, bool isMinimumHeight, boo
 	}
 }
 
-void WP5ContentListener::insertCell(uint8_t colSpan, uint8_t rowSpan, uint8_t borderBits,
+void WP5ContentListener::insertCell(unsigned char colSpan, unsigned char rowSpan, unsigned char borderBits,
                                     const RGBSColor *cellFgColor, const RGBSColor *cellBgColor,
                                     const RGBSColor *cellBorderColor, WPXVerticalAlignment cellVerticalAlignment,
-                                    bool useCellAttributes, uint32_t cellAttributes)
+                                    bool useCellAttributes, unsigned cellAttributes)
 {
 	if (!isUndoOn())
 	{
@@ -369,13 +369,13 @@ void WP5ContentListener::endTable()
  public 'parser' functions
 *****************************************/
 
-void WP5ContentListener::attributeChange(bool isOn, uint8_t attribute)
+void WP5ContentListener::attributeChange(bool isOn, unsigned char attribute)
 {
 	if (!isUndoOn())
 	{
 		_closeSpan();
 
-		uint32_t textAttributeBit = 0;
+		unsigned textAttributeBit = 0;
 
 		// FIXME: handle all the possible attribute bits
 		switch (attribute)
@@ -439,7 +439,7 @@ void WP5ContentListener::attributeChange(bool isOn, uint8_t attribute)
 	}
 }
 
-void WP5ContentListener::marginChange(uint8_t side, uint16_t margin)
+void WP5ContentListener::marginChange(unsigned char side, unsigned short margin)
 {
 	if (!isUndoOn())
 	{
@@ -484,7 +484,7 @@ void WP5ContentListener::marginChange(uint8_t side, uint16_t margin)
 	}
 }
 
-void WP5ContentListener::characterColorChange(uint8_t red, uint8_t green, uint8_t blue)
+void WP5ContentListener::characterColorChange(unsigned char red, unsigned char green, unsigned char blue)
 {
 	if (!isUndoOn())
 	{
@@ -505,7 +505,7 @@ void WP5ContentListener::setFont(const librevenge::RVNGString &fontName, double 
 	}
 }
 
-void WP5ContentListener::setTabs(const std::vector<WPXTabStop> &tabStops, uint16_t tabOffset)
+void WP5ContentListener::setTabs(const std::vector<WPXTabStop> &tabStops, unsigned short tabOffset)
 {
 	if (!isUndoOn())
 	{
@@ -594,7 +594,7 @@ void WP5ContentListener::_handleSubDocument(const WPXSubDocument *subDocument, W
 	m_parseState = oldParseState;
 }
 
-void WP5ContentListener::headerFooterGroup(uint8_t /* headerFooterType */, uint8_t /* occurrenceBits */,
+void WP5ContentListener::headerFooterGroup(unsigned char /* headerFooterType */, unsigned char /* occurrenceBits */,
                                            WP5SubDocument *subDocument)
 {
 	if (subDocument)
@@ -607,7 +607,7 @@ void WP5ContentListener::setDefaultFont(const librevenge::RVNGString &fontName, 
 	m_defaultFontSize = fontSize;
 }
 
-void WP5ContentListener::boxOn(uint8_t positionAndType, uint8_t alignment, uint16_t width, uint16_t height, uint16_t x, uint16_t y)
+void WP5ContentListener::boxOn(unsigned char positionAndType, unsigned char alignment, unsigned short width, unsigned short height, unsigned short x, unsigned short y)
 {
 	/*
 	Paragraph:

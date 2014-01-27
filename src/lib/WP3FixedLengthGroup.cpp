@@ -35,12 +35,12 @@
 #include "WP3UndoGroup.h"
 #include "libwpd_internal.h"
 
-WP3FixedLengthGroup::WP3FixedLengthGroup(const uint8_t groupID)
+WP3FixedLengthGroup::WP3FixedLengthGroup(const unsigned char groupID)
 	: m_group(groupID)
 {
 }
 
-WP3FixedLengthGroup *WP3FixedLengthGroup::constructFixedLengthGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const uint8_t groupID)
+WP3FixedLengthGroup *WP3FixedLengthGroup::constructFixedLengthGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const unsigned char groupID)
 {
 	switch (groupID)
 	{
@@ -68,7 +68,7 @@ WP3FixedLengthGroup *WP3FixedLengthGroup::constructFixedLengthGroup(librevenge::
 	}
 }
 
-bool WP3FixedLengthGroup::isGroupConsistent(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const uint8_t groupID)
+bool WP3FixedLengthGroup::isGroupConsistent(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const unsigned char groupID)
 {
 	long startPosition = input->tell();
 

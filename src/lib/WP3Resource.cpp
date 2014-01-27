@@ -29,8 +29,8 @@
 #include "WP3FileStructure.h"
 #include "libwpd_internal.h"
 
-WP3Resource::WP3Resource(uint32_t resourceType, uint32_t resourceReferenceID, const librevenge::RVNGString &resourceName,
-                         uint8_t resourceAttributes, const librevenge::RVNGBinaryData &resourceData) :
+WP3Resource::WP3Resource(unsigned resourceType, unsigned resourceReferenceID, const librevenge::RVNGString &resourceName,
+                         unsigned char resourceAttributes, const librevenge::RVNGBinaryData &resourceData) :
 	m_resourceType(resourceType),
 	m_resourceReferenceID(resourceReferenceID),
 	m_resourceName(resourceName),

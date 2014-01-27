@@ -31,7 +31,7 @@
 
 WPXSubDocument::WPXSubDocument(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const unsigned dataSize) :
 	m_stream(0),
-	m_streamData(new uint8_t[dataSize])
+	m_streamData(new unsigned char[dataSize])
 {
 	unsigned i=0;
 	for (; i<dataSize; i++)
@@ -43,7 +43,7 @@ WPXSubDocument::WPXSubDocument(librevenge::RVNGInputStream *input, WPXEncryption
 	m_stream = new WPXMemoryInputStream(m_streamData, i);
 }
 
-WPXSubDocument::WPXSubDocument(uint8_t *streamData, const unsigned dataSize) :
+WPXSubDocument::WPXSubDocument(unsigned char *streamData, const unsigned dataSize) :
 	m_stream(0),
 	m_streamData(0)
 {

@@ -39,11 +39,11 @@ protected:
 	void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 
 private:
-	uint16_t m_boxNumber;
-	uint8_t m_positionAndType, m_alignment;
-	uint16_t m_width, m_height, m_x, m_y;
-	uint8_t m_boxType;
-	uint16_t m_graphicsOffset;
+	unsigned short m_boxNumber;
+	unsigned char m_positionAndType, m_alignment;
+	unsigned short m_width, m_height, m_x, m_y;
+	unsigned char m_boxType;
+	unsigned short m_graphicsOffset;
 	const librevenge::RVNGBinaryData *m_data;
 	// Unimplemented to prevent compiler from creating crasher ones
 	WP5BoxGroup(const WP5BoxGroup &);

@@ -34,12 +34,12 @@
 #include "WP5UnsupportedFixedLengthGroup.h"
 #include "libwpd_internal.h"
 
-WP5FixedLengthGroup::WP5FixedLengthGroup(const uint8_t groupID):
+WP5FixedLengthGroup::WP5FixedLengthGroup(const unsigned char groupID):
 	m_group(groupID)
 {
 }
 
-WP5FixedLengthGroup *WP5FixedLengthGroup::constructFixedLengthGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const uint8_t groupID)
+WP5FixedLengthGroup *WP5FixedLengthGroup::constructFixedLengthGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const unsigned char groupID)
 {
 	switch (groupID)
 	{
@@ -64,7 +64,7 @@ WP5FixedLengthGroup *WP5FixedLengthGroup::constructFixedLengthGroup(librevenge::
 	}
 }
 
-bool WP5FixedLengthGroup::isGroupConsistent(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const uint8_t groupID)
+bool WP5FixedLengthGroup::isGroupConsistent(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const unsigned char groupID)
 {
 	long startPosition = input->tell();
 

@@ -55,7 +55,7 @@ WP5GeneralPacketData *WP5GeneralPacketData::constructGeneralPacketData(libreveng
 	}
 }
 
-void WP5GeneralPacketData::_read(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint32_t dataOffset, uint32_t dataSize)
+void WP5GeneralPacketData::_read(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned dataOffset, unsigned dataSize)
 {
 	input->seek(dataOffset, librevenge::RVNG_SEEK_SET);
 

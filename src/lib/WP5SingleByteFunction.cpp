@@ -29,7 +29,7 @@
 #include "WP5Listener.h"
 #include "libwpd_internal.h"
 
-WP5SingleByteFunction *WP5SingleByteFunction::constructSingleByteFunction(librevenge::RVNGInputStream * /* input */, WPXEncryption * /* encryption */, uint8_t groupID)
+WP5SingleByteFunction *WP5SingleByteFunction::constructSingleByteFunction(librevenge::RVNGInputStream * /* input */, WPXEncryption * /* encryption */, unsigned char groupID)
 {
 
 	switch (groupID)
@@ -70,22 +70,22 @@ void WP5EOLFunction::parse(WP5Listener *listener)
 
 void WP5SpaceFunction::parse(WP5Listener *listener)
 {
-	listener->insertCharacter((uint32_t) ' ');
+	listener->insertCharacter((unsigned) ' ');
 }
 
 void WP5HardSpaceFunction::parse(WP5Listener *listener)
 {
-	listener->insertCharacter((uint32_t) 0xa0);
+	listener->insertCharacter((unsigned) 0xa0);
 }
 
 void WP5HyphenFunction::parse(WP5Listener *listener)
 {
-	listener->insertCharacter((uint32_t) '-');
+	listener->insertCharacter((unsigned) '-');
 }
 
 void WP5SoftHyphenFunction::parse(WP5Listener *listener)
 {
-	listener->insertCharacter((uint32_t) 0xad);
+	listener->insertCharacter((unsigned) 0xad);
 }
 
 /* vim:set shiftwidth=4 softtabstop=4 noexpandtab: */

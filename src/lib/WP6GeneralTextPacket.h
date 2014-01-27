@@ -35,7 +35,7 @@
 class WP6GeneralTextPacket : public WP6PrefixDataPacket
 {
 public:
-	WP6GeneralTextPacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int id, uint32_t dataOffset, uint32_t dataSize);
+	WP6GeneralTextPacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int id, unsigned dataOffset, unsigned dataSize);
 	~WP6GeneralTextPacket();
 	void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP6Listener *listener) const;
@@ -48,7 +48,7 @@ private:
 	WP6GeneralTextPacket(const WP6GeneralTextPacket &);
 	WP6GeneralTextPacket &operator=(const WP6GeneralTextPacket &);
 	WP6SubDocument *m_subDocument;
-	uint8_t *m_streamData;
+	unsigned char *m_streamData;
 
 };
 #endif /* WP6GENERALTEXTPACKET_H */

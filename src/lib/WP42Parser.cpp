@@ -61,10 +61,10 @@ void WP42Parser::parseDocument(librevenge::RVNGInputStream *input, WPXEncryption
 {
 	while (!input->isEnd())
 	{
-		uint8_t readVal;
+		unsigned char readVal;
 		readVal = readU8(input, encryption);
 
-		if (readVal < (uint8_t)0x20)
+		if (readVal < (unsigned char)0x20)
 		{
 			WPD_DEBUG_MSG(("Offset: %i, Handling Control Character 0x%2x\n", (unsigned int)input->tell(), readVal));
 
@@ -90,14 +90,14 @@ void WP42Parser::parseDocument(librevenge::RVNGInputStream *input, WPXEncryption
 				break;
 			}
 		}
-		else if (readVal >= (uint8_t)0x20 && readVal <= (uint8_t)0x7F)
+		else if (readVal >= (unsigned char)0x20 && readVal <= (unsigned char)0x7F)
 		{
 			WPD_DEBUG_MSG(("Offset: %i, Handling Ascii Character 0x%2x\n", (unsigned int)input->tell(), readVal));
 
 			// normal ASCII characters
 			listener->insertCharacter(readVal);
 		}
-		else if (readVal >= (uint8_t)0x80 && readVal <= (uint8_t)0xBF)
+		else if (readVal >= (unsigned char)0x80 && readVal <= (unsigned char)0xBF)
 		{
 			WPD_DEBUG_MSG(("Offset: %i, Handling Single Character Function 0x%2x\n", (unsigned int)input->tell(), readVal));
 
@@ -149,7 +149,7 @@ void WP42Parser::parseDocument(librevenge::RVNGInputStream *input, WPXEncryption
 				break;
 			}
 		}
-		else if (readVal >= (uint8_t)0xC0 && readVal <= (uint8_t)0xFE)
+		else if (readVal >= (unsigned char)0xC0 && readVal <= (unsigned char)0xFE)
 		{
 			WP42Part *part = WP42Part::constructPart(input, encryption, readVal);
 			if (part)

@@ -34,7 +34,7 @@ class WP1SubDocument;
 class WP1PictureGroup : public WP1VariableLengthGroup
 {
 public:
-	WP1PictureGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group);
+	WP1PictureGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char group);
 	~WP1PictureGroup();
 	void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP1Listener *listener);
@@ -43,7 +43,7 @@ private:
 	WP1PictureGroup(const WP1PictureGroup &);
 	WP1PictureGroup &operator=(const WP1PictureGroup &);
 	librevenge::RVNGBinaryData m_binaryData;
-	uint16_t m_width, m_height;
+	unsigned short m_width, m_height;
 };
 
 #endif /* WP1PICTUREGROUP_H */

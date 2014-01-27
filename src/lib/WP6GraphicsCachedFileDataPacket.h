@@ -33,7 +33,7 @@
 class WP6GraphicsCachedFileDataPacket : public WP6PrefixDataPacket
 {
 public:
-	WP6GraphicsCachedFileDataPacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int id, uint32_t dataOffset, uint32_t dataSize);
+	WP6GraphicsCachedFileDataPacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int id, unsigned dataOffset, unsigned dataSize);
 	~WP6GraphicsCachedFileDataPacket();
 	void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP6Listener * /* listener */) const {}
@@ -47,7 +47,7 @@ private:
 	WP6GraphicsCachedFileDataPacket &operator=(const WP6GraphicsCachedFileDataPacket &);
 	int m_id;
 	librevenge::RVNGBinaryData *m_object;
-	uint8_t *m_data;
+	unsigned char *m_data;
 
 };
 #endif /* WP6GRAPHICSCACHEDFILEDATAPACKET_H */

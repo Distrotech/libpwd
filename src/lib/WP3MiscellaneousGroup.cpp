@@ -51,7 +51,7 @@ void WP3MiscellaneousGroup::_readContents(librevenge::RVNGInputStream *input, WP
 	switch (getSubGroup())
 	{
 	case WP3_MISCELLANEOUS_GROUP_PAGE_SIZE_OVERRIDE:
-		uint16_t tmpPageOrientation;
+		unsigned short tmpPageOrientation;
 
 		// skip 20 bytes of old values
 		input->seek(20, librevenge::RVNG_SEEK_CUR);

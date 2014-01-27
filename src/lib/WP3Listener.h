@@ -42,53 +42,53 @@ public:
 
 	virtual void startDocument() = 0;
 	virtual void startSubDocument() = 0;
-	virtual void insertCharacter(uint32_t character) = 0;
+	virtual void insertCharacter(unsigned character) = 0;
 	virtual void insertTab() = 0;
-	virtual void insertTab(uint8_t tabType, double tabPosition) = 0;
-	virtual void insertBreak(uint8_t breakType) = 0;
+	virtual void insertTab(unsigned char tabType, double tabPosition) = 0;
+	virtual void insertBreak(unsigned char breakType) = 0;
 	virtual void insertEOL() = 0;
 	virtual void lineSpacingChange(double lineSpacing) = 0;
-	virtual void attributeChange(bool isOn, uint8_t attribute) = 0;
-	virtual void pageMarginChange(uint8_t side, uint16_t margin) = 0;
-	virtual void pageFormChange(uint16_t length, uint16_t width, WPXFormOrientation orientation) = 0;
-	virtual void marginChange(uint8_t side, uint16_t margin) = 0;
+	virtual void attributeChange(bool isOn, unsigned char attribute) = 0;
+	virtual void pageMarginChange(unsigned char side, unsigned short margin) = 0;
+	virtual void pageFormChange(unsigned short length, unsigned short width, WPXFormOrientation orientation) = 0;
+	virtual void marginChange(unsigned char side, unsigned short margin) = 0;
 	virtual void indentFirstLineChange(double offset) = 0;
 	virtual void setTabs(bool isRelative, const std::vector<WPXTabStop> tabStops) = 0;
-	virtual void columnChange(WPXTextColumnType columnType, uint8_t numColumns, const std::vector<double> &columnWidth,
+	virtual void columnChange(WPXTextColumnType columnType, unsigned char numColumns, const std::vector<double> &columnWidth,
 	                          const std::vector<bool> &isFixedWidth) = 0;
 	virtual void endDocument() = 0;
 	virtual void endSubDocument() = 0;
 
-	virtual void defineTable(uint8_t position, uint16_t leftOffset) = 0;
-	virtual void addTableColumnDefinition(uint32_t width, uint32_t leftGutter, uint32_t rightGutter,
-	                                      uint32_t attributes, uint8_t alignment) = 0;
+	virtual void defineTable(unsigned char position, unsigned short leftOffset) = 0;
+	virtual void addTableColumnDefinition(unsigned width, unsigned leftGutter, unsigned rightGutter,
+	                                      unsigned attributes, unsigned char alignment) = 0;
 	virtual void startTable() = 0;
 	virtual void closeCell() = 0;
 	virtual void closeRow() = 0;
-	virtual void setTableCellSpan(uint16_t colSpan, uint16_t rowSpan) = 0;
+	virtual void setTableCellSpan(unsigned short colSpan, unsigned short rowSpan) = 0;
 	virtual void setTableCellFillColor(const RGBSColor *cellFillColor) = 0;
 	virtual void endTable() = 0;
-	virtual void undoChange(uint8_t undoType, uint16_t undoLevel) = 0;
-	virtual void justificationChange(uint8_t justification) = 0;
+	virtual void undoChange(unsigned char undoType, unsigned short undoLevel) = 0;
+	virtual void justificationChange(unsigned char justification) = 0;
 	virtual void setTextColor(const RGBSColor *fontColor) = 0;
 	virtual void setTextFont(const librevenge::RVNGString &fontName) = 0;
-	virtual void setFontSize(uint16_t fontSize) = 0;
+	virtual void setFontSize(unsigned short fontSize) = 0;
 	virtual void insertPageNumber(const librevenge::RVNGString &pageNumber) = 0;
 	virtual void insertNoteReference(const librevenge::RVNGString &noteReference) = 0;
 	virtual void insertNote(WPXNoteType noteType, const WP3SubDocument *subDocument) = 0;
-	virtual void headerFooterGroup(uint8_t headerFooterType, uint8_t occurrenceBits, WP3SubDocument *subDocument) = 0;
-	virtual void suppressPage(uint16_t suppressCode) = 0;
+	virtual void headerFooterGroup(unsigned char headerFooterType, unsigned char occurrenceBits, WP3SubDocument *subDocument) = 0;
+	virtual void suppressPage(unsigned short suppressCode) = 0;
 	virtual void backTab() = 0;
 	virtual void leftIndent() = 0;
 	virtual void leftIndent(double offset) = 0;
 	virtual void leftRightIndent() = 0;
 	virtual void leftRightIndent(double offset) = 0;
-	virtual void insertPicture(double height, double width, double verticalOffset, double horizontalOffset, uint8_t leftColumn, uint8_t rightColumn,
-	                           uint16_t figureFlags, const librevenge::RVNGBinaryData &binaryData) = 0;
-	virtual void insertTextBox(double height, double width, double verticalOffset, double horizontalOffset, uint8_t leftColumn, uint8_t rightColumn,
-	                           uint16_t figureFlags, const WP3SubDocument *subDocument, const WP3SubDocument *caption) = 0;
-	virtual void insertWP51Table(double height, double width, double verticalOffset, double horizontalOffset, uint8_t leftColumn, uint8_t rightColumn,
-	                             uint16_t figureFlags, const WP3SubDocument *subDocument, const WP3SubDocument *caption) = 0;
+	virtual void insertPicture(double height, double width, double verticalOffset, double horizontalOffset, unsigned char leftColumn, unsigned char rightColumn,
+	                           unsigned short figureFlags, const librevenge::RVNGBinaryData &binaryData) = 0;
+	virtual void insertTextBox(double height, double width, double verticalOffset, double horizontalOffset, unsigned char leftColumn, unsigned char rightColumn,
+	                           unsigned short figureFlags, const WP3SubDocument *subDocument, const WP3SubDocument *caption) = 0;
+	virtual void insertWP51Table(double height, double width, double verticalOffset, double horizontalOffset, unsigned char leftColumn, unsigned char rightColumn,
+	                             unsigned short figureFlags, const WP3SubDocument *subDocument, const WP3SubDocument *caption) = 0;
 
 	void setResourceFork(WP3ResourceFork *resourceFork)
 	{

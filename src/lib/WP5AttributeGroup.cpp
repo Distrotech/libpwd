@@ -27,7 +27,7 @@
 #include "WP5AttributeGroup.h"
 #include "libwpd_internal.h"
 
-WP5AttributeGroup::WP5AttributeGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID) :
+WP5AttributeGroup::WP5AttributeGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char groupID) :
 	WP5FixedLengthGroup(groupID),
 	m_attribute(0)
 {
@@ -39,7 +39,7 @@ void WP5AttributeGroup::_readContents(librevenge::RVNGInputStream *input, WPXEnc
 	m_attribute = readU8(input, encryption);
 }
 
-WP5AttributeOnGroup::WP5AttributeOnGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID)
+WP5AttributeOnGroup::WP5AttributeOnGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char groupID)
 	: WP5AttributeGroup(input, encryption, groupID)
 {
 }
@@ -49,7 +49,7 @@ void WP5AttributeOnGroup::parse(WP5Listener *listener)
 	listener->attributeChange(true, getAttribute());
 }
 
-WP5AttributeOffGroup::WP5AttributeOffGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID)
+WP5AttributeOffGroup::WP5AttributeOffGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char groupID)
 	: WP5AttributeGroup(input, encryption, groupID)
 {
 }

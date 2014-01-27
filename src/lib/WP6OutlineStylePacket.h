@@ -33,17 +33,17 @@
 class WP6OutlineStylePacket : public WP6PrefixDataPacket
 {
 public:
-	WP6OutlineStylePacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int id, uint32_t dataOffset, uint32_t dataSize);
+	WP6OutlineStylePacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int id, unsigned dataOffset, unsigned dataSize);
 	~WP6OutlineStylePacket();
 	void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP6Listener *listener) const;
 
 private:
-	uint16_t m_numPIDs;
-	uint16_t m_outlineHash;
-	uint8_t m_numberingMethods[WP6_NUM_LIST_LEVELS];
-	uint8_t m_outlineFlags;
-	uint8_t m_tabBehaviourFlag;
+	unsigned short m_numPIDs;
+	unsigned short m_outlineHash;
+	unsigned char m_numberingMethods[WP6_NUM_LIST_LEVELS];
+	unsigned char m_outlineFlags;
+	unsigned char m_tabBehaviourFlag;
 };
 #endif /* WP6OUTLINESTYLEPACKET_H */
 /* vim:set shiftwidth=4 softtabstop=4 noexpandtab: */

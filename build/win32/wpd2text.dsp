@@ -103,7 +103,6 @@ SOURCE=..\..\src\conv\text\wpd2text.cpp
 DEP_CPP_WPD2T=\
 	"..\..\src\conv\text\TextDocumentGenerator.h"\
 	"..\..\src\lib\libwpd.h"\
-	"..\..\src\lib\libwpd_types.h"\
 	"..\..\src\lib\WPDocument.h"\
 	"..\..\src\lib\WPXBinaryData.h"\
 	"..\..\src\lib\WPXDocumentInterface.h"\

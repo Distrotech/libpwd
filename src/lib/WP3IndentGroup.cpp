@@ -28,7 +28,7 @@
 #include "WP3Listener.h"
 #include "libwpd_internal.h"
 
-WP3IndentGroup::WP3IndentGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID) :
+WP3IndentGroup::WP3IndentGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char groupID) :
 	WP3FixedLengthGroup(groupID),
 	m_subGroup(0),
 	m_offset(0.0)

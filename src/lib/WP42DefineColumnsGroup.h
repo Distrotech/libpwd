@@ -32,16 +32,16 @@
 class WP42DefineColumnsGroup : public WP42MultiByteFunctionGroup
 {
 public:
-	WP42DefineColumnsGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group);
+	WP42DefineColumnsGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char group);
 	~WP42DefineColumnsGroup();
 	void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP42Listener *listener);
 
 private:
-	uint8_t m_groupId;
-	uint8_t m_numColumns;
+	unsigned char m_groupId;
+	unsigned char m_numColumns;
 	bool m_isParallel;
-	std::vector<uint8_t> m_columnsDefinition;
+	std::vector<unsigned char> m_columnsDefinition;
 };
 
 #endif /* WP42DEFINECOLUMNSGROUP_H */

@@ -29,7 +29,6 @@
 #include <vector>
 #include <librevenge/librevenge.h>
 #include "WP3VariableLengthGroup.h"
-#include "libwpd_types.h"
 
 class WP3Listener;
 
@@ -43,8 +42,8 @@ public:
 
 private:
 	/* Variables used for subgroup 0x01 Set Columns On/Off */
-	uint8_t m_colType;
-	uint8_t m_numColumns;
+	unsigned char m_colType;
+	unsigned char m_numColumns;
 	std::vector<bool> m_isFixedWidth;
 	std::vector<double> m_columnWidth;
 

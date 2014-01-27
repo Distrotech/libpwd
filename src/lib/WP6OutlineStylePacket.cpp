@@ -28,7 +28,7 @@
 #include "WP6OutlineStylePacket.h"
 #include "libwpd_internal.h"
 
-WP6OutlineStylePacket::WP6OutlineStylePacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int /* id */, uint32_t dataOffset, uint32_t dataSize) :
+WP6OutlineStylePacket::WP6OutlineStylePacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int /* id */, unsigned dataOffset, unsigned dataSize) :
 	WP6PrefixDataPacket(input, encryption),
 	m_numPIDs(0),
 	m_outlineHash(0),

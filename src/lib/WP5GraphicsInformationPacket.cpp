@@ -28,7 +28,7 @@
 #include "WP5Parser.h"
 #include "libwpd_internal.h"
 
-WP5GraphicsInformationPacket::WP5GraphicsInformationPacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int /* id */, uint32_t dataOffset, uint32_t dataSize) :
+WP5GraphicsInformationPacket::WP5GraphicsInformationPacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int /* id */, unsigned dataOffset, unsigned dataSize) :
 	WP5GeneralPacketData(),
 	m_images(),
 	m_data()
@@ -38,7 +38,7 @@ WP5GraphicsInformationPacket::WP5GraphicsInformationPacket(librevenge::RVNGInput
 
 WP5GraphicsInformationPacket::~WP5GraphicsInformationPacket()
 {
-	for (std::vector<uint8_t *>::iterator iter1 = m_data.begin(); iter1 != m_data.end(); ++iter1)
+	for (std::vector<unsigned char *>::iterator iter1 = m_data.begin(); iter1 != m_data.end(); ++iter1)
 	{
 		if ((*iter1))
 			delete [](*iter1);
@@ -52,18 +52,18 @@ WP5GraphicsInformationPacket::~WP5GraphicsInformationPacket()
 	}
 }
 
-void WP5GraphicsInformationPacket::_readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint32_t /* dataSize */)
+void WP5GraphicsInformationPacket::_readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned /* dataSize */)
 {
-	uint16_t tmpImagesCount = readU16(input, encryption);
-	std::vector<uint32_t> tmpImagesSizes;
-	for (uint16_t i = 0; i < tmpImagesCount; i++)
+	unsigned short tmpImagesCount = readU16(input, encryption);
+	std::vector<unsigned> tmpImagesSizes;
+	for (unsigned short i = 0; i < tmpImagesCount; i++)
 		tmpImagesSizes.push_back(readU32(input, encryption));
 
-	for (uint16_t j = 0; j < tmpImagesCount; j++)
+	for (unsigned short j = 0; j < tmpImagesCount; j++)
 	{
-		uint8_t *tmpData = new uint8_t[tmpImagesSizes[j]];
+		unsigned char *tmpData = new unsigned char[tmpImagesSizes[j]];
 
-		for (uint32_t k = 0; k < tmpImagesSizes[j]; k++)
+		for (unsigned k = 0; k < tmpImagesSizes[j]; k++)
 			tmpData[k] = readU8(input, encryption);
 #if 0
 		librevenge::RVNGString filename;
@@ -80,7 +80,7 @@ void WP5GraphicsInformationPacket::_readContents(librevenge::RVNGInputStream *in
 				fprintf(f, "%c%c%c%c", 0x00, 0x00, 0x00, 0x00);
 			}
 
-			for (uint32_t l = 0; l < tmpImagesSizes[j]; l++)
+			for (unsigned l = 0; l < tmpImagesSizes[j]; l++)
 				fprintf(f, "%c", tmpData[l]);
 			fclose(f);
 		}

@@ -28,7 +28,6 @@
 #define WP6PREFIXINDICE_H
 
 #include <librevenge-stream/librevenge-stream.h>
-#include "libwpd_types.h"
 
 class WPXEncryption;
 
@@ -40,19 +39,19 @@ public:
 	{
 		return m_id;
 	}
-	uint8_t getType() const
+	unsigned char getType() const
 	{
 		return m_type;
 	}
-	uint8_t getFlags() const
+	unsigned char getFlags() const
 	{
 		return m_flags;
 	}
-	uint32_t getDataSize() const
+	unsigned getDataSize() const
 	{
 		return m_dataSize;
 	}
-	uint32_t getDataOffset() const
+	unsigned getDataOffset() const
 	{
 		return m_dataOffset;
 	}
@@ -62,12 +61,12 @@ protected:
 
 private:
 	int m_id;
-	uint8_t m_type;
-	uint8_t m_flags;
-	uint16_t m_useCount;
-	uint16_t m_hideCount;
-	uint32_t m_dataSize;
-	uint32_t m_dataOffset;
+	unsigned char m_type;
+	unsigned char m_flags;
+	unsigned short m_useCount;
+	unsigned short m_hideCount;
+	unsigned m_dataSize;
+	unsigned m_dataOffset;
 
 	bool m_hasChildren;
 };

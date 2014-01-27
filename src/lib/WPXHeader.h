@@ -29,51 +29,50 @@
 
 #include <libwpd/libwpd.h>
 #include <librevenge-stream/librevenge-stream.h>
-#include "libwpd_types.h"
 
 class WPXEncryption;
 
 class WPXHeader
 {
 public:
-	WPXHeader(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint32_t documentOffset, uint8_t productType,
-	          uint8_t fileType, uint8_t majorVersion, uint8_t minorVersion, uint16_t documentEncryption);
+	WPXHeader(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned documentOffset, unsigned char productType,
+	          unsigned char fileType, unsigned char majorVersion, unsigned char minorVersion, unsigned short documentEncryption);
 	virtual ~WPXHeader();
 
 	static WPXHeader *constructHeader(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 
-	uint32_t getDocumentOffset() const
+	unsigned getDocumentOffset() const
 	{
 		return m_documentOffset;
 	}
-	uint8_t getProductType() const
+	unsigned char getProductType() const
 	{
 		return m_productType;
 	}
-	uint8_t getFileType() const
+	unsigned char getFileType() const
 	{
 		return m_fileType;
 	}
-	uint8_t getMajorVersion() const
+	unsigned char getMajorVersion() const
 	{
 		return m_majorVersion;
 	}
-	uint8_t getMinorVersion() const
+	unsigned char getMinorVersion() const
 	{
 		return m_minorVersion;
 	}
-	uint16_t getDocumentEncryption() const
+	unsigned short getDocumentEncryption() const
 	{
 		return m_documentEncryption;
 	}
 
 private:
-	uint32_t m_documentOffset;
-	uint8_t m_productType;
-	uint8_t m_fileType;
-	uint8_t m_majorVersion;
-	uint8_t m_minorVersion;
-	uint16_t m_documentEncryption;
+	unsigned m_documentOffset;
+	unsigned char m_productType;
+	unsigned char m_fileType;
+	unsigned char m_majorVersion;
+	unsigned char m_minorVersion;
+	unsigned short m_documentEncryption;
 };
 
 #endif /* WPXHEADER_H */

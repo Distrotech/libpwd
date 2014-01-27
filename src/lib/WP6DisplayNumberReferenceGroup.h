@@ -37,7 +37,7 @@ public:
 	void parse(WP6Listener *listener);
 
 private:
-	uint8_t m_levelNumberToDisplay;
+	unsigned char m_levelNumberToDisplay;
 };
 
 #endif /* WP6DISPLAYNUMBERREFERENCEGROUP_H */

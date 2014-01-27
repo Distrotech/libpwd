@@ -28,7 +28,7 @@
 #include "WP1UnsupportedVariableLengthGroup.h"
 #include "libwpd_internal.h"
 
-WP1UnsupportedVariableLengthGroup::WP1UnsupportedVariableLengthGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group) :
+WP1UnsupportedVariableLengthGroup::WP1UnsupportedVariableLengthGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char group) :
 	WP1VariableLengthGroup(group)
 {
 	_read(input, encryption);

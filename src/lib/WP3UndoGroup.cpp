@@ -29,7 +29,7 @@
 #include "libwpd_internal.h"
 #include "WP3Listener.h"
 
-WP3UndoGroup::WP3UndoGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID) :
+WP3UndoGroup::WP3UndoGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char groupID) :
 	WP3FixedLengthGroup(groupID),
 	m_undoType(0),
 	m_undoLevel(0)

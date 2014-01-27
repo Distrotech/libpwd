@@ -37,7 +37,7 @@ const char *FONT_WEIGHT_STRINGS [] = {	"Bold", "bold", "Demi", "demi", "Extended
 const char *USELESS_WP_POSTFIX = "-WP";
 #define countElements(a) ((sizeof(a) / sizeof(a[0])))
 
-WP6FontDescriptorPacket::WP6FontDescriptorPacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int /* id */, uint32_t dataOffset, uint32_t dataSize) :
+WP6FontDescriptorPacket::WP6FontDescriptorPacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int /* id */, unsigned dataOffset, unsigned dataSize) :
 	WP6PrefixDataPacket(input, encryption),
 	m_characterWidth(0),
 	m_ascenderHeight(0),
@@ -95,20 +95,20 @@ void WP6FontDescriptorPacket::_readContents(librevenge::RVNGInputStream *input, 
 
 void WP6FontDescriptorPacket::_readFontName(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
-	if (m_fontNameLength > ((std::numeric_limits<uint16_t>::max)() / 2))
-		m_fontNameLength = ((std::numeric_limits<uint16_t>::max)() / 2);
+	if (m_fontNameLength > ((std::numeric_limits<unsigned short>::max)() / 2))
+		m_fontNameLength = ((std::numeric_limits<unsigned short>::max)() / 2);
 	if (m_fontNameLength)
 	{
-		for (uint16_t i=0; i<(m_fontNameLength/2); i++)
+		for (unsigned short i=0; i<(m_fontNameLength/2); i++)
 		{
-			uint16_t charWord = readU16(input, encryption);
-			uint8_t characterSet = (uint8_t)((charWord >> 8) & 0x00FF);
-			uint8_t character = (uint8_t)(charWord & 0xFF);
+			unsigned short charWord = readU16(input, encryption);
+			unsigned char characterSet = (unsigned char)((charWord >> 8) & 0x00FF);
+			unsigned char character = (unsigned char)(charWord & 0xFF);
 
 			if (character == 0x00 && characterSet == 0x00)
 				break;
 
-			const uint32_t *chars;
+			const unsigned *chars;
 			int len = extendedCharacterWP6ToUCS4(character, characterSet, &chars);
 
 			for (int j = 0; j < len; j++)

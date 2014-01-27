@@ -58,7 +58,7 @@ void WP5StylesListener::endSubDocument()
 	insertBreak(WPX_SOFT_PAGE_BREAK); // pretend we just had a soft page break (for the last page)
 }
 
-void WP5StylesListener::insertBreak(uint8_t breakType)
+void WP5StylesListener::insertBreak(unsigned char breakType)
 {
 	if (m_isSubDocument)
 		return;
@@ -114,7 +114,7 @@ void WP5StylesListener::insertBreak(uint8_t breakType)
 	//}
 }
 
-void WP5StylesListener::pageMarginChange(uint8_t side, uint16_t margin)
+void WP5StylesListener::pageMarginChange(unsigned char side, unsigned short margin)
 {
 	//if (!isUndoOn())
 	//{
@@ -133,7 +133,7 @@ void WP5StylesListener::pageMarginChange(uint8_t side, uint16_t margin)
 	//}
 }
 
-void WP5StylesListener::pageFormChange(uint16_t length, uint16_t width, WPXFormOrientation orientation)
+void WP5StylesListener::pageFormChange(unsigned short length, unsigned short width, WPXFormOrientation orientation)
 {
 	//if (!isUndoOn())
 	//{
@@ -149,7 +149,7 @@ void WP5StylesListener::pageFormChange(uint16_t length, uint16_t width, WPXFormO
 }
 
 
-void WP5StylesListener::marginChange(uint8_t side, uint16_t margin)
+void WP5StylesListener::marginChange(unsigned char side, unsigned short margin)
 {
 	if (!isUndoOn())
 	{
@@ -196,7 +196,7 @@ void WP5StylesListener::marginChange(uint8_t side, uint16_t margin)
 
 }
 
-void WP5StylesListener::headerFooterGroup(uint8_t headerFooterType, uint8_t occurrenceBits, WP5SubDocument *subDocument)
+void WP5StylesListener::headerFooterGroup(unsigned char headerFooterType, unsigned char occurrenceBits, WP5SubDocument *subDocument)
 {
 	if (subDocument)
 		m_subDocuments.push_back(subDocument);
@@ -244,7 +244,7 @@ void WP5StylesListener::headerFooterGroup(uint8_t headerFooterType, uint8_t occu
 }
 
 
-void WP5StylesListener::suppressPageCharacteristics(uint8_t suppressCode)
+void WP5StylesListener::suppressPageCharacteristics(unsigned char suppressCode)
 {
 	if (!isUndoOn())
 	{
@@ -270,7 +270,7 @@ void WP5StylesListener::startTable()
 	}
 }
 
-void WP5StylesListener::insertRow(uint16_t /* rowHeight */, bool /* isMinimumHeight */, bool /* isHeaderRow */)
+void WP5StylesListener::insertRow(unsigned short /* rowHeight */, bool /* isMinimumHeight */, bool /* isHeaderRow */)
 {
 	if (!isUndoOn())
 	{
@@ -281,10 +281,10 @@ void WP5StylesListener::insertRow(uint16_t /* rowHeight */, bool /* isMinimumHei
 	}
 }
 
-void WP5StylesListener::insertCell(uint8_t colSpan, uint8_t rowSpan, uint8_t borderBits,
+void WP5StylesListener::insertCell(unsigned char colSpan, unsigned char rowSpan, unsigned char borderBits,
                                    const RGBSColor * /* cellFgColor */, const RGBSColor * /* cellBgColor */,
                                    const RGBSColor * /* cellBorderColor */, WPXVerticalAlignment /* cellVerticalAlignment */,
-                                   bool /* useCellAttributes */, uint32_t /* cellAttributes */)
+                                   bool /* useCellAttributes */, unsigned /* cellAttributes */)
 {
 	if (!isUndoOn())
 	{

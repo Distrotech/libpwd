@@ -28,7 +28,7 @@
 #include "WP6DefaultInitialFontPacket.h"
 #include "libwpd_internal.h"
 
-WP6DefaultInitialFontPacket::WP6DefaultInitialFontPacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int /* id */, uint32_t dataOffset, uint32_t dataSize) :
+WP6DefaultInitialFontPacket::WP6DefaultInitialFontPacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int /* id */, unsigned dataOffset, unsigned dataSize) :
 	WP6PrefixDataPacket(input, encryption),
 	m_numPrefixIDs(0),
 	m_initialFontDescriptorPID(0),

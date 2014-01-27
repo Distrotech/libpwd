@@ -28,7 +28,7 @@
 #include "WP6CommentAnnotationPacket.h"
 #include "WP6Parser.h"
 
-WP6CommentAnnotationPacket::WP6CommentAnnotationPacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int  /* id */, uint32_t dataOffset, uint32_t dataSize):
+WP6CommentAnnotationPacket::WP6CommentAnnotationPacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int  /* id */, unsigned dataOffset, unsigned dataSize):
 	WP6PrefixDataPacket(input, encryption),
 	m_textPID(0),
 	m_flags(0)
@@ -42,7 +42,7 @@ WP6CommentAnnotationPacket::~WP6CommentAnnotationPacket()
 
 void WP6CommentAnnotationPacket::_readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
-	uint16_t tmpNumPrefixIDs = readU16(input, encryption);
+	unsigned short tmpNumPrefixIDs = readU16(input, encryption);
 	if (tmpNumPrefixIDs != 0x0001)
 		return;
 	m_textPID = readU16(input, encryption);

@@ -31,13 +31,13 @@
 class WP1LeftRightIndentGroup : public WP1FixedLengthGroup
 {
 public:
-	WP1LeftRightIndentGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group);
+	WP1LeftRightIndentGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char group);
 	~WP1LeftRightIndentGroup();
 	void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP1Listener *listener);
 
 private:
-	uint16_t m_leftRightMarginOffset;
+	unsigned short m_leftRightMarginOffset;
 };
 
 #endif /* WP1LEFTRIGHTINDENTGROUP_H */

@@ -30,7 +30,6 @@
 #include <librevenge/librevenge.h>
 #include <libwpd/libwpd.h>
 #include "WPXParser.h"
-#include "libwpd_types.h"
 
 class WP3Listener;
 class WP3SubDocument;
@@ -38,15 +37,15 @@ class WP3SubDocument;
 class WP3Resource
 {
 public:
-	WP3Resource(uint32_t resourceType, uint32_t resourceReferenceID, const librevenge::RVNGString &resourceName,
-	            uint8_t resourceAttributes, const librevenge::RVNGBinaryData &resourceData);
+	WP3Resource(unsigned resourceType, unsigned resourceReferenceID, const librevenge::RVNGString &resourceName,
+	            unsigned char resourceAttributes, const librevenge::RVNGBinaryData &resourceData);
 	virtual ~WP3Resource() {}
 
-	uint32_t getResourceType() const
+	unsigned getResourceType() const
 	{
 		return m_resourceType;
 	}
-	uint32_t getResourceReferenceID() const
+	unsigned getResourceReferenceID() const
 	{
 		return m_resourceReferenceID;
 	}
@@ -54,7 +53,7 @@ public:
 	{
 		return m_resourceName;
 	}
-	uint8_t getResourceAttributes() const
+	unsigned char getResourceAttributes() const
 	{
 		return m_resourceAttributes;
 	}
@@ -64,10 +63,10 @@ public:
 	}
 
 private:
-	uint32_t m_resourceType;
-	uint32_t m_resourceReferenceID;
+	unsigned m_resourceType;
+	unsigned m_resourceReferenceID;
 	const librevenge::RVNGString m_resourceName;
-	uint8_t m_resourceAttributes;
+	unsigned char m_resourceAttributes;
 	librevenge::RVNGBinaryData m_resourceData;
 };
 

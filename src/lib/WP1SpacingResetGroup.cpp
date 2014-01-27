@@ -26,7 +26,7 @@
 #include "WP1SpacingResetGroup.h"
 #include "libwpd_internal.h"
 
-WP1SpacingResetGroup::WP1SpacingResetGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group) :
+WP1SpacingResetGroup::WP1SpacingResetGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char group) :
 	WP1FixedLengthGroup(group),
 	m_spacing(2)
 {

@@ -40,21 +40,21 @@ public:
 
 private:
 	// variables needed for subgroup 1 (Table Function)
-	uint8_t m_tableMode;
-	uint32_t m_offsetFromLeftEdge;
-	uint32_t m_topGutterSpacing;
-	uint32_t m_leftGutterSpacing;
-	uint32_t m_bottomGutterSpacing;
-	uint32_t m_rightGutterSpacing;
-	uint8_t m_numColumns;
-	std::vector<uint8_t> m_columnMode;
-	std::vector<uint8_t> m_numberFormat;
-	std::vector<uint32_t> m_columnWidth;
-	std::vector<uint32_t> m_rightOffsetForDecimalAlign;
+	unsigned char m_tableMode;
+	unsigned m_offsetFromLeftEdge;
+	unsigned m_topGutterSpacing;
+	unsigned m_leftGutterSpacing;
+	unsigned m_bottomGutterSpacing;
+	unsigned m_rightGutterSpacing;
+	unsigned char m_numColumns;
+	std::vector<unsigned char> m_columnMode;
+	std::vector<unsigned char> m_numberFormat;
+	std::vector<unsigned> m_columnWidth;
+	std::vector<unsigned> m_rightOffsetForDecimalAlign;
 
 	// variables needed for subgroup 2 (Set Table Cell Span)
-	uint16_t m_colSpan;
-	uint16_t m_rowSpan;
+	unsigned short m_colSpan;
+	unsigned short m_rowSpan;
 
 	// variables needed for subgroup 0x0B (Set Table Cell Fill Color/Patern)
 	RGBSColor m_cellFillColor;

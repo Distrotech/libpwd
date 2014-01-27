@@ -27,26 +27,25 @@
 #define WP5SPECIALHEADERINDEX_H
 
 #include <librevenge-stream/librevenge-stream.h>
-#include "libwpd_types.h"
 #include "WPXEncryption.h"
 
 class WP5SpecialHeaderIndex
 {
 public:
 	WP5SpecialHeaderIndex(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
-	uint16_t getType() const
+	unsigned short getType() const
 	{
 		return m_type;
 	}
-	uint16_t getNumOfIndexes() const
+	unsigned short getNumOfIndexes() const
 	{
 		return m_numOfIndexes;
 	}
-	uint16_t getIndexBlockSize() const
+	unsigned short getIndexBlockSize() const
 	{
 		return m_indexBlockSize;
 	}
-	uint32_t getNextBlockOffset() const
+	unsigned getNextBlockOffset() const
 	{
 		return m_nextBlockOffset;
 	}
@@ -55,10 +54,10 @@ protected:
 	void _read(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 
 private:
-	uint16_t m_type;
-	uint16_t m_numOfIndexes;
-	uint16_t m_indexBlockSize;
-	uint32_t m_nextBlockOffset;
+	unsigned short m_type;
+	unsigned short m_numOfIndexes;
+	unsigned short m_indexBlockSize;
+	unsigned m_nextBlockOffset;
 };
 
 #endif /* WP5SPECIALHEADERINDEX_H */

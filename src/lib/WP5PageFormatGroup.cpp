@@ -70,8 +70,8 @@ void WP5PageFormatGroup::_readContents(librevenge::RVNGInputStream *input, WPXEn
 		// skip 2 bytes (old spacing of no interest for us)
 		input->seek(2, librevenge::RVNG_SEEK_CUR);
 		{
-			uint16_t lineSpacing = readU16(input, encryption);
-			int8_t lineSpacingIntegerPart = (int8_t)((lineSpacing & 0xFF00) >> 8);
+			unsigned short lineSpacing = readU16(input, encryption);
+			signed char lineSpacingIntegerPart = (signed char)((lineSpacing & 0xFF00) >> 8);
 			double lineSpacingFractionalPart = (double)(lineSpacing & 0x00FF)/(double)0xFF;
 			WPD_DEBUG_MSG(("WordPerfect: Page format group line spacing - integer part: %i fractional part: %f (original value: %i)\n",
 			               lineSpacingIntegerPart, lineSpacingFractionalPart, lineSpacing));
@@ -83,7 +83,7 @@ void WP5PageFormatGroup::_readContents(librevenge::RVNGInputStream *input, WPXEn
 		m_tabStops.reserve(40);
 		{
 
-			uint16_t tmpTabPosition = 0;
+			unsigned short tmpTabPosition = 0;
 			for (unsigned i=0; i < 40 && (tmpTabPosition = readU16(input, encryption)) != 0xFFFF; i++)
 			{
 				m_tabStops.push_back(WPXTabStop());
@@ -96,7 +96,7 @@ void WP5PageFormatGroup::_readContents(librevenge::RVNGInputStream *input, WPXEn
 
 			for (unsigned j=0; (j < (m_tabStops.size() / 2) + (m_tabStops.size() % 2)) && (j < 20); j++)
 			{
-				uint8_t tmpTabType = readU8(input, encryption);
+				unsigned char tmpTabType = readU8(input, encryption);
 				if (j*2 < m_tabStops.size())
 				{
 					switch ((tmpTabType & 0x30) >> 4)
@@ -189,7 +189,7 @@ void WP5PageFormatGroup::_readContents(librevenge::RVNGInputStream *input, WPXEn
 		m_suppressCode = readU8(input, encryption);
 		break;
 	case WP5_TOP_PAGE_FORMAT_GROUP_FORM:
-		uint8_t tmpOrientation;
+		unsigned char tmpOrientation;
 		// skip to the new DESIRED values (99 - 4)
 		input->seek(95, librevenge::RVNG_SEEK_CUR);
 		m_formLength = readU16(input, encryption); // New DESIRED length

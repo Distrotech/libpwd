@@ -31,7 +31,7 @@
 class WP3UnsupportedFixedLengthGroup : public WP3FixedLengthGroup
 {
 public:
-	WP3UnsupportedFixedLengthGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID);
+	WP3UnsupportedFixedLengthGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char groupID);
 	void parse(WP3Listener * /* listener */) {}
 
 protected:

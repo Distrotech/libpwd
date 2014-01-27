@@ -34,13 +34,13 @@ class WP1Listener;
 class WP1MarginResetGroup : public WP1FixedLengthGroup
 {
 public:
-	WP1MarginResetGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group);
+	WP1MarginResetGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char group);
 	~WP1MarginResetGroup();
 	void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP1Listener *listener);
 
 private:
-	uint16_t m_leftMargin, m_rightMargin;
+	unsigned short m_leftMargin, m_rightMargin;
 };
 
 #endif /* WP1MARGINRESETGROUP_H */

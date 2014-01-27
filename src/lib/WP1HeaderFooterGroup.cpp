@@ -27,7 +27,7 @@
 #include "libwpd_internal.h"
 #include "WP1SubDocument.h"
 
-WP1HeaderFooterGroup::WP1HeaderFooterGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group) :
+WP1HeaderFooterGroup::WP1HeaderFooterGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char group) :
 	WP1VariableLengthGroup(group),
 	m_definition(0),
 	m_subDocument(0)

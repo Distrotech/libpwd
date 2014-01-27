@@ -27,7 +27,7 @@
 #include "WP42FileStructure.h"
 #include "libwpd_internal.h"
 
-WP42DefineColumnsGroup::WP42DefineColumnsGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group) :
+WP42DefineColumnsGroup::WP42DefineColumnsGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char group) :
 	WP42MultiByteFunctionGroup(group),
 	m_groupId(group),
 	m_numColumns(0),
@@ -43,7 +43,7 @@ WP42DefineColumnsGroup::~WP42DefineColumnsGroup()
 
 void WP42DefineColumnsGroup::_readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
-	uint8_t maxNumColumns = 0;
+	unsigned char maxNumColumns = 0;
 	switch (m_groupId)
 	{
 	case WP42_DEFINE_COLUMNS_OLD_GROUP:
@@ -57,12 +57,12 @@ void WP42DefineColumnsGroup::_readContents(librevenge::RVNGInputStream *input, W
 	default:
 		return;
 	}
-	uint8_t tmpNumColumns = readU8(input, encryption);
+	unsigned char tmpNumColumns = readU8(input, encryption);
 	m_numColumns = tmpNumColumns & 0x7F;
 	if (m_numColumns > maxNumColumns)
 		m_numColumns = maxNumColumns;
 	m_isParallel = ((tmpNumColumns & 0x80) != 0);
-	for (uint8_t i = 0; i<2*m_numColumns; i++)
+	for (unsigned char i = 0; i<2*m_numColumns; i++)
 		m_columnsDefinition.push_back(readU8(input, encryption));
 }
 

@@ -43,7 +43,7 @@ private:
 	/* Set Text Font */
 	librevenge::RVNGString m_fontName;
 	/* Set Font Size */
-	uint16_t m_fontSize;
+	unsigned short m_fontSize;
 
 };
 

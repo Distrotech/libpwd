@@ -31,7 +31,7 @@
 #include "WP3Listener.h"
 #include "libwpd_internal.h"
 
-WP3ExtendedCharacterGroup::WP3ExtendedCharacterGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID) :
+WP3ExtendedCharacterGroup::WP3ExtendedCharacterGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char groupID) :
 	WP3FixedLengthGroup(groupID),
 	m_macCharacter(0),
 	m_characterSet(0),
@@ -58,7 +58,7 @@ void WP3ExtendedCharacterGroup::parse(WP3Listener *listener)
 	}
 	else if ((m_characterSet != 0xFF) || ((m_character != 0xFE) && (m_character != 0xFF)))
 	{
-		const uint32_t *chars;
+		const unsigned *chars;
 		int len = extendedCharacterWP5ToUCS4(m_character,
 		                                     m_characterSet, &chars);
 		int i;

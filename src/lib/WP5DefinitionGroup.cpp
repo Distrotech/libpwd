@@ -27,7 +27,7 @@
 #include "WP5Listener.h"
 #include "libwpd_internal.h"
 
-WP5DefinitionGroup_DefineTablesSubGroup::WP5DefinitionGroup_DefineTablesSubGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint16_t subGroupSize) :
+WP5DefinitionGroup_DefineTablesSubGroup::WP5DefinitionGroup_DefineTablesSubGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned short subGroupSize) :
 	WP5VariableLengthGroup_SubGroup(),
 	m_position(0),
 	m_numColumns(0),
@@ -42,7 +42,7 @@ WP5DefinitionGroup_DefineTablesSubGroup::WP5DefinitionGroup_DefineTablesSubGroup
 	// Skip to new values
 	input->seek(20+(5*m_numColumns), librevenge::RVNG_SEEK_CUR);
 	// Read the new values
-	uint8_t tmpFlags = readU8(input, encryption);
+	unsigned char tmpFlags = readU8(input, encryption);
 	m_position = tmpFlags & 0x07;
 	input->seek(1, librevenge::RVNG_SEEK_CUR);
 	m_numColumns = readU16(input, encryption);

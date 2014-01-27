@@ -62,7 +62,7 @@ void WP6StylesListener::endSubDocument()
 	insertBreak(WPX_SOFT_PAGE_BREAK); // pretend we just had a soft page break (for the last page)
 }
 
-void WP6StylesListener::insertBreak(const uint8_t breakType)
+void WP6StylesListener::insertBreak(const unsigned char breakType)
 {
 	if (m_isSubDocument)
 		return;
@@ -100,7 +100,7 @@ void WP6StylesListener::insertBreak(const uint8_t breakType)
 	}
 }
 
-void WP6StylesListener::pageNumberingChange(const WPXPageNumberPosition pageNumberingPosition, const uint16_t pageNumberFontPointSize, const uint16_t pageNumberFontPID)
+void WP6StylesListener::pageNumberingChange(const WPXPageNumberPosition pageNumberingPosition, const unsigned short pageNumberFontPointSize, const unsigned short pageNumberFontPID)
 {
 	if (!isUndoOn())
 	{
@@ -117,7 +117,7 @@ void WP6StylesListener::pageNumberingChange(const WPXPageNumberPosition pageNumb
 	}
 }
 
-void WP6StylesListener::pageMarginChange(const uint8_t side, const uint16_t margin)
+void WP6StylesListener::pageMarginChange(const unsigned char side, const unsigned short margin)
 {
 	if (!isUndoOn())
 	{
@@ -136,7 +136,7 @@ void WP6StylesListener::pageMarginChange(const uint8_t side, const uint16_t marg
 	}
 }
 
-void WP6StylesListener::pageFormChange(const uint16_t length, const uint16_t width, const WPXFormOrientation orientation)
+void WP6StylesListener::pageFormChange(const unsigned short length, const unsigned short width, const WPXFormOrientation orientation)
 {
 	if (!isUndoOn())
 	{
@@ -151,7 +151,7 @@ void WP6StylesListener::pageFormChange(const uint16_t length, const uint16_t wid
 	}
 }
 
-void WP6StylesListener::marginChange(const uint8_t side, const uint16_t margin)
+void WP6StylesListener::marginChange(const unsigned char side, const unsigned short margin)
 {
 	if (!isUndoOn())
 	{
@@ -198,7 +198,7 @@ void WP6StylesListener::marginChange(const uint8_t side, const uint16_t margin)
 
 }
 
-void WP6StylesListener::headerFooterGroup(const uint8_t headerFooterType, const uint8_t occurrenceBits, const uint16_t textPID)
+void WP6StylesListener::headerFooterGroup(const unsigned char headerFooterType, const unsigned char occurrenceBits, const unsigned short textPID)
 {
 	if (!isUndoOn())
 	{
@@ -226,7 +226,7 @@ void WP6StylesListener::headerFooterGroup(const uint8_t headerFooterType, const 
 	}
 }
 
-void WP6StylesListener::suppressPageCharacteristics(const uint8_t suppressCode)
+void WP6StylesListener::suppressPageCharacteristics(const unsigned char suppressCode)
 {
 	if (!isUndoOn())
 	{
@@ -246,7 +246,7 @@ void WP6StylesListener::suppressPageCharacteristics(const uint8_t suppressCode)
 	}
 }
 
-void WP6StylesListener::setPageNumber(const uint16_t pageNumber)
+void WP6StylesListener::setPageNumber(const unsigned short pageNumber)
 {
 	if (!isUndoOn())
 	{
@@ -262,7 +262,7 @@ void WP6StylesListener::setPageNumberingType(const WPXNumberingType pageNumberin
 	}
 }
 
-void WP6StylesListener::defineTable(const uint8_t /* position */, const uint16_t /* leftOffset */)
+void WP6StylesListener::defineTable(const unsigned char /* position */, const unsigned short /* leftOffset */)
 {
 	if (!isUndoOn())
 	{
@@ -294,7 +294,7 @@ void WP6StylesListener::endTable()
 	}
 }
 
-void WP6StylesListener::insertRow(const uint16_t /* rowHeight */, const bool /* isMinimumHeight */, const bool /* isHeaderRow */)
+void WP6StylesListener::insertRow(const unsigned short /* rowHeight */, const bool /* isMinimumHeight */, const bool /* isHeaderRow */)
 {
 	if (!isUndoOn() && m_currentTable)
 	{
@@ -303,10 +303,10 @@ void WP6StylesListener::insertRow(const uint16_t /* rowHeight */, const bool /* 
 	}
 }
 
-void WP6StylesListener::insertCell(const uint8_t colSpan, const uint8_t rowSpan, const uint8_t borderBits,
+void WP6StylesListener::insertCell(const unsigned char colSpan, const unsigned char rowSpan, const unsigned char borderBits,
                                    const RGBSColor * /* cellFgColor */, const RGBSColor * /* cellBgColor */,
                                    const RGBSColor * /* cellBorderColor */, const WPXVerticalAlignment /* cellVerticalAlignment */,
-                                   const bool /* useCellAttributes */, const uint32_t /* cellAttributes */)
+                                   const bool /* useCellAttributes */, const unsigned /* cellAttributes */)
 {
 	if (!isUndoOn() && m_currentTable)
 	{
@@ -315,7 +315,7 @@ void WP6StylesListener::insertCell(const uint8_t colSpan, const uint8_t rowSpan,
 	}
 }
 
-void WP6StylesListener::noteOn(const uint16_t textPID)
+void WP6StylesListener::noteOn(const unsigned short textPID)
 {
 	if (!isUndoOn())
 	{
@@ -333,7 +333,7 @@ void WP6StylesListener::insertTextBox(const WP6SubDocument *subDocument)
 	}
 }
 
-void WP6StylesListener::commentAnnotation(const uint16_t textPID)
+void WP6StylesListener::commentAnnotation(const unsigned short textPID)
 {
 	if (!isUndoOn())
 	{
@@ -381,7 +381,7 @@ void WP6StylesListener::_handleSubDocument(const WPXSubDocument *subDocument, WP
 	}
 }
 
-void WP6StylesListener::undoChange(const uint8_t undoType, const uint16_t /* undoLevel */)
+void WP6StylesListener::undoChange(const unsigned char undoType, const unsigned short /* undoLevel */)
 {
 	if (undoType == WP6_UNDO_GROUP_INVALID_TEXT_START)
 		setUndoOn(true);

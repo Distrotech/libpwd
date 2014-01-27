@@ -33,11 +33,11 @@
 const double WPX_DEFAULT_PAGE_MARGIN_TOP = 1.0;
 const double WPX_DEFAULT_PAGE_MARGIN_BOTTOM = 1.0;
 
-const uint8_t DUMMY_INTERNAL_HEADER_FOOTER = 16;
+const unsigned char DUMMY_INTERNAL_HEADER_FOOTER = 16;
 
 // precondition: 0 <= headerFooterType <= 3 (i.e.: we don't handle watermarks here)
 WPXHeaderFooter::WPXHeaderFooter(const WPXHeaderFooterType headerFooterType, const WPXHeaderFooterOccurrence occurrence,
-                                 const uint8_t internalType, const WPXSubDocument *subDocument, WPXTableList tableList) :
+                                 const unsigned char internalType, const WPXSubDocument *subDocument, WPXTableList tableList) :
 	m_type(headerFooterType),
 	m_occurrence(occurrence),
 	m_internalType(internalType),
@@ -47,7 +47,7 @@ WPXHeaderFooter::WPXHeaderFooter(const WPXHeaderFooterType headerFooterType, con
 }
 
 WPXHeaderFooter::WPXHeaderFooter(const WPXHeaderFooterType headerFooterType, const WPXHeaderFooterOccurrence occurrence,
-                                 const uint8_t internalType, const WPXSubDocument *subDocument) :
+                                 const unsigned char internalType, const WPXSubDocument *subDocument) :
 	m_type(headerFooterType),
 	m_occurrence(occurrence),
 	m_internalType(internalType),
@@ -134,7 +134,7 @@ WPXPageSpan::~WPXPageSpan()
 }
 
 
-void WPXPageSpan::setHeaderFooter(const WPXHeaderFooterType type, const uint8_t headerFooterType, const WPXHeaderFooterOccurrence occurrence,
+void WPXPageSpan::setHeaderFooter(const WPXHeaderFooterType type, const unsigned char headerFooterType, const WPXHeaderFooterOccurrence occurrence,
                                   const  WPXSubDocument *subDocument, WPXTableList tableList)
 {
 	WPXHeaderFooter headerFooter(type, occurrence, headerFooterType, subDocument, tableList);
@@ -234,7 +234,7 @@ bool operator==(const WPXPageSpan &page1, const WPXPageSpan &page2)
 	        page1.getPageNumberingFontSize() != page2.getPageNumberingFontSize())
 		return false;
 
-	for (uint8_t i=0; i<WPX_NUM_HEADER_FOOTER_TYPES; i++)
+	for (unsigned char i=0; i<WPX_NUM_HEADER_FOOTER_TYPES; i++)
 	{
 		if (page1.getHeaderFooterSuppression(i) != page2.getHeaderFooterSuppression(i))
 			return false;

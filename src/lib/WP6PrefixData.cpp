@@ -41,7 +41,7 @@ WP6PrefixData::WP6PrefixData(librevenge::RVNGInputStream *input, WPXEncryption *
 		WPD_DEBUG_MSG(("WordPerfect: constructing called without any prefix\n"));
 		return;
 	}
-	uint16_t i;
+	unsigned short i;
 	WP6PrefixIndice **prefixIndiceArray = new WP6PrefixIndice *[size_t(numPrefixIndices-1)];
 	for (i=1; i<numPrefixIndices; i++)
 	{

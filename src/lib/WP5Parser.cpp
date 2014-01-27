@@ -78,14 +78,14 @@ void WP5Parser::parseDocument(librevenge::RVNGInputStream *input, WPXEncryption 
 {
 	while (!input->isEnd())
 	{
-		uint8_t readVal;
+		unsigned char readVal;
 		readVal = readU8(input, encryption);
 
 		if (readVal == 0 || readVal == 0x7F || readVal == 0xFF)
 		{
 			// do nothing: this token is meaningless and is likely just corruption
 		}
-		else if (readVal >= (uint8_t)0x01 && readVal <= (uint8_t)0x1F)
+		else if (readVal >= (unsigned char)0x01 && readVal <= (unsigned char)0x1F)
 		{
 			// control characters
 
@@ -95,21 +95,21 @@ void WP5Parser::parseDocument(librevenge::RVNGInputStream *input, WPXEncryption 
 				listener->insertEOL();
 				break;
 			case 0x0B: // soft new page (convert like space)
-				listener->insertCharacter((uint32_t) ' ');
+				listener->insertCharacter((unsigned) ' ');
 				listener->insertBreak(WPX_SOFT_PAGE_BREAK);
 				break;
 			case 0x0C: // hard new page
 				listener->insertBreak(WPX_PAGE_BREAK);
 				break;
 			case 0x0D: // soft new line (convert like space)
-				listener->insertCharacter((uint32_t) ' ');
+				listener->insertCharacter((unsigned) ' ');
 				break;
 			default:
 				// unsupported or undocumented token, ignore
 				break;
 			}
 		}
-		else if (readVal >= (uint8_t)0x20 && readVal <= (uint8_t)0x7E)
+		else if (readVal >= (unsigned char)0x20 && readVal <= (unsigned char)0x7E)
 		{
 			listener->insertCharacter(readVal);
 		}

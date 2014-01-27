@@ -36,7 +36,7 @@ WP6StyleGroup_GlobalOnSubGroup::WP6StyleGroup_GlobalOnSubGroup(librevenge::RVNGI
 	m_systemStyleNumber = readU8(input, encryption);
 }
 
-void WP6StyleGroup_GlobalOnSubGroup::parse(WP6Listener *listener, const uint8_t /* numPrefixIDs */, uint16_t const * /* prefixIDs */) const
+void WP6StyleGroup_GlobalOnSubGroup::parse(WP6Listener *listener, const unsigned char /* numPrefixIDs */, unsigned short const * /* prefixIDs */) const
 {
 	listener->globalOn(m_systemStyleNumber);
 }

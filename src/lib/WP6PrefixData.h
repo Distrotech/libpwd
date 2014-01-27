@@ -43,9 +43,9 @@ public:
 	const WP6PrefixDataPacket *getPrefixDataPacket(const int prefixID) const;
 	std::pair< MPDP_CIter, MPDP_CIter > getPrefixDataPacketsOfType(const int type) const;
 
-	uint16_t getDefaultInitialFontPID() const
+	unsigned short getDefaultInitialFontPID() const
 	{
-		return (uint16_t)m_defaultInitialFontPID;
+		return (unsigned short)m_defaultInitialFontPID;
 	}
 
 private:

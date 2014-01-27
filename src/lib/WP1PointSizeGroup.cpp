@@ -26,7 +26,7 @@
 #include "WP1PointSizeGroup.h"
 #include "libwpd_internal.h"
 
-WP1PointSizeGroup::WP1PointSizeGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group) :
+WP1PointSizeGroup::WP1PointSizeGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char group) :
 	WP1FixedLengthGroup(group),
 	m_pointSize(0)
 {

@@ -31,13 +31,13 @@
 class WP42SuppressPageCharacteristicsGroup : public WP42MultiByteFunctionGroup
 {
 public:
-	WP42SuppressPageCharacteristicsGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group);
+	WP42SuppressPageCharacteristicsGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char group);
 	~WP42SuppressPageCharacteristicsGroup();
 	void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP42Listener *listener);
 
 private:
-	uint8_t m_suppressCode;
+	unsigned char m_suppressCode;
 };
 
 #endif /* WP42SUPPRESSPAGECHARACTERISTICSGROUP_H */

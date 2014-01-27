@@ -31,7 +31,7 @@
 class WP1SetTabsGroup : public WP1VariableLengthGroup
 {
 public:
-	WP1SetTabsGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group);
+	WP1SetTabsGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char group);
 	~WP1SetTabsGroup();
 	void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP1Listener *listener);

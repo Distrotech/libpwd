@@ -83,7 +83,7 @@ void WP3Parser::parseDocument(librevenge::RVNGInputStream *input, WPXEncryption 
 {
 	while (!input->isEnd())
 	{
-		uint8_t readVal;
+		unsigned char readVal;
 		readVal = readU8(input, encryption);
 
 		if (readVal == 0 || readVal == 0x7F || readVal == 0xFF)
@@ -91,11 +91,11 @@ void WP3Parser::parseDocument(librevenge::RVNGInputStream *input, WPXEncryption 
 			// FIXME: VERIFY: is this IF clause correct? (0xFF seems to be OK at least)
 			// do nothing: this token is meaningless and is likely just corruption
 		}
-		else if (readVal >= (uint8_t)0x01 && readVal <= (uint8_t)0x1F)
+		else if (readVal >= (unsigned char)0x01 && readVal <= (unsigned char)0x1F)
 		{
 			// control characters ?
 		}
-		else if (readVal >= (uint8_t)0x20 && readVal <= (uint8_t)0x7E)
+		else if (readVal >= (unsigned char)0x20 && readVal <= (unsigned char)0x7E)
 		{
 			listener->insertCharacter(readVal);
 		}

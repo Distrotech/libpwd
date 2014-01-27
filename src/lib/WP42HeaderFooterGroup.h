@@ -32,7 +32,7 @@
 class WP42HeaderFooterGroup : public WP42MultiByteFunctionGroup
 {
 public:
-	WP42HeaderFooterGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group);
+	WP42HeaderFooterGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char group);
 	~WP42HeaderFooterGroup();
 	void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP42Listener *listener);
@@ -40,7 +40,7 @@ public:
 private:
 	WP42HeaderFooterGroup(const WP42HeaderFooterGroup &);
 	WP42HeaderFooterGroup &operator=(const WP42HeaderFooterGroup &);
-	uint8_t m_definition;
+	unsigned char m_definition;
 	WP42SubDocument *m_subDocument;
 };
 

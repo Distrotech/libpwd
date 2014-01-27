@@ -3629,10 +3629,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\lib\libwpd_types.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\src\lib\WP1BottomMarginGroup.h"
 				>
 			</File>

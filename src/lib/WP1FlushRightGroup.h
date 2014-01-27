@@ -31,7 +31,7 @@
 class WP1FlushRightGroup : public WP1FixedLengthGroup
 {
 public:
-	WP1FlushRightGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group);
+	WP1FlushRightGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char group);
 	~WP1FlushRightGroup();
 	void parse(WP1Listener *listener);
 };

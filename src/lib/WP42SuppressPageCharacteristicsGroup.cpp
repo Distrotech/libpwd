@@ -27,7 +27,7 @@
 #include "libwpd_internal.h"
 #include <string>
 
-WP42SuppressPageCharacteristicsGroup::WP42SuppressPageCharacteristicsGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group) :
+WP42SuppressPageCharacteristicsGroup::WP42SuppressPageCharacteristicsGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char group) :
 	WP42MultiByteFunctionGroup(group),
 	m_suppressCode(0)
 {

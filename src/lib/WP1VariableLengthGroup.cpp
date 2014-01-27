@@ -35,13 +35,13 @@
 #include "libwpd_internal.h"
 #include <limits>
 
-WP1VariableLengthGroup::WP1VariableLengthGroup(uint8_t group) :
+WP1VariableLengthGroup::WP1VariableLengthGroup(unsigned char group) :
 	m_group(group),
 	m_size(0)
 {
 }
 
-WP1VariableLengthGroup *WP1VariableLengthGroup::constructVariableLengthGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group)
+WP1VariableLengthGroup *WP1VariableLengthGroup::constructVariableLengthGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char group)
 {
 	switch (group)
 	{
@@ -59,7 +59,7 @@ WP1VariableLengthGroup *WP1VariableLengthGroup::constructVariableLengthGroup(lib
 	}
 }
 
-bool WP1VariableLengthGroup::isGroupConsistent(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const uint8_t group)
+bool WP1VariableLengthGroup::isGroupConsistent(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const unsigned char group)
 {
 	long startPosition = input->tell();
 	if (startPosition < 0)
@@ -67,8 +67,8 @@ bool WP1VariableLengthGroup::isGroupConsistent(librevenge::RVNGInputStream *inpu
 
 	try
 	{
-		uint32_t size = readU32(input, encryption, true);
-		if (size > ((std::numeric_limits<uint32_t>::max)() / 2))
+		unsigned size = readU32(input, encryption, true);
+		if (size > ((std::numeric_limits<unsigned>::max)() / 2))
 			return false;
 
 		if (input->seek(size, librevenge::RVNG_SEEK_CUR) || input->isEnd())
@@ -115,7 +115,7 @@ void WP1VariableLengthGroup::_read(librevenge::RVNGInputStream *input, WPXEncryp
 	_readContents(input, encryption);
 
 	if ((m_size + (unsigned long)startPosition + 4 < m_size + (unsigned long)startPosition) ||
-	        (m_size + (unsigned long)startPosition + 4) > ((std::numeric_limits<uint32_t>::max)() / 2))
+	        (m_size + (unsigned long)startPosition + 4) > ((std::numeric_limits<unsigned>::max)() / 2))
 		throw FileException();
 
 	input->seek(startPosition + m_size + 4, librevenge::RVNG_SEEK_SET);
@@ -132,7 +132,7 @@ void WP1VariableLengthGroup::_read(librevenge::RVNGInputStream *input, WPXEncryp
 	}
 
 	if ((m_size + (unsigned long)startPosition + 9 < m_size + (unsigned long)startPosition) ||
-	        (m_size + (unsigned long)startPosition + 9) > ((std::numeric_limits<uint32_t>::max)() / 2))
+	        (m_size + (unsigned long)startPosition + 9) > ((std::numeric_limits<unsigned>::max)() / 2))
 		throw FileException();
 	input->seek(startPosition + m_size + 9, librevenge::RVNG_SEEK_SET);
 

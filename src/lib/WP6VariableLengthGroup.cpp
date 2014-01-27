@@ -61,7 +61,7 @@ WP6VariableLengthGroup::~WP6VariableLengthGroup()
 		delete [] m_prefixIDs;
 }
 
-WP6VariableLengthGroup *WP6VariableLengthGroup::constructVariableLengthGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const uint8_t groupID)
+WP6VariableLengthGroup *WP6VariableLengthGroup::constructVariableLengthGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const unsigned char groupID)
 {
 	switch (groupID)
 	{
@@ -97,14 +97,14 @@ WP6VariableLengthGroup *WP6VariableLengthGroup::constructVariableLengthGroup(lib
 	}
 }
 
-bool WP6VariableLengthGroup::isGroupConsistent(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const uint8_t groupID)
+bool WP6VariableLengthGroup::isGroupConsistent(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const unsigned char groupID)
 {
 	long startPosition = input->tell();
 
 	try
 	{
 		input->seek(1, librevenge::RVNG_SEEK_CUR);
-		uint16_t size = readU16(input, encryption);
+		unsigned short size = readU16(input, encryption);
 
 		if (input->seek((startPosition + size - 4), librevenge::RVNG_SEEK_SET) || input->isEnd())
 		{
@@ -147,8 +147,8 @@ void WP6VariableLengthGroup::_read(librevenge::RVNGInputStream *input, WPXEncryp
 
 		if (m_numPrefixIDs > 0)
 		{
-			m_prefixIDs = new uint16_t[m_numPrefixIDs];
-			for (uint32_t i = 0; i < m_numPrefixIDs; i++)
+			m_prefixIDs = new unsigned short[m_numPrefixIDs];
+			for (unsigned i = 0; i < m_numPrefixIDs; i++)
 			{
 				m_prefixIDs[i] = readU16(input, encryption);
 			}
@@ -169,7 +169,7 @@ void WP6VariableLengthGroup::_read(librevenge::RVNGInputStream *input, WPXEncryp
 
 	long tmpPosition = input->tell();
 	input->seek(m_sizeNonDeletable, librevenge::RVNG_SEEK_CUR);
-	m_sizeDeletable = (uint16_t)(startPosition + m_size - 4 - input->tell());
+	m_sizeDeletable = (unsigned short)(startPosition + m_size - 4 - input->tell());
 	input->seek(tmpPosition, librevenge::RVNG_SEEK_SET);
 
 	WPD_DEBUG_MSG(("WordPerfect: Read variable group header (start_position: %li, sub_group: %i, size: %i, flags: %i, num_prefix_ids: %i, size_non_deletable: %i, size_deletable: %i)\n", startPosition, m_subGroup, m_size, m_flags, m_numPrefixIDs, m_sizeNonDeletable, m_sizeDeletable));

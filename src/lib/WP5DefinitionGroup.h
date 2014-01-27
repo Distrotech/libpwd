@@ -32,18 +32,18 @@
 class WP5DefinitionGroup_DefineTablesSubGroup : public WP5VariableLengthGroup_SubGroup
 {
 public:
-	WP5DefinitionGroup_DefineTablesSubGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint16_t subGroupSize);
+	WP5DefinitionGroup_DefineTablesSubGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned short subGroupSize);
 	void parse(WP5Listener *listener);
 
 private:
-	uint8_t m_position;
-	uint16_t m_numColumns;
-	uint16_t m_leftOffset;
-	uint16_t m_leftGutter;
-	uint16_t m_rightGutter;
-	uint16_t m_columnWidth[32];
-	uint16_t m_attributeBits[32];
-	uint8_t m_columnAlignment[32];
+	unsigned char m_position;
+	unsigned short m_numColumns;
+	unsigned short m_leftOffset;
+	unsigned short m_leftGutter;
+	unsigned short m_rightGutter;
+	unsigned short m_columnWidth[32];
+	unsigned short m_attributeBits[32];
+	unsigned char m_columnAlignment[32];
 
 };
 

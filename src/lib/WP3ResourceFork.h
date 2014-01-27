@@ -38,10 +38,10 @@ public:
 	WP3ResourceFork(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	virtual ~WP3ResourceFork();
 
-	const WP3Resource *getResource(uint32_t type, uint32_t ID) const;
+	const WP3Resource *getResource(unsigned type, unsigned ID) const;
 
 private:
-	std::multimap<uint32_t, WP3Resource *> m_resourcesTypeMultimap, m_resourcesIDMultimap;
+	std::multimap<unsigned, WP3Resource *> m_resourcesTypeMultimap, m_resourcesIDMultimap;
 };
 
 #endif /* WP3RESOURCEFORK_H */

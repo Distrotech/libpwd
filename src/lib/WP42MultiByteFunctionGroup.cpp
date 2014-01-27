@@ -35,12 +35,12 @@
 #include "WP42FileStructure.h"
 #include "libwpd_internal.h"
 
-WP42MultiByteFunctionGroup::WP42MultiByteFunctionGroup(uint8_t group)
+WP42MultiByteFunctionGroup::WP42MultiByteFunctionGroup(unsigned char group)
 	: m_group(group)
 {
 }
 
-WP42MultiByteFunctionGroup *WP42MultiByteFunctionGroup::constructMultiByteFunctionGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group)
+WP42MultiByteFunctionGroup *WP42MultiByteFunctionGroup::constructMultiByteFunctionGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char group)
 {
 	switch (group)
 	{

@@ -32,14 +32,14 @@
 class WP3IndentGroup : public WP3FixedLengthGroup
 {
 public:
-	WP3IndentGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID);
+	WP3IndentGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char groupID);
 	void parse(WP3Listener *listener);
 
 protected:
 	void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 
 private:
-	uint8_t m_subGroup;
+	unsigned char m_subGroup;
 	double m_offset;
 };
 

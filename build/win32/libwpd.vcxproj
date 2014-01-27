@@ -801,7 +801,6 @@
     <ClInclude Include="..\..\inc\libwpd\WPXString.h" />
     <ClInclude Include="..\..\src\lib\libwpd_internal.h" />
     <ClInclude Include="..\..\src\lib\libwpd_math.h" />
-    <ClInclude Include="..\..\src\lib\libwpd_types.h" />
     <ClInclude Include="..\..\src\lib\WP1BottomMarginGroup.h" />
     <ClInclude Include="..\..\src\lib\WP1CenterTextGroup.h" />
     <ClInclude Include="..\..\src\lib\WP1ContentListener.h" />

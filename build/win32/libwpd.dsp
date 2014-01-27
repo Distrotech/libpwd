@@ -791,10 +791,6 @@ SOURCE=..\..\src\lib\libwpd_math.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\..\src\lib\libwpd_types.h
-# End Source File
-# Begin Source File
-
 SOURCE=..\..\src\lib\WP1BottomMarginGroup.h
 # End Source File
 # Begin Source File

@@ -41,23 +41,23 @@ public:
 
 private:
 	// variables needed for subgroup 1 (Left/Right Margin Set)
-	uint16_t m_leftMargin;
-	uint16_t m_rightMargin;
+	unsigned short m_leftMargin;
+	unsigned short m_rightMargin;
 	// variable needed for subgroup 2 (Spacing Set)
 	double m_lineSpacing;
 	// variables needed for subbroup 4 (Tab Set)
 	std::vector<WPXTabStop> m_tabStops;
-	uint16_t m_marginOffset;
+	unsigned short m_marginOffset;
 	// variables needed for subgroup 5 (Top/Bottom Margin Set)
-	uint16_t m_topMargin;
-	uint16_t m_bottomMargin;
+	unsigned short m_topMargin;
+	unsigned short m_bottomMargin;
 	// variables needed for subgroup 6 (Justification)
-	uint8_t m_justification;
+	unsigned char m_justification;
 	// variable needed for subgroup 7 (Suppress Page Characteristics)
-	uint8_t m_suppressCode;
+	unsigned char m_suppressCode;
 	// variables needed for subgroup 11 (Form)
-	uint16_t m_formLength;
-	uint16_t m_formWidth;
+	unsigned short m_formLength;
+	unsigned short m_formWidth;
 	WPXFormOrientation m_formOrientation;
 
 };

@@ -54,7 +54,7 @@ void WP1StylesListener::endSubDocument()
 	insertBreak(WPX_SOFT_PAGE_BREAK); // pretend we just had a soft page break (for the last page)
 }
 
-void WP1StylesListener::insertBreak(uint8_t breakType)
+void WP1StylesListener::insertBreak(unsigned char breakType)
 {
 	if (m_isSubDocument)
 		return;
@@ -114,7 +114,7 @@ void WP1StylesListener::insertBreak(uint8_t breakType)
 	}
 }
 
-void WP1StylesListener::marginReset(uint16_t leftMargin, uint16_t rightMargin)
+void WP1StylesListener::marginReset(unsigned short leftMargin, unsigned short rightMargin)
 {
 	if (!isUndoOn())
 	{
@@ -162,7 +162,7 @@ void WP1StylesListener::marginReset(uint16_t leftMargin, uint16_t rightMargin)
 	}
 }
 
-void WP1StylesListener::topMarginSet(uint16_t topMargin)
+void WP1StylesListener::topMarginSet(unsigned short topMargin)
 {
 	if (!isUndoOn())
 	{
@@ -172,7 +172,7 @@ void WP1StylesListener::topMarginSet(uint16_t topMargin)
 	}
 }
 
-void WP1StylesListener::bottomMarginSet(uint16_t bottomMargin)
+void WP1StylesListener::bottomMarginSet(unsigned short bottomMargin)
 {
 	if (!isUndoOn())
 	{
@@ -182,7 +182,7 @@ void WP1StylesListener::bottomMarginSet(uint16_t bottomMargin)
 	}
 }
 
-void WP1StylesListener::headerFooterGroup(uint8_t headerFooterDefinition, WP1SubDocument *subDocument)
+void WP1StylesListener::headerFooterGroup(unsigned char headerFooterDefinition, WP1SubDocument *subDocument)
 {
 	if (subDocument)
 		m_subDocuments.push_back(subDocument);
@@ -191,10 +191,10 @@ void WP1StylesListener::headerFooterGroup(uint8_t headerFooterDefinition, WP1Sub
 	{
 		bool tempCurrentPageHasContent = m_currentPageHasContent;
 
-		uint8_t headerFooterType = (uint8_t)(headerFooterDefinition & 0x03);
+		unsigned char headerFooterType = (unsigned char)(headerFooterDefinition & 0x03);
 		WPXHeaderFooterType wpxType = ((headerFooterType <= WPX_HEADER_B) ? HEADER : FOOTER);
 
-		uint8_t occurrenceBits = (uint8_t)((headerFooterDefinition & 0x1C) >> 2);
+		unsigned char occurrenceBits = (unsigned char)((headerFooterDefinition & 0x1C) >> 2);
 
 		WPD_DEBUG_MSG(("WordPerfect: headerFooterGroup (headerFooterType: %i, occurrenceBits: %i)\n",
 		               headerFooterType, occurrenceBits));
@@ -228,7 +228,7 @@ void WP1StylesListener::headerFooterGroup(uint8_t headerFooterDefinition, WP1Sub
 	}
 }
 
-void WP1StylesListener::suppressPageCharacteristics(uint8_t suppressCode)
+void WP1StylesListener::suppressPageCharacteristics(unsigned char suppressCode)
 {
 	if (!isUndoOn())
 	{

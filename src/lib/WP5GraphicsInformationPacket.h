@@ -35,9 +35,9 @@
 class WP5GraphicsInformationPacket : public WP5GeneralPacketData
 {
 public:
-	WP5GraphicsInformationPacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int id, uint32_t dataOffset, uint32_t dataSize);
+	WP5GraphicsInformationPacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int id, unsigned dataOffset, unsigned dataSize);
 	~WP5GraphicsInformationPacket();
-	void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint32_t dataSize);
+	void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned dataSize);
 	const std::vector<librevenge::RVNGBinaryData *> &getImages() const
 	{
 		return m_images;
@@ -50,7 +50,7 @@ public:
 
 private:
 	std::vector<librevenge::RVNGBinaryData *> m_images;
-	std::vector<uint8_t *> m_data;
+	std::vector<unsigned char *> m_data;
 };
 #endif /* WP5GRAPHICSINFORMATIONPACKET_H */
 /* vim:set shiftwidth=4 softtabstop=4 noexpandtab: */

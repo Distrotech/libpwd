@@ -41,8 +41,8 @@ public:
 
 private:
 	// variables needed for subgroup 4 (Page Size Override)
-	uint16_t m_pageWidth;
-	uint16_t m_pageHeight;
+	unsigned short m_pageWidth;
+	unsigned short m_pageHeight;
 	WPXFormOrientation m_pageOrientation;
 };
 

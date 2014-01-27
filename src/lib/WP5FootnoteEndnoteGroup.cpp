@@ -44,7 +44,7 @@ WP5FootnoteEndnoteGroup::~WP5FootnoteEndnoteGroup()
 void WP5FootnoteEndnoteGroup::_readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
 	int tmpSizeOfNote = getSize() - 8;
-	uint8_t tmpFlags = readU8(input, encryption);
+	unsigned char tmpFlags = readU8(input, encryption);
 	tmpSizeOfNote -= 1;
 	int tmpNumOfNote = readU16(input, encryption);
 	tmpSizeOfNote -= 2;

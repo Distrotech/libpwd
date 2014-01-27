@@ -29,7 +29,7 @@
 #include "WP6Parser.h"
 #include "libwpd_internal.h"
 
-WP6FillStylePacket::WP6FillStylePacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int /* id */, uint32_t dataOffset, uint32_t dataSize) :
+WP6FillStylePacket::WP6FillStylePacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int /* id */, unsigned dataOffset, unsigned dataSize) :
 	WP6PrefixDataPacket(input, encryption),
 	m_fgColor(0xff, 0xff, 0xff),
 	m_bgColor(0xff, 0xff, 0xff)
@@ -49,10 +49,10 @@ const int WP6_FILL_STYLE_PACKET_SKIPABLE_DATA_AFTER_FILL_NAME = 3;
 void WP6FillStylePacket::_readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
 	/* skip a whole bunch of useless crap */
-	uint16_t numChildPrefixIDs = readU16(input, encryption);
-	input->seek(sizeof(uint16_t)*numChildPrefixIDs, librevenge::RVNG_SEEK_CUR);
+	unsigned short numChildPrefixIDs = readU16(input, encryption);
+	input->seek(sizeof(unsigned short)*numChildPrefixIDs, librevenge::RVNG_SEEK_CUR);
 	input->seek(WP6_FILL_STYLE_PACKET_SKIPABLE_DATA_AFTER_PREFIX_PACKETS, librevenge::RVNG_SEEK_CUR);
-	int16_t fillNameLength = readS16(input, encryption);
+	signed short fillNameLength = readS16(input, encryption);
 	if (fillNameLength > 0)
 		input->seek(fillNameLength, librevenge::RVNG_SEEK_CUR);
 	input->seek(WP6_FILL_STYLE_PACKET_SKIPABLE_DATA_AFTER_FILL_NAME, librevenge::RVNG_SEEK_CUR);

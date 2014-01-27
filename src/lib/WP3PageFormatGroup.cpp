@@ -56,8 +56,8 @@ void WP3PageFormatGroup::_readContents(librevenge::RVNGInputStream *input, WPXEn
 {
 	// this group can contain different kinds of data, thus we need to read
 	// the contents accordingly
-	uint8_t tmpTmp = 0xff;
-	int8_t tmpTabType = 0;
+	unsigned char tmpTmp = 0xff;
+	signed char tmpTabType = 0;
 	double tmpTabPosition = 0.0;
 	WPXTabStop tmpTabStop = WPXTabStop();
 
@@ -75,8 +75,8 @@ void WP3PageFormatGroup::_readContents(librevenge::RVNGInputStream *input, WPXEn
 		// skip 4 bytes (old spacing of no interest for us)
 		input->seek(4, librevenge::RVNG_SEEK_CUR);
 		{
-			uint32_t lineSpacing = readU32(input, encryption, true);
-			int16_t lineSpacingIntegerPart = (int16_t)((lineSpacing & 0xFFFF0000) >> 16);
+			unsigned lineSpacing = readU32(input, encryption, true);
+			signed short lineSpacingIntegerPart = (signed short)((lineSpacing & 0xFFFF0000) >> 16);
 			double lineSpacingFractionalPart = (double)((double)(lineSpacing & 0xFFFF)/(double)0xFFFF);
 			WPD_DEBUG_MSG(("WordPerfect: Page format group line spacing - integer part: %i fractional part: %f (original value: %i)\n",
 			               lineSpacingIntegerPart, lineSpacingFractionalPart, lineSpacing));
@@ -96,14 +96,14 @@ void WP3PageFormatGroup::_readContents(librevenge::RVNGInputStream *input, WPXEn
 
 		while ((tmpTmp = readU8(input, encryption)) != 0xff)
 		{
-			tmpTabType = (int8_t) tmpTmp;
+			tmpTabType = (signed char) tmpTmp;
 			if (input->isEnd())
 				throw FileException();
 			tmpTabPosition = fixedPointToDouble(readU32(input, encryption, true)) / 72.0;
 
 			if (tmpTabType < 0)
 			{
-				for (int8_t i = tmpTabType; i < 0; i++)
+				for (signed char i = tmpTabType; i < 0; i++)
 				{
 					tmpTabStop.m_position += tmpTabPosition;
 					m_tabStops.push_back(tmpTabStop);

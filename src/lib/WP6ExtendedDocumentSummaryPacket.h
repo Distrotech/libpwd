@@ -34,7 +34,7 @@
 class WP6ExtendedDocumentSummaryPacket : public WP6PrefixDataPacket
 {
 public:
-	WP6ExtendedDocumentSummaryPacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int id, uint32_t dataOffset, uint32_t dataSize);
+	WP6ExtendedDocumentSummaryPacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int id, unsigned dataOffset, unsigned dataSize);
 	~WP6ExtendedDocumentSummaryPacket();
 	void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP6Listener *listener) const;
@@ -42,8 +42,8 @@ public:
 private:
 	WP6ExtendedDocumentSummaryPacket(const WP6ExtendedDocumentSummaryPacket &);
 	WP6ExtendedDocumentSummaryPacket &operator=(const WP6ExtendedDocumentSummaryPacket &);
-	uint32_t m_dataSize;
-	uint8_t *m_streamData;
+	unsigned m_dataSize;
+	unsigned char *m_streamData;
 	mutable WPXMemoryInputStream *m_stream;
 
 };

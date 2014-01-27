@@ -35,9 +35,9 @@
 class WP5FontNameStringPoolPacket : public WP5GeneralPacketData
 {
 public:
-	WP5FontNameStringPoolPacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int id, uint32_t dataOffset, uint32_t dataSize);
+	WP5FontNameStringPoolPacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int id, unsigned dataOffset, unsigned dataSize);
 	~WP5FontNameStringPoolPacket();
-	void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint32_t dataSize);
+	void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned dataSize);
 	librevenge::RVNGString getFontName(const unsigned int offset) const;
 
 private:

@@ -26,7 +26,7 @@
 #include "WP1FontIdGroup.h"
 #include "libwpd_internal.h"
 
-WP1FontIdGroup::WP1FontIdGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group) :
+WP1FontIdGroup::WP1FontIdGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char group) :
 	WP1FixedLengthGroup(group),
 	m_oldFontId(0),
 	m_newFontId(0)

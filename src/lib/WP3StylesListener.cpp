@@ -59,7 +59,7 @@ void WP3StylesListener::endSubDocument()
 	setUndoOn(false);
 }
 
-void WP3StylesListener::insertBreak(const uint8_t breakType)
+void WP3StylesListener::insertBreak(const unsigned char breakType)
 {
 	if (m_isSubDocument)
 		return;
@@ -99,7 +99,7 @@ void WP3StylesListener::insertBreak(const uint8_t breakType)
 	}
 }
 
-void WP3StylesListener::undoChange(const uint8_t /* undoType */, const uint16_t /* undoLevel */)
+void WP3StylesListener::undoChange(const unsigned char /* undoType */, const unsigned short /* undoLevel */)
 {
 // enable when have understood the undo change functions in WP3 file-format
 #if 0
@@ -110,7 +110,7 @@ void WP3StylesListener::undoChange(const uint8_t /* undoType */, const uint16_t 
 #endif
 }
 
-void WP3StylesListener::pageMarginChange(const uint8_t side, const uint16_t margin)
+void WP3StylesListener::pageMarginChange(const unsigned char side, const unsigned short margin)
 {
 	if (!isUndoOn())
 	{
@@ -129,7 +129,7 @@ void WP3StylesListener::pageMarginChange(const uint8_t side, const uint16_t marg
 	}
 }
 
-void WP3StylesListener::marginChange(const uint8_t side, const uint16_t margin)
+void WP3StylesListener::marginChange(const unsigned char side, const unsigned short margin)
 {
 	if (!isUndoOn())
 	{
@@ -175,7 +175,7 @@ void WP3StylesListener::marginChange(const uint8_t side, const uint16_t margin)
 	}
 }
 
-void WP3StylesListener::pageFormChange(const uint16_t length, const uint16_t width, const WPXFormOrientation orientation)
+void WP3StylesListener::pageFormChange(const unsigned short length, const unsigned short width, const WPXFormOrientation orientation)
 {
 	if (!isUndoOn())
 	{
@@ -190,7 +190,7 @@ void WP3StylesListener::pageFormChange(const uint16_t length, const uint16_t wid
 	}
 }
 
-void WP3StylesListener::headerFooterGroup(const uint8_t headerFooterType, const uint8_t occurrenceBits, WP3SubDocument *subDocument)
+void WP3StylesListener::headerFooterGroup(const unsigned char headerFooterType, const unsigned char occurrenceBits, WP3SubDocument *subDocument)
 {
 	if (!isUndoOn())
 	{
@@ -229,7 +229,7 @@ void WP3StylesListener::headerFooterGroup(const uint8_t headerFooterType, const 
 }
 
 
-void WP3StylesListener::suppressPage(const uint16_t suppressCode)
+void WP3StylesListener::suppressPage(const unsigned short suppressCode)
 {
 	if (!isUndoOn())
 	{

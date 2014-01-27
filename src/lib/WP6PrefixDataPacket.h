@@ -27,7 +27,6 @@
 #ifndef WP6PREFIXDATAPACKET_H
 #define WP6PREFIXDATAPACKET_H
 #include "WPXParser.h"
-#include "libwpd_types.h"
 
 class WP6Listener;
 class WP6PrefixIndice;
@@ -43,7 +42,7 @@ public:
 	{
 		return 0;
 	}
-	uint32_t getDataSize() const
+	unsigned getDataSize() const
 	{
 		return m_dataSize;
 	}
@@ -52,10 +51,10 @@ public:
 
 protected:
 	virtual void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption) = 0;
-	void _read(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint32_t dataOffset, uint32_t dataSize);
+	void _read(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned dataOffset, unsigned dataSize);
 
 private:
-	uint32_t m_dataSize;
+	unsigned m_dataSize;
 };
 
 #endif /* WP6PREFIXDATAPACKET_H */

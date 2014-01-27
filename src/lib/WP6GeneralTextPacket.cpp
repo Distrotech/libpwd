@@ -30,7 +30,7 @@
 #include "WP6Parser.h"
 #include "libwpd_internal.h"
 
-WP6GeneralTextPacket::WP6GeneralTextPacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int /* id */, uint32_t dataOffset, uint32_t dataSize):
+WP6GeneralTextPacket::WP6GeneralTextPacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int /* id */, unsigned dataOffset, unsigned dataSize):
 	WP6PrefixDataPacket(input, encryption),
 	m_subDocument(0),
 	m_streamData(0)
@@ -49,7 +49,7 @@ WP6GeneralTextPacket::~WP6GeneralTextPacket()
 void WP6GeneralTextPacket::_readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
 	long startPosition = input->tell();
-	uint16_t numTextBlocks = readU16(input, encryption);
+	unsigned short numTextBlocks = readU16(input, encryption);
 	input->seek(4, librevenge::RVNG_SEEK_CUR);
 
 	if (numTextBlocks < 1)
@@ -58,7 +58,7 @@ void WP6GeneralTextPacket::_readContents(librevenge::RVNGInputStream *input, WPX
 		return; // m_subDocument will be 0
 	}
 
-	std::vector<uint32_t> blockSizes(numTextBlocks);
+	std::vector<unsigned> blockSizes(numTextBlocks);
 	unsigned totalSize = 0;
 	unsigned i;
 
@@ -80,7 +80,7 @@ void WP6GeneralTextPacket::_readContents(librevenge::RVNGInputStream *input, WPX
 		WPD_DEBUG_MSG(("WordPerfect: The total size of the text is %ui\n", totalSize));
 		return; // m_subDocument will be 0
 	}
-	m_streamData = new uint8_t[totalSize];
+	m_streamData = new unsigned char[totalSize];
 	unsigned streamPos = 0;
 	for (i=0; i<numTextBlocks; i++)
 	{

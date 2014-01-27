@@ -30,7 +30,7 @@
 #include "libwpd_internal.h"
 #include "WPXMemoryStream.h"
 
-WP6GraphicsCachedFileDataPacket::WP6GraphicsCachedFileDataPacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int  id, uint32_t dataOffset, uint32_t dataSize):
+WP6GraphicsCachedFileDataPacket::WP6GraphicsCachedFileDataPacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int  id, unsigned dataOffset, unsigned dataSize):
 	WP6PrefixDataPacket(input, encryption),
 	m_id(id),
 	m_object(0),
@@ -51,9 +51,9 @@ WP6GraphicsCachedFileDataPacket::~WP6GraphicsCachedFileDataPacket()
 
 void WP6GraphicsCachedFileDataPacket::_readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
-	uint32_t tmpDataSize = getDataSize();
-	m_data = new uint8_t[tmpDataSize];
-	for (uint32_t i = 0; i < tmpDataSize; i++)
+	unsigned tmpDataSize = getDataSize();
+	m_data = new unsigned char[tmpDataSize];
+	for (unsigned i = 0; i < tmpDataSize; i++)
 		m_data[i] = readU8(input, encryption);
 #if 0
 	librevenge::RVNGString filename;
@@ -61,7 +61,7 @@ void WP6GraphicsCachedFileDataPacket::_readContents(librevenge::RVNGInputStream 
 	FILE *f = fopen(filename.cstr(), "wb");
 	if (f) // don't crash when current directory is on read-only file-system
 	{
-		for (uint32_t j = 0; j < tmpDataSize; j++)
+		for (unsigned j = 0; j < tmpDataSize; j++)
 			fprintf(f, "%c", m_data[j]);
 		fclose(f);
 	}

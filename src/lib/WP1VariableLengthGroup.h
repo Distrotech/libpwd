@@ -33,29 +33,29 @@
 class WP1VariableLengthGroup : public WP1Part
 {
 public:
-	WP1VariableLengthGroup(uint8_t group); // WP1VariableLengthGroup should _never_ be constructed, only its inherited classes
+	WP1VariableLengthGroup(unsigned char group); // WP1VariableLengthGroup should _never_ be constructed, only its inherited classes
 	virtual ~WP1VariableLengthGroup() {}
 
-	static WP1VariableLengthGroup *constructVariableLengthGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group);
+	static WP1VariableLengthGroup *constructVariableLengthGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char group);
 
-	static bool isGroupConsistent(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const uint8_t group);
+	static bool isGroupConsistent(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const unsigned char group);
 
 protected:
 	void _read(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	virtual void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption) = 0;
 
-	uint8_t getGroup() const
+	unsigned char getGroup() const
 	{
 		return m_group;
 	}
-	uint32_t getSize() const
+	unsigned getSize() const
 	{
 		return m_size;
 	}
 
 private:
-	uint8_t m_group;
-	uint32_t m_size;
+	unsigned char m_group;
+	unsigned m_size;
 };
 
 #endif /* WP1VARIABLELENGTHGROUP_H */

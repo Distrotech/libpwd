@@ -30,7 +30,7 @@
 #include "WP6Listener.h"
 #include "libwpd_internal.h"
 
-WP6SingleByteFunction *WP6SingleByteFunction::constructSingleByteFunction(librevenge::RVNGInputStream * /* input */, WPXEncryption * /* encryption */, uint8_t groupID)
+WP6SingleByteFunction *WP6SingleByteFunction::constructSingleByteFunction(librevenge::RVNGInputStream * /* input */, WPXEncryption * /* encryption */, unsigned char groupID)
 {
 
 	switch (groupID)
@@ -103,17 +103,17 @@ WP6SingleByteFunction *WP6SingleByteFunction::constructSingleByteFunction(librev
 
 void WP6SpaceFunction::parse(WP6Listener *listener)
 {
-	listener->insertCharacter((uint32_t) ' ');
+	listener->insertCharacter((unsigned) ' ');
 }
 
 void WP6HardSpaceFunction::parse(WP6Listener *listener)
 {
-	listener->insertCharacter((uint32_t) 0xa0);
+	listener->insertCharacter((unsigned) 0xa0);
 }
 
 void WP6SoftHyphenFunction::parse(WP6Listener *listener)
 {
-	listener->insertCharacter((uint32_t) 0xad);
+	listener->insertCharacter((unsigned) 0xad);
 }
 
 void WP6EOLFunction::parse(WP6Listener *listener)
@@ -138,7 +138,7 @@ void WP6SoftEOPFunction::parse(WP6Listener *listener)
 
 void WP6HyphenFunction::parse(WP6Listener *listener)
 {
-	listener->insertCharacter((uint32_t) '-');
+	listener->insertCharacter((unsigned) '-');
 }
 
 void WP6TableRowFunction::parse(WP6Listener *listener)

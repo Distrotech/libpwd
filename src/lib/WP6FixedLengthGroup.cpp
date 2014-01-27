@@ -34,12 +34,12 @@
 #include "WP6FileStructure.h"
 #include "libwpd_internal.h"
 
-WP6FixedLengthGroup::WP6FixedLengthGroup(uint8_t groupID)
+WP6FixedLengthGroup::WP6FixedLengthGroup(unsigned char groupID)
 	: m_group(groupID)
 {
 }
 
-WP6FixedLengthGroup *WP6FixedLengthGroup::constructFixedLengthGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID)
+WP6FixedLengthGroup *WP6FixedLengthGroup::constructFixedLengthGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char groupID)
 {
 	switch (groupID)
 	{
@@ -67,16 +67,16 @@ WP6FixedLengthGroup *WP6FixedLengthGroup::constructFixedLengthGroup(librevenge::
 	}
 }
 
-bool WP6FixedLengthGroup::isGroupConsistent(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const uint8_t groupID)
+bool WP6FixedLengthGroup::isGroupConsistent(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const unsigned char groupID)
 {
-	if (groupID == (uint8_t)0xFF)
+	if (groupID == (unsigned char)0xFF)
 		return false;
 
 	long startPosition = input->tell();
 
 	try
 	{
-		uint32_t size = WP6_FIXED_LENGTH_FUNCTION_GROUP_SIZE[(uint8_t)groupID-0xF0];
+		unsigned size = WP6_FIXED_LENGTH_FUNCTION_GROUP_SIZE[(unsigned char)groupID-0xF0];
 		if (input->seek((startPosition + size - 2), librevenge::RVNG_SEEK_SET) || input->isEnd())
 		{
 			input->seek(startPosition, librevenge::RVNG_SEEK_SET);

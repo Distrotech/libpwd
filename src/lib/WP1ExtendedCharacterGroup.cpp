@@ -26,7 +26,7 @@
 #include "WP1ExtendedCharacterGroup.h"
 #include "libwpd_internal.h"
 
-WP1ExtendedCharacterGroup::WP1ExtendedCharacterGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group) :
+WP1ExtendedCharacterGroup::WP1ExtendedCharacterGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char group) :
 	WP1FixedLengthGroup(group),
 	m_extendedCharacter(0)
 {

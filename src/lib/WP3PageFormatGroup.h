@@ -42,22 +42,22 @@ public:
 
 private:
 	// variables needed for subgroup 0x01 (Horizontal Margins)
-	uint32_t m_leftMargin;
-	uint32_t m_rightMargin;
+	unsigned m_leftMargin;
+	unsigned m_rightMargin;
 	// variable needed for subgroup 0x02 (Line Spacing)
 	double m_lineSpacing;
 	// variables needed for subgroup 0x04 (Set Tabs)
 	bool m_isRelative;
 	std::vector<WPXTabStop> m_tabStops;
 	// variables needed for subgroup 0x05 (Vertical Margins)
-	uint32_t m_topMargin;
-	uint32_t m_bottomMargin;
+	unsigned m_topMargin;
+	unsigned m_bottomMargin;
 	// variable needed for subgroup 0x06 (Justification Mode)
-	uint8_t m_justification;
+	unsigned char m_justification;
 	// variable needed for subgroup 0x07 (Suppress Page)
-	uint16_t m_suppressCode;
+	unsigned short m_suppressCode;
 	// variable needed for subgroup 0x0C (Indent At Beginning of Line)
-	uint32_t m_indent;
+	unsigned m_indent;
 
 };
 

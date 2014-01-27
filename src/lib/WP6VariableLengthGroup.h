@@ -34,7 +34,7 @@ class WP6VariableLengthGroup_SubGroup
 {
 public:
 	virtual ~WP6VariableLengthGroup_SubGroup() {}
-	virtual void parse(WP6Listener *listener, const uint8_t numPrefixIDs, uint16_t const *prefixIDs) const = 0;
+	virtual void parse(WP6Listener *listener, const unsigned char numPrefixIDs, unsigned short const *prefixIDs) const = 0;
 };
 
 class WP6VariableLengthGroup : public WP6Part
@@ -43,39 +43,39 @@ public:
 	WP6VariableLengthGroup(); // WP6VariableLengthGroup should _never_ be constructed, only its inherited classes
 	virtual ~WP6VariableLengthGroup();
 
-	static WP6VariableLengthGroup *constructVariableLengthGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const uint8_t groupID);
+	static WP6VariableLengthGroup *constructVariableLengthGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const unsigned char groupID);
 
-	static bool isGroupConsistent(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const uint8_t groupID);
+	static bool isGroupConsistent(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const unsigned char groupID);
 
 protected:
 	void _read(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	virtual void _readContents(librevenge::RVNGInputStream * /* input */, WPXEncryption * /* encryption */) {} // we don't always need more information than that provided generically
 
-	uint8_t getSubGroup() const
+	unsigned char getSubGroup() const
 	{
 		return m_subGroup;
 	}
-	uint16_t getSize() const
+	unsigned short getSize() const
 	{
 		return m_size;
 	}
-	uint8_t getFlags() const
+	unsigned char getFlags() const
 	{
 		return m_flags;
 	}
-	uint8_t getNumPrefixIDs() const
+	unsigned char getNumPrefixIDs() const
 	{
 		return m_numPrefixIDs;
 	}
-	const uint16_t *getPrefixIDs() const
+	const unsigned short *getPrefixIDs() const
 	{
 		return m_prefixIDs;
 	}
-	uint16_t getSizeNonDeletable() const
+	unsigned short getSizeNonDeletable() const
 	{
 		return m_sizeNonDeletable;
 	}
-	uint16_t getSizeDeletable() const
+	unsigned short getSizeDeletable() const
 	{
 		return m_sizeDeletable;
 	}
@@ -83,13 +83,13 @@ protected:
 private:
 	WP6VariableLengthGroup(const WP6VariableLengthGroup &);
 	WP6VariableLengthGroup &operator=(const WP6VariableLengthGroup &);
-	uint8_t m_subGroup;
-	uint16_t m_size;
-	uint8_t m_flags;
-	uint8_t m_numPrefixIDs;
-	uint16_t *m_prefixIDs;
-	uint16_t m_sizeNonDeletable;
-	uint16_t m_sizeDeletable;
+	unsigned char m_subGroup;
+	unsigned short m_size;
+	unsigned char m_flags;
+	unsigned char m_numPrefixIDs;
+	unsigned short *m_prefixIDs;
+	unsigned short m_sizeNonDeletable;
+	unsigned short m_sizeDeletable;
 };
 
 #endif /* WP6VARIABLELENGTHGROUP_H */

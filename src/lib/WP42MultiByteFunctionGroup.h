@@ -33,22 +33,22 @@
 class WP42MultiByteFunctionGroup : public WP42Part
 {
 public:
-	WP42MultiByteFunctionGroup(uint8_t group); // WP42MultiByteFunctionGroup should _never_ be constructed, only its inherited classes
+	WP42MultiByteFunctionGroup(unsigned char group); // WP42MultiByteFunctionGroup should _never_ be constructed, only its inherited classes
 	virtual ~WP42MultiByteFunctionGroup() {}
 
-	static WP42MultiByteFunctionGroup *constructMultiByteFunctionGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group);
+	static WP42MultiByteFunctionGroup *constructMultiByteFunctionGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char group);
 
 protected:
 	void _read(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	virtual void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption) = 0;
 
-	uint8_t getGroup() const
+	unsigned char getGroup() const
 	{
 		return m_group;
 	}
 
 private:
-	uint8_t m_group;
+	unsigned char m_group;
 };
 
 #endif /* WP42MULTIBYTEFUNCTIONGROUP_H */

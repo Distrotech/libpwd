@@ -67,11 +67,11 @@ WP3ContentListener::~WP3ContentListener()
  public 'HLListenerImpl' functions
 *****************************************/
 
-void WP3ContentListener::insertCharacter(uint32_t character)
+void WP3ContentListener::insertCharacter(unsigned character)
 {
 	if (!isUndoOn())
 	{
-		uint32_t tmpCharacter = _mapNonUnicodeCharacter(character);
+		unsigned tmpCharacter = _mapNonUnicodeCharacter(character);
 		if (!m_ps->m_isSpanOpened)
 			_openSpan();
 		appendUCS4(m_parseState->m_textBuffer, tmpCharacter);
@@ -108,7 +108,7 @@ void WP3ContentListener::insertTab()
 	}
 }
 
-void WP3ContentListener::insertTab(const uint8_t tabType, const double /* tabPosition */)
+void WP3ContentListener::insertTab(const unsigned char tabType, const double /* tabPosition */)
 {
 	if (!isUndoOn())
 	{
@@ -157,7 +157,7 @@ void WP3ContentListener::insertEOL()
 
 }
 
-void WP3ContentListener::defineTable(const uint8_t position, const uint16_t leftOffset)
+void WP3ContentListener::defineTable(const unsigned char position, const unsigned short leftOffset)
 {
 	if (!isUndoOn())
 	{
@@ -192,8 +192,8 @@ void WP3ContentListener::defineTable(const uint8_t position, const uint16_t left
 	}
 }
 
-void WP3ContentListener::addTableColumnDefinition(const uint32_t width, const uint32_t /* leftGutter */,
-                                                  const uint32_t /* rightGutter */, const uint32_t attributes, const uint8_t alignment)
+void WP3ContentListener::addTableColumnDefinition(const unsigned width, const unsigned /* leftGutter */,
+                                                  const unsigned /* rightGutter */, const unsigned attributes, const unsigned char alignment)
 {
 	if (!isUndoOn())
 	{
@@ -252,7 +252,7 @@ void WP3ContentListener::insertCell()
 			throw ParseException();
 
 		RGBSColor tmpCellBorderColor(0x00, 0x00, 0x00, 0x64);
-		_openTableCell((uint8_t)m_parseState->m_colSpan, (uint8_t)m_parseState->m_rowSpan, 0x00000000,
+		_openTableCell((unsigned char)m_parseState->m_colSpan, (unsigned char)m_parseState->m_rowSpan, 0x00000000,
 		               m_parseState->m_cellFillColor, 0, &tmpCellBorderColor, TOP);
 		DELETEP(m_parseState->m_cellFillColor);
 
@@ -282,7 +282,7 @@ void WP3ContentListener::closeRow()
 	}
 }
 
-void WP3ContentListener::setTableCellSpan(const uint16_t colSpan, const uint16_t rowSpan)
+void WP3ContentListener::setTableCellSpan(const unsigned short colSpan, const unsigned short rowSpan)
 {
 	if (!isUndoOn())
 	{
@@ -317,13 +317,13 @@ void WP3ContentListener::endTable()
  public 'parser' functions
 *****************************************/
 
-void WP3ContentListener::attributeChange(const bool isOn, const uint8_t attribute)
+void WP3ContentListener::attributeChange(const bool isOn, const unsigned char attribute)
 {
 	if (!isUndoOn())
 	{
 		_closeSpan();
 
-		uint32_t textAttributeBit = 0;
+		unsigned textAttributeBit = 0;
 
 		// FIXME: handle all the possible attribute bits
 		switch (attribute)
@@ -388,7 +388,7 @@ void WP3ContentListener::attributeChange(const bool isOn, const uint8_t attribut
 	}
 }
 
-void WP3ContentListener::undoChange(const uint8_t undoType, const uint16_t /* undoLevel */)
+void WP3ContentListener::undoChange(const unsigned char undoType, const unsigned short /* undoLevel */)
 {
 	if (undoType == 0x00) // begin invalid text
 		setUndoOn(true);
@@ -396,7 +396,7 @@ void WP3ContentListener::undoChange(const uint8_t undoType, const uint16_t /* un
 		setUndoOn(false);
 }
 
-void WP3ContentListener::marginChange(const uint8_t side, const uint16_t margin)
+void WP3ContentListener::marginChange(const unsigned char side, const unsigned short margin)
 {
 	if (!isUndoOn())
 	{
@@ -441,7 +441,7 @@ void WP3ContentListener::marginChange(const uint8_t side, const uint16_t margin)
 	}
 }
 
-void WP3ContentListener::justificationChange(const uint8_t justification)
+void WP3ContentListener::justificationChange(const unsigned char justification)
 {
 	if (!isUndoOn())
 	{
@@ -494,7 +494,7 @@ void WP3ContentListener::setTabs(const bool isRelative, const std::vector<WPXTab
 	}
 }
 
-void WP3ContentListener::columnChange(const WPXTextColumnType /* columnType */, const uint8_t numColumns,
+void WP3ContentListener::columnChange(const WPXTextColumnType /* columnType */, const unsigned char numColumns,
                                       const std::vector<double> &columnWidth, const std::vector<bool> &isFixedWidth)
 {
 	if (!isUndoOn())
@@ -592,7 +592,7 @@ void WP3ContentListener::setTextFont(const librevenge::RVNGString &fontName)
 	}
 }
 
-void WP3ContentListener::setFontSize(const uint16_t fontSize)
+void WP3ContentListener::setFontSize(const unsigned short fontSize)
 {
 	if (!isUndoOn())
 	{
@@ -790,8 +790,8 @@ void WP3ContentListener::leftRightIndent(const double offset)
 	}
 }
 
-void WP3ContentListener::insertPicture(double height, double width, double verticalOffset, double horizontalOffset, uint8_t leftColumn, uint8_t rightColumn,
-                                       uint16_t figureFlags, const librevenge::RVNGBinaryData &binaryData)
+void WP3ContentListener::insertPicture(double height, double width, double verticalOffset, double horizontalOffset, unsigned char leftColumn, unsigned char rightColumn,
+                                       unsigned short figureFlags, const librevenge::RVNGBinaryData &binaryData)
 {
 	if (!isUndoOn())
 	{
@@ -811,8 +811,8 @@ void WP3ContentListener::insertPicture(double height, double width, double verti
 	}
 }
 
-void WP3ContentListener::insertTextBox(double height, double width, double verticalOffset, double horizontalOffset, uint8_t leftColumn, uint8_t rightColumn,
-                                       uint16_t figureFlags, const WP3SubDocument *subDocument, const WP3SubDocument *caption)
+void WP3ContentListener::insertTextBox(double height, double width, double verticalOffset, double horizontalOffset, unsigned char leftColumn, unsigned char rightColumn,
+                                       unsigned short figureFlags, const WP3SubDocument *subDocument, const WP3SubDocument *caption)
 {
 	if (!isUndoOn())
 	{
@@ -843,8 +843,8 @@ void WP3ContentListener::insertTextBox(double height, double width, double verti
 	}
 }
 
-void WP3ContentListener::insertWP51Table(double height, double width, double verticalOffset, double horizontalOffset, uint8_t leftColumn, uint8_t rightColumn,
-                                         uint16_t figureFlags, const WP3SubDocument *subDocument, const WP3SubDocument *caption)
+void WP3ContentListener::insertWP51Table(double height, double width, double verticalOffset, double horizontalOffset, unsigned char leftColumn, unsigned char rightColumn,
+                                         unsigned short figureFlags, const WP3SubDocument *subDocument, const WP3SubDocument *caption)
 {
 	if (!isUndoOn())
 	{
@@ -877,7 +877,7 @@ void WP3ContentListener::insertWP51Table(double height, double width, double ver
 }
 
 void WP3ContentListener::_handleFrameParameters(librevenge::RVNGPropertyList &propList, double height, double width, double verticalOffset, double horizontalOffset,
-                                                uint8_t /* leftColumn */, uint8_t /* rightColumn */, uint16_t figureFlags)
+                                                unsigned char /* leftColumn */, unsigned char /* rightColumn */, unsigned short figureFlags)
 {
 	propList.insert("svg:width", (double)((double)width/72.0));
 	propList.insert("svg:height", (double)((double)height/72.0));
@@ -1160,7 +1160,7 @@ void WP3ContentListener::_handleSubDocument(const WPXSubDocument *subDocument, W
 	setUndoOn(oldIsUndoOn);
 }
 
-void WP3ContentListener::headerFooterGroup(const uint8_t /* headerFooterType */, const uint8_t /* occurrenceBits */, WP3SubDocument *subDocument)
+void WP3ContentListener::headerFooterGroup(const unsigned char /* headerFooterType */, const unsigned char /* occurrenceBits */, WP3SubDocument *subDocument)
 {
 	if (subDocument)
 		m_subDocuments.push_back(subDocument);

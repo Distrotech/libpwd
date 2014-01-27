@@ -28,7 +28,7 @@
 #include "WP1UnsupportedFixedLengthGroup.h"
 #include "libwpd_internal.h"
 
-WP1UnsupportedFixedLengthGroup::WP1UnsupportedFixedLengthGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group) :
+WP1UnsupportedFixedLengthGroup::WP1UnsupportedFixedLengthGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char group) :
 	WP1FixedLengthGroup(group)
 {
 	_read(input, encryption);

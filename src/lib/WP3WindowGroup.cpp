@@ -80,12 +80,12 @@ void WP3WindowGroup::_readContents(librevenge::RVNGInputStream *input, WPXEncryp
 		m_width = fixedPointToDouble(readU32(input, encryption, true));
 		m_height = fixedPointToDouble(readU32(input, encryption, true));
 		input->seek(9, librevenge::RVNG_SEEK_CUR);
-		uint8_t tmpNumSubRect = readU8(input, encryption);
+		unsigned char tmpNumSubRect = readU8(input, encryption);
 		input->seek(tmpNumSubRect * 8, librevenge::RVNG_SEEK_CUR);
-		uint16_t tmpBoxCaptionSize = readU16(input, encryption, true);
+		unsigned short tmpBoxCaptionSize = readU16(input, encryption, true);
 		if (tmpBoxCaptionSize)
 			m_caption = new WP3SubDocument(input, encryption, tmpBoxCaptionSize);
-		uint16_t tmpTextBoxLength = readU16(input, encryption, true);
+		unsigned short tmpTextBoxLength = readU16(input, encryption, true);
 		if (tmpTextBoxLength)
 			m_subDocument = new WP3SubDocument(input, encryption, tmpTextBoxLength);
 	}

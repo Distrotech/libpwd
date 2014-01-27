@@ -33,22 +33,22 @@
 class WP1FixedLengthGroup : public WP1Part
 {
 public:
-	WP1FixedLengthGroup(uint8_t group); // WP1FixedLengthGroup should _never_ be constructed, only its inherited classes
+	WP1FixedLengthGroup(unsigned char group); // WP1FixedLengthGroup should _never_ be constructed, only its inherited classes
 	virtual ~WP1FixedLengthGroup() {}
 
-	static WP1FixedLengthGroup *constructFixedLengthGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group);
+	static WP1FixedLengthGroup *constructFixedLengthGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char group);
 
 protected:
 	void _read(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	virtual void _readContents(librevenge::RVNGInputStream * /* input */, WPXEncryption * /* encryption */) {}
 
-	uint8_t getGroup() const
+	unsigned char getGroup() const
 	{
 		return m_group;
 	}
 
 private:
-	uint8_t m_group;
+	unsigned char m_group;
 };
 
 #endif /* WP1FIXEDLENGTHGROUP_H */

@@ -28,7 +28,7 @@
 #include "WP3Listener.h"
 #include "libwpd_internal.h"
 
-WP3TabGroup::WP3TabGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID) :
+WP3TabGroup::WP3TabGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char groupID) :
 	WP3FixedLengthGroup(groupID),
 	m_subGroup(0),
 	m_modeType(0),

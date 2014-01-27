@@ -28,7 +28,7 @@
 #include "WP5Parser.h"
 #include "libwpd_internal.h"
 
-WP5FontNameStringPoolPacket::WP5FontNameStringPoolPacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int /* id */, uint32_t dataOffset, uint32_t dataSize) :
+WP5FontNameStringPoolPacket::WP5FontNameStringPoolPacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int /* id */, unsigned dataOffset, unsigned dataSize) :
 	WP5GeneralPacketData(),
 	m_fontNameString()
 {
@@ -39,7 +39,7 @@ WP5FontNameStringPoolPacket::~WP5FontNameStringPoolPacket()
 {
 }
 
-void WP5FontNameStringPoolPacket::_readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint32_t dataSize)
+void WP5FontNameStringPoolPacket::_readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned dataSize)
 {
 	long tmpInitialOffset = input->tell();
 	while (input->tell() < (long)(tmpInitialOffset + dataSize))

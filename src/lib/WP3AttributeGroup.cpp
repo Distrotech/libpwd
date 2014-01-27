@@ -28,7 +28,7 @@
 #include "libwpd_internal.h"
 #include "WP3Listener.h"
 
-WP3AttributeGroup::WP3AttributeGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID)
+WP3AttributeGroup::WP3AttributeGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char groupID)
 	: WP3FixedLengthGroup(groupID),
 	  m_attribute(0),
 	  m_state(0)

@@ -27,7 +27,6 @@
 #define WP5GENERALPACKETINDEX_H
 
 #include <librevenge-stream/librevenge-stream.h>
-#include "libwpd_types.h"
 
 class WPXEncryption;
 
@@ -39,15 +38,15 @@ public:
 	{
 		return m_id;
 	}
-	uint16_t getType() const
+	unsigned short getType() const
 	{
 		return m_type;
 	}
-	uint32_t getDataSize() const
+	unsigned getDataSize() const
 	{
 		return m_dataSize;
 	}
-	uint32_t getDataOffset() const
+	unsigned getDataOffset() const
 	{
 		return m_dataOffset;
 	}
@@ -57,9 +56,9 @@ protected:
 
 private:
 	int m_id;
-	uint16_t m_type;
-	uint32_t m_dataSize;
-	uint32_t m_dataOffset;
+	unsigned short m_type;
+	unsigned m_dataSize;
+	unsigned m_dataOffset;
 };
 
 #endif /* WP5GENERALPACKETINDEX_H */

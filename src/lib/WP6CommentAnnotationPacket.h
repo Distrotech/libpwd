@@ -32,15 +32,15 @@
 class WP6CommentAnnotationPacket : public WP6PrefixDataPacket
 {
 public:
-	WP6CommentAnnotationPacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int id, uint32_t dataOffset, uint32_t dataSize);
+	WP6CommentAnnotationPacket(librevenge::RVNGInputStream *input, WPXEncryption *encryption, int id, unsigned dataOffset, unsigned dataSize);
 	~WP6CommentAnnotationPacket();
 	void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP6Listener * /*listener*/) const {}
-	uint8_t getAnnotationFlag() const
+	unsigned char getAnnotationFlag() const
 	{
 		return m_flags;
 	}
-	uint16_t getTextPID() const
+	unsigned short getTextPID() const
 	{
 		return m_textPID;
 	}
@@ -48,8 +48,8 @@ public:
 private:
 	WP6CommentAnnotationPacket(const WP6CommentAnnotationPacket &);
 	WP6CommentAnnotationPacket &operator=(const WP6CommentAnnotationPacket &);
-	uint16_t m_textPID;
-	uint8_t m_flags;
+	unsigned short m_textPID;
+	unsigned char m_flags;
 };
 #endif /* WP6COMMENTANNOTATIONPACKET_H */
 /* vim:set shiftwidth=4 softtabstop=4 noexpandtab: */

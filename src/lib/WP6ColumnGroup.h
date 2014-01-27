@@ -43,11 +43,11 @@ public:
 
 private:
 	// variables needed for subgroup 0 and 1 (Left/Right Margin Set)
-	uint16_t m_margin;
+	unsigned short m_margin;
 
 	// variables used for subgroup 2 (Columns)
-	uint8_t m_colType;
-	uint8_t m_numColumns;
+	unsigned char m_colType;
+	unsigned char m_numColumns;
 	double m_rowSpacing;
 	std::vector<bool> m_isFixedWidth;
 	std::vector<double> m_columnWidth;

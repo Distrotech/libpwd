@@ -28,7 +28,7 @@
 #include "WP6Listener.h"
 #include "libwpd_internal.h"
 
-WP6AttributeGroup::WP6AttributeGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID) :
+WP6AttributeGroup::WP6AttributeGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char groupID) :
 	WP6FixedLengthGroup(groupID),
 	m_attribute(0)
 {
@@ -40,7 +40,7 @@ void WP6AttributeGroup::_readContents(librevenge::RVNGInputStream *input, WPXEnc
 	m_attribute = readU8(input, encryption);
 }
 
-WP6AttributeOnGroup::WP6AttributeOnGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID)
+WP6AttributeOnGroup::WP6AttributeOnGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char groupID)
 	: WP6AttributeGroup(input, encryption, groupID)
 {
 }
@@ -51,7 +51,7 @@ void WP6AttributeOnGroup::parse(WP6Listener *listener)
 	listener->attributeChange(true, getAttribute());
 }
 
-WP6AttributeOffGroup::WP6AttributeOffGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID)
+WP6AttributeOffGroup::WP6AttributeOffGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char groupID)
 	: WP6AttributeGroup(input, encryption, groupID)
 {
 }

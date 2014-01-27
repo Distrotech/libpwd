@@ -101,24 +101,24 @@ WPDConfidence WP42Heuristics::isWP42FileFormat(librevenge::RVNGInputStream *inpu
 
 		while (!input->isEnd())
 		{
-			uint8_t readVal = readU8(input, encryption);
+			unsigned char readVal = readU8(input, encryption);
 
 			WPD_DEBUG_MSG(("WP42Heuristics, Offset 0x%.8x, value 0x%.2x\n", (unsigned int)(input->tell() - 1), readVal));
 
-			if (readVal < (uint8_t)0x20)
+			if (readVal < (unsigned char)0x20)
 			{
 				// line breaks et al, skip
 			}
-			else if (readVal >= (uint8_t)0x20 && readVal <= (uint8_t)0x7F)
+			else if (readVal >= (unsigned char)0x20 && readVal <= (unsigned char)0x7F)
 			{
 				// normal ASCII characters, skip
 			}
-			else if (readVal >= (uint8_t)0x80 && readVal <= (uint8_t)0xBF)
+			else if (readVal >= (unsigned char)0x80 && readVal <= (unsigned char)0xBF)
 			{
 				// single character function codes, skip
 				functionGroupCount++;
 			}
-			else if (readVal >= (uint8_t)0xFF)
+			else if (readVal >= (unsigned char)0xFF)
 			{
 				// special codes that should not be found as separate functions
 				if (encryption)
@@ -136,7 +136,7 @@ WPDConfidence WP42Heuristics::isWP42FileFormat(librevenge::RVNGInputStream *inpu
 					// variable length function group
 
 					// skip over all the bytes in the group, and scan for the closing gate
-					uint8_t readNextVal = 0;
+					unsigned char readNextVal = 0;
 					while (!input->isEnd())
 					{
 						readNextVal = readU8(input, encryption);
@@ -169,7 +169,7 @@ WPDConfidence WP42Heuristics::isWP42FileFormat(librevenge::RVNGInputStream *inpu
 					}
 
 					// read the closing gate
-					uint8_t readNextVal = readU8(input, encryption);
+					unsigned char readNextVal = readU8(input, encryption);
 					if (readNextVal != readVal)
 					{
 						if (encryption)

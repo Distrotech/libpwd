@@ -45,15 +45,15 @@
 #define WP6_DEFAULT_FONT_SIZE 12.0
 #define WP6_DEFAULT_FONT_NAME "Times New Roman"
 
-WP6OutlineDefinition::WP6OutlineDefinition(const uint8_t *numberingMethods,
-                                           const uint8_t /* tabBehaviourFlag */)
+WP6OutlineDefinition::WP6OutlineDefinition(const unsigned char *numberingMethods,
+                                           const unsigned char /* tabBehaviourFlag */)
 {
 	_updateNumberingMethods(numberingMethods);
 }
 
 WP6OutlineDefinition::WP6OutlineDefinition()
 {
-	uint8_t numberingMethods[WP6_NUM_LIST_LEVELS];
+	unsigned char numberingMethods[WP6_NUM_LIST_LEVELS];
 	for (int i=0; i<WP6_NUM_LIST_LEVELS; i++)
 		numberingMethods[i] = WP6_INDEX_HEADER_OUTLINE_STYLE_ARABIC_NUMBERING;
 
@@ -64,12 +64,12 @@ WP6OutlineDefinition::WP6OutlineDefinition()
 // outline style is defined in a prefix packet, then you are given more information later
 // in the document)
 // FIXME: make sure this is in the right place
-void WP6OutlineDefinition::update(const uint8_t *numberingMethods, const uint8_t /* tabBehaviourFlag */)
+void WP6OutlineDefinition::update(const unsigned char *numberingMethods, const unsigned char /* tabBehaviourFlag */)
 {
 	_updateNumberingMethods(numberingMethods);
 }
 
-void WP6OutlineDefinition::_updateNumberingMethods(const uint8_t *numberingMethods)
+void WP6OutlineDefinition::_updateNumberingMethods(const unsigned char *numberingMethods)
 {
 	for (int i=0; i<WP6_NUM_LIST_LEVELS; i++)
 	{
@@ -165,11 +165,11 @@ WP6ContentListener::~WP6ContentListener()
 	delete m_parseState;
 }
 
-void WP6ContentListener::setDate(const uint16_t type, const uint16_t year,
-                                 const uint8_t month, const uint8_t day,
-                                 const uint8_t hour, const uint8_t minute,
-                                 const uint8_t second, const uint8_t dayOfWeek,
-                                 const uint8_t /* timeZone */, const uint8_t /* unused */)
+void WP6ContentListener::setDate(const unsigned short type, const unsigned short year,
+                                 const unsigned char month, const unsigned char day,
+                                 const unsigned char hour, const unsigned char minute,
+                                 const unsigned char second, const unsigned char dayOfWeek,
+                                 const unsigned char /* timeZone */, const unsigned char /* unused */)
 {
 #define DATEBUFLEN 100  // length of buffer allocated for strftime()
 #define WPMONDAYOFFSET  1       // WP week starts Monday, tm_wday on Sunday
@@ -234,7 +234,7 @@ void WP6ContentListener::setDate(const uint16_t type, const uint16_t year,
 	}
 }
 
-void WP6ContentListener::setExtendedInformation(const uint16_t type, const librevenge::RVNGString &data)
+void WP6ContentListener::setExtendedInformation(const unsigned short type, const librevenge::RVNGString &data)
 {
 	switch (type)
 	{
@@ -381,7 +381,7 @@ void WP6ContentListener::setExtendedInformation(const uint16_t type, const libre
 	}
 }
 
-void WP6ContentListener::setAlignmentCharacter(const uint32_t character)
+void WP6ContentListener::setAlignmentCharacter(const unsigned character)
 {
 	if (!isUndoOn())
 	{
@@ -389,7 +389,7 @@ void WP6ContentListener::setAlignmentCharacter(const uint32_t character)
 	}
 }
 
-void WP6ContentListener::setLeaderCharacter(const uint32_t character, const uint8_t numSpaces)
+void WP6ContentListener::setLeaderCharacter(const unsigned character, const unsigned char numSpaces)
 {
 	assert(m_ps->m_tabStops.size() == m_parseState->m_tempUsePreWP9LeaderMethod.size());
 
@@ -409,11 +409,11 @@ void WP6ContentListener::setLeaderCharacter(const uint32_t character, const uint
 	}
 }
 
-void WP6ContentListener::insertCharacter(uint32_t character)
+void WP6ContentListener::insertCharacter(unsigned character)
 {
 	if (!isUndoOn())
 	{
-		uint32_t tmpCharacter = _mapNonUnicodeCharacter(character);
+		unsigned tmpCharacter = _mapNonUnicodeCharacter(character);
 
 		if (m_parseState->m_styleStateSequence.getCurrentState() == STYLE_BODY ||
 		        m_parseState->m_styleStateSequence.getCurrentState() == NORMAL)
@@ -471,7 +471,7 @@ void WP6ContentListener::defineTabStops(const bool isRelative, const std::vector
 }
 
 
-void WP6ContentListener::insertTab(const uint8_t tabType, double tabPosition)
+void WP6ContentListener::insertTab(const unsigned char tabType, double tabPosition)
 {
 	bool tmpHasTabPositionInformation = true;
 	if (tabPosition >= (double)((double)0xFFFE/(double)WPX_NUM_WPUS_PER_INCH))
@@ -665,7 +665,7 @@ void WP6ContentListener::insertEOL()
 
 }
 
-void WP6ContentListener::characterColorChange(const uint8_t red, const uint8_t green, const uint8_t blue)
+void WP6ContentListener::characterColorChange(const unsigned char red, const unsigned char green, const unsigned char blue)
 {
 	if (!isUndoOn())
 	{
@@ -676,7 +676,7 @@ void WP6ContentListener::characterColorChange(const uint8_t red, const uint8_t g
 	}
 }
 
-void WP6ContentListener::characterShadingChange(const uint8_t shading)
+void WP6ContentListener::characterShadingChange(const unsigned char shading)
 {
 	if (!isUndoOn())
 	{
@@ -697,7 +697,7 @@ void WP6ContentListener::highlightChange(const bool isOn, const RGBSColor &color
 	}
 }
 
-void WP6ContentListener::fontChange(const uint16_t matchedFontPointSize, const uint16_t fontPID, const librevenge::RVNGString &fontName)
+void WP6ContentListener::fontChange(const unsigned short matchedFontPointSize, const unsigned short fontPID, const librevenge::RVNGString &fontName)
 {
 	if (!isUndoOn())
 	{
@@ -722,13 +722,13 @@ void WP6ContentListener::fontChange(const uint16_t matchedFontPointSize, const u
 	}
 }
 
-void WP6ContentListener::attributeChange(const bool isOn, const uint8_t attribute)
+void WP6ContentListener::attributeChange(const bool isOn, const unsigned char attribute)
 {
 	if (!isUndoOn())
 	{
 		_closeSpan();
 
-		uint32_t textAttributeBit = 0;
+		unsigned textAttributeBit = 0;
 
 		// FIXME: handle all the possible attribute bits
 		switch (attribute)
@@ -811,7 +811,7 @@ void WP6ContentListener::spacingAfterParagraphChange(const double spacingRelativ
 	}
 }
 
-void WP6ContentListener::marginChange(uint8_t side, uint16_t margin)
+void WP6ContentListener::marginChange(unsigned char side, unsigned short margin)
 {
 	if (!isUndoOn())
 	{
@@ -858,7 +858,7 @@ void WP6ContentListener::marginChange(uint8_t side, uint16_t margin)
 	}
 }
 
-void WP6ContentListener::paragraphMarginChange(uint8_t side, int16_t margin)
+void WP6ContentListener::paragraphMarginChange(unsigned char side, signed short margin)
 {
 	if (!isUndoOn())
 	{
@@ -900,7 +900,7 @@ void WP6ContentListener::paragraphMarginChange(uint8_t side, int16_t margin)
 	}
 }
 
-void WP6ContentListener::indentFirstLineChange(int16_t offset)
+void WP6ContentListener::indentFirstLineChange(signed short offset)
 {
 	if (!isUndoOn())
 	{
@@ -917,7 +917,7 @@ void WP6ContentListener::indentFirstLineChange(int16_t offset)
 	}
 }
 
-void WP6ContentListener::columnChange(const WPXTextColumnType /* columnType */, const uint8_t numColumns,
+void WP6ContentListener::columnChange(const WPXTextColumnType /* columnType */, const unsigned char numColumns,
                                       const std::vector<double> &columnWidth, const std::vector<bool> &isFixedWidth)
 {
 	if (!isUndoOn())
@@ -995,7 +995,7 @@ void WP6ContentListener::columnChange(const WPXTextColumnType /* columnType */, 
 	}
 }
 
-void WP6ContentListener::updateOutlineDefinition(const uint16_t outlineHash, const uint8_t *numberingMethods, const uint8_t tabBehaviourFlag)
+void WP6ContentListener::updateOutlineDefinition(const unsigned short outlineHash, const unsigned char *numberingMethods, const unsigned char tabBehaviourFlag)
 {
 	WPD_DEBUG_MSG(("WordPerfect: Updating OutlineHash %i\n", outlineHash));
 
@@ -1003,11 +1003,11 @@ void WP6ContentListener::updateOutlineDefinition(const uint16_t outlineHash, con
 	tempOutlineDefinition->update(numberingMethods, tabBehaviourFlag);
 }
 
-void WP6ContentListener::paragraphNumberOn(const uint16_t outlineHash, const uint8_t level, const uint8_t /* flag */)
+void WP6ContentListener::paragraphNumberOn(const unsigned short outlineHash, const unsigned char level, const unsigned char /* flag */)
 {
 	if (!isUndoOn())
 	{
-		_paragraphNumberOn(outlineHash, (uint8_t)(level + 1));
+		_paragraphNumberOn(outlineHash, (unsigned char)(level + 1));
 	}
 }
 
@@ -1025,7 +1025,7 @@ void WP6ContentListener::paragraphNumberOff()
 	}
 }
 
-void WP6ContentListener::displayNumberReferenceGroupOn(const uint8_t subGroup, const uint8_t /* level */)
+void WP6ContentListener::displayNumberReferenceGroupOn(const unsigned char subGroup, const unsigned char /* level */)
 {
 	if (!isUndoOn())
 	{
@@ -1065,7 +1065,7 @@ void WP6ContentListener::displayNumberReferenceGroupOn(const uint8_t subGroup, c
 	}
 }
 
-void WP6ContentListener::displayNumberReferenceGroupOff(const uint8_t subGroup)
+void WP6ContentListener::displayNumberReferenceGroupOff(const unsigned char subGroup)
 {
 	if (!isUndoOn())
 	{
@@ -1122,7 +1122,7 @@ void WP6ContentListener::displayNumberReferenceGroupOff(const uint8_t subGroup)
 	}
 }
 
-void WP6ContentListener::styleGroupOn(const uint8_t subGroup)
+void WP6ContentListener::styleGroupOn(const unsigned char subGroup)
 {
 	if (!isUndoOn())
 	{
@@ -1157,7 +1157,7 @@ void WP6ContentListener::styleGroupOn(const uint8_t subGroup)
 	}
 }
 
-void WP6ContentListener::styleGroupOff(const uint8_t subGroup)
+void WP6ContentListener::styleGroupOff(const unsigned char subGroup)
 {
 	if (!isUndoOn())
 	{
@@ -1181,7 +1181,7 @@ void WP6ContentListener::styleGroupOff(const uint8_t subGroup)
 	}
 }
 
-void WP6ContentListener::globalOn(const uint8_t systemStyle)
+void WP6ContentListener::globalOn(const unsigned char systemStyle)
 {
 	if (!isUndoOn())
 	{
@@ -1199,7 +1199,7 @@ void WP6ContentListener::globalOff()
 	}
 }
 
-void WP6ContentListener::noteOn(const uint16_t textPID)
+void WP6ContentListener::noteOn(const unsigned short textPID)
 {
 	if (!isUndoOn())
 	{
@@ -1248,7 +1248,7 @@ void WP6ContentListener::noteOff(const WPXNoteType noteType)
 		else
 			m_documentInterface->openEndnote(propList);
 
-		uint16_t textPID = (uint16_t)m_parseState->m_noteTextPID;
+		unsigned short textPID = (unsigned short)m_parseState->m_noteTextPID;
 		handleSubDocument(((textPID && WP6Listener::getPrefixDataPacket(textPID)) ? WP6Listener::getPrefixDataPacket(textPID)->getSubDocument() : 0),
 		                  WPX_SUBDOCUMENT_NOTE, m_parseState->m_tableList, m_parseState->m_nextTableIndice);
 
@@ -1269,7 +1269,7 @@ void WP6ContentListener::setPageNumberingType(const WPXNumberingType pageNumberi
 	}
 }
 
-void WP6ContentListener::defineTable(const uint8_t position, const uint16_t leftOffset)
+void WP6ContentListener::defineTable(const unsigned char position, const unsigned short leftOffset)
 {
 	if (!isUndoOn())
 	{
@@ -1319,8 +1319,8 @@ void WP6ContentListener::defineTable(const uint8_t position, const uint16_t left
 	}
 }
 
-void WP6ContentListener::addTableColumnDefinition(const uint32_t width, const uint32_t /* leftGutter */,
-                                                  const uint32_t /* rightGutter */, const uint32_t attributes, const uint8_t alignment)
+void WP6ContentListener::addTableColumnDefinition(const unsigned width, const unsigned /* leftGutter */,
+                                                  const unsigned /* rightGutter */, const unsigned attributes, const unsigned char alignment)
 {
 	if (!isUndoOn())
 	{
@@ -1371,7 +1371,7 @@ void WP6ContentListener::startTable()
 	}
 }
 
-void WP6ContentListener::insertRow(const uint16_t rowHeight, const bool isMinimumHeight, const bool isHeaderRow)
+void WP6ContentListener::insertRow(const unsigned short rowHeight, const bool isMinimumHeight, const bool isHeaderRow)
 {
 	if (!isUndoOn() && m_ps->m_isTableOpened)
 	{
@@ -1381,10 +1381,10 @@ void WP6ContentListener::insertRow(const uint16_t rowHeight, const bool isMinimu
 	}
 }
 
-void WP6ContentListener::insertCell(const uint8_t colSpan, const uint8_t rowSpan, const uint8_t /* borderBits */,
+void WP6ContentListener::insertCell(const unsigned char colSpan, const unsigned char rowSpan, const unsigned char /* borderBits */,
                                     const RGBSColor *cellFgColor, const RGBSColor *cellBgColor,
                                     const RGBSColor *cellBorderColor, const WPXVerticalAlignment cellVerticalAlignment,
-                                    const bool useCellAttributes, const uint32_t cellAttributes)
+                                    const bool useCellAttributes, const unsigned cellAttributes)
 {
 	if (!isUndoOn() && m_ps->m_isTableOpened)
 	{
@@ -1441,10 +1441,10 @@ void WP6ContentListener::endTable()
 	}
 }
 
-void WP6ContentListener::boxOn(const uint8_t /* anchoringType */, const uint8_t generalPositioningFlags, const uint8_t horizontalPositioningFlags,
-                               const int16_t horizontalOffset, const uint8_t /* leftColumn */, const uint8_t /* rightColumn */, const uint8_t verticalPositioningFlags,
-                               const int16_t verticalOffset, const uint8_t widthFlags, const uint16_t width, const uint8_t heightFlags, const uint16_t height,
-                               const uint8_t boxContentType, const uint16_t nativeWidth, const uint16_t nativeHeight)
+void WP6ContentListener::boxOn(const unsigned char /* anchoringType */, const unsigned char generalPositioningFlags, const unsigned char horizontalPositioningFlags,
+                               const signed short horizontalOffset, const unsigned char /* leftColumn */, const unsigned char /* rightColumn */, const unsigned char verticalPositioningFlags,
+                               const signed short verticalOffset, const unsigned char widthFlags, const unsigned short width, const unsigned char heightFlags, const unsigned short height,
+                               const unsigned char boxContentType, const unsigned short nativeWidth, const unsigned short nativeHeight)
 {
 	if (isUndoOn() || (m_ps->m_isTableOpened && !m_ps->m_isTableCellOpened))
 		return;
@@ -1682,7 +1682,7 @@ void WP6ContentListener::boxOff()
 	}
 }
 
-void WP6ContentListener::insertGraphicsData(const uint16_t packetId)
+void WP6ContentListener::insertGraphicsData(const unsigned short packetId)
 {
 	if (isUndoOn() || !m_parseState->m_isFrameOpened)
 		return;
@@ -1715,7 +1715,7 @@ void WP6ContentListener::insertTextBox(const WP6SubDocument *subDocument)
 }
 
 
-void WP6ContentListener::commentAnnotation(const uint16_t textPID)
+void WP6ContentListener::commentAnnotation(const unsigned short textPID)
 {
 	if (!isUndoOn())
 	{
@@ -1789,7 +1789,7 @@ void WP6ContentListener::_handleSubDocument(const WPXSubDocument *subDocument, W
 	m_parseState->m_noteTextPID = 0;
 }
 
-void WP6ContentListener::_paragraphNumberOn(const uint16_t outlineHash, const uint8_t level)
+void WP6ContentListener::_paragraphNumberOn(const unsigned short outlineHash, const unsigned char level)
 {
 	m_parseState->m_styleStateSequence.setCurrentState(BEGIN_NUMBERING_BEFORE_DISPLAY_REFERENCING);
 	m_parseState->m_putativeListElementHasParagraphNumber = true;
@@ -1862,7 +1862,7 @@ void WP6ContentListener::_flushText()
 // FIXME: This code mostly works, but was created more or less by trial and error and does not derive from
 // a good mental model of how lists actually work. Developing such a model is complicated (given that the
 // WordPerfect developers never had one) but we should at least try.
-void WP6ContentListener::_handleListChange(const uint16_t outlineHash)
+void WP6ContentListener::_handleListChange(const unsigned short outlineHash)
 {
 	if (!m_ps->m_isSectionOpened && !m_ps->m_inSubDocument && !m_ps->m_isTableOpened)
 		_openSection();
@@ -1959,7 +1959,7 @@ void WP6ContentListener::_changeList()
 	_handleListChange(m_parseState->m_currentOutlineHash);
 }
 
-void WP6ContentListener::undoChange(const uint8_t undoType, const uint16_t /* undoLevel */)
+void WP6ContentListener::undoChange(const unsigned char undoType, const unsigned short /* undoLevel */)
 {
 	if (undoType == WP6_UNDO_GROUP_INVALID_TEXT_START)
 		setUndoOn(true);

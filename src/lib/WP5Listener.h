@@ -45,39 +45,39 @@ public:
 	virtual void startDocument() = 0;
 	virtual void startSubDocument() = 0;
 	virtual void setFont(const librevenge::RVNGString &fontName, double fontSize) = 0;
-	virtual void setTabs(const std::vector<WPXTabStop> &tabStops, uint16_t tabOffset) = 0;
-	virtual void insertCharacter(uint32_t character) = 0;
-	virtual void insertTab(uint8_t tabType, double tabPosition) = 0;
-	virtual void insertIndent(uint8_t indentType, double indentPosition) = 0;
+	virtual void setTabs(const std::vector<WPXTabStop> &tabStops, unsigned short tabOffset) = 0;
+	virtual void insertCharacter(unsigned character) = 0;
+	virtual void insertTab(unsigned char tabType, double tabPosition) = 0;
+	virtual void insertIndent(unsigned char indentType, double indentPosition) = 0;
 	virtual void insertEOL() = 0;
-	virtual void insertBreak(uint8_t breakType) = 0;
+	virtual void insertBreak(unsigned char breakType) = 0;
 	virtual void lineSpacingChange(double lineSpacing) = 0;
-	virtual void justificationChange(uint8_t justification) = 0;
-	virtual void characterColorChange(uint8_t red, uint8_t green, uint8_t blue) = 0;
-	virtual void attributeChange(bool isOn, uint8_t attribute) = 0;
-	virtual void pageMarginChange(uint8_t side, uint16_t margin) = 0;
-	virtual void pageFormChange(uint16_t length, uint16_t width, WPXFormOrientation orientation) = 0;
-	virtual void marginChange(uint8_t side, uint16_t margin) = 0;
+	virtual void justificationChange(unsigned char justification) = 0;
+	virtual void characterColorChange(unsigned char red, unsigned char green, unsigned char blue) = 0;
+	virtual void attributeChange(bool isOn, unsigned char attribute) = 0;
+	virtual void pageMarginChange(unsigned char side, unsigned short margin) = 0;
+	virtual void pageFormChange(unsigned short length, unsigned short width, WPXFormOrientation orientation) = 0;
+	virtual void marginChange(unsigned char side, unsigned short margin) = 0;
 	virtual void endDocument() = 0;
 	virtual void endSubDocument() = 0;
 
-	virtual void defineTable(uint8_t position, uint16_t leftOffset) = 0;
-	virtual void addTableColumnDefinition(uint32_t width, uint32_t leftGutter, uint32_t rightGutter,
-	                                      uint32_t attributes, uint8_t alignment) = 0;
+	virtual void defineTable(unsigned char position, unsigned short leftOffset) = 0;
+	virtual void addTableColumnDefinition(unsigned width, unsigned leftGutter, unsigned rightGutter,
+	                                      unsigned attributes, unsigned char alignment) = 0;
 	virtual void startTable() = 0;
-	virtual void insertRow(uint16_t rowHeight, bool isMinimumHeight, bool isHeaderRow) = 0;
-	virtual void insertCell(uint8_t colSpan, uint8_t rowSpan, uint8_t borderBits,
+	virtual void insertRow(unsigned short rowHeight, bool isMinimumHeight, bool isHeaderRow) = 0;
+	virtual void insertCell(unsigned char colSpan, unsigned char rowSpan, unsigned char borderBits,
 	                        const RGBSColor *cellFgColor, const RGBSColor *cellBgColor,
 	                        const RGBSColor *cellBorderColor, WPXVerticalAlignment cellVerticalAlignment,
-	                        bool useCellAttributes, uint32_t cellAttributes) = 0;
+	                        bool useCellAttributes, unsigned cellAttributes) = 0;
 	virtual void endTable() = 0;
 
 	virtual void insertNoteReference(const librevenge::RVNGString &noteReference) = 0;
 	virtual void insertNote(WPXNoteType noteType, const WP5SubDocument *subDocument) = 0;
-	virtual void headerFooterGroup(uint8_t headerFooterType, uint8_t occurrenceBits, WP5SubDocument *subDocument) = 0;
-	virtual void suppressPageCharacteristics(uint8_t suppressCode) = 0;
+	virtual void headerFooterGroup(unsigned char headerFooterType, unsigned char occurrenceBits, WP5SubDocument *subDocument) = 0;
+	virtual void suppressPageCharacteristics(unsigned char suppressCode) = 0;
 
-	virtual void boxOn(uint8_t positionAndType, uint8_t alignment, uint16_t width, uint16_t height, uint16_t x, uint16_t y) = 0;
+	virtual void boxOn(unsigned char positionAndType, unsigned char alignment, unsigned short width, unsigned short height, unsigned short x, unsigned short y) = 0;
 	virtual void boxOff() = 0;
 	virtual void insertGraphicsData(const librevenge::RVNGBinaryData *data) = 0;
 

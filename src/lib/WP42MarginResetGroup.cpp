@@ -27,7 +27,7 @@
 #include "libwpd_internal.h"
 #include <string>
 
-WP42MarginResetGroup::WP42MarginResetGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group) :
+WP42MarginResetGroup::WP42MarginResetGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char group) :
 	WP42MultiByteFunctionGroup(group),
 	m_leftMargin(0),
 	m_rightMargin(0)

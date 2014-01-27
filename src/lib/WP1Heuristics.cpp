@@ -103,24 +103,24 @@ WPDConfidence WP1Heuristics::isWP1FileFormat(librevenge::RVNGInputStream *input,
 
 		while (!input->isEnd())
 		{
-			uint8_t readVal = readU8(input, encryption);
+			unsigned char readVal = readU8(input, encryption);
 
 			WPD_DEBUG_MSG(("WP1Heuristics, Offset 0x%.8x, value 0x%.2x (%c)\n", (unsigned int)input->tell() - 1, readVal, readVal));
 
-			if (readVal < (uint8_t)0x20)
+			if (readVal < (unsigned char)0x20)
 			{
 				// line breaks et al, skip
 			}
-			else if (readVal >= (uint8_t)0x20 && readVal <= (uint8_t)0x7F)
+			else if (readVal >= (unsigned char)0x20 && readVal <= (unsigned char)0x7F)
 			{
 				// normal ASCII characters, skip
 			}
-			else if (readVal >= (uint8_t)0x80 && readVal <= (uint8_t)0xBF)
+			else if (readVal >= (unsigned char)0x80 && readVal <= (unsigned char)0xBF)
 			{
 				// single character function codes, skip
 				functionGroupCount++;
 			}
-			else if (readVal >= (uint8_t)0xFF)
+			else if (readVal >= (unsigned char)0xFF)
 			{
 				if (encryption)
 					delete encryption;
@@ -142,7 +142,7 @@ WPDConfidence WP1Heuristics::isWP1FileFormat(librevenge::RVNGInputStream *input,
 					//   that we observed in variable length WP1 functions
 
 					unsigned functionLength = readU32(input, encryption, true);
-					if (functionLength > ((std::numeric_limits<uint32_t>::max)() / 2))
+					if (functionLength > ((std::numeric_limits<unsigned>::max)() / 2))
 					{
 						if (encryption)
 							delete encryption;
@@ -166,7 +166,7 @@ WPDConfidence WP1Heuristics::isWP1FileFormat(librevenge::RVNGInputStream *input,
 						return WPD_CONFIDENCE_NONE;
 					}
 
-					uint8_t closingGate = 0;
+					unsigned char closingGate = 0;
 					if (!input->isEnd())
 					{
 						closingGate = readU8(input, encryption);
@@ -204,7 +204,7 @@ WPDConfidence WP1Heuristics::isWP1FileFormat(librevenge::RVNGInputStream *input,
 					}
 
 					// read the closing gate
-					uint8_t readNextVal = readU8(input, encryption);
+					unsigned char readNextVal = readU8(input, encryption);
 					if (readNextVal != readVal)
 					{
 						if (encryption)

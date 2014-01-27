@@ -33,7 +33,7 @@
 class WP6SubDocument : public WPXSubDocument
 {
 public:
-	WP6SubDocument(uint8_t *streamData, const unsigned dataSize);
+	WP6SubDocument(unsigned char *streamData, const unsigned dataSize);
 	void parse(WP6Listener *listener) const;
 };
 #endif /* WP6SUBDOCUMENT_H */

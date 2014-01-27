@@ -32,10 +32,10 @@
 namespace
 {
 
-static int libwpd_unichar_to_utf8(uint32_t c, char *outbuf)
+static int libwpd_unichar_to_utf8(unsigned c, char *outbuf)
 {
-	uint8_t len = 1;
-	uint8_t first = 0;
+	unsigned char len = 1;
+	unsigned char first = 0;
 
 	if (c < 0x80)
 	{
@@ -70,7 +70,7 @@ static int libwpd_unichar_to_utf8(uint32_t c, char *outbuf)
 
 	if (outbuf)
 	{
-		for (uint8_t i = (uint8_t)(len - 1); i > 0; --i)
+		for (unsigned char i = (unsigned char)(len - 1); i > 0; --i)
 		{
 			outbuf[i] = (char)((c & 0x3f) | 0x80);
 			c >>= 6;
@@ -83,55 +83,55 @@ static int libwpd_unichar_to_utf8(uint32_t c, char *outbuf)
 
 } // anonymous namespace
 
-uint8_t readU8(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
+unsigned char readU8(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
 	unsigned long numBytesRead = 0;
-	uint8_t const *p = (encryption ?
-	                    encryption->readAndDecrypt(input, sizeof(uint8_t), numBytesRead) :
-	                    input->read(sizeof(uint8_t), numBytesRead));
+	unsigned char const *p = (encryption ?
+	                          encryption->readAndDecrypt(input, sizeof(unsigned char), numBytesRead) :
+	                          input->read(sizeof(unsigned char), numBytesRead));
 
-	if (!p || numBytesRead != sizeof(uint8_t))
+	if (!p || numBytesRead != sizeof(unsigned char))
 		throw FileException();
 
 	return p[0];
 }
 
-uint16_t readU16(librevenge::RVNGInputStream *input, WPXEncryption *encryption, bool bigendian)
+unsigned short readU16(librevenge::RVNGInputStream *input, WPXEncryption *encryption, bool bigendian)
 {
 	unsigned long numBytesRead = 0;
-	uint8_t const *p = (encryption ?
-	                    encryption->readAndDecrypt(input, sizeof(uint16_t), numBytesRead) :
-	                    input->read(sizeof(uint16_t), numBytesRead));
+	unsigned char const *p = (encryption ?
+	                          encryption->readAndDecrypt(input, sizeof(unsigned short), numBytesRead) :
+	                          input->read(sizeof(unsigned short), numBytesRead));
 
-	if (!p || numBytesRead != sizeof(uint16_t))
+	if (!p || numBytesRead != sizeof(unsigned short))
 		throw FileException();
 
 	if (bigendian)
-		return (uint16_t)(p[1]|((uint16_t)p[0]<<8));
-	return (uint16_t)(p[0]|((uint16_t)p[1]<<8));
+		return (unsigned short)(p[1]|((unsigned short)p[0]<<8));
+	return (unsigned short)(p[0]|((unsigned short)p[1]<<8));
 }
 
-int16_t readS16(librevenge::RVNGInputStream *input, WPXEncryption *encryption, bool bigendian)
+signed short readS16(librevenge::RVNGInputStream *input, WPXEncryption *encryption, bool bigendian)
 {
-	return (int16_t)readU16(input, encryption, bigendian);
+	return (signed short)readU16(input, encryption, bigendian);
 }
 
-uint32_t readU32(librevenge::RVNGInputStream *input, WPXEncryption *encryption, bool bigendian)
+unsigned readU32(librevenge::RVNGInputStream *input, WPXEncryption *encryption, bool bigendian)
 {
 	unsigned long numBytesRead = 0;
-	uint8_t const *p = (encryption ?
-	                    encryption->readAndDecrypt(input, sizeof(uint32_t), numBytesRead) :
-	                    input->read(sizeof(uint32_t), numBytesRead));
+	unsigned char const *p = (encryption ?
+	                          encryption->readAndDecrypt(input, sizeof(unsigned), numBytesRead) :
+	                          input->read(sizeof(unsigned), numBytesRead));
 
-	if (!p || numBytesRead != sizeof(uint32_t))
+	if (!p || numBytesRead != sizeof(unsigned))
 		throw FileException();
 
 	if (bigendian)
-		return (uint32_t)p[3]|((uint32_t)p[2]<<8)|((uint32_t)p[1]<<16)|((uint32_t)p[0]<<24);
-	return (uint32_t)p[0]|((uint32_t)p[1]<<8)|((uint32_t)p[2]<<16)|((uint32_t)p[3]<<24);
+		return (unsigned)p[3]|((unsigned)p[2]<<8)|((unsigned)p[1]<<16)|((unsigned)p[0]<<24);
+	return (unsigned)p[0]|((unsigned)p[1]<<8)|((unsigned)p[2]<<16)|((unsigned)p[3]<<24);
 }
 
-void appendUCS4(librevenge::RVNGString &str, uint32_t ucs4)
+void appendUCS4(librevenge::RVNGString &str, unsigned ucs4)
 {
 	int charLength = libwpd_unichar_to_utf8(ucs4, 0);
 	char *utf8 = new char[charLength+1];
@@ -148,13 +148,13 @@ librevenge::RVNGString readPascalString(librevenge::RVNGInputStream *input, WPXE
 	librevenge::RVNGString tmpString;
 	for (int i=0; i<pascalStringLength; i++)
 	{
-		uint16_t tmpChar = readU8(input, encryption);
+		unsigned short tmpChar = readU8(input, encryption);
 		if (tmpChar <= 0x7f)
 			tmpString.append((char)tmpChar);
 		else if (pascalStringLength > i++)
 		{
-			tmpChar = (uint16_t)((tmpChar << 8) | readU8(input, encryption));
-			const uint32_t *chars;
+			tmpChar = (unsigned short)((tmpChar << 8) | readU8(input, encryption));
+			const unsigned *chars;
 			int len = appleWorldScriptToUCS4(tmpChar, &chars);
 			for (int j = 0; j < len; j++)
 				appendUCS4(tmpString, chars[j]);
@@ -174,13 +174,13 @@ librevenge::RVNGString readCString(librevenge::RVNGInputStream *input, WPXEncryp
 
 typedef struct _WPXComplexMap
 {
-	uint16_t charToMap;
-	uint32_t unicodeChars[6];
+	unsigned short charToMap;
+	unsigned unicodeChars[6];
 } WPXComplexMap;
 
 
 // the ascii map appears stupid, but we need the const 32-bit data for now
-static const uint32_t asciiMap[] =
+static const unsigned asciiMap[] =
 {
 	32,  33,  34,  35,  36,  37,  38,  39,
 	40,  41,  42,  43,  44,  45,  46,  47,
@@ -197,7 +197,7 @@ static const uint32_t asciiMap[] =
 };
 
 
-static int findSimpleMap(uint16_t character, const uint32_t **chars, const uint32_t *simpleMap, const size_t simpleMapSize)
+static int findSimpleMap(unsigned short character, const unsigned **chars, const unsigned *simpleMap, const size_t simpleMapSize)
 {
 	if ((character < simpleMapSize) && simpleMap[character])
 	{
@@ -208,7 +208,7 @@ static int findSimpleMap(uint16_t character, const uint32_t **chars, const uint3
 	return 0;
 }
 
-static int findComplexMap(uint16_t character, const uint32_t **chars, const WPXComplexMap *complexMap)
+static int findComplexMap(unsigned short character, const unsigned **chars, const WPXComplexMap *complexMap)
 {
 	if (!complexMap)
 		return 0;
@@ -238,7 +238,7 @@ static int findComplexMap(uint16_t character, const uint32_t **chars, const WPXC
    KWord project, licensed under the LGPL */
 
 /* WP6 multinational characters (charset 1) */
-static const uint32_t multinationalWP6[] =
+static const unsigned multinationalWP6[] =
 {
 	0x0300, 0x00b7, 0x0303, 0x0302, 0x0335, 0x0338, 0x0301, 0x0308, // 0 - 7
 	0x0304, 0x0313, 0x0315, 0x02bc, 0x0326, 0x0315, 0x00b0, 0x0307, // 8 - 15
@@ -300,7 +300,7 @@ static const WPXComplexMap multinationalWP6Complex[] =
 
 
 /* WP6 phonetic symbol (charset 2) */
-static const uint32_t phoneticWP6[] =
+static const unsigned phoneticWP6[] =
 {
 	0x02b9, 0x02ba, 0x02bb, 0x0020, 0x02bd, 0x02bc, 0x0020, 0x02be,
 	0x02bf, 0x0310, 0x02d0, 0x02d1, 0x0306, 0x032e, 0x0329, 0x02c8,
@@ -324,7 +324,7 @@ static const uint32_t phoneticWP6[] =
 };
 
 /* WP6 box drawing symbol (charset 3) */
-static const uint32_t boxdrawingWP6[] =
+static const unsigned boxdrawingWP6[] =
 {
 	0x2591, 0x2592, 0x2593, 0x2588, 0x258c, 0x2580, 0x2590, 0x2584,
 	0x2500, 0x2502, 0x250c, 0x2510, 0x2518, 0x2514, 0x251c, 0x252c,
@@ -340,7 +340,7 @@ static const uint32_t boxdrawingWP6[] =
 };
 
 /* WP6 typographic symbol (charset 4) */
-static const uint32_t typographicWP6[] =
+static const unsigned typographicWP6[] =
 {
 	0x25cf, 0x25cb, 0x25a0, 0x2022, 0x002a, 0x00b6, 0x00a7, 0x00a1,
 	0x00bf, 0x00ab, 0x00bb, 0x00a3, 0x00a5, 0x20a7, 0x0192, 0x00aa,
@@ -358,7 +358,7 @@ static const uint32_t typographicWP6[] =
 };
 
 /* WP6 iconic symbol (charset 5) */
-static const uint32_t iconicWP6[] =
+static const unsigned iconicWP6[] =
 {
 	0x2661, 0x2662, 0x2667, 0x2664, 0x2642, 0x2640, 0x263c, 0x263a,
 	0x263b, 0x266a, 0x266c, 0x25ac, 0x2302, 0x203c, 0x221a, 0x21a8,
@@ -395,7 +395,7 @@ static const uint32_t iconicWP6[] =
 };
 
 /* WP6 math/scientific (charset 6) */
-static const uint32_t mathWP6[] =
+static const unsigned mathWP6[] =
 {
 	0x2212, 0x00b1, 0x2264, 0x2265, 0x221d, 0x002f, 0x2215, 0x2216, // 0 - 7
 	0x00f7, 0x2223, 0x27e8, 0x27e9, 0x223c, 0x2248, 0x2261, 0x2208, // 8 - 15
@@ -430,7 +430,7 @@ static const uint32_t mathWP6[] =
 };
 
 /* WP6 math/scientific extended (charset 7) */
-static const uint32_t mathextWP6[] =
+static const unsigned mathextWP6[] =
 {
 	0x2320, 0x2321, 0x23a5, 0x23bd, 0x221a, 0x0020, 0x2211, 0x220f,
 	0x2210, 0x222b, 0x222e, 0x0020, 0x0020, 0x0020, 0x0020, 0x0020,
@@ -464,7 +464,7 @@ static const uint32_t mathextWP6[] =
 };
 
 /* WP6 greek (charset 8) */
-static const uint32_t greekWP6[] =
+static const unsigned greekWP6[] =
 {
 	0x0391, 0x03b1, 0x0392, 0x03b2, 0x0392, 0x03d0, 0x0393, 0x03b3,
 	0x0394, 0x03b4, 0x0395, 0x03b5, 0x0396, 0x03b6, 0x0397, 0x03b7,
@@ -497,7 +497,7 @@ static const uint32_t greekWP6[] =
 };
 
 /* WP6 hebrew (charset 9) */
-static const uint32_t hebrewWP6[] =
+static const unsigned hebrewWP6[] =
 {
 	0x05d0, 0x05d1, 0x05d2, 0x05d3, 0x05d4, 0x05d5, 0x05d6, 0x05d7,
 	0x05d8, 0x05d9, 0x05da, 0x05db, 0x05dc, 0x05dd, 0x05de, 0x05df,
@@ -518,7 +518,7 @@ static const uint32_t hebrewWP6[] =
 };
 
 /* WP6 cyrillic (charset 10) */
-static const uint32_t cyrillicWP6[] =
+static const unsigned cyrillicWP6[] =
 {
 	0x0410, 0x0430, 0x0411, 0x0431, 0x0412, 0x0432, 0x0413, 0x0433, // 0 - 7
 	0x0414, 0x0434, 0x0415, 0x0435, 0x0401, 0x0451, 0x0416, 0x0436, // 8
@@ -555,7 +555,7 @@ static const uint32_t cyrillicWP6[] =
 };
 
 /* WP6 japanese (charset 11) */
-static const uint32_t japaneseWP6[] =
+static const unsigned japaneseWP6[] =
 {
 	0xff61, 0xff62, 0xff63, 0xff64, 0xff65, 0xff66, 0xff67, 0xff68,
 	0xff69, 0xff6a, 0xff6b, 0xff6c, 0xff6d, 0xff6e, 0xff6f, 0xff70,
@@ -574,7 +574,7 @@ static const uint32_t japaneseWP6[] =
  */
 
 /* WP arabic (charset 13) */
-static const uint32_t arabicWP6[] =
+static const unsigned arabicWP6[] =
 {
 	0x0020, 0x0020, 0x0020, 0x0020, 0x0020, 0x0020, 0x0020, 0x0020,
 	0x0020, 0x0020, 0x064e, 0xfe77, 0x064f, 0xfe79, 0x0650, 0xfe7b,
@@ -604,7 +604,7 @@ static const uint32_t arabicWP6[] =
 };
 
 /* WP arabic script (charset 14) */
-static const uint32_t arabicScriptWP6[] =
+static const unsigned arabicScriptWP6[] =
 {
 	0x0020, 0x0020, 0x0020, 0x0020, 0x0020, 0x0020, 0x0020, 0x0615,
 	0x0020, 0x0020, 0x0020, 0x0020, 0x0020, 0x0020, 0x0020, 0x0020,
@@ -639,8 +639,8 @@ static const uint32_t arabicScriptWP6[] =
 #include "WP6TibetanMap.h"
 #include "WP6FileStructure.h"
 
-int extendedCharacterWP6ToUCS4(uint8_t character,
-                               uint8_t characterSet, const uint32_t **chars)
+int extendedCharacterWP6ToUCS4(unsigned char character,
+                               unsigned char characterSet, const unsigned **chars)
 {
 	int i;
 	int retVal = 0;
@@ -747,7 +747,7 @@ int extendedCharacterWP6ToUCS4(uint8_t character,
 /* is identical to WP6 Multinational charset */
 
 /* WP5 International 2 (charset 2) */
-static const uint32_t international2WP5[] =
+static const unsigned international2WP5[] =
 {
 	0x0323, 0x0324, 0x02da, 0x0325, 0x02bc, 0x032d, 0x2017, 0x005f,
 	0x0138, 0x032e, 0x033e, 0x2018, 0x0020, 0x02bd, 0x02db, 0x0327,
@@ -763,7 +763,7 @@ static const uint32_t international2WP5[] =
 /* identical to WP6 Typographic symbols charset */
 
 /* WP5 Iconic symbols (charset 5) */
-static const uint32_t iconicWP5[] =
+static const unsigned iconicWP5[] =
 {
 	0x2665, 0x2666, 0x2663, 0x2660, 0x2642, 0x2640, 0x263c, 0x263a,
 	0x263b, 0x266a, 0x266c, 0x25ac, 0x2302, 0x203c, 0x221a, 0x21a8,
@@ -779,7 +779,7 @@ static const uint32_t iconicWP5[] =
 /* is identical to the WP6 math/scientific extended charset */
 
 /* WP5 greek (charset 8) */
-static const uint32_t greekWP5[] =
+static const unsigned greekWP5[] =
 {
 	0x0391, 0x03b1, 0x0392, 0x03b2, 0x0392, 0x03d0, 0x0393, 0x03b3,
 	0x0394, 0x03b4, 0x0395, 0x03b5, 0x0396, 0x03b6, 0x0397, 0x03b7,
@@ -811,7 +811,7 @@ static const uint32_t greekWP5[] =
 };
 
 /* WP5 Hebrew (charset 9) */
-static const uint32_t hebrewWP5[] =
+static const unsigned hebrewWP5[] =
 {
 	0x05d0, 0x05d1, 0x05d2, 0x05d3, 0x05d4, 0x05d5, 0x05d6, 0x05d7,
 	0x05d8, 0x05d9, 0x05da, 0x05db, 0x05dc, 0x05dd, 0x05de, 0x05df,
@@ -831,7 +831,7 @@ static const uint32_t hebrewWP5[] =
 };
 
 /* WP5 cyrillic (charset 10) */
-static const uint32_t cyrillicWP5[] =
+static const unsigned cyrillicWP5[] =
 {
 	0x0410, 0x0430, 0x0411, 0x0431, 0x0412, 0x0432, 0x0413, 0x0433, // 0 - 7
 	0x0414, 0x0434, 0x0415, 0x0435, 0x0401, 0x0451, 0x0416, 0x0436, // 8 - 15
@@ -882,7 +882,7 @@ static const WPXComplexMap cyrillicWP5Complex[] =
 
 
 /* WP5 Japanese (charset 11) */
-static const uint32_t japaneseWP5[] =
+static const unsigned japaneseWP5[] =
 {
 	0x3041, 0x3043, 0x3045, 0x3047, 0x3049, 0x3053, 0x3083, 0x3085,
 	0x3087, 0x3094, 0x3095, 0x3096, 0x3042, 0x3044, 0x3046, 0x3048,
@@ -911,7 +911,7 @@ static const uint32_t japaneseWP5[] =
 };
 
 /* WP5 arabic (charset 13) */
-static const uint32_t arabicWP5[] =
+static const unsigned arabicWP5[] =
 {
 	0x0020, 0x0020, 0x0020, 0x0020, 0x0020, 0x0020, 0x0020, 0x0020, // 0 - 7
 	0x0020, 0x0020, 0x064e, 0xfe77, 0x064f, 0xfe79, 0x0650, 0xfe7b, // 8 - 15
@@ -963,7 +963,7 @@ static const WPXComplexMap arabicWP5Complex[] =
 
 
 /* WP5 arabic script (charset 14) */
-static const uint32_t arabicScriptWP5[] =
+static const unsigned arabicScriptWP5[] =
 {
 	0x0020, 0x0020, 0x0020, 0x0020, 0x0020, 0x0020, 0x0020, 0x0615,
 	0x0020, 0x0020, 0x0020, 0x0020, 0x0020, 0x0020, 0x0020, 0x0020,
@@ -997,8 +997,8 @@ static const uint32_t arabicScriptWP5[] =
 
 #include "WP5FileStructure.h"
 
-int extendedCharacterWP5ToUCS4(uint8_t character,
-                               uint8_t characterSet, const uint32_t **chars)
+int extendedCharacterWP5ToUCS4(unsigned char character,
+                               unsigned char characterSet, const unsigned **chars)
 {
 	int retVal = 0;
 
@@ -1094,7 +1094,7 @@ int extendedCharacterWP5ToUCS4(uint8_t character,
 	return 1;
 }
 
-static const uint32_t extendedCharactersWP42[] =
+static const unsigned extendedCharactersWP42[] =
 {
 	/*   0 */	0x0020, 0x263a, 0x263b, 0x2665, 0x2666, 0x2663, 0x2660, 0x2022,
 	/*   8 */	0x25d8, 0x25cb, 0x25d9, 0x2642, 0x2640, 0x266a, 0x266c, 0x263c,
@@ -1130,7 +1130,7 @@ static const uint32_t extendedCharactersWP42[] =
 	/* 248 */	0x00b0, 0x2022, 0x22c5, 0x221a, 0x207f, 0x00b2, 0x25fc, 0x0020
 };
 
-int extendedCharacterWP42ToUCS4(uint8_t character, const uint32_t **chars)
+int extendedCharacterWP42ToUCS4(unsigned char character, const unsigned **chars)
 {
 	int retVal = 0;
 
@@ -1143,27 +1143,27 @@ int extendedCharacterWP42ToUCS4(uint8_t character, const uint32_t **chars)
 #include "WPXFileStructure.h"
 #include "libwpd_math.h"
 
-uint16_t fixedPointToWPUs(const uint32_t fixedPointNumber)
+unsigned short fixedPointToWPUs(const unsigned fixedPointNumber)
 {
-	int16_t fixedPointNumberIntegerPart = (int16_t)((fixedPointNumber & 0xFFFF0000) >> 16);
+	signed short fixedPointNumberIntegerPart = (signed short)((fixedPointNumber & 0xFFFF0000) >> 16);
 	double fixedPointNumberFractionalPart = (double)((double)(fixedPointNumber & 0x0000FFFF)/(double)0xFFFF);
-	uint16_t numberWPU = (uint16_t)rint((((double)fixedPointNumberIntegerPart + fixedPointNumberFractionalPart)*50)/3);
+	unsigned short numberWPU = (unsigned short)rint((((double)fixedPointNumberIntegerPart + fixedPointNumberFractionalPart)*50)/3);
 	return numberWPU;
 }
 
-double fixedPointToDouble(const uint32_t fixedPointNumber)
+double fixedPointToDouble(const unsigned fixedPointNumber)
 {
-	int16_t fixedPointNumberIntegerPart = (int16_t)((fixedPointNumber & 0xFFFF0000) >> 16);
+	signed short fixedPointNumberIntegerPart = (signed short)((fixedPointNumber & 0xFFFF0000) >> 16);
 	double fixedPointNumberFractionalPart = (double)((double)(fixedPointNumber & 0x0000FFFF)/(double)0xFFFF);
 	return ((double)fixedPointNumberIntegerPart + fixedPointNumberFractionalPart);
 }
 
-double wpuToFontPointSize(const uint16_t wpuNumber)
+double wpuToFontPointSize(const unsigned short wpuNumber)
 {
 	return (double)rint((double)((((double)wpuNumber)/100.0)*2.0));
 }
 
-_RGBSColor::_RGBSColor(uint8_t r, uint8_t g, uint8_t b, uint8_t s)
+_RGBSColor::_RGBSColor(unsigned char r, unsigned char g, unsigned char b, unsigned char s)
 	:	m_r(r),
 	    m_g(g),
 	    m_b(b),
@@ -1179,10 +1179,10 @@ _RGBSColor::_RGBSColor()
 {
 }
 
-_RGBSColor::_RGBSColor(uint16_t red, uint16_t green, uint16_t blue)
-	:	m_r((uint8_t)((red >> 8) & 0xFF)),
-	    m_g((uint8_t)((green >> 8) & 0xFF)),
-	    m_b((uint8_t)((blue >> 8) & 0xFF)),
+_RGBSColor::_RGBSColor(unsigned short red, unsigned short green, unsigned short blue)
+	:	m_r((unsigned char)((red >> 8) & 0xFF)),
+	    m_g((unsigned char)((green >> 8) & 0xFF)),
+	    m_b((unsigned char)((blue >> 8) & 0xFF)),
 	    m_s(100)
 {
 }
@@ -1332,7 +1332,7 @@ librevenge::RVNGString _numberingTypeToString(WPXNumberingType t)
 /* Mapping of Apple's MacRoman character set in Unicode (UCS4)
  * used in the WordPerfect Macintosh file format */
 
-const uint32_t macRomanCharacterMap[] =
+const unsigned macRomanCharacterMap[] =
 {
 	0x0020, 0x0021, 0x0022, 0x0023, 0x0024, 0x0025, 0x0026, 0x0027,
 	0x0028, 0x0029, 0x002a, 0x002b, 0x002c, 0x002d, 0x002e, 0x002f,
@@ -1388,9 +1388,9 @@ librevenge::RVNGString doubleToString(const double value)
 	return librevenge::RVNGString(stringValue.c_str());
 }
 
-int appleWorldScriptToUCS4(uint16_t character, const uint32_t **chars)
+int appleWorldScriptToUCS4(unsigned short character, const unsigned **chars)
 {
-	static const uint32_t charSimpleMap[] =
+	static const unsigned charSimpleMap[] =
 	{
 		0x3000, 0x3001, 0x3002, 0xff0c, 0xff0e, 0x30fb, 0xff1a, 0xff1b, // 0x8140 - 0x8147
 		0xff1f, 0xff01, 0x309b, 0x309c, 0x00b4, 0xff40, 0x00a8, 0xff3e, // 0x8148 - 0x814f
@@ -6332,7 +6332,7 @@ int appleWorldScriptToUCS4(uint16_t character, const uint32_t **chars)
 	int retVal = 0;
 
 	// Find the entry corresponding to the WorldScript character
-	if ((retVal = findSimpleMap((uint16_t)(character - 0x8140), chars, charSimpleMap, WPD_NUM_ELEMENTS(charSimpleMap))))
+	if ((retVal = findSimpleMap((unsigned short)(character - 0x8140), chars, charSimpleMap, WPD_NUM_ELEMENTS(charSimpleMap))))
 		return retVal;
 
 	if ((retVal = findComplexMap(character, chars, charComplexMap)))

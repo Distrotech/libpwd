@@ -28,7 +28,6 @@
 #ifndef WP42LISTENER_H
 #define WP42LISTENER_H
 
-#include "libwpd_types.h"
 
 class WP42SubDocument;
 
@@ -40,14 +39,14 @@ public:
 
 	virtual void startDocument() = 0;
 	virtual void startSubDocument() = 0;
-	virtual void insertCharacter(uint32_t character) = 0;
-	virtual void insertTab(uint8_t tabType, double tabPosition) = 0;
-	virtual void insertBreak(uint8_t breakType) = 0;
+	virtual void insertCharacter(unsigned character) = 0;
+	virtual void insertTab(unsigned char tabType, double tabPosition) = 0;
+	virtual void insertBreak(unsigned char breakType) = 0;
 	virtual void insertEOL() = 0;
-	virtual void attributeChange(bool isOn, uint8_t attribute) = 0;
-	virtual void marginReset(uint8_t leftMargin, uint8_t rightMargin) = 0;
-	virtual void headerFooterGroup(uint8_t headerFooterDefinition, WP42SubDocument *subDocument) = 0;
-	virtual void suppressPageCharacteristics(uint8_t suppressCode) = 0;
+	virtual void attributeChange(bool isOn, unsigned char attribute) = 0;
+	virtual void marginReset(unsigned char leftMargin, unsigned char rightMargin) = 0;
+	virtual void headerFooterGroup(unsigned char headerFooterDefinition, WP42SubDocument *subDocument) = 0;
+	virtual void suppressPageCharacteristics(unsigned char suppressCode) = 0;
 	virtual void endDocument() = 0;
 	virtual void endSubDocument() = 0;
 };

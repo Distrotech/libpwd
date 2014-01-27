@@ -27,7 +27,7 @@
 #include "libwpd_internal.h"
 #include "WP1SubDocument.h"
 
-WP1FootnoteEndnoteGroup::WP1FootnoteEndnoteGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group) :
+WP1FootnoteEndnoteGroup::WP1FootnoteEndnoteGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char group) :
 	WP1VariableLengthGroup(group),
 	m_noteType(FOOTNOTE),
 	m_noteNumber(0),
@@ -45,7 +45,7 @@ WP1FootnoteEndnoteGroup::~WP1FootnoteEndnoteGroup()
 void WP1FootnoteEndnoteGroup::_readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
 	unsigned tmpSubDocumentSize = getSize() - 29;
-	uint8_t tmpNoteDefinition = readU8(input, encryption);
+	unsigned char tmpNoteDefinition = readU8(input, encryption);
 	if (tmpNoteDefinition & 0x02)
 	{
 		m_noteType = ENDNOTE;

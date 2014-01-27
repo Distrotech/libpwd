@@ -26,7 +26,7 @@
 #include "WP1TopMarginGroup.h"
 #include "libwpd_internal.h"
 
-WP1TopMarginGroup::WP1TopMarginGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group) :
+WP1TopMarginGroup::WP1TopMarginGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char group) :
 	WP1FixedLengthGroup(group),
 	m_topMargin(0)
 {

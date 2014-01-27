@@ -43,26 +43,26 @@ public:
 	WP5VariableLengthGroup(); // WP5VariableLengthGroup should _never_ be constructed, only its inherited classes
 	virtual ~WP5VariableLengthGroup() {}
 
-	static WP5VariableLengthGroup *constructVariableLengthGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const uint8_t group);
+	static WP5VariableLengthGroup *constructVariableLengthGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const unsigned char group);
 
-	static bool isGroupConsistent(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const uint8_t group);
+	static bool isGroupConsistent(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const unsigned char group);
 
 protected:
 	void _read(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	virtual void _readContents(librevenge::RVNGInputStream * /* input */, WPXEncryption * /* encryption */) {} // we don't always need more information than that provided generically
 
-	uint8_t getSubGroup() const
+	unsigned char getSubGroup() const
 	{
 		return m_subGroup;
 	}
-	uint16_t getSize() const
+	unsigned short getSize() const
 	{
 		return m_size;
 	}
 
 private:
-	uint8_t m_subGroup;
-	uint16_t m_size;
+	unsigned char m_subGroup;
+	unsigned short m_size;
 };
 
 #endif /* WP5VARIABLELENGTHGROUP_H */

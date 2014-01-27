@@ -44,7 +44,7 @@ void WP3HeaderFooterGroup::_readContents(librevenge::RVNGInputStream *input, WPX
 	if (getSubGroup() <= WP3_HEADER_FOOTER_GROUP_FOOTER_B)  // omit watermarks for the while
 	{
 		input->seek(14, librevenge::RVNG_SEEK_CUR);
-		uint16_t tmpSubDocumentLength = readU16(input, encryption, true);  // read first the old subdocument length
+		unsigned short tmpSubDocumentLength = readU16(input, encryption, true);  // read first the old subdocument length
 		input->seek(tmpSubDocumentLength, librevenge::RVNG_SEEK_CUR);  // and skip the old subdocument
 		m_definition = readU8(input, encryption);
 		input->seek(4, librevenge::RVNG_SEEK_CUR);

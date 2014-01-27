@@ -52,9 +52,9 @@ void WP3FontGroup::_readContents(librevenge::RVNGInputStream *input, WPXEncrypti
 	case WP3_FONT_GROUP_SET_TEXT_COLOR:
 		input->seek(6, librevenge::RVNG_SEEK_CUR);
 		{
-			uint16_t tmpRed = readU16(input, encryption, true);
-			uint16_t tmpGreen = readU16(input, encryption, true);
-			uint16_t tmpBlue = readU16(input, encryption, true);
+			unsigned short tmpRed = readU16(input, encryption, true);
+			unsigned short tmpGreen = readU16(input, encryption, true);
+			unsigned short tmpBlue = readU16(input, encryption, true);
 			m_fontColor = RGBSColor(tmpRed, tmpGreen, tmpBlue);
 		}
 		break;

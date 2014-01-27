@@ -26,8 +26,8 @@
 #include "WP3Header.h"
 #include "libwpd_internal.h"
 
-WP3Header::WP3Header(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint32_t documentOffset, uint8_t productType,
-                     uint8_t fileType, uint8_t majorVersion, uint8_t minorVersion, uint16_t documentEncryption) :
+WP3Header::WP3Header(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned documentOffset, unsigned char productType,
+                     unsigned char fileType, unsigned char majorVersion, unsigned char minorVersion, unsigned short documentEncryption) :
 	WPXHeader(input, encryption, documentOffset, productType, fileType, majorVersion, minorVersion, documentEncryption)
 {
 	// nothing to do here really...

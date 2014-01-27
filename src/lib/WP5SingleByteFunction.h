@@ -33,7 +33,7 @@
 class WP5SingleByteFunction : public WP5Part
 {
 public:
-	static WP5SingleByteFunction *constructSingleByteFunction(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t groupID);
+	static WP5SingleByteFunction *constructSingleByteFunction(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char groupID);
 };
 
 class WP5EOLFunction : public WP5SingleByteFunction

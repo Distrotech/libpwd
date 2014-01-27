@@ -39,7 +39,7 @@ typedef struct _WPXTableDefinition WPXTableDefinition;
 struct _WPXTableDefinition
 {
 	_WPXTableDefinition() : m_positionBits(0), m_leftOffset(0.0), m_columns(), m_columnsProperties() {}
-	uint8_t m_positionBits;
+	unsigned char m_positionBits;
 	double m_leftOffset;
 	std::vector < WPXColumnDefinition > m_columns;
 	std::vector < WPXColumnProperties > m_columnsProperties;
@@ -51,7 +51,7 @@ struct _WPXContentParsingState
 	_WPXContentParsingState();
 	~_WPXContentParsingState();
 
-	uint32_t m_textAttributeBits;
+	unsigned m_textAttributeBits;
 	double m_fontSize;
 	librevenge::RVNGString *m_fontName;
 	RGBSColor *m_fontColor;
@@ -59,8 +59,8 @@ struct _WPXContentParsingState
 
 	bool m_isParagraphColumnBreak;
 	bool m_isParagraphPageBreak;
-	uint8_t m_paragraphJustification;
-	uint8_t m_tempParagraphJustification; // TODO: remove this one after the tabs are properly implemented
+	unsigned char m_paragraphJustification;
+	unsigned char m_tempParagraphJustification; // TODO: remove this one after the tabs are properly implemented
 	double m_paragraphLineSpacing;
 
 	bool m_isDocumentStarted;
@@ -87,8 +87,8 @@ struct _WPXContentParsingState
 	bool m_wasHeaderRow;
 	bool m_isCellWithoutParagraph;
 	bool m_isRowWithoutCell;
-	uint32_t m_cellAttributeBits;
-	uint8_t m_paragraphJustificationBeforeTable;
+	unsigned m_cellAttributeBits;
+	unsigned char m_paragraphJustificationBeforeTable;
 
 	unsigned m_currentPage;
 	unsigned m_numPagesRemainingInSpan;
@@ -127,9 +127,9 @@ struct _WPXContentParsingState
 	double m_textIndentByParagraphIndentChange; // part of the indent due to the PARAGRAPH indent (WP6???)
 	double m_textIndentByTabs; // part of the indent due to the "Back Tab" or "Left Tab"
 
-	uint8_t m_currentListLevel;
+	unsigned char m_currentListLevel;
 
-	uint32_t m_alignmentCharacter;
+	unsigned m_alignmentCharacter;
 	std::vector<WPXTabStop> m_tabStops;
 	bool m_isTabPositionRelative;
 
@@ -155,9 +155,9 @@ protected:
 	void endDocument();
 	void endSubDocument();
 	void handleSubDocument(const WPXSubDocument *subDocument, WPXSubDocumentType subDocumentType, WPXTableList tableList, unsigned nextTableIndice);
-	void insertBreak(const uint8_t breakType);
+	void insertBreak(const unsigned char breakType);
 	void lineSpacingChange(const double lineSpacing);
-	void justificationChange(const uint8_t justification);
+	void justificationChange(const unsigned char justification);
 
 	WPXContentParsingState *m_ps; // parse state
 	librevenge::RVNGTextInterface *m_documentInterface;
@@ -190,7 +190,7 @@ protected:
 	void _closeTable();
 	void _openTableRow(const double height, const bool isMinimumHeight, const bool isHeaderRow);
 	void _closeTableRow();
-	void _openTableCell(const uint8_t colSpan, const uint8_t rowSpan, const uint8_t borderBits,
+	void _openTableCell(const unsigned char colSpan, const unsigned char rowSpan, const unsigned char borderBits,
 	                    const RGBSColor *cellFgColor, const RGBSColor *cellBgColor,
 	                    const RGBSColor *cellBorderColor,
 	                    const WPXVerticalAlignment cellVerticalAlignment);
@@ -207,15 +207,15 @@ protected:
 
 	void _insertPageNumberParagraph(WPXPageNumberPosition position, WPXNumberingType type, librevenge::RVNGString fontName, double fontSize);
 
-	uint32_t _mapNonUnicodeCharacter(uint32_t character);
+	unsigned _mapNonUnicodeCharacter(unsigned character);
 
 private:
 	WPXContentListener(const WPXContentListener &);
 	WPXContentListener &operator=(const WPXContentListener &);
 	librevenge::RVNGString _colorToString(const RGBSColor *color);
 	librevenge::RVNGString _mergeColorsToString(const RGBSColor *fgColor, const RGBSColor *bgColor);
-	uint32_t _mapSymbolFontCharacter(uint32_t character);
-	uint32_t _mapDingbatsFontCharacter(uint32_t character);
+	unsigned _mapSymbolFontCharacter(unsigned character);
+	unsigned _mapDingbatsFontCharacter(unsigned character);
 };
 
 #endif /* WPXCONTENTLISTENER_H */

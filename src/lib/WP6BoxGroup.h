@@ -40,25 +40,25 @@ public:
 	void parse(WP6Listener *listener);
 
 private:
-	uint8_t m_generalPositioningFlagsMask, m_generalPositioningFlagsData;
+	unsigned char m_generalPositioningFlagsMask, m_generalPositioningFlagsData;
 	bool m_hasHorizontalPositioning;
-	uint8_t m_horizontalPositioningFlags;
-	int16_t m_horizontalOffset;
-	uint8_t m_leftColumn, m_rightColumn;
+	unsigned char m_horizontalPositioningFlags;
+	signed short m_horizontalOffset;
+	unsigned char m_leftColumn, m_rightColumn;
 	bool m_hasVerticalPositioning;
-	uint8_t m_verticalPositioningFlags;
-	int16_t m_verticalOffset;
+	unsigned char m_verticalPositioningFlags;
+	signed short m_verticalOffset;
 	bool m_hasWidthInformation;
-	uint8_t m_widthFlags;
-	uint16_t m_width;
+	unsigned char m_widthFlags;
+	unsigned short m_width;
 	bool m_hasHeightInformation;
-	uint8_t m_heightFlags;
-	uint16_t m_height;
+	unsigned char m_heightFlags;
+	unsigned short m_height;
 	bool m_hasZOrderInformation;
-	uint8_t m_zOrderFlags;
+	unsigned char m_zOrderFlags;
 	bool m_hasBoxContentType;
-	uint8_t m_boxContentType;
-	uint16_t m_nativeWidth, m_nativeHeight;
+	unsigned char m_boxContentType;
+	unsigned short m_nativeWidth, m_nativeHeight;
 };
 
 #endif /* WP6BOXGROUP_H */

@@ -27,7 +27,7 @@
 #include "libwpd_internal.h"
 #include <vector>
 
-WP42HeaderFooterGroup::WP42HeaderFooterGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group) :
+WP42HeaderFooterGroup::WP42HeaderFooterGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char group) :
 	WP42MultiByteFunctionGroup(group),
 	m_definition(0),
 	m_subDocument(0)

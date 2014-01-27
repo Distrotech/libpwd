@@ -27,8 +27,8 @@
 #include "WP5Header.h"
 #include "libwpd_internal.h"
 
-WP5Header::WP5Header(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint32_t documentOffset, uint8_t productType,
-                     uint8_t fileType, uint8_t majorVersion, uint8_t minorVersion, uint16_t documentEncryption) :
+WP5Header::WP5Header(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned documentOffset, unsigned char productType,
+                     unsigned char fileType, unsigned char majorVersion, unsigned char minorVersion, unsigned short documentEncryption) :
 	WPXHeader(input, encryption, documentOffset, productType, fileType, majorVersion, minorVersion, documentEncryption)
 {
 	input->seek(2, librevenge::RVNG_SEEK_CUR); // skip the reserved 2 bytes

@@ -31,13 +31,13 @@
 class WP1SuppressPageCharacteristicsGroup : public WP1FixedLengthGroup
 {
 public:
-	WP1SuppressPageCharacteristicsGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, uint8_t group);
+	WP1SuppressPageCharacteristicsGroup(librevenge::RVNGInputStream *input, WPXEncryption *encryption, unsigned char group);
 	~WP1SuppressPageCharacteristicsGroup();
 	void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 	void parse(WP1Listener *listener);
 
 private:
-	uint8_t m_suppressCode;
+	unsigned char m_suppressCode;
 };
 
 #endif /* WP1SUPPRESSPAGECHARACTERISTICSGROUP_H */

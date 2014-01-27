@@ -28,7 +28,7 @@
 #include "WPXTable.h"
 #include "libwpd_internal.h"
 
-_WPXTableCell::_WPXTableCell(uint8_t colSpan, uint8_t rowSpan, uint8_t borderBits) :
+_WPXTableCell::_WPXTableCell(unsigned char colSpan, unsigned char rowSpan, unsigned char borderBits) :
 	m_colSpan(colSpan),
 	m_rowSpan(rowSpan),
 	m_borderBits(borderBits)
@@ -53,7 +53,7 @@ void WPXTable::insertRow()
 	m_tableRows.push_back(std::vector<WPXTableCell *>());
 }
 
-void WPXTable::insertCell(uint8_t colSpan, uint8_t rowSpan, uint8_t borderBits)
+void WPXTable::insertCell(unsigned char colSpan, unsigned char rowSpan, unsigned char borderBits)
 {
 	if (m_tableRows.size() < 1)
 		throw ParseException();
@@ -100,14 +100,14 @@ void WPXTable::_makeCellBordersConsistent(WPXTableCell *cell, std::vector<WPXTab
 		{
 			for (VTCIter iter = adjacentCells.begin(); iter != adjacentCells.end(); ++iter)
 			{
-				(*iter)->m_borderBits |= (uint8_t)(adjacencyBitBoundCells & 0xff);
+				(*iter)->m_borderBits |= (unsigned char)(adjacencyBitBoundCells & 0xff);
 			}
 		}
 		// otherwise we can get the same effect by bottom border from
 		// this cell-- if the adjacent cells have/don't have borders, this will be
 		// picked up automatically
 		else
-			cell->m_borderBits |= (uint8_t)(adjacencyBitCell & 0xff);
+			cell->m_borderBits |= (unsigned char)(adjacencyBitCell & 0xff);
 	}
 }
 

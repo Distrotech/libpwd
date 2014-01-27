@@ -38,8 +38,8 @@ protected:
 	void _readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption);
 
 private:
-	uint8_t m_red, m_green, m_blue;
-	uint8_t m_fontNumber;
+	unsigned char m_red, m_green, m_blue;
+	unsigned char m_fontNumber;
 	double m_fontSize;
 };
 

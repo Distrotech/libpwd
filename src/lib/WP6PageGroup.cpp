@@ -91,7 +91,7 @@ void WP6PageGroup::_readContents(librevenge::RVNGInputStream *input, WPXEncrypti
 		m_pageNumberNewPagePosition = readU8(input, encryption);
 		break;
 	case WP6_PAGE_GROUP_FORM:
-		uint8_t tmpOrientation;
+		unsigned char tmpOrientation;
 		// skip Hash values that we do not use (2+1 bytes)
 		input->seek(3, librevenge::RVNG_SEEK_CUR);
 		m_formLength = readU16(input, encryption);

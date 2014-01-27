@@ -51,7 +51,7 @@ WP5TableEOLGroup::~WP5TableEOLGroup()
 
 void WP5TableEOLGroup::_readContents(librevenge::RVNGInputStream *input, WPXEncryption *encryption)
 {
-	uint8_t tmpFlags, tmpColumnSpanning;
+	unsigned char tmpFlags, tmpColumnSpanning;
 	switch (getSubGroup())
 	{
 	case WP5_TABLE_EOL_GROUP_BEGINNING_OF_COLUMN_AT_EOL:
@@ -60,7 +60,7 @@ void WP5TableEOLGroup::_readContents(librevenge::RVNGInputStream *input, WPXEncr
 			m_useCellJustification = true;
 		if ((tmpFlags & 0x02) == 0x02)
 			m_useCellAttributes = true;
-		m_cellVerticalAlignment = (uint8_t)((tmpFlags & 0x0C) >> 2);
+		m_cellVerticalAlignment = (unsigned char)((tmpFlags & 0x0C) >> 2);
 		m_columnNumber = readU8(input, encryption);
 		tmpColumnSpanning = readU8(input, encryption);
 		m_colSpan = tmpColumnSpanning & 0x7F;

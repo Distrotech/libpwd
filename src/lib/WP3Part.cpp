@@ -34,17 +34,17 @@
 // returns the part if it successfully creates the part, returns 0 if it can't
 // throws an exception if there is an error
 // precondition: readVal is between 0xC0 and 0xEF
-WP3Part *WP3Part::constructPart(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const uint8_t readVal)
+WP3Part *WP3Part::constructPart(librevenge::RVNGInputStream *input, WPXEncryption *encryption, const unsigned char readVal)
 {
 	WPD_DEBUG_MSG(("WordPerfect: ConstructPart for group 0x%x\n", readVal));
 
-	if (readVal >= (uint8_t)0x80 && readVal <= (uint8_t)0xBF)
+	if (readVal >= (unsigned char)0x80 && readVal <= (unsigned char)0xBF)
 	{
 		// single-byte function
 		WPD_DEBUG_MSG(("WordPerfect: constructSingleByteFunction(input, val)\n"));
 		return WP3SingleByteFunction::constructSingleByteFunction(input, encryption, readVal);
 	}
-	else if (readVal >= (uint8_t)0xC0 && readVal <= (uint8_t)0xCF)
+	else if (readVal >= (unsigned char)0xC0 && readVal <= (unsigned char)0xCF)
 	{
 		// fixed length multi-byte function
 
@@ -56,7 +56,7 @@ WP3Part *WP3Part::constructPart(librevenge::RVNGInputStream *input, WPXEncryptio
 		WPD_DEBUG_MSG(("WordPerfect: constructFixedLengthGroup(input, val)\n"));
 		return WP3FixedLengthGroup::constructFixedLengthGroup(input, encryption, readVal);
 	}
-	else if (readVal >= (uint8_t)0xD0 && readVal <= (uint8_t)0xEF)
+	else if (readVal >= (unsigned char)0xD0 && readVal <= (unsigned char)0xEF)
 	{
 		// variable length multi-byte function
 

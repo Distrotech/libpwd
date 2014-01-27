@@ -54,10 +54,10 @@ void WP3DefinitionGroup::_readContents(librevenge::RVNGInputStream *input, WPXEn
 	{
 	case WP3_DEFINITION_GROUP_SET_COLUMNS:
 	{
-		uint8_t tmpColType = readU8(input, encryption);
+		unsigned char tmpColType = readU8(input, encryption);
 		if (tmpColType)
 		{
-			uint8_t tmpNumColumns = readU8(input, encryption);
+			unsigned char tmpNumColumns = readU8(input, encryption);
 			if (tmpNumColumns)
 				input->seek(((2*tmpNumColumns) - 1), librevenge::RVNG_SEEK_CUR);
 		}
@@ -78,13 +78,13 @@ void WP3DefinitionGroup::_readContents(librevenge::RVNGInputStream *input, WPXEn
 				{
 					if (i%2)
 					{
-						uint32_t tmpSpaceBetweenColumns = readU32(input, encryption, true);
+						unsigned tmpSpaceBetweenColumns = readU32(input, encryption, true);
 						m_isFixedWidth.push_back(true);
 						m_columnWidth.push_back((double)((double)fixedPointToWPUs(tmpSpaceBetweenColumns)/(double)WPX_NUM_WPUS_PER_INCH));
 					}
 					else
 					{
-						uint16_t tmpSizeOfColumn = readU16(input, encryption, true);
+						unsigned short tmpSizeOfColumn = readU16(input, encryption, true);
 						m_isFixedWidth.push_back(false);
 						m_columnWidth.push_back((double)((double)tmpSizeOfColumn/(double)0x10000));
 					}
