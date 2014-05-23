@@ -1,4 +1,8 @@
 CHANGES:
+0.9.9 - 0.10.0
+- Switch to librevenge
+- Miscellaneous fixes and cleanups
+
 0.9.8 - 0.9.9
 - Miscellaneous coverity fixes (David Tardon)
 - WPX_SEEK_END for WPXMemoryInputStream (Laurent Alonso)
