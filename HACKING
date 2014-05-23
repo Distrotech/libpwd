@@ -11,8 +11,7 @@ before committing.
 
 Naming: Version-specific classes, enumerations, and defines should be prefixed 
 with 'WP', followed by the version number (e.g.: WP6, WP5, WP51, etc.). 
-Generic classes (this includes utility abstractions like streams and strings) 
-should be prefixed with WPX. 
+Generic classes should be prefixed with WPX.
 
 For better worse, we have decided on using the camel caps convention for naming 
 variables (i.e.: tempJustification). Use of hungarian notation (i.e.: iNum) is
@@ -36,7 +35,8 @@ convenient. It should almost never be necessary to roll your own data
 structure.
 
 Strings: You may use either the C++ standard strings or our very own 
-UTF8-compliant WPXString. Hand-allocated char *'s are discouraged.
+UTF8-compliant librevenge::RVNGString. Hand-allocated char *'s are
+strongly discouraged.
 
 Further information: The OpenOffice.org (http://tools.openoffice.org/coding.html)
 and AbiWord (cvs://cvs.abisource.com/abi/docs/AbiSourceCodeGuidelines.abw) 
