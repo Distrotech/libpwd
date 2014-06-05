@@ -106,7 +106,7 @@ WP3ResourceFork::WP3ResourceFork(librevenge::RVNGInputStream *input, WPXEncrypti
 			WPD_DEBUG_MSG(("WP3Resource: Type 0x%.8x, ID %i, name %s, attributes 0x%.2x\n", resourceType, resourceReferenceID, resourceName.cstr(), resourceAttributes));
 			input->seek(4, librevenge::RVNG_SEEK_CUR);
 #if 0
-			librevenge::RVNGInputStream *tmpBinaryStream = const_cast<librevenge::RVNGInputStream *>(resourceData.getDataStream());
+			librevenge::RVNGInputStream *tmpBinaryStream = resourceData.getDataStream();
 			int indexNumber = 0;
 			while (!tmpBinaryStream->isEnd())
 			{
@@ -131,7 +131,7 @@ WP3ResourceFork::WP3ResourceFork(librevenge::RVNGInputStream *input, WPXEncrypti
 			tmpResData.append(resourceData);
 			if (f)
 			{
-				librevenge::RVNGInputStream *tmpStream = const_cast<librevenge::RVNGInputStream *>(tmpResData.getDataStream());
+				librevenge::RVNGInputStream *tmpStream = tmpResData.getDataStream();
 				while (!tmpStream->isEnd())
 					fprintf(f, "%c", readU8(tmpStream, 0));
 				fclose(f);

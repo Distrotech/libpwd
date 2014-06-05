@@ -73,7 +73,7 @@ void WP1PictureGroup::_readContents(librevenge::RVNGInputStream *input, WPXEncry
 	FILE *f = fopen(filename.str().c_str(), "wb");
 	if (f)
 	{
-		librevenge::RVNGInputStream *tmpStream = const_cast<librevenge::RVNGInputStream *>(m_binaryData.getDataStream());
+		librevenge::RVNGInputStream *tmpStream = m_binaryData.getDataStream();
 		while (!tmpStream->isEnd())
 			fprintf(f, "%c", readU8(tmpStream, 0));
 		fclose(f);
