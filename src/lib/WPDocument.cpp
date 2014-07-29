@@ -64,6 +64,9 @@ WPDAPI WPDConfidence WPDocument::isFileFormatSupported(librevenge::RVNGInputStre
 {
 	WPD_DEBUG_MSG(("WPDocument::isFileFormatSupported()\n"));
 
+	if (!input)
+		return WPD_CONFIDENCE_NONE;
+
 	// by-pass the OLE stream (if it exists) and returns the (sub) stream with the
 	// WordPerfect document.
 	librevenge::RVNGInputStream *document = 0;
