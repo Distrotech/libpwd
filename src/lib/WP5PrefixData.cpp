@@ -23,6 +23,8 @@
  * Corel Corporation or Corel Corporation Limited."
  */
 
+#include <set>
+
 #include "WP5PrefixData.h"
 #include "WP5GeneralPacketIndex.h"
 #include "WP5SpecialHeaderIndex.h"
@@ -32,9 +34,11 @@ WP5PrefixData::WP5PrefixData(librevenge::RVNGInputStream *input, WPXEncryption *
 	m_generalPacketData()
 {
 	std::vector<WP5GeneralPacketIndex> prefixIndexVector;
+	std::set<long> readBlocks; // guard against a cycle in the block list
 	int id = 0;
 	while (true)
 	{
+		readBlocks.insert(input->tell());
 		WP5SpecialHeaderIndex shi = WP5SpecialHeaderIndex(input, encryption);
 
 		if ((shi.getType() != 0xfffb) || (shi.getNumOfIndexes() != 5) || (shi.getIndexBlockSize() != 50))
@@ -63,6 +67,12 @@ WP5PrefixData::WP5PrefixData(librevenge::RVNGInputStream *input, WPXEncryption *
 		}
 		if (tmpFoundPossibleCorruption)
 			break;
+
+		if (readBlocks.find(long(shi.getNextBlockOffset())) != readBlocks.end())
+		{
+			WPD_DEBUG_MSG(("WordPerfect: detected a cycle in the special header index list\n"));
+			break;
+		}
 
 		if (shi.getNextBlockOffset() != 0)
 			input->seek(shi.getNextBlockOffset(), librevenge::RVNG_SEEK_SET);
